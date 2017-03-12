@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
-const config = require('config');
-const uri = config.mongoUri;
+const uri = require('config').mongoUri;
 
 mongoose.connect(uri);
 
