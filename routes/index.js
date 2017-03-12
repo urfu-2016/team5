@@ -2,7 +2,7 @@
 
 var express = require('express');
 var config = require('config');
-var router = new express.Router();
+var router = express.Router();
 
 /* Список квестов */
 router.get('/', function (req, res) {
