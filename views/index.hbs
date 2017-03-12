@@ -1,2 +1,19 @@
-<h1>{{title}}</h1>
-<h1>We are in {{mode}}</h1>
+{{#each quests}}
+    <div class="col-md-4 col-sm-6">
+        <div class="thumbnail">
+            <img src="{{questImg}}">
+            <div class="caption">
+                <h3>{{questName}}</h3>
+                <p>{{questDescription}}</p>
+                <p>
+                    {{#each questTags}}
+                        <span class="badge">{{this}}</span>
+                    {{/each}}
+                </p>
+                <a class="btn btn-xs">&#10084; Мне нравится</a>
+                <span class="likes-count">{{questLikesCount}}</span>
+                <a href="/quests/quest/{{questId}}" class="btn btn-xs pull-right">Посмотреть &rarr;</a>
+            </div>
+        </div>
+    </div>
+{{/each}}
