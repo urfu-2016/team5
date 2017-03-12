@@ -1,8 +1,8 @@
 /* eslint-disable new-cap */
 
-var express = require('express');
-var config = require('config');
-var router = express.Router();
+const express = require('express');
+const config = require('config');
+const router = express.Router();
 
 /* Список квестов */
 router.get('/', function (req, res) {

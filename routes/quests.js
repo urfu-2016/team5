@@ -1,7 +1,7 @@
 /* eslint-disable new-cap */
 
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
 /* Возвращаем конкретный квест */
 router.get('/quest/:id', function (req, res) {
