@@ -1,14 +1,13 @@
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
-// const config = require('../config/production');
-const login = process.env.mongoLogin;
+const config = require('../config/production');
+console.log(config);
+const uri = config.mongoUri;
 
-console.log(login);
 
-mongoose.connect(
-    'mongodb://<dbuser>:<dbpassword>@ds145359.mlab.com:45359/quests-team5'
-);
+console.log(uri);
+mongoose.connect(uri);
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
