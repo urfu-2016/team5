@@ -1,0 +1,13 @@
+{
+  "parserOptions": {
+    "ecmaVersion": 6
+  },
+  "env": {
+    "node": true
+  },
+  "extends": "xo",
+  "rules": {
+    "indent": [2, 4, {"SwitchCase": 1}],
+    "linebreak-style": ["error", "windows"]
+  }
+}
