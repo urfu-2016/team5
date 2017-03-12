@@ -1,11 +1,10 @@
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
-const config = require('../config/production');
-console.log(config);
+const config = require('config');
 const uri = config.mongoUri;
 
-
+console.log(config);
 console.log(uri);
 mongoose.connect(uri);
 
