@@ -7,7 +7,7 @@
     "production": "NODE_ENV=production node ./bin/www",
     "precommit": "npm run lint",
     "prepush": "npm run lint",
-    "lint": "stylelint *.css **/*.css && eslint ."
+    "lint": "stylelint *.css **/*.css && eslint .",
     "test": "mocha --recursive ./tests",
     "generate": "node ./scripts/generate-db-data.js"
   },
