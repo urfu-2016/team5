@@ -1,17 +1,16 @@
 language: node_js
 node_js:
-  - "6"
-services: 
-  - mongodb
+- '6'
+services:
+- mongodb
 install:
-  - npm install
+- npm install
 script:
-  - npm run test
+- npm run test
 env:
-  - NODE_ENV=development
+- NODE_ENV=development
 deploy:
-  provider:
-    heroku
+  provider: heroku
+  app: team5quests
   api_key:
-    secure: nrUXDEC/0DWJQdSmceeTSPRPcySbsY3Ezst2CBi899oNTFpZJw8RggN8mj6AVCaETZIEfy5qzwUyUrjYBALLVCCt+VqV3zV0iCG5vbtR5xFt7IKagsv6Jm2Kw2Q3M6DBg4Lr+Nuk2BzN8H4Kp8PmRjMl4Z+s3wNUiMtxiLsOQRqTgbuqTFeoD/jjv6xeW7VWPsgx1jcgUI54XdIzl1GhRZoL33S9FQ7zrBDQJZR3kveqoklgJcVgpwqb5wtgmiuciAISMUEKRzcr4zozmmm2+DtPO6uz/NTXyGRiychZcgHcn9PyIrib7mcc8NfDErMhlPcTtFLoB+kWrmbKK3IKt65gGGu3r4PGaxJen5Y70tL4RrCbGpeTHzcTp5wLyelQMhDycNls/j+5iYLI5NgoV9I/yH2e/QeXbpVtbeBjTMa5gjqUg+1ZaMX3nL22M4rH8MbIgVI9L1f9FgYqNtr0/nYN8OmL2B+iIqXHt3yMDqur59zK5YzYDuKmPiQJ+6aGZYP6gNYO4CUG0xinoOf5R9VTF9AWM4ZKXaKj1reIAwv3aG5K+4eEFeOJZGTSzo4UMFQDXIZ1K8K7Cp21NVWK/0RDpTTgYivp8vquyvJL1KYRioqTp6tZXlPrMTqFfidlq3ErtAfSCMe75HTFg4HaKTO58NqjmN5Y9ktSIOYTbAs=
-    app: team5quests
+    secure: FK36tf9CrxhdMn7fHDElZq2JT2lWEsIH2hjhL6qlkm/otjS5gGrAw4REPux+c9zB+GNN4Pw6QXYu2SEbiuIl9vJyP7ZyJ74cOpbgStgjgSu1KR0A76exszps7zEnioLq1iSsIh2saFKLt6ddN+ZIr7j2B37ikm77IGP+5HXFv18tYFoNuptC1iHLxMbntD8BVfAF2TNViftzCzBhEKct+gjUEEHhAflmV648IuAIRchman2DVIUYYlkE+bo84sx2e1II67WAtFcUlur8dpAlIo3UDikyxxAb+0zLAAW+Ndr5xxHwJjAfgZqV0kafIoQHayGBVBw8isieU4nq2ZGuvf0NGEip7+C4WyGOljbh5NrsG2U1Q0pPAkynZFjEUYQUrXJmiilEuqd+08lZliJ2mKPjAvqAYNVsSs81z+KEZ7+Vz6qTfrJPWFkDDlrzsrtpf7fvFngt8TnZixhOdzxW+3SejaudE7ZomNGrY7eO6c1Zn5kdx3xuDuHPX3/SDv5Bg2nEDOkwnydrLGZqMEhcwL6YxgGbXx10bVfFL9/h4beCqST7Zej8zchd/EnAipgIeqyURq7VMUgVIjTgdjloAsw9yLdkbGhkeAJK2+iqxdP2BBTdSn0qvLZSmolF+x32Os1VDMgeMKqVK/3JxR7n3v+seUx0/wHaTBNyuve+VA0=
