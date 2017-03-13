@@ -1,17 +1,15 @@
-/* global it, describe, beforeEach */
-
 const assert = require('assert');
 const Quest = require('../../models/quest');
 
 const title = 'Buga-ga';
 const description = 'Bla-bla';
 
-describe('quest model', () => {
+describe('model:quest', () => {
     beforeEach(() => {
         return Quest
             .remove({})
             .exec();
-    });
+    })
 
     it('initialization', () => {
         const quest = new Quest({
@@ -36,7 +34,7 @@ describe('quest model', () => {
                     .find({})
                     .exec();
             })
-            .then(quests => {
+            .then((quests) => {
                 assert.equal(quests.length, 1);
                 assert.equal(quests[0].get('title'), title);
             });
