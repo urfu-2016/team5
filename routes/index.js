@@ -1,6 +1,8 @@
 /* eslint-disable new-cap */
 
 const express = require('express');
+const config = require('config');
+>>>>>>> Добавил surge
 const router = express.Router();
 
 /* Список квестов */
