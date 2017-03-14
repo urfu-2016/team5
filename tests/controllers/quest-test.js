@@ -1,9 +1,6 @@
-const assert = require('assert');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../../app');
-const should = chai.should();
-const questsCtrl = require('../../controllers/quests');
 const Quest = require('../../models/quest');
 
 chai.use(chaiHttp);
@@ -17,26 +14,25 @@ describe('controller:quest', () => {
         return Quest
             .remove({})
             .exec();
-    })
+    });
 
     it('should GET all the quests', () => {
         return chai
             .request(server)
             .get('/quests')
             .send()
-            .then((res) => {
+            .then(res => {
                 res.should.have.status(200);
                 res.body.should.be.a('array');
                 res.body.length.should.be.eql(0);
             });
-
     });
     it('should Create the quest', () => {
         return chai
             .request(server)
             .post('/quests')
-            .send({ title, description })
-            .then((res) => {
+            .send({title, description})
+            .then(res => {
                 res.should.have.status(200);
                 res.body.should.be.a('object');
                 res.body.should.have.property('quest');
@@ -49,12 +45,12 @@ describe('controller:quest', () => {
         });
         return quest
             .save()
-            .then((quest) => {
+            .then(quest => {
                 return chai
                     .request(server)
                     .get('/quests/' + quest.id)
                     .send()
-                    .then((res) => {
+                    .then(res => {
                         res.should.have.status(200);
                         res.body.should.be.a('object');
                         res.body.quest.should.have.property('_id').eql(quest.id);
@@ -68,12 +64,12 @@ describe('controller:quest', () => {
         });
         return quest
             .save()
-            .then((quest) => {
+            .then(quest => {
                 return chai
                     .request(server)
                     .put('/quests/' + quest.id)
                     .send({title, description: putDescription})
-                    .then((res) => {
+                    .then(res => {
                         res.should.have.status(200);
                         res.body.should.be.a('object');
                         res.body.should.have.property('message')
@@ -90,12 +86,12 @@ describe('controller:quest', () => {
         });
         return quest
             .save()
-            .then((quest) => {
+            .then(quest => {
                 return chai
                     .request(server)
                     .delete('/quests/' + quest.id)
                     .send()
-                    .then((res) => {
+                    .then(res => {
                         res.should.have.status(200);
                         res.body.should.be.a('object');
                         res.body.should.have.property('message')

@@ -9,7 +9,7 @@ describe('model:quest', () => {
         return Quest
             .remove({})
             .exec();
-    })
+    });
 
     it('initialization', () => {
         const quest = new Quest({
@@ -34,7 +34,7 @@ describe('model:quest', () => {
                     .find({})
                     .exec();
             })
-            .then((quests) => {
+            .then(quests => {
                 assert.equal(quests.length, 1);
                 assert.equal(quests[0].get('title'), title);
             });

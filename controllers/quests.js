@@ -11,11 +11,11 @@ module.exports = {
             if (err) {
                 return res.send(err);
             }
-            res.send({ quest });
+            res.send({quest});
         });
     },
     getQuests: (req, res) => {
-        Quest.find((err, quests) => {
+        Quest.find({}, (err, quests) => {
             if (err) {
                 return res.send(err);
             }
@@ -27,7 +27,7 @@ module.exports = {
             if (err) {
                 return res.send(err);
             }
-            res.send({ quest });
+            res.send({quest});
         });
     },
     updateQuest: (req, res) => {
@@ -42,7 +42,7 @@ module.exports = {
                 if (err) {
                     return res.send(err);
                 }
-                res.send({ quest, message: 'Quest updated!' });
+                res.send({quest, message: 'Quest updated!'});
             });
         });
     },
@@ -51,11 +51,11 @@ module.exports = {
             if (err) {
                 return res.send(err);
             }
-            quest.remove((err) => {
+            quest.remove(err => {
                 if (err) {
                     return res.send(err);
                 }
-                res.send({ message: 'Quest removed!' });
+                res.send({message: 'Quest removed!'});
             });
         });
     }
