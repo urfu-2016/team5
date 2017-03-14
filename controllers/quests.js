@@ -1,5 +1,6 @@
 'use strict';
 const Quest = require('../models/quest');
+// Проверка autocrlf = false
 
 module.exports = {
     createQuest: (req, res) => {
