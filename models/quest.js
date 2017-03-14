@@ -1,6 +1,6 @@
 const mongoose = require('../libs/mongoose-connection');
 
-const questSchema = mongoose.Schema({
+const questSchema = new mongoose.Schema({
     title: String,
     description: String
 });

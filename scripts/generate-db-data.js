@@ -4,7 +4,7 @@ const Quest = require('../models/quest');
 const defaultCount = 10;
 const quests = [];
 
-let count = parseInt(process.argv[2]);
+let count = parseInt(process.argv[2], 10);
 if (!count) {
     count = defaultCount;
 }
@@ -16,4 +16,6 @@ for (let i = 0; i < count; i++) {
 
 Promise
     .all(quests)
-    .then(() => {process.exit(0);});
+    .then(() => {
+        process.exit(0);
+    });
