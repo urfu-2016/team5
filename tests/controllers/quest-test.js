@@ -4,6 +4,7 @@ const server = require('../../app');
 const Quest = require('../../models/quest');
 
 chai.use(chaiHttp);
+chai.should();
 
 const title = 'Buga-ga';
 const description = 'Bla-bla';
