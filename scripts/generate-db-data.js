@@ -1,21 +1,19 @@
 'use strict';
 
-const Quest = require('../models/quest');
-const defaultCount = 10;
-const quests = [];
+module.exports = (questCount) => {
+    const Quest = require('../models/quest');
+    questCount = questCount || 1;
+    const quests = [];
 
-let count = parseInt(process.argv[2], 10);
-if (!count) {
-    count = defaultCount;
-}
-for (let i = 0; i < count; i++) {
-    let quest = new Quest({title: 'Заголовок ' + i, description: 'Описание ' + i});
-    let savePromise = quest.save();
-    quests.push(savePromise);
-}
+    for (let i = 0; i < questCount; i++) {
+        let quest = new Quest({
+            title: 'Заголовок ' + i,
+            description: 'Описание ' + i
+        });
+        quests.push(quest.save());
+    }
 
-Promise
-    .all(quests)
-    .then(() => {
-        process.exit(0);
-    });
+    Promise
+        .all(quests)
+        .then(() => { Quest.db.close(); });
+}
