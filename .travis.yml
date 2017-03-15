@@ -10,6 +10,8 @@ script:
 - npm run test
 env:
 - NODE_ENV=development
+- SURGE_LOGIN=hackatonteam5@gmail.com
+- SURGE_TOKEN=5f0e490a163787a0663cb259af578441
 deploy:
   provider: heroku
   api_key:
