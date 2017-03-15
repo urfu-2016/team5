@@ -9,7 +9,8 @@
     "prepush": "npm run lint",
     "lint": "stylelint *.css **/*.css && eslint .",
     "test": "mocha --recursive ./tests",
-    "generate": "node ./scripts/generate-db-data.js"
+    "generate": "node ./scripts/generate-db-data.js",
+    "deploy:surge": "surge -p ./public -d team5.surge.sh"
   },
   "dependencies": {
     "body-parser": "~1.16.0",
