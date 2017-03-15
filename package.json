@@ -23,7 +23,6 @@
     "config": "^1.25.1"
   },
   "devDependencies": {
-    "config": "^1.25.1",
     "eslint": "^3.17.1",
     "eslint-config-xo": "^0.17.0",
     "husky": "^0.13.2",
