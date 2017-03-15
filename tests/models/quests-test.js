@@ -1,5 +1,4 @@
 /* global it, describe, beforeEach */
-// surge test
 
 const assert = require('assert');
 const Quest = require('../../models/quest');
