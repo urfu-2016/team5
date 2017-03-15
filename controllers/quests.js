@@ -1,63 +1,60 @@
 'use strict';
 const Quest = require('../models/quest');
-// Проверка autocrlf = false
+
+function getSuccessCallback(res, message) {
+    return data => {
+        message = message || 'Successful operation!';
+        console.log(data);
+        res.send({data, message});
+    };
+}
+function getErrorCallback(res) {
+    return err => {
+        res.send(err);
+    };
+}
 
 module.exports = {
-    createQuest: (req, res) => {
+    createQuest(req, res) {
         const quest = new Quest({
             title: req.body.title,
             description: req.body.description
         });
-        quest.save((err, quest) => {
-            if (err) {
-                return res.send(err);
-            }
-            res.send({quest});
-        });
+        return quest
+            .save()
+            .then(getSuccessCallback(res))
+            .catch(getErrorCallback(res));
     },
-    getQuests: (req, res) => {
-        Quest.find({}, (err, quests) => {
-            if (err) {
-                return res.send(err);
-            }
-            res.send(quests);
-        });
+    getQuests(req, res) {
+        Quest.find({})
+            .exec()
+            .then(getSuccessCallback(res))
+            .catch(getErrorCallback(res));
     },
-    getQuestById: (req, res) => {
-        Quest.findById(req.params.id, (err, quest) => {
-            if (err) {
-                return res.send(err);
-            }
-            res.send({quest});
-        });
+    getQuestById(req, res) {
+        Quest.findById(req.params.id)
+            .exec()
+            .then(getSuccessCallback(res))
+            .catch(getErrorCallback(res));
     },
-    updateQuest: (req, res) => {
-        Quest.findById(req.params.id, (err, quest) => {
-            if (err) {
-                return res.send(err);
-            }
-            quest.title = req.body.title;
-            quest.description = req.body.description;
-
-            quest.save((err, quest) => {
-                if (err) {
-                    return res.send(err);
-                }
-                res.send({quest, message: 'Quest updated!'});
-            });
-        });
+    updateQuest(req, res) {
+        Quest.findById(req.params.id)
+            .exec()
+            .then(quest => {
+                quest.title = req.body.title;
+                quest.description = req.body.description;
+                return quest.save();
+            })
+            .then(getSuccessCallback(res, 'Quest updated!'))
+            .catch(getErrorCallback(res));
     },
-    removeQuest: (req, res) => {
-        Quest.findById(req.params.id, (err, quest) => {
-            if (err) {
-                return res.send(err);
-            }
-            quest.remove(err => {
-                if (err) {
-                    return res.send(err);
-                }
-                res.send({message: 'Quest removed!'});
-            });
-        });
+    removeQuest(req, res) {
+        Quest.findById(req.params.id)
+            .exec()
+            .then(quest => {
+                quest.remove();
+            })
+            .then(getSuccessCallback(res, 'Quest removed!'))
+            .catch(getErrorCallback(res));
     }
 };
