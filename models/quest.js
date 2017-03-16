@@ -20,7 +20,7 @@ const questSchema = new mongoose.Schema({
         type: String,
         index: {unique: true},
         required: true
-    }
+    },
 });
 
 questSchema.statics.create = function (questData) {

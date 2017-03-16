@@ -23,6 +23,13 @@ describe('model:quest', () => {
         return removeAllQuests();
     });
 
+    after(() => {
+        return Quest
+            .remove({})
+            .exec();
+    });
+
+    // Добавить тест на author
     it('initialization', () => {
         const dateOfCreation = new Date();
         const quest = new Quest({
@@ -97,4 +104,10 @@ describe('model:quest', () => {
                     .should.equal(ValidationError.name);
             });
     });
+
+    it('error on save with required parameter', () => {
+        const quest = new Quest({
+            description
+        });
+    })
 });
