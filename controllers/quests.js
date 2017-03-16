@@ -6,6 +6,7 @@ const shortid = require('shortid');
 function getSuccessCallback(res, message) {
     return data => {
         message = message || 'Successful operation!';
+        console.log(data);
         res.send({data, message});
     };
 }
@@ -50,25 +51,26 @@ module.exports = {
             .then(getSuccessCallback(res))
             .catch(getErrorCallback(res));
     },
-    getQuestById(req, res) {
-        Quest.findById(req.params.id)
+    getQuestBySlug(req, res) {
+        Quest.findOne({slug: req.params.slug})
             .exec()
             .then(getSuccessCallback(res))
             .catch(getErrorCallback(res));
     },
     updateQuest(req, res) {
-        Quest.findById(req.params.id)
+        Quest.findOne({slug: req.params.slug})
             .exec()
             .then(quest => {
                 quest.title = req.body.title;
                 quest.description = req.body.description;
+                quest.slug = req.body.slug;
                 return quest.save();
             })
             .then(getSuccessCallback(res, 'Quest updated!'))
             .catch(getErrorCallback(res));
     },
     removeQuest(req, res) {
-        Quest.findById(req.params.id)
+        Quest.findOne({slug: req.params.slug})
             .exec()
             .then(quest => {
                 quest.remove();

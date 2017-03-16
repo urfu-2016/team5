@@ -62,22 +62,22 @@ describe('controller:quest', () => {
                 assert.equal(res.body.data.length, 0);
             });
     });
-    it('should GET a quest by the given id', () => {
+    it('should GET a quest by the given slug', () => {
         const quest = new Quest({
             title,
             description,
-            slug: questName
+            slug
         });
         return quest
             .save()
             .then(quest => {
                 return chai
                     .request(server)
-                    .get(`/quests/${quest.id}`)
+                    .get(`/quests/${quest.slug}`)
                     .send()
                     .then(res => {
                         assert.equal(res.status, 200);
-                        assert.equal(res.body.data._id, quest.id);
+                        assert.equal(res.body.data.slug, slug);
                     });
             });
     });
@@ -85,15 +85,15 @@ describe('controller:quest', () => {
         const quest = new Quest({
             title,
             description,
-            slug: questName
+            slug
         });
         return quest
             .save()
             .then(quest => {
                 return chai
                     .request(server)
-                    .put(`/quests/${quest.id}`)
-                    .send({title, description: putDescription})
+                    .put(`/quests/${quest.slug}`)
+                    .send({title, description: putDescription, slug})
                     .then(res => {
                         assert.equal(res.status, 200);
                         assert.equal(res.body.message, 'Quest updated!');
@@ -105,14 +105,14 @@ describe('controller:quest', () => {
         const quest = new Quest({
             title,
             description,
-            slug: questName
+            slug
         });
         return quest
             .save()
             .then(quest => {
                 return chai
                     .request(server)
-                    .delete(`/quests/${quest.id}`)
+                    .delete(`/quests/${quest.slug}`)
                     .send()
                     .then(res => {
                         assert.equal(res.status, 200);
