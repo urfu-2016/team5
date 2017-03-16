@@ -6,7 +6,6 @@ const shortid = require('shortid');
 function getSuccessCallback(res, message) {
     return data => {
         message = message || 'Successful operation!';
-        console.log(data);
         res.send({data, message});
     };
 }

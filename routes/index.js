@@ -5,7 +5,7 @@ const router = express.Router();
 
 /* Список квестов */
 router.get('/', function (req, res) {
-    // TODO: Брать из базы
+    // Брать из базы
     res.render('index', {
         title: 'Список квестов',
         quests: [
