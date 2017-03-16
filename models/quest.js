@@ -2,7 +2,11 @@ const mongoose = require('../libs/mongoose-connection');
 
 const questSchema = new mongoose.Schema({
     title: String,
-    description: String
+    description: String,
+    slug: {
+        type: String,
+        index: {unique: true},
+        required: true
+    }
 });
-// , { _id: false }
 module.exports = mongoose.model('Quest', questSchema);
