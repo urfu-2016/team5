@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = (questCount) => {
+module.exports = questCount => {
     const Quest = require('../models/quest');
     questCount = questCount || 1;
     const quests = [];
@@ -10,10 +10,25 @@ module.exports = (questCount) => {
             title: 'Заголовок ' + i,
             description: 'Описание ' + i
         });
-        quests.push(quest.save());
+
+        // quest
+        //     .save()
+            // .then(() => {
+            //     return Quest
+            //         .find({})
+            //         .exec();
+            // })
+            // .then(v => {
+            //     console.log(v);
+            //
+            //     return v;
+            // })
+        quests.push(
+            quest.save()
+        );
     }
 
-    Promise
-        .all(quests)
-        .then(() => { Quest.db.close(); });
-}
+
+    return Promise
+        .all(quests);
+};
