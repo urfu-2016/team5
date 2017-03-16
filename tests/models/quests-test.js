@@ -109,5 +109,5 @@ describe('model:quest', () => {
         const quest = new Quest({
             description
         });
-    })
+    });
 });
