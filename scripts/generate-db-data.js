@@ -11,23 +11,8 @@ module.exports = questCount => {
             description: 'Описание ' + i
         });
 
-        // quest
-        //     .save()
-            // .then(() => {
-            //     return Quest
-            //         .find({})
-            //         .exec();
-            // })
-            // .then(v => {
-            //     console.log(v);
-            //
-            //     return v;
-            // })
-        quests.push(
-            quest.save()
-        );
+        quests.push(quest.save());
     }
-
 
     return Promise
         .all(quests);

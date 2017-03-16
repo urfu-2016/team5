@@ -1,3 +1,4 @@
+/* eslint-env mocha */
 'use strict';
 
 const questGenerator = require('../../scripts/generate-db-data');
@@ -36,4 +37,4 @@ describe('scripts:generate-db-data', () => {
     it('connection-to-base-is-alive', () => {
         assert.equal(Quest.base.connections[0].readyState, 1);
     });
-})
+});
