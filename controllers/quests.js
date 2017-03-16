@@ -1,5 +1,7 @@
 'use strict';
 const Quest = require('../models/quest');
+const slug = require('slug');
+const shortid = require('shortid');
 
 function getSuccessCallback(res, message) {
     return data => {
@@ -18,10 +20,28 @@ module.exports = {
     createQuest(req, res) {
         const quest = new Quest({
             title: req.body.title,
-            description: req.body.description
+            description: req.body.description,
+            slug: slug(req.body.slug)
         });
         return quest
             .save()
+            .catch(err => {
+                const isMongoDuplicateKeyError = err.name === 'MongoError' &&
+                    err.code === 11000;
+                if (!isMongoDuplicateKeyError) {
+                    throw err;
+                }
+
+                return false;
+            })
+            .then(data => {
+                if (!data) {
+                    quest.slug += shortid.generate();
+                    return quest.save();
+                }
+
+                return data;
+            })
             .then(getSuccessCallback(res))
             .catch(getErrorCallback(res));
     },
