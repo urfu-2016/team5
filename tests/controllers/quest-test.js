@@ -10,6 +10,8 @@ chai.use(chaiHttp);
 
 const title = 'Buga-ga';
 const description = 'Bla-bla';
+const questName = 'Новый квест:)';
+const slug = 'Novyj-kvest';
 const putDescription = 'Kry-kry';
 
 describe('controller:quest', () => {
@@ -23,10 +25,31 @@ describe('controller:quest', () => {
         return chai
             .request(server)
             .post('/quests')
-            .send({title, description})
+            .send({title, description, slug: questName})
             .then(res => {
                 assert.equal(res.status, 200);
                 assert.equal(res.body.data.title, title);
+                assert.equal(res.body.data.slug, slug);
+            });
+    });
+    it('should Create the quest with generate slug', () => {
+        const quest = new Quest({
+            title,
+            description,
+            slug
+        });
+        return quest
+            .save()
+            .then(() => {
+                return chai
+                    .request(server)
+                    .post('/quests')
+                    .send({title, description, slug: questName})
+                    .then(res => {
+                        assert.equal(res.status, 200);
+                        assert.ok(res.body.data.slug.length > slug.length);
+                        assert.ok(res.body.data.slug.indexOf(slug) === 0);
+                    });
             });
     });
     it('should GET all the quests', () => {
@@ -42,7 +65,8 @@ describe('controller:quest', () => {
     it('should GET a quest by the given id', () => {
         const quest = new Quest({
             title,
-            description
+            description,
+            slug: questName
         });
         return quest
             .save()
@@ -60,7 +84,8 @@ describe('controller:quest', () => {
     it('should PUT a quest', () => {
         const quest = new Quest({
             title,
-            description
+            description,
+            slug: questName
         });
         return quest
             .save()
@@ -79,7 +104,8 @@ describe('controller:quest', () => {
     it('should delete a quest', () => {
         const quest = new Quest({
             title,
-            description
+            description,
+            slug: questName
         });
         return quest
             .save()

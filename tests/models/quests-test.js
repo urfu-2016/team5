@@ -5,6 +5,7 @@ const Quest = require('../../models/quest');
 
 const title = 'Buga-ga';
 const description = 'Bla-bla';
+const questName = 'Новый квест:)';
 
 describe('model:quest', () => {
     beforeEach(() => {
@@ -16,7 +17,8 @@ describe('model:quest', () => {
     it('initialization', () => {
         const quest = new Quest({
             title,
-            description
+            description,
+            slug: questName
         });
 
         assert.equal(quest.get('title'), title);
@@ -26,7 +28,8 @@ describe('model:quest', () => {
     it('save model', () => {
         const quest = new Quest({
             title,
-            description
+            description,
+            slug: questName
         });
 
         return quest
