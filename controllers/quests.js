@@ -2,23 +2,29 @@
 const Quest = require('../models/quest');
 const slug = require('slug');
 const shortid = require('shortid');
+const HttpStatus = require('http-status-codes');
 
-function getSuccessCallback(res, status, message) {
+function getSuccessCallback(res, status) {
     return data => {
-        res.status(status).send({data, message});
+        res
+            .status(status)
+            .send({data, message: HttpStatus.getStatusText(status)});
     };
 }
+
 function getErrorCallback(res) {
     return err => {
-        err.status = err.status || 500;
-        err.message = err.message || 'Server error';
-        res.status(err.status).send({error: err.message});
+        err.status = err.status || HttpStatus.INTERNAL_SERVER_ERROR;
+        res
+            .status(err.status)
+            .send({error: HttpStatus.getStatusText(err.status)});
     };
 }
 
 function createError(status, message) {
     const err = new Error(message);
     err.status = status;
+
     return err;
 }
 
@@ -29,13 +35,14 @@ module.exports = {
             description: req.body.description,
             slug: slug(req.body.slug)
         });
+
         return quest
             .save()
             .catch(err => {
                 const isMongoDuplicateKeyError = err.name === 'MongoError' &&
                     err.code === 11000;
                 if (!isMongoDuplicateKeyError) {
-                    throw createError(400, 'Badrequest');
+                    throw createError(HttpStatus.BAD_REQUEST);
                 }
 
                 return false;
@@ -43,18 +50,19 @@ module.exports = {
             .then(data => {
                 if (!data) {
                     quest.slug += shortid.generate();
+
                     return quest.save();
                 }
 
                 return data;
             })
-            .then(getSuccessCallback(res, 201, 'Created'))
+            .then(getSuccessCallback(res, HttpStatus.CREATED))
             .catch(getErrorCallback(res));
     },
     getQuests(req, res) {
         Quest.find({})
             .exec()
-            .then(getSuccessCallback(res, 200, 'OK'))
+            .then(getSuccessCallback(res, HttpStatus.OK))
             .catch(getErrorCallback(res));
     },
     getQuestBySlug(req, res) {
@@ -62,12 +70,12 @@ module.exports = {
             .exec()
             .then(quest => {
                 if (!quest) {
-                    throw createError(404, 'Not Found');
+                    throw createError(HttpStatus.NOT_FOUND);
                 }
 
                 return quest;
             })
-            .then(getSuccessCallback(res, 200, 'OK'))
+            .then(getSuccessCallback(res, HttpStatus.OK))
             .catch(getErrorCallback(res));
     },
     updateQuest(req, res) {
@@ -75,7 +83,7 @@ module.exports = {
             .exec()
             .then(quest => {
                 if (!quest) {
-                    throw createError(404, 'Not Found');
+                    throw createError(HttpStatus.NOT_FOUND);
                 }
 
                 return quest;
@@ -84,21 +92,22 @@ module.exports = {
                 quest.title = req.body.title;
                 quest.description = req.body.description;
                 quest.slug = req.body.slug;
+
                 return quest.save();
             })
-            .then(getSuccessCallback(res, 200, 'OK'))
+            .then(getSuccessCallback(res, HttpStatus.OK))
             .catch(getErrorCallback(res));
     },
     removeQuest(req, res) {
         Quest.findOne({slug: req.params.slug})
             .then(quest => {
                 if (!quest) {
-                    throw createError(404, 'Not Found');
+                    throw createError(HttpStatus.NOT_FOUND);
                 }
 
                 return quest.remove();
             })
-            .then(getSuccessCallback(res, 200, 'OK'))
+            .then(getSuccessCallback(res, HttpStatus.OK))
             .catch(getErrorCallback(res));
     }
 };
