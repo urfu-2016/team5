@@ -5,9 +5,9 @@ const chaiHttp = require('chai-http');
 const server = require('../../app');
 const Quest = require('../../models/quest');
 const HttpStatus = require('http-status-codes');
+const clearDataBase = require('../../scripts/clear-db');
 
 chai.should();
-const clearDataBase = require('../../scripts/clear-db');
 
 const title = 'Buga-ga';
 const description = 'Bla-bla';

@@ -4,6 +4,7 @@ require('chai').should();
 const Quest = require('../../models/quest');
 const mongoose = require('mongoose');
 const clearDataBase = require('../../scripts/clear-db');
+
 const title = 'Buga-ga';
 const description = 'Bla-bla';
 const questName = 'Новый квест:)';
@@ -19,17 +20,12 @@ describe('model:quest', () => {
         return clearDataBase();
     });
 
-    after(() => {
-        beforeEach();
-    });
-
     it('initialization', () => {
         const dateOfCreation = new Date();
         const quest = new Quest({
             title,
             description,
             slug: questName,
-            images,
             likesCount,
             tags,
             dateOfCreation

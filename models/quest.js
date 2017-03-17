@@ -3,6 +3,7 @@
 const mongoose = require('../libs/mongoose-connection');
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const Image = require('./schemas/image');
+
 const questSchema = new mongoose.Schema({
     title: {type: String, required: true},
     description: String,
