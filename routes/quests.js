@@ -10,9 +10,11 @@ router.route('/quest/:id')
     // Нужно брать квест по req.id и рендерить в шаблоне quest
         res.render('quest', {title: 'Квест'});
     });
+
 router.route('/api/quests')
     .get(questsController.getQuests)
     .post(questsController.createQuest);
+
 router.route('/api/quests/:slug')
     .get(questsController.getQuestBySlug)
     .put(questsController.updateQuest)

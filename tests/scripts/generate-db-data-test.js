@@ -4,12 +4,15 @@
 const questGenerator = require('../../scripts/generate-db-data');
 const assert = require('assert');
 const Quest = require('../../models/quest');
+const clearDataBase = require('../../scripts/clear-db');
 
 describe('scripts:generate-db-data', () => {
-    afterEach(() => {
-        return Quest
-            .remove({})
-            .exec();
+    beforeEach(() => {
+        return clearDataBase();
+    });
+
+    after(() => {
+        return clearDataBase();
     });
 
     it('data-generation', () => {
