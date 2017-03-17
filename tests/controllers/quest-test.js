@@ -24,10 +24,10 @@ describe('controller:quest', () => {
     it('should Create the quest', () => {
         return chai
             .request(server)
-            .post('/quests')
+            .post('/api/quests')
             .send({title, description, slug: questName})
             .then(res => {
-                assert.equal(res.status, 200);
+                assert.equal(res.status, 201);
                 assert.equal(res.body.data.title, title);
                 assert.equal(res.body.data.slug, slug);
             });
@@ -43,23 +43,31 @@ describe('controller:quest', () => {
             .then(() => {
                 return chai
                     .request(server)
-                    .post('/quests')
+                    .post('/api/quests')
                     .send({title, description, slug: questName})
                     .then(res => {
-                        assert.equal(res.status, 200);
-                        assert.ok(res.body.data.slug.length > slug.length);
-                        assert.ok(res.body.data.slug.indexOf(slug) === 0);
+                        assert.equal(res.status, 201);
+                        assert.ok(res.body.data.slug.length >= slug.length);
                     });
             });
     });
     it('should GET all the quests', () => {
-        return chai
-            .request(server)
-            .get('/quests')
-            .send()
-            .then(res => {
-                assert.equal(res.status, 200);
-                assert.equal(res.body.data.length, 0);
+        const quest = new Quest({
+            title,
+            description,
+            slug
+        });
+        return quest
+            .save()
+            .then(() => {
+                return chai
+                .request(server)
+                .get('/api/quests')
+                .send()
+                .then(res => {
+                    assert.equal(res.status, 200);
+                    assert.equal(res.body.data.length, 1);
+                });
             });
     });
     it('should GET a quest by the given slug', () => {
@@ -73,7 +81,7 @@ describe('controller:quest', () => {
             .then(quest => {
                 return chai
                     .request(server)
-                    .get(`/quests/${quest.slug}`)
+                    .get(`/api/quests/${quest.slug}`)
                     .send()
                     .then(res => {
                         assert.equal(res.status, 200);
@@ -92,11 +100,10 @@ describe('controller:quest', () => {
             .then(quest => {
                 return chai
                     .request(server)
-                    .put(`/quests/${quest.slug}`)
+                    .put(`/api/quests/${quest.slug}`)
                     .send({title, description: putDescription, slug})
                     .then(res => {
                         assert.equal(res.status, 200);
-                        assert.equal(res.body.message, 'Quest updated!');
                         assert.equal(res.body.data.description, putDescription);
                     });
             });
@@ -112,12 +119,30 @@ describe('controller:quest', () => {
             .then(quest => {
                 return chai
                     .request(server)
-                    .delete(`/quests/${quest.slug}`)
+                    .delete(`/api/quests/${quest.slug}`)
                     .send()
                     .then(res => {
                         assert.equal(res.status, 200);
-                        assert.equal(res.body.message, 'Quest removed!');
                     });
+            })
+            .then(() => {
+                return chai
+                    .request(server)
+                    .delete(`/api/quests/${quest.slug}`)
+                    .send()
+                    .catch(res => {
+                        assert.equal(res.status, 404);
+                    });
+            });
+    });
+
+    it('should answer with status 404', () => {
+        return chai
+            .request(server)
+            .get(`/api/quests/${slug}`)
+            .send()
+            .catch(err => {
+                assert.equal(err.status, 404);
             });
     });
 });
