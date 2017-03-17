@@ -17,4 +17,4 @@ deploy:
   on: master
   app: team5quests
 after_success:
- - '["${TRAVIS_PULL_REQUEST}" = "false"] && npm run deploy:surge
+- '["${TRAVIS_PULL_REQUEST}" = "false"] && npm run deploy:surge
