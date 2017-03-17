@@ -3,6 +3,7 @@
 require('chai').should();
 const Quest = require('../../models/quest');
 const mongoose = require('mongoose');
+const clearDataBase = require('../../scripts/clear-db');
 
 const title = 'Buga-ga';
 const description = 'Bla-bla';
@@ -12,13 +13,11 @@ const tags = ['Екатеринбург', 'Граффити'];
 
 describe('model:quest', () => {
     beforeEach(() => {
-        return Quest
-            .remove({})
-            .exec();
+        return clearDataBase();
     });
 
     after(() => {
-        beforeEach();
+        return clearDataBase();
     });
 
     it('initialization', () => {
@@ -27,7 +26,6 @@ describe('model:quest', () => {
             title,
             description,
             slug: questName,
-            images,
             likesCount,
             tags,
             dateOfCreation

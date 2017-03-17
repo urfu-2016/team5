@@ -3,6 +3,7 @@
 const mongoose = require('../libs/mongoose-connection');
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const Image = require('./schemas/image');
+
 const questSchema = new mongoose.Schema({
     title: {type: String, required: true},
     description: String,
@@ -15,7 +16,7 @@ const questSchema = new mongoose.Schema({
         type: String,
         index: {unique: true},
         required: true
-    },
+    }
 });
 
 module.exports = mongoose.model('Quest', questSchema);
