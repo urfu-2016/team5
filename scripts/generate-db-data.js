@@ -19,5 +19,5 @@ module.exports = questCount => {
     }
 
     return Promise
-        .all(quests);
+        .all(quests)
 };
