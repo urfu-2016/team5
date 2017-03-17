@@ -32,6 +32,7 @@ describe('controller:quest', () => {
                 assert.equal(res.body.data.slug, slug);
             });
     });
+
     it('should Create the quest with generate slug', () => {
         const quest = new Quest({
             title,
@@ -51,6 +52,7 @@ describe('controller:quest', () => {
                     });
             });
     });
+
     it('should GET all the quests', () => {
         const quest = new Quest({
             title,
@@ -61,15 +63,16 @@ describe('controller:quest', () => {
             .save()
             .then(() => {
                 return chai
-                .request(server)
-                .get('/api/quests')
-                .send()
-                .then(res => {
-                    assert.equal(res.status, 200);
-                    assert.equal(res.body.data.length, 1);
-                });
+                    .request(server)
+                    .get('/api/quests')
+                    .send()
+                    .then(res => {
+                        assert.equal(res.status, 200);
+                        assert.equal(res.body.data.length, 1);
+                    });
             });
     });
+
     it('should GET a quest by the given slug', () => {
         const quest = new Quest({
             title,
@@ -89,6 +92,7 @@ describe('controller:quest', () => {
                     });
             });
     });
+
     it('should PUT a quest', () => {
         const quest = new Quest({
             title,
@@ -108,6 +112,7 @@ describe('controller:quest', () => {
                     });
             });
     });
+
     it('should delete a quest', () => {
         const quest = new Quest({
             title,
