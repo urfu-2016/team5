@@ -31,27 +31,6 @@ describe('models:user', () => {
             });
     });
 
-    it('should be unique nickname', () => {
-        const first = new User({
-            firstname: 'Иван',
-            surname: 'Иванов',
-            nickname: 'vano',
-            createdQ: [],
-            quests: []
-        });
-
-        const second = new User({
-            firstname: 'Петр',
-            surname: 'Петров',
-            nickname: 'petro',
-            createdQ: [],
-            quests: []
-        });
-
-        first.save();
-        second.save()
-            .then(() => assert.fail());
-    });
     // TODO: Дописать тесты по спецификации
     // TODO: после добавления модели Quest
 });
