@@ -18,6 +18,3 @@ deploy:
   app: team5quests
 after_success:
  - npm run deploy:surge
-
-
- # master
