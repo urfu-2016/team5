@@ -10,9 +10,9 @@ module.exports = questCount => {
 
     for (let i = 0; i < questCount; i++) {
         let quest = new Quest({
-            title: titlePrefix + i,
-            description: descriptionPrefix + i,
-            slug: slug + ` ${i}`
+            title: `${titlePrefix} ${i}`,
+            description: `${descriptionPrefix} ${i}`,
+            slug: `${slug} ${i}`
         });
 
         quests.push(quest.save());
