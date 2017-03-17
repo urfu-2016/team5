@@ -21,6 +21,12 @@ function getErrorCallback(res) {
     };
 }
 
+function throwErrorOnFalseValue(objectToCheck, httpStatus) {
+    if (!objectToCheck) {
+        throw createError(httpStatus);
+    }
+}
+
 function createError(status, message) {
     const err = new Error(message);
     err.status = status;
@@ -41,9 +47,8 @@ module.exports = {
             .catch(err => {
                 const isMongoDuplicateKeyError = err.name === 'MongoError' &&
                     err.code === 11000;
-                if (!isMongoDuplicateKeyError) {
-                    throw createError(HttpStatus.BAD_REQUEST);
-                }
+                throwErrorOnFalseValue(isMongoDuplicateKeyError,
+                    HttpStatus.BAD_REQUEST);
 
                 return false;
             })
@@ -69,9 +74,7 @@ module.exports = {
         Quest.findOne({slug: req.params.slug})
             .exec()
             .then(quest => {
-                if (!quest) {
-                    throw createError(HttpStatus.NOT_FOUND);
-                }
+                throwErrorOnFalseValue(quest, HttpStatus.NOT_FOUND);
 
                 return quest;
             })
@@ -82,9 +85,7 @@ module.exports = {
         Quest.findOne({slug: req.params.slug})
             .exec()
             .then(quest => {
-                if (!quest) {
-                    throw createError(HttpStatus.NOT_FOUND);
-                }
+                throwErrorOnFalseValue(quest, HttpStatus.NOT_FOUND);
 
                 return quest;
             })
@@ -101,9 +102,7 @@ module.exports = {
     removeQuest(req, res) {
         Quest.findOne({slug: req.params.slug})
             .then(quest => {
-                if (!quest) {
-                    throw createError(HttpStatus.NOT_FOUND);
-                }
+                throwErrorOnFalseValue(quest, HttpStatus.NOT_FOUND);
 
                 return quest.remove();
             })
