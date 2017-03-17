@@ -2,7 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
-const questsCtrl = require('../controllers/quests');
+const questsController = require('../controllers/quests');
 
 /* Возвращаем конкретный квест */
 router.route('/quest/:id')
@@ -11,11 +11,11 @@ router.route('/quest/:id')
         res.render('quest', {title: 'Квест'});
     });
 router.route('/api/quests')
-    .get(questsCtrl.getQuests)
-    .post(questsCtrl.createQuest);
+    .get(questsController.getQuests)
+    .post(questsController.createQuest);
 router.route('/api/quests/:slug')
-    .get(questsCtrl.getQuestBySlug)
-    .put(questsCtrl.updateQuest)
-    .delete(questsCtrl.removeQuest);
+    .get(questsController.getQuestBySlug)
+    .put(questsController.updateQuest)
+    .delete(questsController.removeQuest);
 
 module.exports = router;
