@@ -1,13 +1,13 @@
-/* global it, describe, beforeEach */
-// surge test
+/* eslint-env mocha */
 
 const assert = require('assert');
 const Quest = require('../../models/quest');
 
 const title = 'Buga-ga';
 const description = 'Bla-bla';
+const questName = 'Новый квест:)';
 
-describe('quest model', () => {
+describe('model:quest', () => {
     beforeEach(() => {
         return Quest
             .remove({})
@@ -17,7 +17,8 @@ describe('quest model', () => {
     it('initialization', () => {
         const quest = new Quest({
             title,
-            description
+            description,
+            slug: questName
         });
 
         assert.equal(quest.get('title'), title);
@@ -27,7 +28,8 @@ describe('quest model', () => {
     it('save model', () => {
         const quest = new Quest({
             title,
-            description
+            description,
+            slug: questName
         });
 
         return quest
