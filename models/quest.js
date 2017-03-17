@@ -11,15 +11,9 @@ const baseApi = require('../controllers/api/baseApi');
 const questSchema = new mongoose.Schema({
     title: {type: String, required: true},
     description: String,
-<<<<<<< HEAD
     images: [Image],
     author: {type: ObjectId, ref: 'User'},
     likes: [{type: ObjectId, ref: 'User'}],
-=======
-    images: [{type: ObjectId, ref: 'Image'}],
-    author: {type: ObjectId, ref: 'User'},
-    likesCount: Number,
->>>>>>> Backup
     tags: [String],
     dateOfCreation: {type: Date, default: Date.now},
     slug: {

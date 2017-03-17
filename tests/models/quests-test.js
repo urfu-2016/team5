@@ -24,12 +24,9 @@ describe('model:quest', () => {
     });
 
     after(() => {
-        return Quest
-            .remove({})
-            .exec();
+        beforeEach();
     });
 
-    // Добавить тест на author
     it('initialization', () => {
         const dateOfCreation = new Date();
         const quest = new Quest({
@@ -105,9 +102,13 @@ describe('model:quest', () => {
             });
     });
 
-    it('error on save with required parameter', () => {
-        const quest = new Quest({
-            description
-        });
+    it('error on save without required parameter', () => {
+        const ValidationError = mongoose.Error.ValidationError;
+
+        return new Quest({})
+            .save()
+            .catch(error => {
+                assert.equal(error.name, ValidationError.name);
+            });
     });
 });
