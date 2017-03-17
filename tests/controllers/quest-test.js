@@ -8,6 +8,7 @@ const HttpStatus = require('http-status-codes');
 const removeAllQuests = require('../../scripts/clear-db').removeAllQuests;
 
 chai.should();
+const clearDataBase = require('../../scripts/clear-db');
 
 const title = 'Buga-ga';
 const description = 'Bla-bla';

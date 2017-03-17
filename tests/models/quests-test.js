@@ -24,7 +24,7 @@ describe('model:quest', () => {
     });
 
     after(() => {
-        beforeEach();
+        return clearDataBase();
     });
 
     it('initialization', () => {
