@@ -30,21 +30,32 @@ describe('model:quest', () => {
             tags,
             dateOfCreation
         });
+
         const image = {title: 'title'};
         quest.images.push(image);
 
-        assert.equal(quest.get('title'), title);
-        assert.equal(quest.get('description'), description);
-        assert.equal(quest.get('images')[0].title, image.title);
-        assert.equal(quest.get('images').length, 1);
-        assert.equal(quest.get('likesCount'), likesCount);
-        assert.deepEqual(quest.get('tags')[0], tags[0]);
-        assert.equal(quest.get('tags').length, tags.length);
+        title.should.equal(quest.get('title'));
+        description.should.equal(quest.get('description'));
+        image.title
+            .should.equal(quest.get('images')[0].title);
+
+        quest.get('images').length
+            .should.equal(1);
+
+        likesCount.should.equal(quest.get('likesCount'));
+        tags[0].should.equal(quest.get('tags')[0]);
+        tags.length
+            .should.equal(quest.get('tags').length);
 
         const date = quest.get('dateOfCreation');
-        assert.equal(date.getFullYear(), dateOfCreation.getFullYear());
-        assert.equal(date.getMonth(), dateOfCreation.getMonth());
-        assert.equal(date.getDay(), dateOfCreation.getDay());
+        date.getFullYear()
+            .should.equal(dateOfCreation.getFullYear());
+
+        date.getMonth()
+            .should.equal(dateOfCreation.getMonth());
+
+        date.getDay()
+            .should.equal(dateOfCreation.getDay());
     });
 
     it('save model', () => {
@@ -62,8 +73,11 @@ describe('model:quest', () => {
                     .exec();
             })
             .then(quests => {
-                quests.should.have.lengthOf(1);
-                quests[0].get('title').should.equal(title);
+                quests.length
+                    .should.equal(1);
+
+                quests[0].get('title')
+                    .should.equal(title);
             });
     });
 
@@ -73,17 +87,8 @@ describe('model:quest', () => {
         return new Quest({})
             .save()
             .catch(error => {
-                assert.equal(error.name, ValidationError.name);
-            });
-    });
-
-    it('error on save without required parameter', () => {
-        const ValidationError = mongoose.Error.ValidationError;
-
-        return new Quest({})
-            .save()
-            .catch(error => {
-                assert.equal(error.name, ValidationError.name);
+                error.name
+                    .should.equal(ValidationError.name);
             });
     });
 });

@@ -2,7 +2,7 @@
 'use strict';
 
 const questGenerator = require('../../scripts/generate-db-data');
-const assert = require('assert');
+require('chai').should();
 const Quest = require('../../models/quest');
 const clearDataBase = require('../../scripts/clear-db');
 
@@ -25,11 +25,14 @@ describe('scripts:generate-db-data', () => {
                     .exec();
             })
             .then(v => {
-                assert.equal(v.length, questsCount);
+                v.length
+                    .should.equal(questsCount);
             });
     });
 
     it('connection-to-base-is-alive', () => {
-        assert.equal(Quest.base.connections[0].readyState, 1);
+        const connectionAliveCode = 1;
+        Quest.base.connections[0].readyState
+            .should.equal(connectionAliveCode);
     });
 });
