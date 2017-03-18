@@ -108,7 +108,8 @@ describe('model:quest', () => {
         return new Quest({})
             .save()
             .catch(error => {
-                assert.equal(error.name, ValidationError.name);
+                error.name
+                    .should.equal(ValidationError.name);
             });
     });
 });
