@@ -1,0 +1,11 @@
+{
+  "numFilesToCheck": 10,
+  "message": "@reviewers посмотрите! Тут @pullRequester накодил",
+  "findPotentialReviewers": true,
+  "fileBlacklist": ["*.md"],
+  "requiredOrgs": [],
+  "assignToReviewer": true,
+  "createReviewRequest": true,
+  "createComment": true,
+  "delayed": false
+}
