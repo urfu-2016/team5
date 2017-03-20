@@ -1,6 +1,6 @@
 /* eslint-env mocha */
 
-const assert = require('assert');
+require('chai').should();
 const Quest = require('../../models/quest');
 
 const title = 'Buga-ga';
@@ -21,8 +21,8 @@ describe('model:quest', () => {
             slug: questName
         });
 
-        assert.equal(quest.get('title'), title);
-        assert.equal(quest.get('description'), description);
+        quest.get('title').should.equal(title);
+        quest.get('description').should.equal(description);
     });
 
     it('save model', () => {
@@ -40,8 +40,8 @@ describe('model:quest', () => {
                     .exec();
             })
             .then(quests => {
-                assert.equal(quests.length, 1);
-                assert.equal(quests[0].get('title'), title);
+                quests.should.have.lengthOf(1);
+                quests[0].get('title').should.equal(title);
             });
     });
 });
