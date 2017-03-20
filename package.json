@@ -7,7 +7,7 @@
     "production": "NODE_ENV=production node index.js",
     "precommit": "npm run lint",
     "prepush": "npm run lint",
-    "lint": "stylelint *.css **/*.css && eslint . && eslint bin/www",
+    "lint": "stylelint *.css **/*.css && eslint .",
     "test": "mocha --recursive ./tests",
     "generate": "node ./scripts/generate-db-data.js",
     "deploy:surge": "surge -p ./public -d team5.surge.sh"
