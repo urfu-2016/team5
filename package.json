@@ -38,7 +38,6 @@
     "eslint-config-xo": "^0.17.0",
     "husky": "^0.13.2",
     "mocha": "^3.2.0",
-    "nyan": "^1.0.3",
     "stylefmt": "^5.2.0",
     "stylelint": "^7.9.0",
     "stylelint-config-standard": "^16.0.0",
