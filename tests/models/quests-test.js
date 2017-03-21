@@ -24,7 +24,7 @@ describe('model:quest', () => {
     });
 
     after(() => {
-        return clearDataBase();
+        return removeAllQuests();
     });
 
     it('initialization', () => {
