@@ -46,7 +46,7 @@ describe('model:quest', () => {
         quest.get('images').length
             .should.equal(1);
 
-        likes[0]._id.should.equal(quest.get('likes')[0]._id);
+        likes[0].should.equal(quest.get('likes')[0]);
 
         author.should.equal(quest.get('author'));
         tags[0].should.equal(quest.get('tags')[0]);
