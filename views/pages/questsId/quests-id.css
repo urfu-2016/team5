@@ -1,0 +1,53 @@
+.content
+{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.content__info
+{
+    flex: 9 1 500px;
+}
+
+.content__action
+{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex: 1 1 150px;
+    align-content: flex-start;
+}
+
+.row__item
+{
+    min-width: 100px;
+    flex-grow: 1;
+    margin: 5px;
+    font-size: 15px;
+}
+
+.btn
+{
+    padding: 10px;
+    cursor: pointer;
+}
+
+.btn_yellow
+{
+    border: 1px solid gold;
+    background-image: linear-gradient(#fff, gold);
+}
+
+.block
+{
+    padding: 10px;
+    font-size: 20px;
+    margin: 5px;
+}
+
+.block_yellow
+{
+    border: 1px solid gold;
+    box-shadow: 0 0 10px gold;
+}

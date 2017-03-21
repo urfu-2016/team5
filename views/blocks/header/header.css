@@ -1,0 +1,19 @@
+.header
+{
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.header_yellow
+{
+    border-bottom: 1px solid gold;
+    box-shadow: 0 0 10px gold;
+}
+
+.nav
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}

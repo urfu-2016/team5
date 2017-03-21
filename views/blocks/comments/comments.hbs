@@ -1,0 +1,18 @@
+<section class="comments">
+    <h1>Комментарии</h1>
+    {{#if isAuth}}
+    <form accept-charset="utf-8" action="#" autocomplete="off" method="post" name="comment">
+    <textarea form="" maxLength=300 placeholder="Напишите комментарий :)" name="comment"></textarea>
+    </form>
+    {{/if}}
+    {{#each comments}}
+        <article class="comment">
+            <p class="comment__author">
+                {{author}}
+            </p>
+            <p class="comment__text">
+                {{content}}
+            </p>
+        </article>
+    {{/each}}
+</section> 
