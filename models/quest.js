@@ -9,7 +9,7 @@ const questSchema = new mongoose.Schema({
     description: String,
     images: [Image],
     author: {type: ObjectId, ref: 'User'},
-    likesCount: Number,
+    likes: [{type: ObjectId, ref: 'User'}],
     tags: [String],
     dateOfCreation: {type: Date, default: Date.now},
     slug: {

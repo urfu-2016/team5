@@ -1,4 +1,5 @@
 'use strict';
+
 const Quest = require('../models/quest');
 const slug = require('slug');
 const shortid = require('shortid');

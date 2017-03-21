@@ -8,7 +8,7 @@ const clearDataBase = require('../../scripts/clear-db');
 const title = 'Buga-ga';
 const description = 'Bla-bla';
 const questName = 'Новый квест:)';
-const likesCount = 1;
+// const likes = [new ];
 const tags = ['Екатеринбург', 'Граффити'];
 
 describe('model:quest', () => {
@@ -26,7 +26,7 @@ describe('model:quest', () => {
             title,
             description,
             slug: questName,
-            likesCount,
+            // likesCount,
             tags,
             dateOfCreation
         });
@@ -42,7 +42,7 @@ describe('model:quest', () => {
         quest.get('images').length
             .should.equal(1);
 
-        likesCount.should.equal(quest.get('likesCount'));
+        // likesCount.should.equal(quest.get('likesCount'));
         tags[0].should.equal(quest.get('tags')[0]);
         tags.length
             .should.equal(quest.get('tags').length);

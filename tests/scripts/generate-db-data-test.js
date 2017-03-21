@@ -24,8 +24,8 @@ describe('scripts:generate-db-data', () => {
                     .find({})
                     .exec();
             })
-            .then(v => {
-                v.length
+            .then(quests => {
+                quests.length
                     .should.equal(questsCount);
             });
     });
