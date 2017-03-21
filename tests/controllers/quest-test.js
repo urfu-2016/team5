@@ -5,8 +5,8 @@ const chaiHttp = require('chai-http');
 const server = require('../../app');
 const Quest = require('../../models/quest');
 const HttpStatus = require('http-status-codes');
+const removeAllQuests = require('../../scripts/clear-db').removeAllQuests;
 
-chai.use(chaiHttp);
 chai.should();
 
 const title = 'Buga-ga';
@@ -15,11 +15,15 @@ const questName = 'Новый квест:)';
 const slug = 'Novyj-kvest';
 const putDescription = 'Kry-kry';
 
+chai.use(chaiHttp);
+
 describe('controller:quest', () => {
     beforeEach(() => {
-        return Quest
-            .remove({})
-            .exec();
+        return removeAllQuests();
+    });
+
+    after(() => {
+        return removeAllQuests();
     });
 
     it('should Create the quest', () => {
