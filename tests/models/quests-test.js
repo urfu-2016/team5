@@ -2,22 +2,25 @@
 
 require('chai').should();
 const Quest = require('../../models/quest');
+const User = require('../../models/user');
 const mongoose = require('mongoose');
-const clearDataBase = require('../../scripts/clear-db');
+const removeAllQuests = require('../../scripts/clear-db').removeAllQuests;
 
 const title = 'Buga-ga';
 const description = 'Bla-bla';
 const questName = 'Новый квест:)';
-// const likes = [new ];
+const nickname = 'user';
+const author = new User({nickname});
+const likes = [author];
 const tags = ['Екатеринбург', 'Граффити'];
 
 describe('model:quest', () => {
     beforeEach(() => {
-        return clearDataBase();
+        return removeAllQuests();
     });
 
     after(() => {
-        return clearDataBase();
+        return removeAllQuests();
     });
 
     it('initialization', () => {
@@ -26,7 +29,8 @@ describe('model:quest', () => {
             title,
             description,
             slug: questName,
-            // likesCount,
+            likes,
+            author,
             tags,
             dateOfCreation
         });
@@ -42,7 +46,9 @@ describe('model:quest', () => {
         quest.get('images').length
             .should.equal(1);
 
-        // likesCount.should.equal(quest.get('likesCount'));
+        likes[0]._id.should.equal(quest.get('likes')[0]._id);
+
+        author.should.equal(quest.get('author'));
         tags[0].should.equal(quest.get('tags')[0]);
         tags.length
             .should.equal(quest.get('tags').length);

@@ -4,15 +4,15 @@
 const questGenerator = require('../../scripts/generate-db-data');
 require('chai').should();
 const Quest = require('../../models/quest');
-const clearDataBase = require('../../scripts/clear-db');
+const removeAllQuests = require('../../scripts/clear-db').removeAllQuests;
 
 describe('scripts:generate-db-data', () => {
     beforeEach(() => {
-        return clearDataBase();
+        return removeAllQuests();
     });
 
     after(() => {
-        return clearDataBase();
+        return removeAllQuests();
     });
 
     it('data-generation', () => {

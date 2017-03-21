@@ -5,7 +5,7 @@ const chaiHttp = require('chai-http');
 const server = require('../../app');
 const Quest = require('../../models/quest');
 const HttpStatus = require('http-status-codes');
-const clearDataBase = require('../../scripts/clear-db');
+const removeAllQuests = require('../../scripts/clear-db').removeAllQuests;
 
 chai.should();
 
@@ -19,11 +19,11 @@ chai.use(chaiHttp);
 
 describe('controller:quest', () => {
     beforeEach(() => {
-        return clearDataBase();
+        return removeAllQuests();
     });
 
     after(() => {
-        return clearDataBase();
+        return removeAllQuests();
     });
 
     it('should Create the quest', () => {
