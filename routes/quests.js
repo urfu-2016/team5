@@ -41,5 +41,4 @@ router.get('/quests/:id', function (req, res) {
     });
 });
 
-
 module.exports = router;
