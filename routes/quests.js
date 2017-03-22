@@ -2,7 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
-const questsController = require('../controllers/quests');
+const questsController = require('../controllers/api/quests');
 
 /* Возвращаем конкретный квест */
 router.route('/quest/:id')
