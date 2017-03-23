@@ -6,6 +6,7 @@
     padding: 10px;
     box-sizing: border-box;
     position: relative;
+    flex: 1 1 100%;
 }
 
 .mini-quest-card__title-image
@@ -43,12 +44,12 @@
 
 .mini-quest-card__link_yellow
 {
-    border: 1px solid gold;
+    border: 1px solid #ffd700;
 }
 
 .mini-quest-card__link_yellow:hover
 {
-    box-shadow: 0 0 10px gold;
+    box-shadow: 0 0 10px #ffd700;
 }
 
 .title-image
@@ -78,12 +79,21 @@
     margin: 0;
 }
 
-.count_likes:before
+.statistics
 {
-    content: '\2764';
+    font-size: 20px;
+    color: #7b7b7b;
 }
 
-.count_comments:before
+.statistics__count_likes:before
+{
+    content: '\2764';
+    padding-right: 10px;
+}
+
+.statistics__count_comments:before
 {
     content: '\2691';
+    padding-right: 10px;
 }
+

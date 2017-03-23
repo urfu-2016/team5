@@ -14,8 +14,10 @@ router.get('/', function (req, res) {
                 img: '02.jpg',
                 name: 'Графити',
                 author: 'Wiewruouroeuro',
-                city: 'Екатеринбург',
-                likesCount: 4,
+                city: 'Екатеринбуруг',
+                likesCount: 1,
+                commentsCount: 2,
+                imagesCount: 3,
                 description: 'Лааааа',
                 tags: ['Тег2', 'Тег3', 'Тег3']
             },
@@ -23,7 +25,11 @@ router.get('/', function (req, res) {
                 id: 2,
                 img: '03.jpg',
                 name: 'Графити',
+                author: 'Ufjkjslfjdslkfj',
+                city: 'Ревда',
                 likesCount: 4,
+                commentsCount: 5,
+                imagesCount: 6,
                 description: 'Лааааа',
                 tags: ['Тег2', 'Тег3', 'Тег3']
             },
@@ -32,8 +38,10 @@ router.get('/', function (req, res) {
                 img: '02.jpg',
                 name: 'Графити',
                 author: 'Wiewruouroeuro',
-                city: 'Екатеринбург',
-                likesCount: 4,
+                city: 'Ивдель',
+                likesCount: 7,
+                commentsCount: 8,
+                imagesCount: 9,
                 description: 'Лааааа',
                 tags: ['Тег2', 'Тег3', 'Тег3']
             }

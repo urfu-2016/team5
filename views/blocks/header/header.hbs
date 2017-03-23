@@ -1,17 +1,17 @@
 <header class="header header_yellow">
-    <nav class="nav">
-        <a class="" href="/">PhotoQuest</a>
-        <a class="" href="/quests/search">Search</a>
+    <nav class="nav header__nav">
+        <a class="link" href="/">PhotoQuest</a>
+        <a class="link" href="/quests/search">Search</a>
         {{#if isAuth}}
-            <a class="" href="#">Sign In</a>
+            <a class="link" href="#">Sign In</a>
         {{else}}
-            <a class="" href="#">Sign Out</a>
+            <a class="link" href="#">Sign Out</a>
         {{/if}}
-        <a class="" href="/quests/all">All quests</a>
+        <a class="link" href="/quests/all">All quests</a>
         {{#if isAuth}}
-        <a class="" href="/quests/fave">Favorite quests</a>
-        <a class="" href="/quests/current">Current quests</a>
-        <a class="" href="/quests/created">Created quests</a>
+        <a class="link" href="/quests/fave">Favorite quests</a>
+        <a class="link" href="/quests/current">Current quests</a>
+        <a class="link" href="/quests/created">Created quests</a>
         {{/if}}
     </nav>
 </header>

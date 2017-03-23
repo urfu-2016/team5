@@ -6,26 +6,22 @@
             <h3 class="mini-quest-card__title">{{name}}</h3>
         </div>
     </div>
-    
-    <div class="mini-quest-card__info">
-        <p>
-            {{city}}
-        </p>
-        <p>
-            {{author}}
-        </p>
+    <p class="mini-quest-card__city">
+        {{city}}
+    </p>
+    <p class="mini-quest-card__author">
+        {{author}}
+    </p>
+    <div class="mini-quest-card__tags">
+        {{#each tags}}
+        <span class="tag tag_link">{{this}}</span>
+        {{/each}}
     </div>
-    
-    <div class="mini-quest-card__statistics">
-        <div class="">
-            <span class="count_likes">10</span>
-        </div>
-        <div>
-            <span class="count_comments">30</span>
-        </div>
-        <div class="">
-            <span class="count_images">50</span>
-        </div>
+    <div class="mini-quest-card__statistics statistics">
+        
+        <span class="statistics__count statistics__count_images">&#128173; {{imagesCount}}</span>
+        <span class="statistics__count statistics__count_likes">{{likesCount}}</span>
+        <span class="statistics__count statistics__count_comments">{{commentsCount}}</span>
     </div>
     
     <a class="mini-quest-card__link mini-quest-card__link_yellow" href="/quests/{{id}}"></a>

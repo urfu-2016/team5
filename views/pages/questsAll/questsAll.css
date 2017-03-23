@@ -9,6 +9,9 @@
 {
     margin: 5px;
     flex: 0 0 calc(33.33% - 10px);
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
 }
 
 @media (max-width: 940px)

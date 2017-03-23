@@ -6,8 +6,8 @@
 
 .header_yellow
 {
-    border-bottom: 1px solid gold;
-    box-shadow: 0 0 10px gold;
+    border-bottom: 1px solid #ffd700;
+    box-shadow: 0 0 10px #ffd700;
 }
 
 .nav
