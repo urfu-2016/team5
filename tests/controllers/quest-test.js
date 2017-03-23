@@ -4,9 +4,10 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../../app');
 const Quest = require('../../models/quest');
-const assert = require('assert');
+const HttpStatus = require('http-status-codes');
+const removeAllQuests = require('../../scripts/clear-db').removeAllQuests;
 
-chai.use(chaiHttp);
+chai.should();
 
 const title = 'Buga-ga';
 const description = 'Bla-bla';
@@ -14,11 +15,15 @@ const questName = 'Новый квест:)';
 const slug = 'Novyj-kvest';
 const putDescription = 'Kry-kry';
 
+chai.use(chaiHttp);
+
 describe('controller:quest', () => {
     beforeEach(() => {
-        return Quest
-            .remove({})
-            .exec();
+        return removeAllQuests();
+    });
+
+    after(() => {
+        return removeAllQuests();
     });
 
     it('should Create the quest', () => {
@@ -27,9 +32,9 @@ describe('controller:quest', () => {
             .post('/api/quests')
             .send({title, description, slug: questName})
             .then(res => {
-                assert.equal(res.status, 201);
-                assert.equal(res.body.data.title, title);
-                assert.equal(res.body.data.slug, slug);
+                res.status.should.equal(HttpStatus.CREATED);
+                res.body.data.title.should.equal(title);
+                res.body.data.slug.should.equal(slug);
             });
     });
 
@@ -47,8 +52,8 @@ describe('controller:quest', () => {
                     .post('/api/quests')
                     .send({title, description, slug: questName})
                     .then(res => {
-                        assert.equal(res.status, 201);
-                        assert.ok(res.body.data.slug.length >= slug.length);
+                        res.status.should.equal(HttpStatus.CREATED);
+                        res.body.data.slug.length.should.be.least(slug.length);
                     });
             });
     });
@@ -67,8 +72,8 @@ describe('controller:quest', () => {
                     .get('/api/quests')
                     .send()
                     .then(res => {
-                        assert.equal(res.status, 200);
-                        assert.equal(res.body.data.length, 1);
+                        res.status.should.equal(HttpStatus.OK);
+                        res.body.data.should.length.of.at(1);
                     });
             });
     });
@@ -87,8 +92,8 @@ describe('controller:quest', () => {
                     .get(`/api/quests/${quest.slug}`)
                     .send()
                     .then(res => {
-                        assert.equal(res.status, 200);
-                        assert.equal(res.body.data.slug, slug);
+                        res.status.should.equal(HttpStatus.OK);
+                        res.body.data.slug.should.equal(slug);
                     });
             });
     });
@@ -107,8 +112,8 @@ describe('controller:quest', () => {
                     .put(`/api/quests/${quest.slug}`)
                     .send({title, description: putDescription, slug})
                     .then(res => {
-                        assert.equal(res.status, 200);
-                        assert.equal(res.body.data.description, putDescription);
+                        res.status.should.equal(HttpStatus.OK);
+                        res.body.data.description.should.equal(putDescription);
                     });
             });
     });
@@ -127,7 +132,7 @@ describe('controller:quest', () => {
                     .delete(`/api/quests/${quest.slug}`)
                     .send()
                     .then(res => {
-                        assert.equal(res.status, 200);
+                        res.status.should.equal(HttpStatus.OK);
                     });
             })
             .then(() => {
@@ -135,8 +140,8 @@ describe('controller:quest', () => {
                     .request(server)
                     .delete(`/api/quests/${quest.slug}`)
                     .send()
-                    .catch(res => {
-                        assert.equal(res.status, 404);
+                    .catch(err => {
+                        err.status.should.equal(HttpStatus.NOT_FOUND);
                     });
             });
     });
@@ -147,7 +152,7 @@ describe('controller:quest', () => {
             .get(`/api/quests/${slug}`)
             .send()
             .catch(err => {
-                assert.equal(err.status, 404);
+                err.status.should.equal(HttpStatus.NOT_FOUND);
             });
     });
 });
