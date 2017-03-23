@@ -1,115 +1,65 @@
 /* eslint-env mocha */
 
 require('chai').should();
-const Quest = require('../../models/quest');
-const User = require('../../models/user');
 const mongoose = require('mongoose');
+const Quest = require('../../models/quest');
+const questsMocks = require('../mocks/quests');
 const removeAllQuests = require('../../scripts/clear-db').removeAllQuests;
 
-const title = 'Buga-ga';
-const description = 'Bla-bla';
-const questName = 'Новый квест:)';
-const nickname = 'user';
-const author = new User({nickname});
-const likes = [author];
-const tags = ['Екатеринбург', 'Граффити'];
+describe('models:Quest', () => {
+    beforeEach(() => removeAllQuests());
 
-describe('model:quest', () => {
-    beforeEach(() => {
-        return removeAllQuests();
-    });
+    after(() => removeAllQuests());
 
-    after(() => {
-        return removeAllQuests();
-    });
+    it('should create model', () => {
+        const questData = questsMocks.regularQuest;
 
-    after(() => {
-        return removeAllQuests();
-    });
-
-    it('initialization', () => {
-        const dateOfCreation = new Date();
-        const quest = new Quest({
-            title,
-            description,
-            slug: questName,
-            likes,
-            author,
-            tags,
-            dateOfCreation
-        });
-
-        const image = {title: 'title'};
-        quest.images.push(image);
-
-        title.should.equal(quest.get('title'));
-        description.should.equal(quest.get('description'));
-        image.title
-            .should.equal(quest.get('images')[0].title);
-
-        quest.get('images').length
-            .should.equal(1);
-
-        likes[0].should.equal(quest.get('likes')[0]);
-
-        author.should.equal(quest.get('author'));
-        tags[0].should.equal(quest.get('tags')[0]);
-        tags.length
-            .should.equal(quest.get('tags').length);
-
-        const date = quest.get('dateOfCreation');
-        date.getFullYear()
-            .should.equal(dateOfCreation.getFullYear());
-
-        date.getMonth()
-            .should.equal(dateOfCreation.getMonth());
-
-        date.getDay()
-            .should.equal(dateOfCreation.getDay());
-    });
-
-    it('save model', () => {
-        const quest = new Quest({
-            title,
-            description,
-            slug: questName
-        });
-
-        return quest
-            .save()
-            .then(() => {
-                return Quest
-                    .find({})
-                    .exec();
-            })
-            .then(quests => {
-                quests.length
-                    .should.equal(1);
-
-                quests[0].get('title')
-                    .should.equal(title);
+        return Quest.create(questData)
+            .then(savedQuest => {
+                savedQuest.title.should.equal(questData.title);
+                savedQuest.description.should.equal(questData.description);
             });
     });
 
     it('error on save without required parameter', () => {
+        const questData = questsMocks.questWithoutRequiredFields;
         const ValidationError = mongoose.Error.ValidationError;
 
-        return new Quest({})
-            .save()
+        return Quest.create(questData)
             .catch(error => {
-                error.name
-                    .should.equal(ValidationError.name);
+                error.name.should.equal(ValidationError.name);
             });
     });
 
-    it('error on save without required parameter', () => {
-        const ValidationError = mongoose.Error.ValidationError;
+    it('should generate slug, if not specified', () => {
+        const questData = questsMocks.questWithoutSlug;
 
-        return new Quest({})
-            .save()
-            .catch(error => {
-                error.name
-                    .should.equal(ValidationError.name);
-            });
+        return Quest.create(questData)
+            .then(savedQuest => savedQuest.slug.should.not.empty);
+    });
+
+    it('should update by slug', () => {
+        const questData = questsMocks.regularQuest;
+        const city = 'Екатеринбург';
+
+        return Quest.create(questData)
+            .then(savedQuest => Quest.update(savedQuest.slug, {city}))
+            .then(updatedQuest => updatedQuest.city.should.equal(city));
+    });
+
+    it('should get by slug', () => {
+        const questData = questsMocks.regularQuest;
+
+        return Quest.create(questData)
+            .then(savedQuest => Quest.getBySlug(savedQuest.slug))
+            .then(foundedQuest => foundedQuest.title.should.equal(questData.title));
+    });
+
+    it('should remove by slug', () => {
+        const questData = questsMocks.regularQuest;
+
+        return Quest.create(questData)
+            .then(savedQuest => Quest.removeBySlug(savedQuest.slug))
+            .then(() => Quest.getBySlug(questData.slug).should.empty);
     });
 });

@@ -3,7 +3,8 @@
 
 const questGenerator = require('../../scripts/generate-db-data');
 require('chai').should();
-const Quest = require('../../models/quest');
+require('../../models/quest');
+const Quest = require('mongoose').model('Quest');
 const removeAllQuests = require('../../scripts/clear-db').removeAllQuests;
 
 describe('scripts:generate-db-data', () => {

@@ -3,18 +3,26 @@
 const mongoose = require('../libs/mongoose-connection');
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const Image = require('./schemas/image');
-const slug = require('slug');
-const HttpStatus = require('http-status-codes');
+const slugify = require('slug');
 const shortid = require('shortid');
-const baseApi = require('../controllers/api/baseApi');
 
 const questSchema = new mongoose.Schema({
     title: {type: String, required: true},
     description: String,
-    images: [Image],
-    author: {type: ObjectId, ref: 'User'},
-    likes: [{type: ObjectId, ref: 'User'}],
-    tags: [String],
+    images: {
+        type: [Image],
+        default: []
+    },
+    authorId: {type: ObjectId, ref: 'User'},
+    likes: {
+        type: [{type: ObjectId, ref: 'User'}],
+        default: []
+    },
+    tags: {
+        type: [String],
+        default: []
+    },
+    city: String,
     dateOfCreation: {type: Date, default: Date.now},
     slug: {
         type: String,
@@ -23,68 +31,39 @@ const questSchema = new mongoose.Schema({
     }
 });
 
-questSchema.statics.create = function (questData) {
-    const quest = new this({
-        title: questData.title,
-        description: questData.description,
-        slug: slug(questData.slug)
-    });
+const QuestModel = mongoose.model('Quest', questSchema);
 
-    return quest
-        .save()
-        .catch(err => {
-            const isMongoDuplicateKeyError = err.name === 'MongoError' &&
-                err.code === 11000;
-            baseApi.throwErrorOnFalseValue(isMongoDuplicateKeyError,
-                HttpStatus.BAD_REQUEST);
-
-            return false;
-        })
-        .then(data => {
-            if (!data) {
-                quest.slug += shortid.generate();
-
-                return quest.save();
-            }
-
-            return data;
+module.exports = {
+    create: ({author, title, description = '', slug}) => {
+        const quest = new QuestModel({
+            title,
+            description,
+            slug: slug ? slugify(slug) : shortid.generate(),
+            authorId: author ? author._id : undefined
         });
-};
 
-questSchema.statics.getBySlug = function (slug) {
-    return this.findOne({slug})
-        .exec()
-        .then(quest => {
-            baseApi.throwErrorOnFalseValue(quest, HttpStatus.NOT_FOUND);
+        return quest.save();
+    },
 
-            return quest;
-        });
-};
-
-questSchema.statics.update = function (questData) {
-    return this.findOne({slug: questData.slug})
-        .exec()
-        .then(quest => {
-            baseApi.throwErrorOnFalseValue(quest, HttpStatus.NOT_FOUND);
-
-            return quest;
-        })
-        .then(quest => {
-            quest.title = questData.title;
-            quest.description = questData.description;
-            quest.slug = questData.slug;
+    update: (slug, {title, description, city}) => {
+        return QuestModel.findOne({slug}).then(quest => {
+            quest.title = title ? title : quest.title;
+            quest.description = description ? description : quest.description;
+            quest.city = city ? city : quest.city;
 
             return quest.save();
         });
+    },
+
+    getAll: () => QuestModel.find({}).exec(),
+
+    getBySlug: slug => {
+        return QuestModel.findOne({slug})
+            .exec();
+    },
+
+    removeBySlug: slug => {
+        return QuestModel.findOne({slug})
+            .then(quest => quest.remove());
+    }
 };
-
-questSchema.statics.removeBySlug = function (slug) {
-    return this.findOne({slug})
-        .then(quest => {
-            baseApi.throwErrorOnFalseValue(quest, HttpStatus.NOT_FOUND);
-
-            return quest.remove();
-        });
-};
-
-module.exports = mongoose.model('Quest', questSchema);
