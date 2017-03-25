@@ -5,7 +5,8 @@ module.exports = {
     context: path.join(__dirname, '/views/pages'),
     entry: {
         questsId: './questsId/quests-id.js',
-        questsAll: './questsAll/questsAll.js'
+        questsAll: './questsAll/questsAll.js',
+        layout: './layout.js'
     },
     output: {
         path: path.join(__dirname, '/public'),

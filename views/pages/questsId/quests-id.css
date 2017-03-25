@@ -67,3 +67,7 @@
     box-sizing: border-box;
 }
 
+.content__comments
+{
+    flex: 1 1 100%;
+}

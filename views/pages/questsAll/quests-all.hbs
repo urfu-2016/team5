@@ -1,25 +1,16 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+{{#extend "layout"}}
+{{#content "head" mode="append"}}
     <link href="stylesheets/questsAll.css" rel="stylesheet" type="text/css">
-    <title>{{title}}</title>
-</head>
-<body class="body">
-    <div class="page">
-        {{> header/header}}
-        <div class="page__content">
-            <h2 class="page__title">Все квесты</h2>
-            <div class="quests">
-                {{#each quests}} 
-                    <div class="quests__item">
-                        {{> questCard/questCard }}
-                    </div>
-                {{/each}}
+{{/content}}
+
+{{#content "content"}}
+    <h2 class="page__title">Все квесты</h2>
+    <div class="quests">
+        {{#each quests}} 
+            <div class="quests__item">
+                {{> questCard/questCard }}
             </div>
-        </div>
-        {{> footer/footer }}
+        {{/each}}
     </div>
-</body>
-</html>
+{{/content}}
+{{/extend}}
