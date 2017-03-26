@@ -9,8 +9,12 @@ module.exports = {
 
     removeAllAccounts: () => removeAllItems('Account'),
 
-    clearWholeDB() {
-        ['User', 'Quest', 'Account'].forEach(removeAllItems);
+    removeAll() {
+        return Promise.all([
+            removeAllItems('Quest'),
+            removeAllItems('User'),
+            removeAllItems('Account')
+        ]);
     }
 };
 

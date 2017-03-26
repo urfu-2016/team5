@@ -1,0 +1,19 @@
+{
+  "data": [
+    {
+      "firstname": "User 1",
+      "surname": "Фамилия 1",
+      "nickname": "user_1"
+    },
+    {
+      "firstname": "User 2",
+      "surname": "Фамилия 2",
+      "nickname": "user_2"
+    },
+    {
+      "firstname": "User 3",
+      "surname": "Фамилия 3",
+      "nickname": "user_3"
+    }
+  ]
+}

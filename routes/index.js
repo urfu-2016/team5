@@ -1,16 +1,20 @@
 /* eslint-disable new-cap */
+'use strict';
 
 const express = require('express');
 const router = express.Router();
-const fs = require('fs');
-const quests = fs.readFileSync('./mocks/quests.json', 'utf-8');
-const questsData = JSON.parse(quests);
 const questsSearch = require('../controllers/questsSearch');
+const Quest = require('../models/quest');
 
-/* Список квестов */
 router.get('/', function (req, res) {
-    // Брать из базы
-    res.render('questsAll/quests-all', questsData);
+    Quest.getAll().then(data => {
+        const renderData = {
+            title: 'Список квестов',
+            quests: data
+        };
+
+        res.render('questsAll/quests-all', renderData);
+    });
 });
 router.get('/search', questsSearch.getFoundQuests);
 

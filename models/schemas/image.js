@@ -4,7 +4,7 @@ const mongoose = require('../../libs/mongoose-connection');
 
 module.exports = new mongoose.Schema({
     src: {type: String, required: true},
-    title: String,
-    description: String,
-    location: String
+    title: {type: String, required: true},
+    description: {type: String, default: ''},
+    location: {type: String, default: ''}
 });
