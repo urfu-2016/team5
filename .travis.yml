@@ -8,8 +8,6 @@ install:
 script:
 - npm run lint
 - npm run test
-env:
-  - NODE_ENV=development
 deploy:
   skip_cleanup: true
   provider: heroku
