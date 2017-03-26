@@ -1,0 +1,23 @@
+.body
+{
+    margin: 0;
+}
+
+.page
+{
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    max-width: 1024px;
+    margin: 0 auto;
+}
+
+.page__content
+{
+    padding: 0 5px;
+}
+
+.page__title
+{
+    margin: 20px 5px;
+}

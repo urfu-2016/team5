@@ -1,0 +1,99 @@
+.mini-quest-card
+{
+    display: flex;
+    flex-direction: column;
+    min-width: 300px;
+    padding: 10px;
+    box-sizing: border-box;
+    position: relative;
+    flex: 1 1 100%;
+}
+
+.mini-quest-card__title-image
+{
+    padding: 40% 0;
+}
+
+.mini-quest-card__title
+{
+    margin: 0;
+}
+
+.mini-quest-card__statistics
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.mini-quest-card__info
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.mini-quest-card__link
+{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}
+
+.mini-quest-card__link_yellow
+{
+    border: 1px solid #ffd700;
+}
+
+.mini-quest-card__link_yellow:hover
+{
+    box-shadow: 0 0 10px #ffd700;
+}
+
+.title-image
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+}
+
+.title-image__img
+{
+    position: absolute;
+    min-height: 100%;
+    min-width: 100%;
+}
+
+.title-image__caption
+{
+    position: absolute;
+    bottom: 20px;
+    color: #fff;
+    padding: 10px;
+    margin: 0;
+}
+
+.statistics
+{
+    font-size: 20px;
+    color: #7b7b7b;
+}
+
+.statistics__count_likes:before
+{
+    content: '\2764';
+    padding-right: 10px;
+}
+
+.statistics__count_comments:before
+{
+    content: '\2691';
+    padding-right: 10px;
+}
+

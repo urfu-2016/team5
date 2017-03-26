@@ -1,0 +1,16 @@
+{{#extend "layout"}}
+{{#content "head" mode="append"}}
+    <link href="stylesheets/questsAll.css" rel="stylesheet" type="text/css">
+{{/content}}
+
+{{#content "content"}}
+    <h2 class="page__title">Все квесты</h2>
+    <div class="quests">
+        {{#each quests}} 
+            <div class="quests__item">
+                {{> questCard/questCard }}
+            </div>
+        {{/each}}
+    </div>
+{{/content}}
+{{/extend}}

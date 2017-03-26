@@ -2,30 +2,14 @@
 
 const express = require('express');
 const router = express.Router();
+const fs = require('fs');
+const quests = fs.readFileSync('./mocks/quests.json', 'utf-8');
+const questsData = JSON.parse(quests);
 
 /* Список квестов */
 router.get('/', function (req, res) {
     // Брать из базы
-    res.render('index', {
-        title: 'Список квестов',
-        quests: [
-            {
-                id: 1,
-                img: '1.img',
-                name: 'Графити',
-                likesCount: 4,
-                description: 'Лааааа',
-                tags: ['Тег2', 'Тег3', 'Тег3']
-            },
-            {
-                id: 2,
-                img: '1.img',
-                name: 'Графити',
-                likesCount: 4,
-                description: 'Лааааа',
-                tags: ['Тег2', 'Тег3', 'Тег3']
-            }
-        ]});
+    res.render('questsAll/quests-all', questsData);
 });
 
 module.exports = router;
