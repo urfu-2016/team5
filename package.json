@@ -13,6 +13,7 @@
     "deploy:surge": "surge -p ./public -d team5.surge.sh"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "~1.16.0",
     "chai": "^3.5.0",
     "chai-http": "^3.0.0",
