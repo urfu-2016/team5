@@ -23,6 +23,10 @@ describe('model:quest', () => {
         return removeAllQuests();
     });
 
+    after(() => {
+        return removeAllQuests();
+    });
+
     it('initialization', () => {
         const dateOfCreation = new Date();
         const quest = new Quest({
@@ -84,6 +88,17 @@ describe('model:quest', () => {
 
                 quests[0].get('title')
                     .should.equal(title);
+            });
+    });
+
+    it('error on save without required parameter', () => {
+        const ValidationError = mongoose.Error.ValidationError;
+
+        return new Quest({})
+            .save()
+            .catch(error => {
+                error.name
+                    .should.equal(ValidationError.name);
             });
     });
 
