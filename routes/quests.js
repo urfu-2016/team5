@@ -2,11 +2,12 @@
 
 const express = require('express');
 const router = express.Router();
-const questsController = require('../controllers/quests');
+
 const fs = require('fs');
 
 const quest = fs.readFileSync('./mocks/quest.json');
 const questData = JSON.parse(quest);
+const questsController = require('../controllers/api/quests');
 
 /* Возвращаем конкретный квест */
 
