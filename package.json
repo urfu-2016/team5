@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node index.js",
+    "start": "npm run build && node index.js",
     "production": "NODE_ENV=production node index.js",
     "precommit": "npm run lint",
     "prepush": "npm run lint",
