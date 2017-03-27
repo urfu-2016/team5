@@ -1,0 +1,31 @@
+<form class="searchbar" method="GET" action="/search">
+    <input type="search" class="searchbar__input" name="searchString"
+        placeholder="Введите данные">
+    <button type="submit" name="search-btn">Найти</button>
+    <span class="searchbar__radio-group__label">Искать по:</span>
+    <div class="searchbar__radio-group">
+        <label for="search-radio-title">Названию</label>
+        <input id="search-radio-title" type="radio" class="searchbar__radio"
+            name="searchRadio" value="title" checked>
+        <br>
+        <!-- На будущее -->
+        <!-- <label for="search-radio-author">Автору</label>
+        <input id="search-radio-author" type="radio" class="searchbar__radio"
+            name="searchRadio" value="author">
+        <br> -->
+        <label for="search-radio-tag">Тэгу</label>
+        <input id="search-radio-tag" type="radio" class="searchbar__radio"
+            name="searchRadio" value="tags">
+    </div>
+    <!-- На будущее -->
+    <!-- <span class="searchbar__radio-group__label">Упорядоить по:</span>
+    <div class="searchbar__radio-group">
+        <label for="sort-radio-date">Дате</label>
+        <input id="sort-radio-date" type="radio" class="searchbar__radio"
+            name="sortRadio" value="dateOfCreation">
+        <br>
+        <label for="sort-radio-likes">Популярности</label>
+        <input id="sort-radio-likes" type="radio" class="searchbar__radio"
+            name="sortRadio" value="likes">
+    </div> -->
+</form>
