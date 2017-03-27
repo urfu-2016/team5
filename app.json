@@ -1,0 +1,24 @@
+{
+  "name": "team5",
+  "description": "",
+  "scripts": {
+  },
+  "env": {
+    "mongoLogin": {
+      "required": true
+    },
+    "mongoPass": {
+      "required": true
+    }
+  },
+  "formation": {
+  },
+  "addons": [
+
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+}
