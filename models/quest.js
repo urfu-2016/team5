@@ -67,5 +67,3 @@ module.exports = {
             .then(quest => quest.remove());
     }
 };
-
-// test
