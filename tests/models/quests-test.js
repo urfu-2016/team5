@@ -6,6 +6,15 @@ const Quest = require('../../models/quest');
 const questsMocks = require('../mocks/quests');
 const removeAllQuests = require('../../scripts/clear-db').removeAllQuests;
 
+const title = 'Buga-ga';
+const partTitle = 'buga';
+const description = 'Bla-bla';
+const questName = 'Новый квест:)';
+const nickname = 'user';
+const author = new User({nickname});
+const likes = [author];
+const tags = ['Екатеринбург', 'Граффити'];
+
 describe('models:Quest', () => {
     beforeEach(() => removeAllQuests());
 
@@ -61,5 +70,71 @@ describe('models:Quest', () => {
         return Quest.create(questData)
             .then(savedQuest => Quest.removeBySlug(savedQuest.slug))
             .then(() => Quest.getBySlug(questData.slug).should.empty);
+    });
+
+    it('should get filtered quests by title', () => {
+        const quest = new Quest({
+            title,
+            description,
+            slug: questName,
+            tags
+        });
+
+        return quest
+            .save()
+            .then(() => {
+                return Quest
+                    .getFilteredQuests('title', 'likes', partTitle);
+            })
+            .then(quests => {
+                quests.length
+                    .should.equal(1);
+
+                quests[0].get('title')
+                    .should.equal(title);
+            });
+    });
+
+    it('should get filtered quests by tags', () => {
+        const quest = new Quest({
+            title,
+            description,
+            slug: questName,
+            tags
+        });
+
+        return quest
+            .save()
+            .then(() => {
+                return Quest
+                    .getFilteredQuests('tags', 'likes', tags[0]);
+            })
+            .then(quests => {
+                quests.length
+                    .should.equal(1);
+
+                quests[0].get('title')
+                    .should.equal(title);
+            });
+    });
+
+    it('should get empty array', () => {
+        const quest = new Quest({
+            title,
+            description,
+            slug: questName,
+            tags
+        });
+
+        return quest
+            .save()
+            .then(() => {
+                return Quest
+                    .getFilteredQuests('tags', 'likes', description);
+            })
+            .then(quests => {
+                quests.length
+                    .should.equal(0);
+            });
     });
 });
