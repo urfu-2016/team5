@@ -13,7 +13,8 @@ module.exports = questCount => {
         let data = {
             title: `${titlePrefix} ${i}`,
             description: `${descriptionPrefix} ${i}`,
-            slug: `${slug} ${i}`
+            slug: `${slug} ${i}`,
+            tags: ['QWE', 'asd']
         };
 
         quests.push(Quest.create(data));
