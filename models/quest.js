@@ -27,7 +27,10 @@ questSchema.statics.create = function (questData) {
     const quest = new this({
         title: questData.title,
         description: questData.description,
-        slug: slug(questData.slug)
+        slug: slug(questData.slug || ''),
+        tags: questData.tags || [],
+        likes: questData.likes || [],
+        author: questData.author
     });
 
     return quest
@@ -70,9 +73,15 @@ questSchema.statics.update = function (questData) {
             return quest;
         })
         .then(quest => {
-            quest.title = questData.title;
-            quest.description = questData.description;
-            quest.slug = questData.slug;
+            if (questData.slug) {
+                questData.slug = slug(questData.slug);
+            }
+
+            quest.title = questData.title || quest.title;
+            quest.description = questData.description || quest.description;
+            quest.slug = questData.slug || quest.slug;
+            quest.tags = questData.tags || quest.tags;
+            quest.likes = questData.likes || quest.likes;
 
             return quest.save();
         });
