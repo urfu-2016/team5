@@ -4,6 +4,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../../app');
 const Quest = require('../../models/quest');
+const User = require('../../models/user');
 const HttpStatus = require('http-status-codes');
 const removeAllQuests = require('../../scripts/clear-db').removeAllQuests;
 
@@ -14,6 +15,10 @@ const description = 'Bla-bla';
 const questName = 'Новый квест:)';
 const slug = 'Novyj-kvest';
 const putDescription = 'Kry-kry';
+const nickname = 'user';
+const author = new User({nickname});
+const likes = [author];
+const tags = ['Екатеринбург', 'Граффити'];
 
 chai.use(chaiHttp);
 
@@ -39,18 +44,28 @@ describe('controller:quest', () => {
     });
 
     it('should Create the quest with generate slug', () => {
-        const quest = new Quest({
+        const questData = {
             title,
             description,
-            slug
-        });
-        return quest
-            .save()
+            slug: questName,
+            tags,
+            likes,
+            author
+        };
+
+        return Quest.create(questData)
             .then(() => {
                 return chai
                     .request(server)
                     .post('/api/quests')
-                    .send({title, description, slug: questName})
+                    .send({
+                        title,
+                        description,
+                        slug: questName,
+                        tags,
+                        likes,
+                        author
+                    })
                     .then(res => {
                         res.status.should.equal(HttpStatus.CREATED);
                         res.body.data.slug.length.should.be.least(slug.length);
@@ -59,13 +74,16 @@ describe('controller:quest', () => {
     });
 
     it('should GET all the quests', () => {
-        const quest = new Quest({
+        const questData = {
             title,
             description,
-            slug
-        });
-        return quest
-            .save()
+            slug: questName,
+            tags,
+            likes,
+            author
+        };
+
+        return Quest.create(questData)
             .then(() => {
                 return chai
                     .request(server)
@@ -79,13 +97,16 @@ describe('controller:quest', () => {
     });
 
     it('should GET a quest by the given slug', () => {
-        const quest = new Quest({
+        const questData = {
             title,
             description,
-            slug
-        });
-        return quest
-            .save()
+            slug: questName,
+            tags,
+            likes,
+            author
+        };
+
+        return Quest.create(questData)
             .then(quest => {
                 return chai
                     .request(server)
@@ -99,18 +120,27 @@ describe('controller:quest', () => {
     });
 
     it('should PUT a quest', () => {
-        const quest = new Quest({
+        const questData = {
             title,
             description,
-            slug
-        });
-        return quest
-            .save()
+            slug: questName,
+            tags,
+            likes,
+            author
+        };
+
+        return Quest.create(questData)
             .then(quest => {
                 return chai
                     .request(server)
                     .put(`/api/quests/${quest.slug}`)
-                    .send({title, description: putDescription, slug})
+                    .send({
+                        title,
+                        description: putDescription,
+                        slug,
+                        tags,
+                        likes
+                    })
                     .then(res => {
                         res.status.should.equal(HttpStatus.OK);
                         res.body.data.description.should.equal(putDescription);
@@ -119,13 +149,16 @@ describe('controller:quest', () => {
     });
 
     it('should delete a quest', () => {
-        const quest = new Quest({
+        const questData = {
             title,
             description,
-            slug
-        });
-        return quest
-            .save()
+            slug: questName,
+            tags,
+            likes,
+            author
+        };
+
+        return Quest.create(questData)
             .then(quest => {
                 return chai
                     .request(server)
@@ -138,7 +171,7 @@ describe('controller:quest', () => {
             .then(() => {
                 return chai
                     .request(server)
-                    .delete(`/api/quests/${quest.slug}`)
+                    .delete(`/api/quests/${slug}`)
                     .send()
                     .catch(err => {
                         err.status.should.equal(HttpStatus.NOT_FOUND);

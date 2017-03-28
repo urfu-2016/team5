@@ -1,9 +1,9 @@
 /* eslint-env mocha */
 
 require('chai').should();
+const HttpStatus = require('http-status-codes');
 const Quest = require('../../models/quest');
 const User = require('../../models/user');
-const mongoose = require('mongoose');
 const removeAllQuests = require('../../scripts/clear-db').removeAllQuests;
 
 const title = 'Buga-ga';
@@ -69,14 +69,20 @@ describe('model:quest', () => {
     });
 
     it('save model', () => {
-        const quest = new Quest({
+        // const quest = new Quest({
+        //     title,
+        //     description,
+        //     slug: questName
+        // });
+        const questData = {
             title,
             description,
-            slug: questName
-        });
+            slug: questName,
+            tags,
+            likes
+        };
 
-        return quest
-            .save()
+        return Quest.create(questData)
             .then(() => {
                 return Quest
                     .find({})
@@ -92,24 +98,10 @@ describe('model:quest', () => {
     });
 
     it('error on save without required parameter', () => {
-        const ValidationError = mongoose.Error.ValidationError;
-
-        return new Quest({})
-            .save()
+        return Quest.create({})
             .catch(error => {
-                error.name
-                    .should.equal(ValidationError.name);
-            });
-    });
-
-    it('error on save without required parameter', () => {
-        const ValidationError = mongoose.Error.ValidationError;
-
-        return new Quest({})
-            .save()
-            .catch(error => {
-                error.name
-                    .should.equal(ValidationError.name);
+                error.status
+                    .should.equal(HttpStatus.BAD_REQUEST);
             });
     });
 });
