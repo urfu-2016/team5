@@ -34,30 +34,52 @@ const questSchema = new mongoose.Schema({
 const QuestModel = mongoose.model('Quest', questSchema);
 
 module.exports = {
-    create: ({author, title, description = '', slug}) => {
+    create: ({author, title = '', description = '', city = '', tags}) => {
         const quest = new QuestModel({
             title,
             description,
-            slug: slug ? slugify(slug) : shortid.generate(),
-            authorId: author ? author._id : undefined
+            slug: title && title.length ? slugify(title) : shortid.generate(),
+            authorId: author ? author._id : undefined,
+            city: city,
+            tags: tags ? tags : undefined
         });
 
-        return quest.save();
+        return quest
+            .save()
+            .catch(err => {
+                const isMongoDuplicateKeyError = err.name === 'MongoError' &&
+                    err.code === 11000;
+                !isMongoDuplicateKeyError ? throw err : undefined;
+
+                return false;
+            })
+            .then(data => {
+                if (!data) {
+                    quest.slug += shortid.generate();
+
+                    return quest.save();
+                }
+
+                return data;
+            });
     },
 
-    update: (slug, {title, description, city}) => {
+    update: (slug, {title, description, city, tags}) => {
         return QuestModel
             .findOne({slug})
             .then(quest => {
                 quest.title = title ? title : quest.title;
                 quest.description = description ? description : quest.description;
                 quest.city = city ? city : quest.city;
+                quest.city = city ? city : quest.city;
+                quest.slug = title ? slugify(title) + shortid.generate() : quest.slug;
+                quest.tags = tags ? tags : quest.tags;
 
                 return quest.save();
             });
     },
 
-    getAll: () => QuestModel.find({}).exec(),
+    getAll() { return QuestModel.find({}).exec(); },
 
     getBySlug: slug => QuestModel.findOne({slug}).exec(),
 
@@ -67,7 +89,7 @@ module.exports = {
             .then(quest => quest.remove());
     },
 
-    getFilteredQuests(searchProperties, searchString) => {
+    getFilteredQuests(searchProperties, searchString) {
         const findParams = [];
         searchProperties.forEach(property => {
             let searchObject = {};
