@@ -4,6 +4,7 @@ const Quest = require('../models/quest');
 const slug = 'Novyj-kvest';
 const titlePrefix = 'Заголовок ';
 const descriptionPrefix = 'Описание ';
+const tags = ['Екатеринбург', 'Памятники'];
 
 module.exports = questCount => {
     questCount = questCount || 1;
@@ -14,7 +15,7 @@ module.exports = questCount => {
             title: `${titlePrefix} ${i}`,
             description: `${descriptionPrefix} ${i}`,
             slug: `${slug} ${i}`,
-            tags: ['QWE', 'asd']
+            tags
         };
 
         quests.push(Quest.create(data));

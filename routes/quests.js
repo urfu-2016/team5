@@ -24,6 +24,4 @@ router.get('/quests/:id', function (req, res) {
     res.render('questsId/quests-id', questData);
 });
 
-router.get('/quests/');
-
 module.exports = router;

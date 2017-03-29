@@ -7,7 +7,7 @@ const questsMocks = require('../mocks/quests');
 const removeAllQuests = require('../../scripts/clear-db').removeAllQuests;
 
 const title = 'Buga-ga';
-const partTitle = 'buga';
+const partTitle = 'b';
 const description = 'Bla-bla';
 const questName = 'Новый квест:)';
 const nickname = 'user';
@@ -72,26 +72,36 @@ describe('models:Quest', () => {
             .then(() => Quest.getBySlug(questData.slug).should.empty);
     });
 
-    it('should get filtered quests by title', () => {
+    it('should get filtered quests by title and tags', () => {
         const quest = new Quest({
             title,
             description,
             slug: questName,
             tags
         });
+        const quest2 = new Quest({
+            title: description,
+            description,
+            slug: title,
+            tags: [title]
+        });
 
         return quest
             .save()
             .then(() => {
+                return quest2.save();
+            })
+            .then(() => {
                 return Quest
-                    .getFilteredQuests('title', 'likes', partTitle);
+                    .getFilteredQuests(['title', 'tags'], partTitle);
             })
             .then(quests => {
+                console.log(quests);
                 quests.length
-                    .should.equal(1);
+                    .should.equal(2);
 
-                quests[0].get('title')
-                    .should.equal(title);
+                quests[0].get('description')
+                    .should.equal(description);
             });
     });
 
@@ -107,7 +117,7 @@ describe('models:Quest', () => {
             .save()
             .then(() => {
                 return Quest
-                    .getFilteredQuests('tags', 'likes', tags[0]);
+                    .getFilteredQuests(['tags'], tags[0]);
             })
             .then(quests => {
                 quests.length
@@ -130,7 +140,7 @@ describe('models:Quest', () => {
             .save()
             .then(() => {
                 return Quest
-                    .getFilteredQuests('tags', 'likes', description);
+                    .getFilteredQuests(['tags'], description);
             })
             .then(quests => {
                 quests.length

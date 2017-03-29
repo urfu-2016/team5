@@ -2,13 +2,19 @@ const Quest = require('../models/quest');
 
 module.exports = {
     getFoundQuests(req, res) {
-        const params = {
-            searchString: req.query.searchString || '',
-            searchProperty: req.query.searchRadio || 'title',
-            sortProperty: req.query.sortRadio || 'dateOfCreation'
-        };
-        Quest.getFilteredQuests(params.searchProperty, params.sortProperty,
-            params.searchString)
+        const searchProperties = [];
+        const searchString = req.query.searchString || '';
+        // Пока не знаю как красивее
+        if (req.query.searchByTitle) {
+            searchProperties.push('title');
+        }
+        if (req.query.searchByTags) {
+            searchProperties.push('tags');
+        }
+
+        console.log(searchProperties);
+
+        Quest.getFilteredQuests(searchProperties, searchString)
             .then(quests => {
                 const renderData = {
                     title: 'Список квестов',
