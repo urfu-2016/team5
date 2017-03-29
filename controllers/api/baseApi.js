@@ -25,6 +25,14 @@ function throwErrorOnFalseValue(objectToCheck, httpStatus) {
     }
 }
 
+function isMongoDuplicateError(err) {
+    const isMongoDuplicateKeyError = err.name === 'MongoError' &&
+        err.code === 11000;
+    throwErrorOnFalseValue(isMongoDuplicateKeyError, HttpStatus.BAD_REQUEST);
+
+    return false;
+}
+
 function createError(status, message) {
     const err = new Error(message);
     err.status = status;
@@ -35,5 +43,6 @@ function createError(status, message) {
 module.exports = {
     getSuccessCallback,
     getErrorCallback,
-    throwErrorOnFalseValue
+    throwErrorOnFalseValue,
+    isMongoDuplicateError
 };

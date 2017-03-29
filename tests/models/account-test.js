@@ -1,45 +1,46 @@
 const accountModel = require('../../models/account');
 const Account = require('mongoose').model('Account');
+const User = require('mongoose').model('User');
 require('chai').should();
 
 const account = {
-    nickname: 'nick',
-    password: 'pass'
+    username: 'username',
+    password: 'password'
 };
 
-describe('models:account', () => {
+describe('models:Account', () => {
     beforeEach(() => {
-        return Account
-            .remove({})
-            .exec();
+        return Account.remove({}).exec()
+            .then(() => User.remove({}).exec());
     });
 
     it('creates account', () => {
         return accountModel
            .create(account)
-           .then(() => {
-               return Account
-                   .find({})
-                   .exec();
-           })
+           .then(() => Account.find({}).exec())
            .then(accounts => {
-               accounts.length
-                    .should.be.equal(1);
-
-               accounts[0].get('nickname')
-                    .should.be.equal(account.nickname);
+               accounts.length.should.be.equal(1);
+               accounts[0].get('username').should.be.equal(account.username);
            });
+    });
+
+    it('should not create account without password', () => {
+        return accountModel
+           .create({username: account.username})
+           .catch(err => err.message.should.be.equal('Password required'));
+    });
+
+    it('should not create account without username', () => {
+        return accountModel
+            .create({password: account.password})
+            .catch(err => err.name.should.be.equal('ValidationError'));
     });
 
     it('verifies password', () => {
         return accountModel
             .create(account)
-            .then(() => {
-                return accountModel.verifyPassword(account);
-            })
-            .then(res => {
-                res.should.be.equal(true);
-            });
+            .then(() => accountModel.verifyPassword(account))
+            .then(res => res.should.be.equal(true));
     });
 
     it('changes password', () => {
@@ -47,26 +48,15 @@ describe('models:account', () => {
 
         return accountModel
             .create(account)
-            .then(() => {
-                return accountModel.changePassword(account, newPassword);
-            })
+            .then(() => accountModel.changePassword(account, newPassword))
             .then(() => {
                 return accountModel.verifyPassword({
-                    nickname: account.nickname,
+                    username: account.username,
                     password: newPassword
                 });
             })
-            .then(verificationResult => {
-                verificationResult.should.be.equal(true);
-            })
-            .then(() => {
-                return Account
-                    .find({})
-                    .exec();
-            })
-            .then(accs => {
-                accs.length
-                    .should.be.equal(1);
-            });
+            .then(verificationResult => verificationResult.should.be.equal(true))
+            .then(() => Account.find({}).exec())
+            .then(accs => accs.length.should.be.equal(1));
     });
 });

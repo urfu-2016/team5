@@ -1,19 +1,19 @@
 'use strict';
 
 const mongoose = require('../libs/mongoose-connection');
-const baseApi = require('../controllers/api/baseApi');
-const httpStatus = require('http-status-codes');
+// const baseApi = require('../controllers/api/baseApi');
 const bcrypt = require('bcryptjs');
-
+const User = require('../models/user');
 const wrongPasswordMessage = 'Wrong password';
 
 const accountSchema = new mongoose.Schema({
-    nickname: {
+    username: {
         type: String,
         lowercase: true,
         index: true,
         unique: true,
-        required: true
+        required: true,
+        ref: 'User'
     },
 
     hash: {
@@ -23,34 +23,31 @@ const accountSchema = new mongoose.Schema({
 });
 
 const AccountModel = mongoose.model('Account', accountSchema);
+
 module.exports = {
     create: accountData => {
+        if (!accountData.password) {
+            return Promise.reject(new Error('Password required'));
+        }
+
         const hash = bcrypt.hashSync(accountData.password, bcrypt.genSaltSync(10));
         const account = new AccountModel({
-            nickname: accountData.nickname,
+            username: accountData.username,
             hash: hash
         });
 
         return account
             .save()
-            .then(() => {
-                return AccountModel;
-            })
-            .catch(err => {
-                const isMongoDuplicateKeyError = err.name === 'MongoError' && err.code === 11000;
-                baseApi.throwErrorOnFalseValue(isMongoDuplicateKeyError, httpStatus.BAD_REQUEST);
-
-                return false;
-            });
+            .then(() => User.create({username: accountData.username}));
     },
+
+    findOne: data => AccountModel.findOne({username: data.username}).exec(),
 
     verifyPassword: account => {
         return AccountModel
-            .find({nickname: account.nickname})
+            .find({username: account.username})
             .exec()
-            .then(acc => {
-                return bcrypt.compareSync(account.password, acc[0].hash);
-            })
+            .then(acc => bcrypt.compareSync(account.password, acc[0].hash))
             .then(verificationResult => {
                 if (verificationResult) {
                     return verificationResult;
@@ -70,11 +67,7 @@ module.exports = {
     changePassword: function (account, newPassword) {
         return this
             .verifyPassword(account)
-            .then(() => {
-                return AccountModel
-                        .findOne({nickname: account.nickname})
-                        .exec();
-            })
+            .then(() => AccountModel.findOne({username: account.username}).exec())
             .then(acc => {
                 acc.hash = bcrypt.hashSync(newPassword, bcrypt.genSaltSync(10));
 
