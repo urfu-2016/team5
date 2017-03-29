@@ -1,15 +1,20 @@
 'use strict';
+const User = require('../../models/user');
 
 module.exports = {
     regularQuest: {
         title: 'Заголовок',
         description: 'Описание',
-        slug: 'some-slug'
+        tags: ['Екатеринбург', 'Граффити'],
+        author: new User({'nickname'}),
+        likes: [author]
     },
 
-    questWithoutSlug: {
-        title: 'Заголовок',
-        description: 'Описание'
+    questWithoutTitle: {
+        description: 'Описание',
+        tags: ['Екатеринбург', 'Граффити'],
+        author: new User({'nickname'}),
+        likes: [author]
     },
 
     questWithoutRequiredFields: {}

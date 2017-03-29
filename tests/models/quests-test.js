@@ -6,15 +6,6 @@ const Quest = require('../../models/quest');
 const questsMocks = require('../mocks/quests');
 const removeAllQuests = require('../../scripts/clear-db').removeAllQuests;
 
-const title = 'Buga-ga';
-const partTitle = 'b';
-const description = 'Bla-bla';
-const questName = 'Новый квест:)';
-const nickname = 'user';
-const author = new User({nickname});
-const likes = [author];
-const tags = ['Екатеринбург', 'Граффити'];
-
 describe('models:Quest', () => {
     beforeEach(() => removeAllQuests());
 
@@ -41,7 +32,7 @@ describe('models:Quest', () => {
     });
 
     it('should generate slug, if not specified', () => {
-        const questData = questsMocks.questWithoutSlug;
+        const questData = questsMocks.questWithoutTitle;
 
         return Quest.create(questData)
             .then(savedQuest => savedQuest.slug.should.not.empty);
@@ -61,7 +52,7 @@ describe('models:Quest', () => {
 
         return Quest.create(questData)
             .then(savedQuest => Quest.getBySlug(savedQuest.slug))
-            .then(foundedQuest => foundedQuest.title.should.equal(questData.title));
+            .then(foundQuest => foundQuest.title.should.equal(questData.title));
     });
 
     it('should remove by slug', () => {
@@ -73,30 +64,21 @@ describe('models:Quest', () => {
     });
 
     it('should get filtered quests by title and tags', () => {
-        const quest = new Quest({
-            title,
-            description,
-            slug: questName,
-            tags
-        });
-        const quest2 = new Quest({
-            title: description,
-            description,
-            slug: title,
-            tags: [title]
-        });
+        const questData = Object.assign(questsMocks.regularQuest);
+        const questPartTitle = questData.title[0];
 
-        return quest
-            .save()
+        return Quest.create(questData)
             .then(() => {
-                return quest2.save();
+                questData.tags = [questData.title];
+                questData.title = questData.description;
+
+                return Quest.create();
             })
             .then(() => {
                 return Quest
-                    .getFilteredQuests(['title', 'tags'], partTitle);
+                    .getFilteredQuests(['title', 'tags'], questPartTitle);
             })
             .then(quests => {
-                console.log(quests);
                 quests.length
                     .should.equal(2);
 
@@ -106,15 +88,10 @@ describe('models:Quest', () => {
     });
 
     it('should get filtered quests by tags', () => {
-        const quest = new Quest({
-            title,
-            description,
-            slug: questName,
-            tags
-        });
+        const questData = questsMocks.regularQuest;
 
-        return quest
-            .save()
+        return Quest
+            .create(questData)
             .then(() => {
                 return Quest
                     .getFilteredQuests(['tags'], tags[0]);
@@ -129,15 +106,10 @@ describe('models:Quest', () => {
     });
 
     it('should get empty array', () => {
-        const quest = new Quest({
-            title,
-            description,
-            slug: questName,
-            tags
-        });
+        const questData = questsMocks.regularQuest;
 
-        return quest
-            .save()
+        return Quest
+            .create(questData)
             .then(() => {
                 return Quest
                     .getFilteredQuests(['tags'], description);
