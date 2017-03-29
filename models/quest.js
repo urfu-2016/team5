@@ -9,12 +9,11 @@ const shortid = require('shortid');
 const questSchema = new mongoose.Schema({
     title: {type: String, required: true},
     description: String,
-<<<<<<< 33c7909f15bc0c9fface7675db0ee0ba1350c1c3
     images: {
         type: [Image],
         default: []
     },
-    authorId: {type: ObjectId, ref: 'User'},
+    authorId: {type: ObjectId, ref: 'User', require: true},
     likes: {
         type: [{type: ObjectId, ref: 'User'}],
         default: []
@@ -24,16 +23,6 @@ const questSchema = new mongoose.Schema({
         default: []
     },
     city: String,
-=======
-    images: [Image],
-    author: {
-        type: ObjectId,
-        ref: 'User',
-        require: true
-    },
-    likes: [{type: ObjectId, ref: 'User'}],
-    tags: [String],
->>>>>>> Исправил замечания и хочу запулить
     dateOfCreation: {type: Date, default: Date.now},
     slug: {
         type: String,
