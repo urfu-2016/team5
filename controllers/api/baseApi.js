@@ -1,3 +1,5 @@
+'use strict';
+
 const HttpStatus = require('http-status-codes');
 
 function getSuccessCallback(res, status) {
@@ -8,9 +10,9 @@ function getSuccessCallback(res, status) {
     };
 }
 
-function getErrorCallback(res) {
+function getErrorCallback(res, httpStatus) {
     return err => {
-        err.status = err.status || HttpStatus.INTERNAL_SERVER_ERROR;
+        err.status = httpStatus || err.status;
         res
             .status(err.status)
             .send({error: HttpStatus.getStatusText(err.status)});
