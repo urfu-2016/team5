@@ -2,7 +2,7 @@
 
 const HttpStatus = require('http-status-codes');
 const Quest = require('../../models/quest');
-const baseApi = require('./baseApi');
+const resolveRequestPromise = require('./baseApi').resolveRequestPromise;
 
 module.exports = {
     createQuest(req, res) {
@@ -12,7 +12,7 @@ module.exports = {
             slug: req.body.slug
         };
 
-        return baseApi.resolveRequestPromise(Quest.create(quest), res, HttpStatus.CREATED);
+        return resolveRequestPromise(Quest.create(quest), res, HttpStatus.CREATED);
     },
 
     updateQuest(req, res) {
@@ -22,12 +22,12 @@ module.exports = {
         };
         const promise = Quest.update(req.body.slug, questData);
 
-        return baseApi.resolveRequestPromise(promise, res);
+        return resolveRequestPromise(promise, res);
     },
 
-    getQuests: (req, res) => baseApi.resolveRequestPromise(Quest.getAll(), res),
+    getQuests: (req, res) => resolveRequestPromise(Quest.getAll(), res),
 
-    getQuestBySlug: (req, res) => baseApi.resolveRequestPromise(Quest.getBySlug(req.params.slug), res),
+    getQuestBySlug: (req, res) => resolveRequestPromise(Quest.getBySlug(req.params.slug), res),
 
-    removeQuest: (req, res) => baseApi.resolveRequestPromise(Quest.removeBySlug(req.params.slug), res)
+    removeQuest: (req, res) => resolveRequestPromise(Quest.removeBySlug(req.params.slug), res)
 };
