@@ -7,6 +7,7 @@ const Quest = require('../../models/quest');
 const questMocks = require('../mocks/quests');
 const HttpStatus = require('http-status-codes');
 const removeAllQuests = require('../../scripts/clear-db').removeAllQuests;
+const slugify = require('slug');
 
 chai.should();
 chai.use(chaiHttp);
@@ -26,17 +27,8 @@ describe('controller:quest', () => {
             .then(res => {
                 res.status.should.equal(HttpStatus.CREATED);
                 res.body.data.title.should.equal(questData.title);
-                res.body.data.slug.should.equal(questData.slug);
+                res.body.data.slug.should.equal(slugify(questData.title));
             });
-    });
-
-    it('should create the quest with generate slug', () => {
-        const questData = questMocks.questWithoutSlug;
-
-        return chai.request(server)
-            .post('/api/quests')
-            .send(questData)
-            .then(res => res.body.data.slug.should.not.empty);
     });
 
     it('should GET all the quests', () => {
@@ -54,28 +46,29 @@ describe('controller:quest', () => {
 
     it('should GET a quest by the given slug', () => {
         const questData = questMocks.regularQuest;
+        const slug = slugify(questData.title);
 
         return Quest.create(questData)
             .then(() => chai.request(server)
-                .get(`/api/quests/${questData.slug}`)
+                .get(`/api/quests/${slug}`)
                 .send()
                 .then(res => {
                     res.status.should.equal(HttpStatus.OK);
-                    res.body.data.slug.should.equal(questData.slug);
+                    res.body.data.slug.should.equal(slug);
                 }));
     });
 
     it('should PUT a quest', () => {
         const questData = questMocks.regularQuest;
+        const slug = slugify(questData.title);
         const updateData = {
             title: 'SomeOther',
-            description: 'SomeOtherDescription',
-            slug: questData.slug
+            description: 'SomeOtherDescription'
         };
 
         return Quest.create(questData)
             .then(() => chai.request(server)
-                .put(`/api/quests/${questData.slug}`)
+                .put(`/api/quests/${slug}`)
                 .send(updateData)
                 .then(res => {
                     res.status.should.equal(HttpStatus.OK);
@@ -84,18 +77,20 @@ describe('controller:quest', () => {
                 }));
     });
 
+    // Удаление не работает правильно. Должен ругаться на slug.
     it('should delete a quest', () => {
         const questData = questMocks.regularQuest;
+        const slug = slugify(questData.title);
 
         return Quest.create(questData)
             .then(() => chai.request(server)
-                .delete(`/api/quests/${questData.slug}`)
+                .delete(`/api/quests/${slug}`)
                 .send()
                 .then(res => {
                     res.status.should.equal(HttpStatus.OK);
                 }))
             .then(() => chai.request(server)
-                .delete(`/api/quests/${questData.slug}`)
+                .delete(`/api/quests/${slug}`)
                 .send()
                 .catch(err => {
                     err.status.should.equal(HttpStatus.NOT_FOUND);

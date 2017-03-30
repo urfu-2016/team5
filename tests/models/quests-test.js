@@ -31,13 +31,6 @@ describe('models:Quest', () => {
             });
     });
 
-    it('should generate slug, if not specified', () => {
-        const questData = questsMocks.questWithoutTitle;
-
-        return Quest.create(questData)
-            .then(savedQuest => savedQuest.slug.should.not.empty);
-    });
-
     it('should update by slug', () => {
         const questData = questsMocks.regularQuest;
         const city = 'Екатеринбург';
@@ -72,7 +65,7 @@ describe('models:Quest', () => {
                 questData.tags = [questData.title];
                 questData.title = questData.description;
 
-                return Quest.create();
+                return Quest.create(questData);
             })
             .then(() => {
                 return Quest
@@ -83,7 +76,7 @@ describe('models:Quest', () => {
                     .should.equal(2);
 
                 quests[0].get('description')
-                    .should.equal(description);
+                    .should.equal(questData.description);
             });
     });
 
@@ -94,14 +87,14 @@ describe('models:Quest', () => {
             .create(questData)
             .then(() => {
                 return Quest
-                    .getFilteredQuests(['tags'], tags[0]);
+                    .getFilteredQuests(['tags'], questData.tags[0]);
             })
             .then(quests => {
                 quests.length
                     .should.equal(1);
 
                 quests[0].get('title')
-                    .should.equal(title);
+                    .should.equal(questData.title);
             });
     });
 
@@ -112,7 +105,7 @@ describe('models:Quest', () => {
             .create(questData)
             .then(() => {
                 return Quest
-                    .getFilteredQuests(['tags'], description);
+                    .getFilteredQuests(['tags'], questData.description);
             })
             .then(quests => {
                 quests.length
