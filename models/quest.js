@@ -33,6 +33,12 @@ const questSchema = new mongoose.Schema({
 
 const QuestModel = mongoose.model('Quest', questSchema);
 
+function throwErrorOnFalseValue(value, error) {
+    if (!value) {
+        throw error;
+    }
+}
+
 module.exports = {
     create: ({author, title = '', description = '', city = '', tags}) => {
         const quest = new QuestModel({
@@ -49,7 +55,7 @@ module.exports = {
             .catch(err => {
                 const isMongoDuplicateKeyError = err.name === 'MongoError' &&
                     err.code === 11000;
-                !isMongoDuplicateKeyError ? throw err : undefined;
+                throwErrorOnFalseValue(isMongoDuplicateKeyError, err);
 
                 return false;
             })
@@ -83,11 +89,7 @@ module.exports = {
 
     getBySlug: slug => QuestModel.findOne({slug}).exec(),
 
-    removeBySlug: slug => {
-        return QuestModel
-            .findOne({slug})
-            .then(quest => quest.remove());
-    },
+    removeBySlug: slug => QuestModel.remove({slug}).exec(),
 
     getFilteredQuests(searchProperties, searchString) {
         const findParams = [];
