@@ -1,12 +1,21 @@
 module.exports = {
-    removeAllQuests: () => {
+    removeAllQuests() {
         require('../models/quest');
         removeAllItems('Quest');
     },
 
-    removeAllUsers: () => {
+    removeAllUsers() {
         require('../models/user');
         removeAllItems('User');
+    },
+
+    removeAllAccounts() {
+        require('../models/account');
+        removeAllItems('Account');
+    },
+
+    clearWholeDB() {
+        ['User', 'Quest', 'Account'].forEach(removeAllItems);
     }
 };
 

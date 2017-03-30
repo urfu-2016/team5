@@ -50,9 +50,13 @@ module.exports = {
 
     getAll: () => UserModel.find({}).exec(),
 
+<<<<<<< HEAD
     getByUsername: username => UserModel
         .findOne({username})
         .exec(),
+=======
+    getByUsername: username => UserModel.findOne({username}).exec(),
+>>>>>>> Отрефакторили контроллеры API и модели пользователя и квеста
 
     removeByUsername: username => UserModel
         .findOne({username})

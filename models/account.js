@@ -1,7 +1,6 @@
 'use strict';
 
 const mongoose = require('../libs/mongoose-connection');
-// const baseApi = require('../controllers/api/baseApi');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 const wrongPasswordMessage = 'Wrong password';
@@ -38,7 +37,17 @@ module.exports = {
 
         return account
             .save()
-            .then(() => User.create({username: accountData.username}));
+            .then(() => {
+                return User
+                    .create({username: accountData.username})
+                    .catch(err => {
+                        return AccountModel
+                            .remove({username: accountData.username})
+                            .then(() => {
+                                throw err;
+                            });
+                    });
+            });
     },
 
     findOne: data => AccountModel.findOne({username: data.username}).exec(),

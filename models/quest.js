@@ -46,24 +46,24 @@ module.exports = {
     },
 
     update: (slug, {title, description, city}) => {
-        return QuestModel.findOne({slug}).then(quest => {
-            quest.title = title ? title : quest.title;
-            quest.description = description ? description : quest.description;
-            quest.city = city ? city : quest.city;
+        return QuestModel
+            .findOne({slug})
+            .then(quest => {
+                quest.title = title ? title : quest.title;
+                quest.description = description ? description : quest.description;
+                quest.city = city ? city : quest.city;
 
-            return quest.save();
-        });
+                return quest.save();
+            });
     },
 
     getAll: () => QuestModel.find({}).exec(),
 
-    getBySlug: slug => {
-        return QuestModel.findOne({slug})
-            .exec();
-    },
+    getBySlug: slug => QuestModel.findOne({slug}).exec(),
 
     removeBySlug: slug => {
-        return QuestModel.findOne({slug})
+        return QuestModel
+            .findOne({slug})
             .then(quest => quest.remove());
     }
 };

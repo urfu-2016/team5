@@ -25,12 +25,10 @@ function throwErrorOnFalseValue(objectToCheck, httpStatus) {
     }
 }
 
-function isMongoDuplicateError(err) {
-    const isMongoDuplicateKeyError = err.name === 'MongoError' &&
-        err.code === 11000;
-    throwErrorOnFalseValue(isMongoDuplicateKeyError, HttpStatus.BAD_REQUEST);
-
-    return false;
+function resolveRequestPromise(promise, res, successStatus = HttpStatus.OK, failureStatus = HttpStatus.NOT_FOUND) {
+    return promise
+        .then(getSuccessCallback(res, successStatus))
+        .catch(getErrorCallback(res, failureStatus));
 }
 
 function createError(status, message) {
@@ -44,5 +42,5 @@ module.exports = {
     getSuccessCallback,
     getErrorCallback,
     throwErrorOnFalseValue,
-    isMongoDuplicateError
+    resolveRequestPromise
 };
