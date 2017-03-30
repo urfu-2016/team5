@@ -1,6 +1,6 @@
-const accountModel = require('../../models/account');
-const Account = require('mongoose').model('Account');
-const User = require('mongoose').model('User');
+const Account = require('../../models/account');
+const AccountMongo = require('mongoose').model('Account');
+const UserModel = require('mongoose').model('User');
 require('chai').should();
 
 const account = {
@@ -10,14 +10,14 @@ const account = {
 
 describe('models:Account', () => {
     beforeEach(() => {
-        return Account.remove({}).exec()
-            .then(() => User.remove({}).exec());
+        return AccountMongo.remove({}).exec()
+            .then(() => UserModel.remove({}).exec());
     });
 
     it('creates account', () => {
-        return accountModel
+        return Account
            .create(account)
-           .then(() => Account.find({}).exec())
+           .then(() => AccountMongo.find({}).exec())
            .then(accounts => {
                accounts.length.should.be.equal(1);
                accounts[0].get('username').should.be.equal(account.username);
@@ -25,9 +25,9 @@ describe('models:Account', () => {
     });
 
     it('create user with account', () => {
-        return accountModel
+        return Account
             .create(account)
-            .then(() => User.find({}).exec())
+            .then(() => UserModel.find({}).exec())
             .then(users => {
                 users.length.should.be.equal(1);
                 users[0].username.should.be.equal(account.username);
@@ -35,9 +35,9 @@ describe('models:Account', () => {
     });
 
     it('check that password was hashed', () => {
-        return accountModel
+        return Account
            .create(account)
-           .then(() => User.find({}).exec())
+           .then(() => AccountMongo.find({}).exec())
            .then(users => {
                users[0].password.should.not.be.equal(account.password);
            });
@@ -45,15 +45,15 @@ describe('models:Account', () => {
 
     it('fails creation account if user exists', () => {
         const userObject = {username: account.username};
-        const user = new User(userObject);
+        const user = new UserModel(userObject);
 
         return user
             .save()
-            .then(() => accountModel.create(account))
+            .then(() => Account.create(account))
             .catch(err => {
                 err.code.should.be.equal(11000);
 
-                return accountModel
+                return AccountMongo
                     .find(userObject)
                     .exec()
                     .then(accounts => accounts.length.should.be.equal(0));
@@ -61,38 +61,38 @@ describe('models:Account', () => {
     });
 
     it('should not create account without password', () => {
-        return accountModel
+        return Account
            .create({username: account.username})
            .catch(err => err.message.should.be.equal('Password required'));
     });
 
     it('should not create account without username', () => {
-        return accountModel
+        return Account
             .create({password: account.password})
             .catch(err => err.name.should.be.equal('ValidationError'));
     });
 
     it('verifies password', () => {
-        return accountModel
+        return Account
             .create(account)
-            .then(() => accountModel.verifyPassword(account))
+            .then(() => Account.verifyPassword(account))
             .then(res => res.should.be.equal(true));
     });
 
     it('changes password', () => {
         const newPassword = 'newPassword';
 
-        return accountModel
+        return Account
             .create(account)
-            .then(() => accountModel.changePassword(account, newPassword))
+            .then(() => Account.changePassword(account, newPassword))
             .then(() => {
-                return accountModel.verifyPassword({
+                return Account.verifyPassword({
                     username: account.username,
                     password: newPassword
                 });
             })
             .then(verificationResult => verificationResult.should.be.equal(true))
-            .then(() => Account.find({}).exec())
+            .then(() => AccountMongo.find({}).exec())
             .then(accs => accs.length.should.be.equal(1));
     });
 });

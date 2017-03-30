@@ -15,7 +15,7 @@ const accountSchema = new mongoose.Schema({
         ref: 'User'
     },
 
-    hash: {
+    password: {
         type: String,
         required: true
     }
@@ -32,7 +32,7 @@ module.exports = {
         const hash = bcrypt.hashSync(accountData.password, bcrypt.genSaltSync(10));
         const account = new AccountModel({
             username: accountData.username,
-            hash: hash
+            password: hash
         });
 
         return account
@@ -56,7 +56,7 @@ module.exports = {
         return AccountModel
             .find({username: account.username})
             .exec()
-            .then(acc => bcrypt.compareSync(account.password, acc[0].hash))
+            .then(acc => bcrypt.compareSync(account.password, acc[0].password))
             .then(verificationResult => {
                 if (verificationResult) {
                     return verificationResult;
@@ -78,7 +78,7 @@ module.exports = {
             .verifyPassword(account)
             .then(() => AccountModel.findOne({username: account.username}).exec())
             .then(acc => {
-                acc.hash = bcrypt.hashSync(newPassword, bcrypt.genSaltSync(10));
+                acc.password = bcrypt.hashSync(newPassword, bcrypt.genSaltSync(10));
 
                 return acc.save();
             })
