@@ -34,4 +34,5 @@ module.exports = {
     getQuestBySlug: (req, res) => resolveRequestPromise(Quest.getBySlug(req.params.slug), res),
 
     removeQuest: (req, res) => resolveRequestPromise(Quest.removeBySlug(req.params.slug), res)
+
 };
