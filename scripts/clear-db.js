@@ -23,3 +23,4 @@ function removeAllItems(modelName) {
         .remove({})
         .exec();
 }
+

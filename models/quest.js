@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 'use strict';
 
 const mongoose = require('../libs/mongoose-connection');
@@ -120,3 +121,76 @@ module.exports = {
             });
     }
 };
+=======
+'use strict';
+
+const slugify = require('slug');
+const shortid = require('shortid');
+const mongoose = require('../libs/mongoose-connection');
+const Comment = require('./schemas/comment');
+const Image = require('./schemas/image');
+const ObjectId = mongoose.Schema.Types.ObjectId;
+
+const questSchema = new mongoose.Schema({
+    title: {type: String, required: true},
+    description: String,
+    images: {
+        type: [Image],
+        default: []
+    },
+    authorId: {type: ObjectId, ref: 'User'},
+    likes: {
+        type: [{type: ObjectId, ref: 'User'}],
+        default: []
+    },
+    comments: {type: [Comment], default: []},
+    tags: {
+        type: [String],
+        default: []
+    },
+    city: String,
+    dateOfCreation: {type: Date, default: Date.now},
+    slug: {
+        type: String,
+        index: {unique: true},
+        required: true
+    }
+});
+
+const QuestModel = mongoose.model('Quest', questSchema);
+
+module.exports = {
+    create: ({author, title, description = '', slug}) => {
+        const quest = new QuestModel({
+            title,
+            description,
+            slug: slug ? slugify(slug) : shortid.generate(),
+            authorId: author ? author._id : undefined
+        });
+
+        return quest.save();
+    },
+
+    update: (slug, {title, description, city}) => {
+        return QuestModel.findOne({slug}).then(quest => {
+            quest.title = title ? title : quest.title;
+            quest.description = description ? description : quest.description;
+            quest.city = city ? city : quest.city;
+
+            return quest.save();
+        });
+    },
+
+    getAll: () => QuestModel.find({}).exec(),
+
+    getBySlug: slug => {
+        return QuestModel.findOne({slug})
+            .exec();
+    },
+
+    removeBySlug: slug => {
+        return QuestModel.findOne({slug}).exec()
+            .then(quest => quest.remove());
+    }
+};
+>>>>>>> Сделал ребейз + мелкие правки

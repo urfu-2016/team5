@@ -1,10 +1,14 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> Сделал ребейз + мелкие правки
 /* eslint-env mocha */
 
 require('chai').should();
 const mongoose = require('mongoose');
 const Quest = require('../../models/quest');
 const questsMocks = require('../mocks/quests');
+<<<<<<< HEAD
 const dbClearer = require('../../scripts/clear-db');
 const setAuthorAfterCreateUser = questsMocks.setAuthorAfterCreateUser;
 
@@ -23,6 +27,19 @@ describe('models:Quest', () => {
     it('should create model', () => {
         return setAuthorAfterCreateUser(questData)
             .then(() => Quest.create(questData))
+=======
+const removeAllQuests = require('../../scripts/clear-db').removeAllQuests;
+
+describe('models:Quest', () => {
+    beforeEach(() => removeAllQuests());
+
+    after(() => removeAllQuests());
+
+    it('should create model', () => {
+        const questData = questsMocks.regularQuest;
+
+        return Quest.create(questData)
+>>>>>>> Сделал ребейз + мелкие правки
             .then(savedQuest => {
                 savedQuest.title.should.equal(questData.title);
                 savedQuest.description.should.equal(questData.description);
@@ -39,6 +56,7 @@ describe('models:Quest', () => {
             });
     });
 
+<<<<<<< HEAD
     it('error on save without required author', () => {
         const questData = questsMocks.regularQuest;
         const ValidationError = mongoose.Error.ValidationError;
@@ -52,11 +70,26 @@ describe('models:Quest', () => {
 
         return setAuthorAfterCreateUser(questData)
             .then(() => Quest.create(questData))
+=======
+    it('should generate slug, if not specified', () => {
+        const questData = questsMocks.questWithoutSlug;
+
+        return Quest.create(questData)
+            .then(savedQuest => savedQuest.slug.should.not.empty);
+    });
+
+    it('should update by slug', () => {
+        const questData = questsMocks.regularQuest;
+        const city = 'Екатеринбург';
+
+        return Quest.create(questData)
+>>>>>>> Сделал ребейз + мелкие правки
             .then(savedQuest => Quest.update(savedQuest.slug, {city}))
             .then(updatedQuest => updatedQuest.city.should.equal(city));
     });
 
     it('should get by slug', () => {
+<<<<<<< HEAD
         return setAuthorAfterCreateUser(questData)
             .then(() => Quest.create(questData))
             .then(savedQuest => Quest.getBySlug(savedQuest.slug))
@@ -196,3 +229,20 @@ describe('models:Quest', () => {
     });
 });
 >>>>>>> Рендеринг реальных сгенерированных данных
+=======
+        const questData = questsMocks.regularQuest;
+
+        return Quest.create(questData)
+            .then(savedQuest => Quest.getBySlug(savedQuest.slug))
+            .then(foundedQuest => foundedQuest.title.should.equal(questData.title));
+    });
+
+    it('should remove by slug', () => {
+        const questData = questsMocks.regularQuest;
+
+        return Quest.create(questData)
+            .then(savedQuest => Quest.removeBySlug(savedQuest.slug))
+            .then(() => Quest.getBySlug(questData.slug).should.empty);
+    });
+});
+>>>>>>> Сделал ребейз + мелкие правки

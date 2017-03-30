@@ -9,12 +9,24 @@ module.exports = {
         tags: ['Екатеринбург', 'Граффити']
     },
 
+<<<<<<< HEAD
     questWithoutRequiredFields: {},
 
     questForSeatch: {
         title: 'Описание',
         description: 'Описание',
         tags: ['Заголовок']
+=======
+    oneMoreQuest: {
+        title: 'Заголовок',
+        description: 'Описание',
+        slug: 'some-slug-2'
+    },
+
+    questWithoutSlug: {
+        title: 'Заголовок',
+        description: 'Описание'
+>>>>>>> Сделал ребейз + мелкие правки
     },
 
     setAuthorAfterCreateUser(data) {
