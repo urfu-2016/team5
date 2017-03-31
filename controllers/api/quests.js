@@ -12,7 +12,7 @@ module.exports = {
             slug: req.body.slug
         };
 
-        return resolveRequestPromise(Quest.create(quest), res, HttpStatus.CREATED);
+        return resolveRequestPromise(Quest.create(quest), res, {successCode: HttpStatus.CREATED});
     },
 
     updateQuest(req, res) {

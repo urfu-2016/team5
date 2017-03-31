@@ -25,7 +25,10 @@ function throwErrorOnFalseValue(objectToCheck, httpStatus) {
     }
 }
 
-function resolveRequestPromise(promise, res, successStatus = HttpStatus.OK, failureStatus = HttpStatus.NOT_FOUND) {
+function resolveRequestPromise(promise, res, statusCodes = {}) {
+    const successStatus = statusCodes.successCode || HttpStatus.OK;
+    const failureStatus = statusCodes.failureCode || HttpStatus.NOT_FOUND;
+
     return promise
         .then(getSuccessCallback(res, successStatus))
         .catch(getErrorCallback(res, failureStatus));

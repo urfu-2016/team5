@@ -1,16 +1,17 @@
+require('../models/user');
+require('../models/quest');
+require('../models/account');
+
 module.exports = {
     removeAllQuests() {
-        require('../models/quest');
         removeAllItems('Quest');
     },
 
     removeAllUsers() {
-        require('../models/user');
         removeAllItems('User');
     },
 
     removeAllAccounts() {
-        require('../models/account');
         removeAllItems('Account');
     },
 
