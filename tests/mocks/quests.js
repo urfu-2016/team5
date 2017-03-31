@@ -9,14 +9,14 @@ module.exports = {
         tags: ['Екатеринбург', 'Граффити']
     },
 
-<<<<<<< HEAD
     questWithoutRequiredFields: {},
 
-    questForSeatch: {
+    questForSearch: {
         title: 'Описание',
         description: 'Описание',
         tags: ['Заголовок']
-=======
+    },
+
     oneMoreQuest: {
         title: 'Заголовок',
         description: 'Описание',
@@ -26,18 +26,5 @@ module.exports = {
     questWithoutSlug: {
         title: 'Заголовок',
         description: 'Описание'
->>>>>>> Сделал ребейз + мелкие правки
-    },
-
-    setAuthorAfterCreateUser(data) {
-        const username = 'username' + Date.now();
-
-        return new Promise(resolve => {
-            User.create({username})
-                .then(user => {
-                    data.author = user;
-                    resolve();
-                });
-        });
     }
 };

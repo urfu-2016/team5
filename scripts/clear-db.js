@@ -19,8 +19,8 @@ module.exports = {
 };
 
 function removeAllItems(modelName) {
-    return require('mongoose').model(modelName)
-        .remove({})
-        .exec();
+    const Model = require('mongoose').model(modelName);
+    return Model.remove({}).exec()
+        .then(() => Model.collection.dropIndexes());
 }
 

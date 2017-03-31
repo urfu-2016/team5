@@ -14,9 +14,9 @@ const account = {
 const accountWithWrongPassword = {username: account.username, password: account.password + '0'};
 
 describe('models:Account', () => {
-    beforeEach(() => DBClearer.clearWholeDB());
+    beforeEach(() => DBClearer.removeAll());
 
-    after(() => DBClearer.clearWholeDB());
+    after(() => DBClearer.removeAll());
 
     it('creates account', () => {
         return Account

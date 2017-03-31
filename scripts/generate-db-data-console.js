@@ -23,9 +23,4 @@ clearDb.removeAll()
         generateDb.generateQuests(questsCount),
         generateDb.generateUsers(usersCount)
     ]))
-    .then(() => {
-        require('../models/user').db.close();
-        require('../models/quest').db.close();
-        require('../models/account').db.close();
-    })
     .then(() => process.exit());

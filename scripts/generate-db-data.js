@@ -9,11 +9,6 @@ function createAll(model, allData) {
     );
 }
 
-function createFromJson(model, json) {
-    const data = JSON.parse(json).data;
-    return createAll(model, data);
-}
-
 function generateImages({questId, imagesCount = 10}) {
     const images = [];
     const dummyUrl = 'https://dummyimage.com';
@@ -52,7 +47,7 @@ module.exports.generateQuests = ({questsCount = 10}) => {
                 quests.push(questData);
             }
 
-            return createAll(Quest, quests)
+            return createAll(Quest, quests);
         });
 };
 
@@ -63,7 +58,7 @@ module.exports.generateUsers = ({usersCount = 1}) => {
         let userData = {
             firstname: `Пользователь ${i}`,
             surname: `Фамилия ${i}`,
-            nickname: `user_${i}`
+            username: `user_${i}`
         };
 
         users.push(userData);
@@ -72,6 +67,16 @@ module.exports.generateUsers = ({usersCount = 1}) => {
     return createAll(User, users);
 };
 
-module.exports.createUsersFromJson = json => createFromJson(User, json);
+module.exports.createUsersFromJson = json => {
+    const data = JSON.parse(json).data;
 
-module.exports.createQuestsFromJson = json => createFromJson(Quest, json);
+    return createAll(User, data);
+};
+
+module.exports.createQuestsFromJson = json => {
+    const data = JSON.parse(json).data;
+
+    return Promise.all(
+        data.map(data => Quest._createWithAuthor(data))
+    );
+};

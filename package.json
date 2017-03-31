@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "npm run build && node index.js",
+    "start": "npm run generate && npm run build && node index.js",
     "production": "NODE_ENV=production node index.js",
     "prepush": "npm run lint && npm run test",
     "lint": "stylelint --ignore-path .gitignore *.css **/*.css && eslint --ignore-path .gitignore .",

@@ -31,7 +31,7 @@ const AccountModel = mongoose.model('Account', accountSchema);
 const saltRounds = 10;
 
 module.exports = {
-    create: accountData => {
+    create(accountData) {
         if (!accountData.password) {
             return Promise.reject(new Error(constants.accountModel.passwordRequiredMessage));
         }
@@ -54,14 +54,14 @@ module.exports = {
             });
     },
 
-    verifyPassword: account => {
+    verifyPassword(account) {
         return AccountModel
             .findOne({username: account.username})
             .exec()
             .then(acc => bcrypt.compare(account.password, acc.password));
     },
 
-    changePassword: function (account, newPassword) {
+    changePassword(account, newPassword) {
         return this
             .verifyPassword(account)
             .then(verificationResult => {
