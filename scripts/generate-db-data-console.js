@@ -5,5 +5,5 @@ const count = process.argv[2] ? parseInt(process.argv[2], 10) : defaultCount;
 
 require('./generate-db-data')(count)
     .then(() => {
-        require('../models/quest').db.close();
+        require('../models/user').db.close();
     });
