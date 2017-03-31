@@ -29,7 +29,7 @@ describe('controller:quest', () => {
                 res.body.data.slug.should.equal(questData.slug);
             });
     });
-  
+
     it('should create the quest with generate slug', () => {
         const questData = questMocks.questWithoutSlug;
 
