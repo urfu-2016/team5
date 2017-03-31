@@ -3,18 +3,41 @@
 require('chai').should();
 const mongoose = require('mongoose');
 const Quest = require('../../models/quest');
+const User = require('../../models/user');
 const questsMocks = require('../mocks/quests');
-const removeAllQuests = require('../../scripts/clear-db').removeAllQuests;
+const dbClearer = require('../../scripts/clear-db');
+
+function setAuthorAfterCreateUser(data) {
+    const username = 'username' + Date.now();
+
+    return new Promise((resolve, reject) => {
+        User.create({username})
+        .then(user => {
+            data.author = user;
+            resolve();
+        });
+    });
+}
 
 describe('models:Quest', () => {
-    beforeEach(() => removeAllQuests());
+    let questData;
 
-    after(() => removeAllQuests());
+    beforeEach(() => {
+        dbClearer.removeAllUsers();
+        dbClearer.removeAllQuests();
+        questData = Object.assign({}, questsMocks.regularQuest);
+    });
+
+    after(() => {
+        dbClearer.removeAllQuests();
+        dbClearer.removeAllUsers();
+    });
 
     it('should create model', () => {
-        const questData = questsMocks.regularQuest;
-
-        return Quest.create(questData)
+        return setAuthorAfterCreateUser(questData)
+            .then(() => {
+                return Quest.create(questData);
+            })
             .then(savedQuest => {
                 savedQuest.title.should.equal(questData.title);
                 savedQuest.description.should.equal(questData.description);
@@ -31,36 +54,46 @@ describe('models:Quest', () => {
             });
     });
 
-    it('should update by slug', () => {
+    it('error on save without required author', () => {
         const questData = questsMocks.regularQuest;
-        const city = 'Екатеринбург';
+        const ValidationError = mongoose.Error.ValidationError;
 
         return Quest.create(questData)
+            .catch(error => {
+                error.name.should.equal(ValidationError.name);
+            });
+    });
+
+    it('should update by slug', () => {
+        const city = 'Екатеринбург';
+
+        return setAuthorAfterCreateUser(questData)
+            .then(() => {
+                return Quest.create(questData);
+            })
             .then(savedQuest => Quest.update(savedQuest.slug, {city}))
             .then(updatedQuest => updatedQuest.city.should.equal(city));
     });
 
     it('should get by slug', () => {
-        const questData = questsMocks.regularQuest;
-
-        return Quest.create(questData)
+        return setAuthorAfterCreateUser(questData)
+            .then(() => Quest.create(questData))
             .then(savedQuest => Quest.getBySlug(savedQuest.slug))
             .then(foundQuest => foundQuest.title.should.equal(questData.title));
     });
 
     it('should remove by slug', () => {
-        const questData = questsMocks.regularQuest;
-
-        return Quest.create(questData)
+        return setAuthorAfterCreateUser(questData)
+            .then(() => Quest.create(questData))
             .then(savedQuest => Quest.removeBySlug(savedQuest.slug))
             .then(() => Quest.getBySlug(questData.slug).should.empty);
     });
 
     it('should get filtered quests by title and tags', () => {
-        const questData = Object.assign(questsMocks.regularQuest);
         const questPartTitle = questData.title[0];
 
-        return Quest.create(questData)
+        return setAuthorAfterCreateUser(questData)
+            .then(() => Quest.create(questData))
             .then(() => {
                 questData.tags = [questData.title];
                 questData.title = questData.description;
@@ -81,10 +114,8 @@ describe('models:Quest', () => {
     });
 
     it('should get filtered quests by tags', () => {
-        const questData = questsMocks.regularQuest;
-
-        return Quest
-            .create(questData)
+        return setAuthorAfterCreateUser(questData)
+            .then(() => Quest.create(questData))
             .then(() => {
                 return Quest
                     .getFilteredQuests(['tags'], questData.tags[0]);
@@ -99,10 +130,8 @@ describe('models:Quest', () => {
     });
 
     it('should get empty array', () => {
-        const questData = questsMocks.regularQuest;
-
-        return Quest
-            .create(questData)
+        return setAuthorAfterCreateUser(questData)
+            .then(() => Quest.create(questData))
             .then(() => {
                 return Quest
                     .getFilteredQuests(['tags'], questData.description);

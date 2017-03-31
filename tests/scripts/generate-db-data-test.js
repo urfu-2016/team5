@@ -5,15 +5,15 @@ const questGenerator = require('../../scripts/generate-db-data');
 require('chai').should();
 require('../../models/quest');
 const Quest = require('mongoose').model('Quest');
-const removeAllQuests = require('../../scripts/clear-db').removeAllQuests;
+const dbClearer = require('../../scripts/clear-db');
 
 describe('scripts:generate-db-data', () => {
     beforeEach(() => {
-        return removeAllQuests();
+        return dbClearer.removeAllQuests();
     });
 
     after(() => {
-        return removeAllQuests();
+        return dbClearer.removeAllQuests();
     });
 
     it('data-generation', () => {
