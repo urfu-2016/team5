@@ -1,15 +1,17 @@
 module.exports = {
     removeAllQuests: () => {
-        removeAllItems('../models/quest');
+        require('../models/quest');
+        removeAllItems('Quest');
     },
 
     removeAllUsers: () => {
-        removeAllItems('../models/user');
+        require('../models/user');
+        removeAllItems('User');
     }
 };
 
 function removeAllItems(modelName) {
-    return require(modelName)
+    return require('mongoose').model(modelName)
         .remove({})
         .exec();
 }
