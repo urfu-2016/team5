@@ -9,5 +9,17 @@ module.exports = {
         tags: ['Екатеринбург', 'Граффити']
     },
 
-    questWithoutRequiredFields: {}
+    questWithoutRequiredFields: {},
+
+    setAuthorAfterCreateUser(data) {
+        const username = 'username' + Date.now();
+
+        return new Promise((resolve, reject) => {
+            User.create({username})
+            .then(user => {
+                data.author = user;
+                resolve();
+            });
+        });
+    }
 };

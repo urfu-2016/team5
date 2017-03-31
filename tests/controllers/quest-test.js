@@ -9,21 +9,10 @@ const HttpStatus = require('http-status-codes');
 const dbClearer = require('../../scripts/clear-db');
 const slugify = require('slug');
 const questsMocks = require('../mocks/quests');
+const setAuthorAfterCreateUser = questsMocks.setAuthorAfterCreateUser;
 
 chai.should();
 chai.use(chaiHttp);
-
-function setAuthorAfterCreateUser(data) {
-    const username = 'username' + Date.now();
-
-    return new Promise((resolve, reject) => {
-        User.create({username})
-        .then(user => {
-            data.author = user;
-            resolve();
-        });
-    });
-}
 
 describe('controller:quest', () => {
     let questData;

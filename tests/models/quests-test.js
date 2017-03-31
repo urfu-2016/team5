@@ -6,18 +6,7 @@ const Quest = require('../../models/quest');
 const User = require('../../models/user');
 const questsMocks = require('../mocks/quests');
 const dbClearer = require('../../scripts/clear-db');
-
-function setAuthorAfterCreateUser(data) {
-    const username = 'username' + Date.now();
-
-    return new Promise((resolve, reject) => {
-        User.create({username})
-        .then(user => {
-            data.author = user;
-            resolve();
-        });
-    });
-}
+const setAuthorAfterCreateUser = questsMocks.setAuthorAfterCreateUser;
 
 describe('models:Quest', () => {
     let questData;
@@ -102,7 +91,7 @@ describe('models:Quest', () => {
             })
             .then(() => {
                 return Quest
-                    .getFilteredQuests(['title', 'tags'], questPartTitle);
+                    .searchByInternalProps(['title', 'tags'], questPartTitle);
             })
             .then(quests => {
                 quests.length
@@ -118,7 +107,7 @@ describe('models:Quest', () => {
             .then(() => Quest.create(questData))
             .then(() => {
                 return Quest
-                    .getFilteredQuests(['tags'], questData.tags[0]);
+                    .searchByInternalProps(['tags'], questData.tags[0]);
             })
             .then(quests => {
                 quests.length
@@ -134,11 +123,26 @@ describe('models:Quest', () => {
             .then(() => Quest.create(questData))
             .then(() => {
                 return Quest
-                    .getFilteredQuests(['tags'], questData.description);
+                    .searchByInternalProps(['tags'], questData.description);
             })
             .then(quests => {
                 quests.length
                     .should.equal(0);
+            });
+    });
+
+    it('should get quests by author', () => {
+        return setAuthorAfterCreateUser(questData)
+            .then(() => Quest.create(questData))
+            .then(() => {
+                return Quest
+                    .searchByAuthor(questData.author.username[0]);
+            })
+            .then(quests => {
+                quests.length
+                    .should.equal(1);
+                quests[0].authorId.username
+                    .should.equal(questData.author.username);
             });
     });
 });
