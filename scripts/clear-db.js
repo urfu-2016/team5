@@ -1,6 +1,6 @@
 require('../models/user');
 require('../models/quest');
-require('../models/account');
+// require('../models/account');
 
 module.exports = {
     removeAllQuests() {
