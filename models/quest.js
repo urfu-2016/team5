@@ -91,7 +91,7 @@ module.exports = {
 
     removeBySlug: slug => QuestModel.remove({slug}).exec(),
 
-    getFilteredQuests(searchProperties, searchString) {
+    searchByInternalProps(searchProperties, searchString) {
         const findParams = [];
         searchProperties.forEach(property => {
             let searchObject = {};
@@ -99,12 +99,24 @@ module.exports = {
             findParams.push(searchObject);
         });
 
+        const findObject = !findParams.length ? {} : { $or: findParams};
+
         return QuestModel
-            .find({$or: findParams})
-            .sort({dateOfCreation: -1})
+            .find(findObject)
+            .exec();
+    },
+
+    searchByAuthor(searchString) {
+        return QuestModel
+            .find({})
+            .populate('authorId')
             .exec()
             .then(quests => {
-                return quests;
+                searchString = searchString.toLowerCase();
+
+                return quests.filter(quest => {
+                    return quest.authorId.username.indexOf(searchString) === 0;
+                });
             });
     }
 };
