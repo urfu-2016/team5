@@ -4,7 +4,6 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../../app');
 const Quest = require('../../models/quest');
-const User = require('../../models/user');
 const HttpStatus = require('http-status-codes');
 const dbClearer = require('../../scripts/clear-db');
 const slugify = require('slug');

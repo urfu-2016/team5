@@ -38,7 +38,7 @@ module.exports = {
                     }
                     usedQuestSlugs.push(quest.slug);
 
-                    return  true;
+                    return true;
                 });
             })
             .then(quests => {

@@ -85,7 +85,7 @@ module.exports = {
             });
     },
 
-    getAll() { return QuestModel.find({}).exec(); },
+    getAll: () => QuestModel.find({}).exec(),
 
     getBySlug: slug => QuestModel.findOne({slug}).exec(),
 
@@ -99,7 +99,7 @@ module.exports = {
             findParams.push(searchObject);
         });
 
-        const findObject = !findParams.length ? {} : { $or: findParams};
+        const findObject = findParams.length ? {$or: findParams} : {};
 
         return QuestModel
             .find(findObject)

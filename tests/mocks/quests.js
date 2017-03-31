@@ -14,7 +14,7 @@ module.exports = {
     setAuthorAfterCreateUser(data) {
         const username = 'username' + Date.now();
 
-        return new Promise((resolve, reject) => {
+        return new Promise(resolve => {
             User.create({username})
             .then(user => {
                 data.author = user;

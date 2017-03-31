@@ -3,7 +3,6 @@
 require('chai').should();
 const mongoose = require('mongoose');
 const Quest = require('../../models/quest');
-const User = require('../../models/user');
 const questsMocks = require('../mocks/quests');
 const dbClearer = require('../../scripts/clear-db');
 const setAuthorAfterCreateUser = questsMocks.setAuthorAfterCreateUser;
