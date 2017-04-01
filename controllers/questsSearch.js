@@ -1,17 +1,23 @@
 const Quest = require('../models/quest');
 
+function getSearchPropsByRequest(req) {
+    const searchProperties = [];
+    if (req.query.searchByTitle) {
+        searchProperties.push('title');
+    }
+    if (req.query.searchByTags) {
+        searchProperties.push('tags');
+    }
+
+    return searchProperties;
+}
+
 module.exports = {
     getFoundQuests(req, res) {
-        const searchProperties = [];
+        const searchProperties = getSearchPropsByRequest(req);
         const searchString = req.query.searchString || '';
         const searchPromises = [];
-        // Пока не знаю как красивее
-        if (req.query.searchByTitle) {
-            searchProperties.push('title');
-        }
-        if (req.query.searchByTags) {
-            searchProperties.push('tags');
-        }
+
         if (req.query.searchByAuthor) {
             searchPromises.push(Quest.searchByAuthor(searchString));
         }
@@ -22,24 +28,13 @@ module.exports = {
 
         // Было жалко убирать все связанное с поиском по автору,
         // поэтому пока сделал так
-        const usedQuestSlugs = [];
         Promise.all(searchPromises)
             .then(data => {
                 return data.reduce((acc, quests) => {
-                    acc = acc.concat(quests);
+                    quests.forEach(quest => acc.add(quest));
 
                     return acc;
-                }, []);
-            })
-            .then(quests => {
-                return quests.filter(quest => {
-                    if (quest.slug in usedQuestSlugs) {
-                        return false;
-                    }
-                    usedQuestSlugs.push(quest.slug);
-
-                    return true;
-                });
+                }, new Set());
             })
             .then(quests => {
                 const renderData = {

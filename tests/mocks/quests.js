@@ -11,6 +11,12 @@ module.exports = {
 
     questWithoutRequiredFields: {},
 
+    questForSeatch: {
+        title: 'Описание',
+        description: 'Описание',
+        tags: ['Заголовок']
+    },
+
     setAuthorAfterCreateUser(data) {
         const username = 'username' + Date.now();
 

@@ -9,11 +9,11 @@ const dbClearer = require('../../scripts/clear-db');
 
 describe('scripts:generate-db-data', () => {
     beforeEach(() => {
-        return dbClearer.removeAllQuests();
+        return dbClearer.clearWholeDB();
     });
 
     after(() => {
-        return dbClearer.removeAllQuests();
+        return dbClearer.clearWholeDB();
     });
 
     it('data-generation', () => {
@@ -28,6 +28,9 @@ describe('scripts:generate-db-data', () => {
             .then(quests => {
                 quests.length
                     .should.equal(questsCount);
+
+                quests[0].authorId
+                    .should.not.empty;
             });
     });
 

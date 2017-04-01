@@ -21,9 +21,7 @@ describe('models:Quest', () => {
 
     it('should create model', () => {
         return setAuthorAfterCreateUser(questData)
-            .then(() => {
-                return Quest.create(questData);
-            })
+            .then(() =>  Quest.create(questData))
             .then(savedQuest => {
                 savedQuest.title.should.equal(questData.title);
                 savedQuest.description.should.equal(questData.description);
@@ -45,9 +43,7 @@ describe('models:Quest', () => {
         const ValidationError = mongoose.Error.ValidationError;
 
         return Quest.create(questData)
-            .catch(error => {
-                error.name.should.equal(ValidationError.name);
-            });
+            .catch(error => error.name.should.equal(ValidationError.name));
     });
 
     it('should update by slug', () => {
@@ -79,8 +75,8 @@ describe('models:Quest', () => {
         return setAuthorAfterCreateUser(questData)
             .then(() => Quest.create(questData))
             .then(() => {
-                questData.tags = [questData.title];
-                questData.title = questData.description;
+                questData.tags = questsMocks.questForSeatch.tags;
+                questData.title = questsMocks.questForSeatch.title;
 
                 return Quest.create(questData);
             })
@@ -117,10 +113,7 @@ describe('models:Quest', () => {
                 return Quest
                     .searchByInternalProps(['tags'], questData.description);
             })
-            .then(quests => {
-                quests.length
-                    .should.equal(0);
-            });
+            .then(quests => quests.length.should.equal(0));
     });
 
     it('should get quests by author', () => {

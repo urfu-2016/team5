@@ -42,10 +42,10 @@ module.exports = {
         const quest = new QuestModel({
             title,
             description,
-            slug: title && title.length ? slugify(title) : shortid.generate(),
+            slug: slugify(title),
             authorId: author ? author._id : undefined,
             city: city,
-            tags: tags ? tags : undefined
+            tags: tags ? tags : []
         });
 
         return quest
