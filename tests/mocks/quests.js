@@ -22,10 +22,10 @@ module.exports = {
 
         return new Promise(resolve => {
             User.create({username})
-            .then(user => {
-                data.author = user;
-                resolve();
-            });
+                .then(user => {
+                    data.author = user;
+                    resolve();
+                });
         });
     }
 };

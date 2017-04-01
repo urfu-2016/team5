@@ -30,7 +30,7 @@ describe('scripts:generate-db-data', () => {
                     .should.equal(questsCount);
 
                 quests[0].authorId
-                    .should.not.empty;
+                    .should.be.not.empty;
             });
     });
 
