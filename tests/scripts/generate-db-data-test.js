@@ -29,8 +29,8 @@ describe('scripts:generate-db-data', () => {
                 quests.length
                     .should.equal(questsCount);
 
-                quests[0].get('authorId')
-                    .should.be.not.empty;
+                quests[0].get('authorId').length
+                    .should.above(0);
             });
     });
 
