@@ -26,11 +26,11 @@ describe('scripts:generate-db-data', () => {
                     .exec();
             })
             .then(quests => {
+                quests[0].get('authorId').should.be.a('object');
                 quests.length
                     .should.equal(questsCount);
 
-                quests[0].get('authorId').length
-                    .should.above(0);
+                console.log(quests[0].get('authorId'));
             });
     });
 
