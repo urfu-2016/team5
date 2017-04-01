@@ -21,7 +21,7 @@ describe('models:Quest', () => {
 
     it('should create model', () => {
         return setAuthorAfterCreateUser(questData)
-            .then(() =>  Quest.create(questData))
+            .then(() => Quest.create(questData))
             .then(savedQuest => {
                 savedQuest.title.should.equal(questData.title);
                 savedQuest.description.should.equal(questData.description);
