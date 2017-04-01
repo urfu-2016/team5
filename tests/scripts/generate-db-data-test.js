@@ -8,13 +8,9 @@ const Quest = require('mongoose').model('Quest');
 const dbClearer = require('../../scripts/clear-db');
 
 describe('scripts:generate-db-data', () => {
-    beforeEach(() => {
-        return dbClearer.clearWholeDB();
-    });
+    beforeEach(() => dbClearer.clearWholeDB());
 
-    after(() => {
-        return dbClearer.clearWholeDB();
-    });
+    after(() => dbClearer.clearWholeDB());
 
     it('data-generation', () => {
         const questsCount = 10;
