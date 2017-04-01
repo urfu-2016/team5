@@ -50,9 +50,7 @@ module.exports = {
 
     getAll: () => UserModel.find({}).exec(),
 
-    getByUsername: username => UserModel
-        .findOne({username})
-        .exec(),
+    getByUsername: username => UserModel.findOne({username}).exec(),
 
     removeByUsername: username => UserModel
         .findOne({username})
