@@ -29,7 +29,7 @@ describe('scripts:generate-db-data', () => {
                 quests.length
                     .should.equal(questsCount);
 
-                quests[0].authorId
+                quests[0].get('authorId')
                     .should.be.not.empty;
             });
     });
