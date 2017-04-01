@@ -17,14 +17,12 @@ describe('controller:quest', () => {
     let questData;
 
     beforeEach(() => {
-        dbClearer.removeAllUsers();
-        dbClearer.removeAllQuests();
+        dbClearer.clearWholeDB();
         questData = Object.assign({}, questsMocks.regularQuest);
     });
 
     after(() => {
-        dbClearer.removeAllQuests();
-        dbClearer.removeAllUsers();
+        dbClearer.clearWholeDB();
     });
 
     it('should Create the quest', () => {

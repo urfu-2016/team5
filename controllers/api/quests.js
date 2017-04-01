@@ -24,7 +24,7 @@ module.exports = {
             city: req.body.city,
             tags: req.body.tags
         };
-        const promise = Quest.update(req.body.slug, questData);
+        const promise = Quest.update(req.params.slug, questData);
 
         return resolveRequestPromise(promise, res);
     },

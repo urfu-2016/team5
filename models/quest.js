@@ -73,10 +73,10 @@ module.exports = {
     update: (slug, {title, description, city, tags}) => {
         return QuestModel
             .findOne({slug})
+            .exec()
             .then(quest => {
                 quest.title = title ? title : quest.title;
                 quest.description = description ? description : quest.description;
-                quest.city = city ? city : quest.city;
                 quest.city = city ? city : quest.city;
                 quest.slug = title ? slugify(title) + shortid.generate() : quest.slug;
                 quest.tags = tags ? tags : quest.tags;

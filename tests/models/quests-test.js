@@ -11,14 +11,12 @@ describe('models:Quest', () => {
     let questData;
 
     beforeEach(() => {
-        dbClearer.removeAllUsers();
-        dbClearer.removeAllQuests();
+        dbClearer.clearWholeDB();
         questData = Object.assign({}, questsMocks.regularQuest);
     });
 
     after(() => {
-        dbClearer.removeAllQuests();
-        dbClearer.removeAllUsers();
+        dbClearer.clearWholeDB();
     });
 
     it('should create model', () => {
@@ -56,9 +54,7 @@ describe('models:Quest', () => {
         const city = 'Екатеринбург';
 
         return setAuthorAfterCreateUser(questData)
-            .then(() => {
-                return Quest.create(questData);
-            })
+            .then(() => Quest.create(questData))
             .then(savedQuest => Quest.update(savedQuest.slug, {city}))
             .then(updatedQuest => updatedQuest.city.should.equal(city));
     });
@@ -104,10 +100,7 @@ describe('models:Quest', () => {
     it('should get filtered quests by tags', () => {
         return setAuthorAfterCreateUser(questData)
             .then(() => Quest.create(questData))
-            .then(() => {
-                return Quest
-                    .searchByInternalProps(['tags'], questData.tags[0]);
-            })
+            .then(() => Quest.searchByInternalProps(['tags'], questData.tags[0]))
             .then(quests => {
                 quests.length
                     .should.equal(1);
@@ -133,10 +126,7 @@ describe('models:Quest', () => {
     it('should get quests by author', () => {
         return setAuthorAfterCreateUser(questData)
             .then(() => Quest.create(questData))
-            .then(() => {
-                return Quest
-                    .searchByAuthor(questData.author.username[0]);
-            })
+            .then(() => Quest.searchByAuthor(questData.author.username[0]))
             .then(quests => {
                 quests.length
                     .should.equal(1);
