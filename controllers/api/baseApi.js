@@ -25,6 +25,12 @@ function throwErrorOnFalseValue(objectToCheck, httpStatus) {
     }
 }
 
+function resolveRequestPromise(promise, res, successStatus = HttpStatus.OK, failureStatus = HttpStatus.NOT_FOUND) {
+    return promise
+        .then(getSuccessCallback(res, successStatus))
+        .catch(getErrorCallback(res, failureStatus));
+}
+
 function createError(status, message) {
     const err = new Error(message);
     err.status = status;
@@ -35,5 +41,6 @@ function createError(status, message) {
 module.exports = {
     getSuccessCallback,
     getErrorCallback,
-    throwErrorOnFalseValue
+    throwErrorOnFalseValue,
+    resolveRequestPromise
 };

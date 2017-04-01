@@ -12,21 +12,7 @@ module.exports = {
             slug: req.body.slug
         };
 
-        return Quest.create(quest)
-            .then(baseApi.getSuccessCallback(res, HttpStatus.CREATED))
-            .catch(baseApi.getErrorCallback(res, HttpStatus.NOT_FOUND));
-    },
-
-    getQuests(req, res) {
-        return Quest.getAll()
-            .then(baseApi.getSuccessCallback(res, HttpStatus.OK))
-            .catch(baseApi.getErrorCallback(res, HttpStatus.NOT_FOUND));
-    },
-
-    getQuestBySlug(req, res) {
-        return Quest.getBySlug(req.params.slug)
-            .then(baseApi.getSuccessCallback(res, HttpStatus.OK))
-            .catch(baseApi.getErrorCallback(res, HttpStatus.NOT_FOUND));
+        return baseApi.resolveRequestPromise(Quest.create(quest), res, HttpStatus.CREATED);
     },
 
     updateQuest(req, res) {
@@ -34,14 +20,14 @@ module.exports = {
             title: req.body.title,
             description: req.body.description
         };
-        return Quest.update(req.body.slug, questData)
-            .then(baseApi.getSuccessCallback(res, HttpStatus.OK))
-            .catch(baseApi.getErrorCallback(res, HttpStatus.NOT_FOUND));
+        const promise = Quest.update(req.body.slug, questData);
+
+        return baseApi.resolveRequestPromise(promise, res);
     },
 
-    removeQuest(req, res) {
-        return Quest.removeBySlug(req.params.slug)
-            .then(baseApi.getSuccessCallback(res, HttpStatus.OK))
-            .catch(baseApi.getErrorCallback(res, HttpStatus.NOT_FOUND));
-    }
+    getQuests: (req, res) => baseApi.resolveRequestPromise(Quest.getAll(), res),
+
+    getQuestBySlug: (req, res) => baseApi.resolveRequestPromise(Quest.getBySlug(req.params.slug), res),
+
+    removeQuest: (req, res) => baseApi.resolveRequestPromise(Quest.removeBySlug(req.params.slug), res)
 };
