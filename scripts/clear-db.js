@@ -1,6 +1,6 @@
 require('../models/user');
 require('../models/quest');
-// require('../models/account');
+require('../models/account');
 
 module.exports = {
     removeAllQuests: () => removeAllItems('Quest'),
@@ -10,8 +10,7 @@ module.exports = {
     removeAllAccounts: () => removeAllItems('Account'),
 
     clearWholeDB() {
-        // 'Account'
-        ['User', 'Quest'].forEach(removeAllItems);
+        ['User', 'Quest', 'Account'].forEach(removeAllItems);
     }
 };
 
