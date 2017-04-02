@@ -22,9 +22,10 @@ module.exports = {
             searchPromises.push(Quest.searchByAuthor(searchString));
         }
 
-        const quest = Quest.searchByInternalProps(searchProperties, searchString);
+        const questsPromise = Quest
+            .searchByInternalProps(searchProperties, searchString);
 
-        searchPromises.push(quest);
+        searchPromises.push(questsPromise);
 
         // Было жалко убирать все связанное с поиском по автору,
         // поэтому пока сделал так

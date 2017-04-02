@@ -22,11 +22,11 @@ describe('scripts:generate-db-data', () => {
                     .exec();
             })
             .then(quests => {
-                quests[0].get('authorId').should.be.a('object');
+                quests[0].get('authorId')
+                    .should.be.a('object');
+
                 quests.length
                     .should.equal(questsCount);
-
-                console.log(quests[0].get('authorId'));
             });
     });
 
