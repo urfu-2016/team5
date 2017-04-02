@@ -2,6 +2,8 @@ require('../models/user');
 require('../models/quest');
 require('../models/account');
 
+const mongoose = require('mongoose');
+
 module.exports = {
     removeAllQuests: () => removeAllItems('Quest'),
 
@@ -15,12 +17,20 @@ module.exports = {
             removeAllItems('User'),
             removeAllItems('Account')
         ]);
+    },
+
+    dropAll() {
+        return mongoose.connection.db.dropDatabase(err => {
+            if (err) {
+                console.log(err);
+            }
+        });
     }
 };
 
 function removeAllItems(modelName) {
-    const Model = require('mongoose').model(modelName);
-    return Model.remove({}).exec()
-        .then(() => Model.collection.dropIndexes());
+    return mongoose.model(modelName)
+        .remove({})
+        .exec();
 }
 

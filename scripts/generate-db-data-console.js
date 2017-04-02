@@ -17,6 +17,7 @@ const questsCount = consoleArgs['quests-count'];
 const usersCount = consoleArgs['users-count'];
 
 clearDb.removeAll()
+    .then(() => clearDb.dropAll())
     .then(() => Promise.all([
         generateDb.createQuestsFromJson(questsJson),
         generateDb.createUsersFromJson(usersJson),
