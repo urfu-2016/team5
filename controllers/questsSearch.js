@@ -31,11 +31,13 @@ module.exports = {
         // поэтому пока сделал так
         Promise.all(searchPromises)
             .then(data => {
-                return data.reduce((acc, quests) => {
+                const quests = data.reduce((acc, quests) => {
                     quests.forEach(quest => acc.add(quest));
 
                     return acc;
                 }, new Set());
+
+                return Array.from(quests);
             })
             .then(quests => {
                 const renderData = {
