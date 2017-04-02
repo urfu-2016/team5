@@ -56,9 +56,9 @@ module.exports = {
 
     verifyPassword: account => {
         return AccountModel
-            .find({username: account.username})
+            .findOne({username: account.username})
             .exec()
-            .then(acc => bcrypt.compare(account.password, acc[0].password));
+            .then(acc => bcrypt.compare(account.password, acc.password));
     },
 
     changePassword: function (account, newPassword) {
