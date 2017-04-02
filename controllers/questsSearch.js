@@ -37,7 +37,10 @@ module.exports = {
                     return acc;
                 }, new Set());
 
-                return Array.from(quests);
+                return Array.from(quests)
+                    .sort((a, b) => {
+                        return new Date(b.dateOfCreation) - new Date(a.dateOfCreation);
+                    });
             })
             .then(quests => {
                 const renderData = {
