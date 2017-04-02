@@ -87,7 +87,7 @@ describe('models:Account', () => {
     it('should not create account without password', () => {
         return Account
            .create({username: account.username})
-           .catch(err => err.message.should.be.equal('Password required'));
+           .catch(err => err.message.should.be.equal(constants.accountModel.passwordRequiredMessage));
     });
 
     it('should not create account without username', () => {
@@ -105,9 +105,9 @@ describe('models:Account', () => {
 
     it('fails verification on wrong password', () => {
         return Account
-                .create(account)
-                .then(() => Account.verifyPassword(accountWithWrongPassword))
-                .then(result => result.should.not.be.ok);
+            .create(account)
+            .then(() => Account.verifyPassword(accountWithWrongPassword))
+            .then(result => result.should.not.be.ok);
     });
 
     it('changes password', () => {
