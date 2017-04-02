@@ -5,12 +5,14 @@
 
 {{#content "content"}}
     <h2 class="page__title">Все квесты</h2>
+    {{> searchbar/searchbar }}
     <div class="quests">
-        {{#each quests}} 
+        {{#each quests}}
             <div class="quests__item">
                 {{> questCard/questCard }}
             </div>
         {{/each}}
     </div>
+    {{#if isEmptyQuests}}Квестов нет{{/if}}
 {{/content}}
 {{/extend}}

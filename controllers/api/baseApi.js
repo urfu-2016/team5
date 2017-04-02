@@ -13,6 +13,9 @@ function getSuccessCallback(res, status) {
 function getErrorCallback(res, httpStatus) {
     return err => {
         err.status = httpStatus || err.status;
+        if (err.name && err.name === 'ValidationError') {
+            err.status = HttpStatus.BAD_REQUEST;
+        }
         res
             .status(err.status)
             .send({error: HttpStatus.getStatusText(err.status)});

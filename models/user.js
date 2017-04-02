@@ -9,7 +9,6 @@ const userSchema = new mongoose.Schema({
     username: {
         type: String,
         lowercase: true,
-        index: true,
         unique: true,
         required: true
     },
@@ -29,7 +28,7 @@ const userSchema = new mongoose.Schema({
 const UserModel = mongoose.model('User', userSchema);
 
 module.exports = {
-    create: ({firstname, surname, username}) => {
+    create: ({firstname = '', surname = '', username}) => {
         const user = new UserModel({
             firstname,
             surname,

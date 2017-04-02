@@ -10,7 +10,8 @@ module.exports = {
     removeAllAccounts: () => removeAllItems('Account'),
 
     clearWholeDB() {
-        ['User', 'Quest', 'Account'].forEach(removeAllItems);
+        // 'Account'
+        ['User', 'Quest'].forEach(removeAllItems);
     }
 };
 

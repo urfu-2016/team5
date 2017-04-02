@@ -9,7 +9,9 @@ module.exports = {
         const quest = {
             title: req.body.title,
             description: req.body.description,
-            slug: req.body.slug
+            author: req.body.author,
+            city: req.body.city,
+            tags: req.body.tags
         };
 
         return resolveRequestPromise(Quest.create(quest), res, {successCode: HttpStatus.CREATED});
@@ -18,9 +20,11 @@ module.exports = {
     updateQuest(req, res) {
         const questData = {
             title: req.body.title,
-            description: req.body.description
+            description: req.body.description,
+            city: req.body.city,
+            tags: req.body.tags
         };
-        const promise = Quest.update(req.body.slug, questData);
+        const promise = Quest.update(req.params.slug, questData);
 
         return resolveRequestPromise(promise, res);
     },
@@ -30,4 +34,5 @@ module.exports = {
     getQuestBySlug: (req, res) => resolveRequestPromise(Quest.getBySlug(req.params.slug), res),
 
     removeQuest: (req, res) => resolveRequestPromise(Quest.removeBySlug(req.params.slug), res)
+
 };

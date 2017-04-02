@@ -13,7 +13,11 @@ const questSchema = new mongoose.Schema({
         type: [Image],
         default: []
     },
-    authorId: {type: ObjectId, ref: 'User'},
+    authorId: {
+        type: ObjectId,
+        ref: 'User',
+        required: true
+    },
     likes: {
         type: [{type: ObjectId, ref: 'User'}],
         default: []
@@ -34,24 +38,48 @@ const questSchema = new mongoose.Schema({
 const QuestModel = mongoose.model('Quest', questSchema);
 
 module.exports = {
-    create: ({author, title, description = '', slug}) => {
+    create: ({author, title = '', description = '', city = '', tags}) => {
         const quest = new QuestModel({
             title,
             description,
-            slug: slug ? slugify(slug) : shortid.generate(),
-            authorId: author ? author._id : undefined
+            slug: slugify(title),
+            authorId: author ? author._id : undefined,
+            city: city,
+            tags: tags ? tags : []
         });
 
-        return quest.save();
+        return quest
+            .save()
+            .catch(err => {
+                const isMongoDuplicateKeyError = err.name === 'MongoError' &&
+                    err.code === 11000;
+                if (!isMongoDuplicateKeyError) {
+                    throw err;
+                }
+
+                return false;
+            })
+            .then(data => {
+                if (!data) {
+                    quest.slug += shortid.generate();
+
+                    return quest.save();
+                }
+
+                return data;
+            });
     },
 
-    update: (slug, {title, description, city}) => {
+    update: (slug, {title, description, city, tags}) => {
         return QuestModel
             .findOne({slug})
+            .exec()
             .then(quest => {
                 quest.title = title ? title : quest.title;
                 quest.description = description ? description : quest.description;
                 quest.city = city ? city : quest.city;
+                quest.slug = title ? slugify(title) + shortid.generate() : quest.slug;
+                quest.tags = tags ? tags : quest.tags;
 
                 return quest.save();
             });
@@ -61,9 +89,34 @@ module.exports = {
 
     getBySlug: slug => QuestModel.findOne({slug}).exec(),
 
-    removeBySlug: slug => {
+    removeBySlug: slug => QuestModel.remove({slug}).exec(),
+
+    searchByInternalProps(searchProperties, searchString) {
+        const findParams = [];
+        searchProperties.forEach(property => {
+            let searchObject = {};
+            searchObject[property] = {$regex: searchString, $options: 'i'};
+            findParams.push(searchObject);
+        });
+
+        const findObject = findParams.length ? {$or: findParams} : {};
+
         return QuestModel
-            .findOne({slug})
-            .then(quest => quest.remove());
+            .find(findObject)
+            .exec();
+    },
+
+    searchByAuthor(searchString) {
+        return QuestModel
+            .find({})
+            .populate('authorId')
+            .exec()
+            .then(quests => {
+                searchString = searchString.toLowerCase();
+
+                return quests.filter(quest => {
+                    return quest.authorId.username.indexOf(searchString) === 0;
+                });
+            });
     }
 };
