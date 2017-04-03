@@ -19,6 +19,7 @@ module.exports = {
 
     updateQuest(req, res) {
         const questData = {
+            slug: req.body.slug,
             title: req.body.title,
             description: req.body.description,
             city: req.body.city,
@@ -34,5 +35,4 @@ module.exports = {
     getQuestBySlug: (req, res) => resolveRequestPromise(Quest.getBySlug(req.params.slug), res),
 
     removeQuest: (req, res) => resolveRequestPromise(Quest.removeBySlug(req.params.slug), res)
-
 };

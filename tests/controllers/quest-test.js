@@ -8,30 +8,25 @@ const HttpStatus = require('http-status-codes');
 const dbClearer = require('../../scripts/clear-db');
 const slugify = require('slug');
 const questsMocks = require('../mocks/quests');
-const setAuthorAfterCreateUser = questsMocks.setAuthorAfterCreateUser;
 
 chai.should();
 chai.use(chaiHttp);
 
 describe('controller:quest', () => {
-    let questData;
+    const questData = questsMocks.regularQuest;
 
-    beforeEach(() => {
-        dbClearer.clearWholeDB();
-        questData = Object.assign({}, questsMocks.regularQuest);
-    });
+    beforeEach(() => dbClearer.removeAll());
 
-    after(() => {
-        dbClearer.clearWholeDB();
-    });
+    after(() => dbClearer.removeAll());
 
-    it('should Create the quest', () => {
-        return setAuthorAfterCreateUser(questData)
+    it('should create the quest', () => {
+        let quest = Object.assign({}, questData);
+        return Quest._setAuthor(quest)
             .then(() => {
                 return chai
                     .request(server)
                     .post('/api/quests')
-                    .send(questData);
+                    .send(quest);
             })
             .then(res => {
                 res.status.should.equal(HttpStatus.CREATED);
@@ -41,8 +36,8 @@ describe('controller:quest', () => {
     });
 
     it('should GET all the quests', () => {
-        return setAuthorAfterCreateUser(questData)
-            .then(() => Quest.create(questData))
+        return Quest._createWithAuthor(questData)
+            .then(() => Quest._createWithAuthor(questData))
             .then(() => {
                 return chai.request(server)
                     .get('/api/quests')
@@ -50,15 +45,14 @@ describe('controller:quest', () => {
             })
             .then(res => {
                 res.status.should.equal(HttpStatus.OK);
-                res.body.data.should.length.of.at(1);
+                res.body.data.should.length.of.at(2);
             });
     });
 
     it('should GET a quest by the given slug', () => {
         const slug = slugify(questData.title);
 
-        return setAuthorAfterCreateUser(questData)
-            .then(() => Quest.create(questData))
+        return Quest._createWithAuthor(questData)
             .then(() => {
                 return chai.request(server)
                     .get(`/api/quests/${slug}`)
@@ -77,8 +71,7 @@ describe('controller:quest', () => {
             description: 'SomeOtherDescription'
         };
 
-        return setAuthorAfterCreateUser(questData)
-            .then(() => Quest.create(questData))
+        return Quest._createWithAuthor(questData)
             .then(() => {
                 return chai.request(server)
                     .put(`/api/quests/${slug}`)
@@ -94,8 +87,7 @@ describe('controller:quest', () => {
     it('should delete a quest', () => {
         const slug = slugify(questData.title);
 
-        return setAuthorAfterCreateUser(questData)
-            .then(() => Quest.create(questData))
+        return Quest._createWithAuthor(questData)
             .then(() => {
                 return chai
                     .request(server)

@@ -1,32 +1,82 @@
 'use strict';
 
-const Quest = require('../models/quest');
 const User = require('../models/user');
-const slug = 'Novyj-kvest';
-const titlePrefix = 'Заголовок ';
-const descriptionPrefix = 'Описание ';
-const tags = ['Екатеринбург', 'Памятники'];
-const username = 'nick';
+const Quest = require('../models/quest');
 
-module.exports = questCount => {
-    questCount = questCount || 1;
+function createAll(model, allData) {
+    return Promise.all(
+        allData.map(data => model.create(data))
+    );
+}
+
+function generateImages({questId, imagesCount = 10}) {
+    const images = [];
+    const dummyUrl = 'https://dummyimage.com';
+    const imageSize = '300x300';
+    const backgroundColor = '555';
+    const foregroundColor = 'ffd70';
+
+    for (let i = 0; i < imagesCount; i++) {
+        let query = `${imageSize}/${backgroundColor}/${foregroundColor}`;
+        let imageData = {
+            title: `title ${i}`,
+            src: `${dummyUrl}/${query}&text=quest+${questId}+${i}`
+        };
+
+        images.push(imageData);
+    }
+
+    return images;
+}
+
+module.exports.generateQuests = ({questsCount = 10}) => {
     const quests = [];
 
-    return User.create({username: username + Date.now()})
+    return User.create({username: 'User' + Date.now()})
         .then(user => {
-            for (let i = 0; i < questCount; i++) {
-                let data = {
-                    title: `${titlePrefix} ${i}`,
-                    description: `${descriptionPrefix} ${i}`,
-                    slug: `${slug} ${i}`,
-                    tags,
-                    author: user
+            for (let i = 0; i < questsCount; i++) {
+                let questData = {
+                    title: `Заголовок ${i}`,
+                    description: `Описание ${i}`,
+                    author: user,
+                    images: generateImages({questId: i}),
+                    slug: `${i}`,
+                    city: 'Екатеринбург'
                 };
 
-                quests.push(Quest.create(data));
+                quests.push(questData);
             }
 
-            return Promise
-                .all(quests);
+            return createAll(Quest, quests);
         });
+};
+
+module.exports.generateUsers = ({usersCount = 1}) => {
+    const users = [];
+
+    for (let i = 0; i < usersCount; i++) {
+        let userData = {
+            firstname: `Пользователь ${i}`,
+            surname: `Фамилия ${i}`,
+            username: `user_${i}`
+        };
+
+        users.push(userData);
+    }
+
+    return createAll(User, users);
+};
+
+module.exports.createUsersFromJson = json => {
+    const data = JSON.parse(json).data;
+
+    return createAll(User, data);
+};
+
+module.exports.createQuestsFromJson = json => {
+    const data = JSON.parse(json).data;
+
+    return Promise.all(
+        data.map(data => Quest._createWithAuthor(data))
+    );
 };

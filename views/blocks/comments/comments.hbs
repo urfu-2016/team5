@@ -5,13 +5,13 @@
     <textarea form="" maxLength=300 placeholder="Напишите комментарий :)" name="comment"></textarea>
     </form>
     {{/if}}
-    {{#each comments}}
+    {{#each quest.comments}}
         <article class="comment">
             <p class="comment__author">
                 {{author}}
             </p>
             <p class="comment__text">
-                {{msg}}
+                {{message}}
             </p>
         </article>
     {{/each}}

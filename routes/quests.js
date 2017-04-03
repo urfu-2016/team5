@@ -3,11 +3,21 @@
 const express = require('express');
 const router = express.Router();
 
-const fs = require('fs');
-
-const quest = fs.readFileSync('./mocks/quest.json');
-const questData = JSON.parse(quest);
 const questsController = require('../controllers/api/quests');
+const Quest = require('../models/quest');
+
+router.route('/quests/:slug').get(function (req, res) {
+    Quest.getBySlug(req.params.slug).then(questData => {
+        const renderData = {
+            title: 'Квест',
+            quest: questData,
+            isAuth: true, // TODO: Убрать эти заглушки
+            isCreator: false  // TODO: Убрать эти заглушки
+        };
+
+        res.render('questsId/quests-id', renderData);
+    });
+});
 
 router.route('/api/quests')
     .get(questsController.getQuests)
@@ -17,10 +27,5 @@ router.route('/api/quests/:slug')
     .get(questsController.getQuestBySlug)
     .put(questsController.updateQuest)
     .delete(questsController.removeQuest);
-
-router.get('/quests/:id', function (req, res) {
-    // TODO: Нужно брать квест по req.id и рендерить в шаблоне quest
-    res.render('questsId/quests-id', questData);
-});
 
 module.exports = router;

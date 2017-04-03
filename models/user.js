@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
 const UserModel = mongoose.model('User', userSchema);
 
 module.exports = {
-    create: ({firstname = '', surname = '', username}) => {
+    create({firstname = '', surname = '', username}) {
         const user = new UserModel({
             firstname,
             surname,
@@ -38,7 +38,7 @@ module.exports = {
         return user.save();
     },
 
-    update: (username, {firstname, surname}) => {
+    update(username, {firstname, surname}) {
         return UserModel.findOne({username}).then(user => {
             user.firstname = firstname ? firstname : user.firstname;
             user.surname = surname ? surname : user.surname;

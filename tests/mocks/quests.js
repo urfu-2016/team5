@@ -11,21 +11,20 @@ module.exports = {
 
     questWithoutRequiredFields: {},
 
-    questForSeatch: {
+    questForSearch: {
         title: 'Описание',
         description: 'Описание',
         tags: ['Заголовок']
     },
 
-    setAuthorAfterCreateUser(data) {
-        const username = 'username' + Date.now();
+    oneMoreQuest: {
+        title: 'Заголовок',
+        description: 'Описание',
+        slug: 'some-slug-2'
+    },
 
-        return new Promise(resolve => {
-            User.create({username})
-                .then(user => {
-                    data.author = user;
-                    resolve();
-                });
-        });
+    questWithoutSlug: {
+        title: 'Заголовок',
+        description: 'Описание'
     }
 };

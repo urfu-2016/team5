@@ -11,7 +11,7 @@ const layouts = require('handlebars-layouts');
 const index = require('./routes/index');
 const quests = require('./routes/quests');
 const users = require('./routes/users');
-// const auth = require('./routes/auth');
+// Const auth = require('./routes/auth');
 
 // const passport = require('./libs/passport-init');
 
@@ -35,7 +35,7 @@ app.use('/quests', express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/', quests);
 app.use('/', users);
-// app.use('/', auth);
+// App.use('/', auth);
 
 // app.use(passport.initialize());
 // app.use(passport.session());
