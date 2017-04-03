@@ -6,6 +6,7 @@
     "start": "npm run generate && npm run build && node index.js",
     "production": "NODE_ENV=production node index.js",
     "prepush": "npm run lint && npm run test",
+    "precommit": "npm run lint",
     "lint": "stylelint --ignore-path .gitignore *.css **/*.css && eslint --ignore-path .gitignore .",
     "test": "mocha --recursive ./tests",
     "generate": "node ./scripts/generate-db-data-console.js",
