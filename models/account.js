@@ -3,7 +3,7 @@
 const mongoose = require('../libs/mongoose-connection');
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
-const constants = require('../constants/constants');
+const constants = require('../constants/models').Account;
 
 const accountSchema = new mongoose.Schema({
     username: {
@@ -33,7 +33,7 @@ const saltRounds = 10;
 module.exports = {
     create(accountData) {
         if (!accountData.password) {
-            return Promise.reject(new Error(constants.accountModel.passwordRequiredMessage));
+            return Promise.reject(new Error(constants.passwordRequiredMessage));
         }
 
         return User
@@ -66,7 +66,7 @@ module.exports = {
             .verifyPassword(account)
             .then(verificationResult => {
                 if (!verificationResult) {
-                    throw new Error(constants.accountModel.wrongPasswordMessage);
+                    throw new Error(constants.wrongPasswordMessage);
                 }
             })
             .then(() => AccountModel.findOne({username: account.username}).exec())

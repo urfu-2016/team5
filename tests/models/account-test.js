@@ -68,7 +68,7 @@ describe('models:Account', () => {
             .create(userObject)
             .then(() => Account.create(account))
             .catch(err => {
-                err.code.should.be.equal(constants.mongo.mongoDuplicateErrorCode);
+                err.code.should.be.equal(constants.mongoose.mongoDuplicateErrorCode);
 
                 return AccountMongo
                     .find(userObject)
@@ -81,19 +81,19 @@ describe('models:Account', () => {
         return Account
             .create(account)
             .then(() => Account.create(account))
-            .catch(err => err.code.should.be.equal(constants.mongo.mongoDuplicateErrorCode));
+            .catch(err => err.code.should.be.equal(constants.mongoose.mongoDuplicateErrorCode));
     });
 
     it('should not create account without password', () => {
         return Account
            .create({username: account.username})
-           .catch(err => err.message.should.be.equal(constants.accountModel.passwordRequiredMessage));
+           .catch(err => err.message.should.be.equal(constants.models.Account.passwordRequiredMessage));
     });
 
     it('should not create account without username', () => {
         return Account
             .create({password: account.password})
-            .catch(err => err.name.should.be.equal(constants.mongo.validationErrorName));
+            .catch(err => err.name.should.be.equal(constants.mongoose.validationErrorName));
     });
 
     it('verifies password', () => {
@@ -124,6 +124,6 @@ describe('models:Account', () => {
         return Account
             .create(account)
             .then(() => Account.changePassword(accountWithWrongPassword, account.password))
-            .catch(err => err.message.should.be.equal(constants.accountModel.wrongPasswordMessage));
+            .catch(err => err.message.should.be.equal(constants.models.Account.wrongPasswordMessage));
     });
 });

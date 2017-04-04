@@ -2,6 +2,7 @@
 
 const User = require('../models/user');
 const Quest = require('../models/quest');
+const constants = require('../constants/generation');
 
 function createAll(model, allData) {
     return Promise.all(
@@ -11,10 +12,7 @@ function createAll(model, allData) {
 
 function generateImages({questId, imagesCount = 10}) {
     const images = [];
-    const dummyUrl = 'https://dummyimage.com';
-    const imageSize = '300x300';
-    const backgroundColor = '555';
-    const foregroundColor = 'ffd70';
+    const {dummyUrl, imageSize, backgroundColor, foregroundColor} = constants.image;
 
     for (let i = 0; i < imagesCount; i++) {
         let query = `${imageSize}/${backgroundColor}/${foregroundColor}`;
@@ -36,12 +34,12 @@ module.exports.generateQuests = ({questsCount = 10}) => {
         .then(user => {
             for (let i = 0; i < questsCount; i++) {
                 let questData = {
-                    title: `Заголовок ${i}`,
-                    description: `Описание ${i}`,
+                    title: `${constants.quest.titlePrefix} ${i}`,
+                    description: `${constants.quest.descriptionPrefix} ${i}`,
                     author: user,
                     images: generateImages({questId: i}),
                     slug: `${i}`,
-                    city: 'Екатеринбург'
+                    city: constants.quest.city
                 };
 
                 quests.push(questData);
@@ -56,9 +54,9 @@ module.exports.generateUsers = ({usersCount = 1}) => {
 
     for (let i = 0; i < usersCount; i++) {
         let userData = {
-            firstname: `Пользователь ${i}`,
-            surname: `Фамилия ${i}`,
-            username: `user_${i}`
+            firstname: `${constants.user.firstnamePrefix} ${i}`,
+            surname: `${constants.user.surnamePrefix} ${i}`,
+            username: `${constants.user.usernamePrefix}${i}`
         };
 
         users.push(userData);

@@ -3,13 +3,14 @@
 
 const express = require('express');
 const router = express.Router();
+const constants = require('../constants/controllers');
 const questsSearch = require('../controllers/questsSearch');
 const Quest = require('../models/quest');
 
 router.get('/', function (req, res) {
     Quest.getAll().then(data => {
         const renderData = {
-            title: 'Список квестов',
+            title: constants.title,
             quests: data
         };
 

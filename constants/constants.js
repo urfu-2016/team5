@@ -1,6 +1,9 @@
 'use strict';
 
+// Для доступа ко всем константам сразу
 module.exports = {
-    accountModel: require('./models/account'),
-    mongo: require('./models/mongoConstants')
+    controllers: require('./controllers'),
+    generation: require('./generation'),
+    mongoose: require('./mongoose'),
+    models: require('./models')
 };
