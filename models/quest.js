@@ -1,5 +1,6 @@
 'use strict';
 
+const constants = require('../constants/mongoose');
 const mongoose = require('../libs/mongoose-connection');
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const Image = require('./schemas/image');
@@ -51,8 +52,8 @@ module.exports = {
         return quest
             .save()
             .catch(err => {
-                const isMongoDuplicateKeyError = err.name === 'MongoError' &&
-                    err.code === 11000;
+                const isMongoDuplicateKeyError = err.name === constants.mongoErrorName &&
+                    err.code === constants.mongoDuplicateErrorCode;
                 if (!isMongoDuplicateKeyError) {
                     throw err;
                 }

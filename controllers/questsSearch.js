@@ -1,3 +1,6 @@
+'use strict';
+
+const constants = require('../constants/controllers').questSearchController;
 const Quest = require('../models/quest');
 
 function getSearchPropsByRequest(req) {
@@ -27,8 +30,8 @@ module.exports = {
 
         searchPromises.push(questsPromise);
 
-        // Было жалко убирать все связанное с поиском по автору,
-        // поэтому пока сделал так
+        // FIXME: Было жалко убирать все связанное с поиском по автору,
+        // FIXME: поэтому пока сделал так
         Promise.all(searchPromises)
             .then(data => {
                 const quests = data.reduce((acc, quests) => {
@@ -44,7 +47,7 @@ module.exports = {
             })
             .then(quests => {
                 const renderData = {
-                    title: 'Список квестов',
+                    title: constants.title,
                     quests: quests || [],
                     isEmptyQuests: quests.length === 0
                 };
