@@ -11,7 +11,7 @@ const removeAllUsers = require('../../scripts/clear-db').removeAllUsers;
 chai.should();
 chai.use(chaiHttp);
 
-describe('controller:quest', () => {
+describe('controller:users', () => {
     beforeEach(() => removeAllUsers());
 
     after(() => removeAllUsers());
@@ -19,27 +19,34 @@ describe('controller:quest', () => {
     it('should GET all the users', () => {
         const userData = userMocks.regularUser;
 
-        return User.create(userData)
-            .then(() => chai.request(server)
-                .get('/api/users')
-                .send()
-                .then(res => {
-                    res.status.should.equal(HttpStatus.OK);
-                    res.body.data.should.length.of.at(1);
-                }));
+        return User
+            .create(userData)
+            .then(() => {
+                return chai
+                    .request(server)
+                    .get('/api/users')
+                    .send()
+                    .then(res => {
+                        res.status.should.equal(HttpStatus.OK);
+                        res.body.data.should.length.of.at(1);
+                    });
+            });
     });
 
     it('should GET a user by the given username', () => {
         const userData = userMocks.regularUser;
 
-        return User.create(userData)
-            .then(() => chai.request(server)
-                .get(`/api/users/${userData.username}`)
-                .send()
-                .then(res => {
-                    res.status.should.equal(HttpStatus.OK);
-                    res.body.data.username.should.equal(userData.username);
-                }));
+        return User
+            .create(userData)
+            .then(() => {
+                return chai.request(server)
+                    .get(`/api/users/${userData.username}`)
+                    .send()
+                    .then(res => {
+                        res.status.should.equal(HttpStatus.OK);
+                        res.body.data.username.should.equal(userData.username);
+                    });
+            });
     });
 
     it('should answer with status 404', () => {

@@ -2,50 +2,40 @@
 
 const HttpStatus = require('http-status-codes');
 
-function getSuccessCallback(res, status) {
-    return data => {
-        res
-            .status(status)
-            .send({data, message: HttpStatus.getStatusText(status)});
-    };
+function sendResponse(res, status, data) {
+    res.status(status).send(data);
 }
 
-function getErrorCallback(res, httpStatus) {
-    return err => {
-        err.status = err.name === 'ValidationError' ? HttpStatus.BAD_REQUEST : httpStatus;
+function getSuccessCallback(res, status) {
+    return data => sendResponse(res, status, {data, message: HttpStatus.getStatusText(status)});
+}
 
-        res
-            .status(err.status)
-            .send({error: HttpStatus.getStatusText(err.status), message: err.message});
+function getErrorCallback(res, status) {
+    return err => {
+        status = err.name === 'ValidationError' ? HttpStatus.BAD_REQUEST : status;
+        sendResponse(res, status, {error: HttpStatus.getStatusText(status), message: err.message});
     };
 }
 
 function resolveRequestPromise(promise, res, statusCodes = {}) {
-    statusCodes = getStatusCodes(statusCodes);
+    statusCodes.successCode = statusCodes.successCode || HttpStatus.OK;
+    statusCodes.failureCode = statusCodes.failureCode || HttpStatus.NOT_FOUND;
 
-    return promise
-        .then(getSuccessCallback(res, statusCodes.successCode))
-        .catch(getErrorCallback(res, statusCodes.failureCode));
-}
+    return responseMessages => {
+        if (responseMessages) {
+            return promise
+                .then(() => getSuccessCallback(res, statusCodes.successCode)(responseMessages.onSuccess))
+                .catch(() => getErrorCallback(res, statusCodes.failureCode)(new Error(responseMessages.onError)));
+        }
 
-function resolvePostPromise(promise, res, statusCodes = {}, responseMessages = {}) {
-    statusCodes = getStatusCodes(statusCodes);
-
-    return promise
-        .then(() => getSuccessCallback(res, statusCodes.successCode)(responseMessages.onResolve))
-        .catch(() => getErrorCallback(res, statusCodes.failureCode)(new Error(responseMessages.onError)));
-}
-
-function getStatusCodes(statusCodes) {
-    return {
-        successCode: statusCodes.successCode || HttpStatus.OK,
-        failureCode: statusCodes.failureCode || HttpStatus.NOT_FOUND
+        return promise
+            .then(getSuccessCallback(res, statusCodes.successCode))
+            .catch(getErrorCallback(res, statusCodes.failureCode));
     };
 }
 
 module.exports = {
     getSuccessCallback,
     getErrorCallback,
-    resolveRequestPromise,
-    resolvePostPromise
+    resolveRequestPromise
 };

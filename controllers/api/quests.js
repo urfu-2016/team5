@@ -14,7 +14,7 @@ module.exports = {
             tags: req.body.tags
         };
 
-        return resolveRequestPromise(Quest.create(quest), res, {successCode: HttpStatus.CREATED});
+        return resolveRequestPromise(Quest.create(quest), res, {successCode: HttpStatus.CREATED})();
     },
 
     updateQuest(req, res) {
@@ -27,12 +27,12 @@ module.exports = {
         };
         const promise = Quest.update(req.params.slug, questData);
 
-        return resolveRequestPromise(promise, res);
+        return resolveRequestPromise(promise, res)();
     },
 
-    getQuests: (req, res) => resolveRequestPromise(Quest.getAll(), res),
+    getQuests: (req, res) => resolveRequestPromise(Quest.getAll(), res)(),
 
-    getQuestBySlug: (req, res) => resolveRequestPromise(Quest.getBySlug(req.params.slug), res),
+    getQuestBySlug: (req, res) => resolveRequestPromise(Quest.getBySlug(req.params.slug), res)(),
 
-    removeQuest: (req, res) => resolveRequestPromise(Quest.removeBySlug(req.params.slug), res)
+    removeQuest: (req, res) => resolveRequestPromise(Quest.removeBySlug(req.params.slug), res)()
 };
