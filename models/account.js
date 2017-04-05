@@ -3,7 +3,7 @@
 const mongoose = require('../libs/mongoose-connection');
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
-const constants = require('../constants/models').Account;
+const constants = require('../constants/constants').models.Account;
 
 const accountSchema = new mongoose.Schema({
     username: {
@@ -58,7 +58,25 @@ module.exports = {
         return AccountModel
             .findOne({username: account.username})
             .exec()
-            .then(acc => bcrypt.compare(account.password, acc.password));
+            .then(acc => {
+                if (!acc) {
+                    throw new Error(constants.wrongPasswordMessage);
+                }
+
+                return acc;
+            })
+            .then(acc => {
+                return bcrypt.compare(account.password, acc.password);
+            })
+            .then(result => {
+                // 'Неверное имя пользователя или пароль.'
+
+                if (!result) {
+                    throw new Error(constants.wrongPasswordMessage);
+                }
+
+                return result;
+            });
     },
 
     changePassword(account, newPassword) {

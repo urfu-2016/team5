@@ -107,7 +107,7 @@ describe('models:Account', () => {
         return Account
             .create(account)
             .then(() => Account.verifyPassword(accountWithWrongPassword))
-            .then(result => result.should.not.be.ok);
+            .catch(err => err.message.should.be.equal(constants.models.Account.wrongPasswordMessage));
     });
 
     it('changes password', () => {

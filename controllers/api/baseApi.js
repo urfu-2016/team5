@@ -1,52 +1,52 @@
 'use strict';
 
-const HttpStatus = require('http-status-codes');
+const httpStatus = require('http-status-codes');
+
+function sendResponse(res, status, data) {
+    res.status(status).send(data);
+}
 
 function getSuccessCallback(res, status) {
-    return data => {
-        res
-            .status(status)
-            .send({data, message: HttpStatus.getStatusText(status)});
-    };
+    return data => sendResponse(res, status, {data, message: httpStatus.getStatusText(status)});
 }
 
-function getErrorCallback(res, httpStatus) {
+function getErrorCallback(res, status) {
     return err => {
-        err.status = httpStatus || err.status;
-        if (err.name && err.name === 'ValidationError') {
-            err.status = HttpStatus.BAD_REQUEST;
-        }
-        res
-            .status(err.status)
-            .send({error: HttpStatus.getStatusText(err.status)});
+        status = err.name === 'ValidationError' ? httpStatus.BAD_REQUEST : status;
+        sendResponse(res, status, {error: httpStatus.getStatusText(status), message: err.message});
     };
 }
 
-function throwErrorOnFalseValue(objectToCheck, httpStatus) {
-    if (!objectToCheck) {
-        throw createError(httpStatus);
-    }
+function getStatusCodes(statusCodes) {
+    return {
+        successCode: statusCodes.successCode || httpStatus.OK,
+        failureCode: statusCodes.failureCode || httpStatus.NOT_FOUND
+    };
 }
 
 function resolveRequestPromise(promise, res, statusCodes = {}) {
-    const successStatus = statusCodes.successCode || HttpStatus.OK;
-    const failureStatus = statusCodes.failureCode || HttpStatus.NOT_FOUND;
-
-    return promise
-        .then(getSuccessCallback(res, successStatus))
-        .catch(getErrorCallback(res, failureStatus));
+    return getCallbackWithPromise(promise, res, statusCodes)();
 }
 
-function createError(status, message) {
-    const err = new Error(message);
-    err.status = status;
+function getCallbackWithPromise(promise, res, statusCodes = {}) {
+    statusCodes = getStatusCodes(statusCodes);
 
-    return err;
+    return responseMessages => {
+        if (responseMessages) {
+            return promise
+                .then(() => getSuccessCallback(res, statusCodes.successCode)(responseMessages.onSuccess))
+                .catch(() => getErrorCallback(res, statusCodes.failureCode)(new Error(responseMessages.onError)));
+        }
+
+        return promise
+            .then(getSuccessCallback(res, statusCodes.successCode))
+            .catch(getErrorCallback(res, statusCodes.failureCode));
+    };
 }
 
 module.exports = {
     getSuccessCallback,
     getErrorCallback,
-    throwErrorOnFalseValue,
-    resolveRequestPromise
+    resolveRequestPromise,
+    getCallbackWithPromise
 };
