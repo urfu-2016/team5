@@ -8,7 +8,7 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const layouts = require('handlebars-layouts');
-const CDN = require('express-simple-cdn');
+const cdn = require('express-simple-cdn');
 const ENV = process.env.NODE_ENV || 'development';
 
 const index = require('./routes/index');
@@ -21,12 +21,12 @@ const users = require('./routes/users');
 const app = express();
 
 hbs.localsAsTemplateData(app);
-app.locals.CDN = function(path) {
+app.locals.CDN = function (path) {
     if (ENV === 'production') {
-        return CDN(path, constants.paths.pathToProdStatics);
+        return cdn(path, constants.paths.pathToProdStatics);
     }
 
-    return CDN(path, constants.paths.pathToDevStatics);
+    return cdn(path, constants.paths.pathToDevStatics);
 };
 
 // View engine setup
@@ -37,7 +37,6 @@ hbs.registerHelper(layouts(hbs.handlebars));
 
 // Uncomment after placing your favicon in /public
 // app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
