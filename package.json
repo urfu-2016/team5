@@ -37,6 +37,10 @@
     "slug": "^0.9.1"
   },
   "devDependencies": {
+    "babel-core": "^6.24.0",
+    "babel-loader": "^6.4.1",
+    "babel-preset-es2015": "^6.24.0",
+    "babel-preset-react": "^6.23.0",
     "chai": "^3.5.0",
     "chai-http": "^3.0.0",
     "command-line-args": "^4.0.2",
