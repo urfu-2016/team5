@@ -103,8 +103,10 @@ describe('controller:quest', () => {
                     .delete(`/api/quests/${slug}`)
                     .send();
             })
-            .catch(err => {
-                err.status.should.equal(HttpStatus.NOT_FOUND);
+            .then(res => {
+                // TUT
+                console.log(res.status);
+                res.status.should.equal(HttpStatus.OK);
             });
     });
 
