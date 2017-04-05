@@ -12,41 +12,40 @@ function getSuccessCallback(res, status) {
 
 function getErrorCallback(res, httpStatus) {
     return err => {
-        err.status = httpStatus || err.status;
-        if (err.name && err.name === 'ValidationError') {
-            err.status = HttpStatus.BAD_REQUEST;
-        }
+        err.status = err.name === 'ValidationError' ? HttpStatus.BAD_REQUEST : httpStatus;
+
         res
             .status(err.status)
-            .send({error: HttpStatus.getStatusText(err.status)});
+            .send({error: HttpStatus.getStatusText(err.status), message: err.message});
     };
 }
 
-function throwErrorOnFalseValue(objectToCheck, httpStatus) {
-    if (!objectToCheck) {
-        throw createError(httpStatus);
-    }
-}
-
 function resolveRequestPromise(promise, res, statusCodes = {}) {
-    const successStatus = statusCodes.successCode || HttpStatus.OK;
-    const failureStatus = statusCodes.failureCode || HttpStatus.NOT_FOUND;
+    statusCodes = getStatusCodes(statusCodes);
 
     return promise
-        .then(getSuccessCallback(res, successStatus))
-        .catch(getErrorCallback(res, failureStatus));
+        .then(getSuccessCallback(res, statusCodes.successCode))
+        .catch(getErrorCallback(res, statusCodes.failureCode));
 }
 
-function createError(status, message) {
-    const err = new Error(message);
-    err.status = status;
+function resolvePostPromise(promise, res, statusCodes = {}, responseMessages = {}) {
+    statusCodes = getStatusCodes(statusCodes);
 
-    return err;
+    return promise
+        .then(() => getSuccessCallback(res, statusCodes.successCode)(responseMessages.onResolve))
+        .catch(() => getErrorCallback(res, statusCodes.failureCode)(new Error(responseMessages.onError)));
+}
+
+function getStatusCodes(statusCodes) {
+    return {
+        successCode: statusCodes.successCode || HttpStatus.OK,
+        failureCode: statusCodes.failureCode || HttpStatus.NOT_FOUND
+    };
 }
 
 module.exports = {
     getSuccessCallback,
     getErrorCallback,
-    throwErrorOnFalseValue,
-    resolveRequestPromise
+    resolveRequestPromise,
+    resolvePostPromise
 };
