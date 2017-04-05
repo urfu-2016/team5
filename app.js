@@ -11,9 +11,9 @@ const layouts = require('handlebars-layouts');
 const index = require('./routes/index');
 const quests = require('./routes/quests');
 const users = require('./routes/users');
-const auth = require('./routes/auth');
+// const auth = require('./routes/auth');
 
-const passport = require('./libs/passport/passport-init');
+// const passport = require('./libs/passport/passport-init');
 
 const app = express();
 
@@ -32,13 +32,13 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/quests', express.static(path.join(__dirname, 'public')));
 
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 app.use('/', index);
 app.use('/', quests);
 app.use('/', users);
-app.use('/', auth);
+// app.use('/', auth);
 
 // Catch 404 and forward to error handler
 app.use(function (req, res, next) {

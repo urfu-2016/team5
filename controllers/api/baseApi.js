@@ -21,17 +21,11 @@ function resolveRequestPromise(promise, res, statusCodes = {}) {
     statusCodes.successCode = statusCodes.successCode || HttpStatus.OK;
     statusCodes.failureCode = statusCodes.failureCode || HttpStatus.NOT_FOUND;
 
-    return responseMessages => {
-        if (responseMessages) {
-            return promise
-                .then(() => getSuccessCallback(res, statusCodes.successCode)(responseMessages.onSuccess))
-                .catch(() => getErrorCallback(res, statusCodes.failureCode)(new Error(responseMessages.onError)));
-        }
-
-        return promise
-            .then(getSuccessCallback(res, statusCodes.successCode))
-            .catch(getErrorCallback(res, statusCodes.failureCode));
-    };
+    return Promise
+        .resolve()
+        .then(promise)
+        .then(getSuccessCallback(res, statusCodes.successCode))
+        .catch(getErrorCallback(res, statusCodes.failureCode));
 }
 
 module.exports = {
