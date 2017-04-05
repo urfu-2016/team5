@@ -16,7 +16,7 @@ module.exports = {
 
         return Quest
             .create(quest)
-            .then(() => () => quest)
+            .then(quest => () => quest)
             .catch(err => () => {
                 throw err;
             })
@@ -66,7 +66,11 @@ module.exports = {
     removeQuest(req, res) {
         return Quest
             .removeBySlug(req.params.slug)
-            .then(res => () => res)
+            .then(res => {
+                return res.result.n === 0 ? () => {
+                    throw new Error('Quests wasn\'t found');
+                } : () => res;
+            })
             .then(resultCallback => resolveRequestPromise(resultCallback, res));
     }
 };
