@@ -6,4 +6,5 @@ module.exports = {
     generation: require('./generation'),
     mongoose: require('./mongoose'),
     models: require('./models')
+    paths: require('./paths')
 };
