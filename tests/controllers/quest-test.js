@@ -32,6 +32,7 @@ describe('controller:quest', () => {
             .then(res => {
                 res.status.should.equal(HttpStatus.CREATED);
                 res.body.data.title.should.equal(questData.title);
+                res.body.data.slug.should.equal(slugify(questData.title));
             });
     });
 
@@ -103,10 +104,8 @@ describe('controller:quest', () => {
                     .delete(`/api/quests/${slug}`)
                     .send();
             })
-            .then(res => {
-                // TUT
-                console.log(res.status);
-                res.status.should.equal(HttpStatus.OK);
+            .catch(err => {
+                err.status.should.equal(HttpStatus.NOT_FOUND);
             });
     });
 

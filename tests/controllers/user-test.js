@@ -25,11 +25,11 @@ describe('controller:users', () => {
                 return chai
                     .request(server)
                     .get('/api/users')
-                    .send()
-                    .then(res => {
-                        res.status.should.equal(HttpStatus.OK);
-                        res.body.data.should.length.of.at(1);
-                    });
+                    .send();
+            })
+            .then(res => {
+                res.status.should.equal(HttpStatus.OK);
+                res.body.data.should.length.of.at(1);
             });
     });
 
@@ -39,13 +39,14 @@ describe('controller:users', () => {
         return User
             .create(userData)
             .then(() => {
-                return chai.request(server)
+                return chai
+                    .request(server)
                     .get(`/api/users/${userData.username}`)
-                    .send()
-                    .then(res => {
-                        res.status.should.equal(HttpStatus.OK);
-                        res.body.data.username.should.equal(userData.username);
-                    });
+                    .send();
+            })
+            .then(res => {
+                res.status.should.equal(HttpStatus.OK);
+                res.body.data.username.should.equal(userData.username);
             });
     });
 
