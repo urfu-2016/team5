@@ -21,6 +21,7 @@ describe('controller:quest', () => {
 
     it('should create the quest', () => {
         let quest = Object.assign({}, questData);
+
         return Quest._setAuthor(quest)
             .then(() => {
                 return chai
@@ -31,7 +32,6 @@ describe('controller:quest', () => {
             .then(res => {
                 res.status.should.equal(HttpStatus.CREATED);
                 res.body.data.title.should.equal(questData.title);
-                res.body.data.slug.should.equal(slugify(questData.title));
             });
     });
 
