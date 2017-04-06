@@ -14,7 +14,13 @@ module.exports = {
             tags: req.body.tags
         };
 
-        return resolveRequestPromise(Quest.create(quest), res, {successCode: HttpStatus.CREATED});
+        return Quest
+            .create(quest)
+            .then(quest => () => quest)
+            .catch(err => () => {
+                throw err;
+            })
+            .then(resultCallback => resolveRequestPromise(resultCallback, res, {successCode: HttpStatus.CREATED}));
     },
 
     updateQuest(req, res) {
@@ -25,14 +31,46 @@ module.exports = {
             city: req.body.city,
             tags: req.body.tags
         };
-        const promise = Quest.update(req.params.slug, questData);
 
-        return resolveRequestPromise(promise, res);
+        return Quest
+            .update(req.params.slug, questData)
+            .then(res => () => res)
+            .catch(err => () => {
+                throw err;
+            })
+            .then(resultCallback => resolveRequestPromise(resultCallback, res));
     },
 
-    getQuests: (req, res) => resolveRequestPromise(Quest.getAll(), res),
+    getQuests(req, res) {
+        return Quest
+            .getAll()
+            .then(quests => {
+                return quests.length === 0 ? () => {
+                    throw new Error('Quests was not found');
+                } : () => quests;
+            })
+            .then(resultCallback => resolveRequestPromise(resultCallback, res));
+    },
 
-    getQuestBySlug: (req, res) => resolveRequestPromise(Quest.getBySlug(req.params.slug), res),
+    getQuestBySlug(req, res) {
+        return Quest
+            .getBySlug(req.params.slug)
+            .then(quest => {
+                return quest === null ? () => {
+                    throw new Error('Quests wasn\'t found');
+                } : () => quest;
+            })
+            .then(resultCallback => resolveRequestPromise(resultCallback, res));
+    },
 
-    removeQuest: (req, res) => resolveRequestPromise(Quest.removeBySlug(req.params.slug), res)
+    removeQuest(req, res) {
+        return Quest
+            .removeBySlug(req.params.slug)
+            .then(res => {
+                return res.result.n === 0 ? () => {
+                    throw new Error('Quests wasn\'t found');
+                } : () => res;
+            })
+            .then(resultCallback => resolveRequestPromise(resultCallback, res));
+    }
 };

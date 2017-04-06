@@ -45,7 +45,7 @@ module.exports = {
             title,
             description,
             slug: slugify(title),
-            authorId: author ? author._id : undefined,
+            authorId: author._id,
             city, tags, images
         });
 
@@ -126,7 +126,7 @@ module.exports = {
         const username = 'User_' + shortid.generate();
 
         return User.create({username})
-            .then(author => module.exports.create({author, title, description, city, tags}));
+            .then(author => this.create({author, title, description, city, tags}));
     },
 
     // Нужно для тестов

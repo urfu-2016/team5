@@ -21,6 +21,7 @@ describe('controller:quest', () => {
 
     it('should create the quest', () => {
         let quest = Object.assign({}, questData);
+
         return Quest._setAuthor(quest)
             .then(() => {
                 return chai
