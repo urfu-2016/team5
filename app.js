@@ -2,11 +2,14 @@ const hbs = require('hbs');
 // Const handlebars = require('handlebars');
 const express = require('express');
 const path = require('path');
+const constants = require('./constants/constants');
 // Const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const layouts = require('handlebars-layouts');
+const cdn = require('express-simple-cdn');
+const ENV = process.env.NODE_ENV || 'development';
 
 const index = require('./routes/index');
 const quests = require('./routes/quests');
@@ -17,6 +20,15 @@ const users = require('./routes/users');
 
 const app = express();
 
+hbs.localsAsTemplateData(app);
+app.locals.CDN = function (path) {
+    if (ENV === 'production') {
+        return cdn(path, constants.paths.pathToProdStatics);
+    }
+
+    return cdn(path, constants.paths.pathToDevStatics);
+};
+
 // View engine setup
 app.set('views', path.join(__dirname, 'views/pages'));
 app.set('view engine', 'hbs');
@@ -25,6 +37,7 @@ hbs.registerHelper(layouts(hbs.handlebars));
 
 // Uncomment after placing your favicon in /public
 // app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));

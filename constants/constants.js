@@ -5,5 +5,6 @@ module.exports = {
     controllers: require('./controllers'),
     generation: require('./generation'),
     mongoose: require('./mongoose'),
-    models: require('./models')
+    models: require('./models'),
+    paths: require('./paths')
 };
