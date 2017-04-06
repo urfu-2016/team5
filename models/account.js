@@ -58,7 +58,7 @@ module.exports = {
         return AccountModel
             .findOne({username: account.username})
             .exec()
-            .then(acc => bcrypt.compare(account.password, acc.password));
+            .then(acc => acc ? bcrypt.compare(account.password, acc.password) : false);
     },
 
     changePassword(account, newPassword) {
@@ -66,7 +66,7 @@ module.exports = {
             .verifyPassword(account)
             .then(verificationResult => {
                 if (!verificationResult) {
-                    throw new Error(constants.wrongPasswordMessage);
+                    throw new Error(constants.wrongPasswordOrNameMessage);
                 }
             })
             .then(() => AccountModel.findOne({username: account.username}).exec())

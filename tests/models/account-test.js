@@ -107,7 +107,7 @@ describe('models:Account', () => {
         return Account
             .create(account)
             .then(() => Account.verifyPassword(accountWithWrongPassword))
-            .then(result => result.should.not.be.ok);
+            .catch(err => err.message.should.be.equal(constants.models.Account.wrongPasswordOrNameMessage));
     });
 
     it('changes password', () => {
@@ -124,6 +124,6 @@ describe('models:Account', () => {
         return Account
             .create(account)
             .then(() => Account.changePassword(accountWithWrongPassword, account.password))
-            .catch(err => err.message.should.be.equal(constants.models.Account.wrongPasswordMessage));
+            .catch(err => err.message.should.be.equal(constants.models.Account.wrongPasswordOrNameMessage));
     });
 });

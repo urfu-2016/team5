@@ -2,7 +2,7 @@
 
 module.exports = {
     Account: {
-        wrongPasswordMessage: 'Wrong password',
-        passwordRequiredMessage: 'Password required'
+        wrongPasswordOrNameMessage: 'Неверное имя пользователя или пароль.',
+        passwordRequiredMessage: 'Для авторизации необходимо ввести пароль.'
     }
 };
