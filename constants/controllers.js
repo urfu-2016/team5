@@ -1,10 +1,17 @@
 'use strict';
 
 module.exports = {
-    questSearchController: {
+    questSearch: {
         title: 'Список квестов'
     },
-    indexController: {
+
+    index: {
         title: 'Список квестов'
+    },
+
+    auth: {
+        signedUpPattern: username => `${username} was signed up`,
+        alreadyExistsPattern: username => `${username} already exists`,
+        signedInPattern: username => `${username}, поздравляем, вы аутентифицированы!`
     }
 };

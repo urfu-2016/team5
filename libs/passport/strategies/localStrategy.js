@@ -12,12 +12,8 @@ module.exports = new LocalStrategy((username, password, done) => {
             if (!result) {
                 throw new Error(constants.wrongPasswordOrNameMessage);
             }
-
-            return mongoose
-                .model('Account')
-                .findOne({username})
-                .exec()
-                .then(acc => done(null, acc, {message: `${username}, поздравляем, вы аутентифицированы!`}));
         })
+        .then(() => mongoose.model('Account').findOne({username}).exec())
+        .then(acc => done(null, acc))
         .catch(err => done(err));
 });

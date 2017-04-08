@@ -27,7 +27,6 @@ const accountSchema = new mongoose.Schema({
 });
 
 const AccountModel = mongoose.model('Account', accountSchema);
-
 const saltRounds = 10;
 
 module.exports = {
@@ -45,8 +44,11 @@ module.exports = {
                         username: accountData.username,
                         password: hash,
                         user: user._id
-                    }))
-                    .then(account => account.save())
+                    }));
+            })
+            .then(account => {
+                return account
+                    .save()
                     .catch(err => {
                         User.removeByUsername(accountData.username);
                         throw err;
