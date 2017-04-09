@@ -96,7 +96,7 @@ describe('models:Account', () => {
             .catch(err => err.name.should.be.equal(constants.mongoose.validationErrorName));
     });
 
-    it('verifies password', () => {
+    it('gets true by verification a correct password', () => {
         return Account
             .create(account)
             .then(() => Account.verifyPassword(account))

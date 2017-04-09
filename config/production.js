@@ -6,5 +6,6 @@ module.exports = {
     port: 80,
     mode: 'production',
     mongoUri: `mongodb://${login}:${password}@${uri}`,
-    staticPath: '//team5.surge.sh'
+    staticPath: '//team5.surge.sh',
+    secret: process.env.secret
 };
