@@ -1,9 +1,11 @@
 'use strict';
 
+const accWithCorrectPassword = {username: 'a', password: 'b'};
+
 module.exports = {
-    accWithCorrectPassword: {username: 'a', password: 'b'},
+    accWithCorrectPassword: accWithCorrectPassword,
     accWithIncorrectPassword: {
-        username: module.exports.accWithCorrectPassword,
-        password: module.exports.accWithCorrectPassword + '0'
+        username: accWithCorrectPassword.username,
+        password: accWithCorrectPassword.password + '0'
     }
 };
