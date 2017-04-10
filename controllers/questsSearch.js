@@ -1,6 +1,6 @@
 'use strict';
 
-const constants = require('../constants/controllers').questSearchController;
+const constants = require('../constants/controllers').questSearch;
 const Quest = require('../models/quest');
 
 function getSearchPropsByRequest(req) {
