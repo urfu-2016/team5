@@ -45,7 +45,7 @@ module.exports = {
             title,
             description,
             slug: slugify(title),
-            authorId: author._id,
+            authorId: author ? author._id : undefined,
             city, tags, images
         });
 
