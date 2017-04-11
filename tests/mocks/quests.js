@@ -1,6 +1,5 @@
 'use strict';
 require('../../models/user');
-// test
 
 module.exports = {
     regularQuest: {
