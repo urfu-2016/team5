@@ -26,16 +26,14 @@ describe('models:Quest', () => {
         const ValidationError = mongoose.Error.ValidationError;
 
         return Quest._createWithAuthor(questData)
-            .catch(error => {
-                error.name.should.equal(ValidationError.name);
-            });
+            .catch(error => error.name.should.equal(ValidationError.name));
     });
 
     it('error on save without required author', () => {
         const questData = questsMocks.regularQuest;
         const ValidationError = mongoose.Error.ValidationError;
 
-        return Quest._createWithAuthor(questData)
+        return Quest.create(questData)
             .catch(error => error.name.should.equal(ValidationError.name));
     });
 
