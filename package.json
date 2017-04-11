@@ -3,16 +3,18 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "npm run generate && npm run build && node index.js",
-    "debug": "npm run generate && npm run build",
-    "production": "NODE_ENV=production node index.js",
-    "prepush": "npm run lint && npm run test",
-    "precommit": "npm run lint",
-    "lint": "stylelint --ignore-path .gitignore *.css **/*.css && eslint --ignore-path .gitignore .",
+    "start": "export NODE_ENV=development; npm run prepare && node index.js",
+    "review": "export NODE_ENV=review; npm run prepare && node index.js",
+    "production": "export NODE_ENV=production; npm run build && node index.js",
+    "prepare": "npm run generate && npm run build",
+    "lint": "npm run lint:style && npm run lint:js",
+    "lint:style": "stylelint --ignore-path .gitignore *.css **/*.css",
+    "lint:js": "eslint --ignore-path .gitignore .",
     "test": "mocha --recursive ./tests",
     "generate": "node ./scripts/generate-db-data-console.js",
-    "deploy:surge": "surge -p ./public -d team5.surge.sh",
-    "build": "webpack"
+    "build": "webpack",
+    "prepush": "npm run lint && npm run test",
+    "precommit": "npm run lint"
   },
   "dependencies": {
     "bcrypt": "^1.0.2",
@@ -36,7 +38,9 @@
     "passport-local": "^1.0.0",
     "serve-favicon": "~2.3.2",
     "shortid": "^2.2.8",
-    "slug": "^0.9.1"
+    "slug": "^0.9.1",
+    "style-loader": "^0.16.0",
+    "webpack": "^2.3.2"
   },
   "devDependencies": {
     "chai": "^3.5.0",
