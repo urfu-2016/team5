@@ -9,5 +9,3 @@ module.exports = {
         password: accWithCorrectPassword.password + '0'
     }
 };
-
-// test
