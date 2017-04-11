@@ -27,5 +27,3 @@ module.exports = {
         description: 'Описание'
     }
 };
-
-// test
