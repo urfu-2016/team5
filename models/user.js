@@ -51,6 +51,8 @@ module.exports = {
 
     getByUsername: username => UserModel.findOne({username}).exec(),
 
+    getById: id => UserModel.findById(id),
+
     removeByUsername: username => UserModel
         .findOne({username})
         .then(user => user.remove())
