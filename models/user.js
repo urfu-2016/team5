@@ -39,12 +39,14 @@ module.exports = {
     },
 
     update(username, {firstname, surname}) {
-        return UserModel.findOne({username}).then(user => {
-            user.firstname = firstname ? firstname : user.firstname;
-            user.surname = surname ? surname : user.surname;
+        return UserModel
+            .findOne({username})
+            .then(user => {
+                user.firstname = firstname ? firstname : user.firstname;
+                user.surname = surname ? surname : user.surname;
 
-            return user.save();
-        });
+                return user.save();
+            });
     },
 
     getAll: () => UserModel.find({}).exec(),

@@ -2,7 +2,8 @@
 
 module.exports = {
     Account: {
-        wrongPasswordMessage: 'Wrong password',
-        passwordRequiredMessage: 'Password required'
+        wrongPasswordOrNameMessage: 'Неверное имя пользователя или пароль.',
+        passwordRequiredMessage: 'Введите пароль.',
+        alreadyExistsPattern: username => `${username} already exists`
     }
 };
