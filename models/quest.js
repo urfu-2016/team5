@@ -114,5 +114,3 @@ questSchema.statics.search = function (searchData) {
 };
 
 module.exports = mongoose.model('Quest', questSchema
-
-// test
