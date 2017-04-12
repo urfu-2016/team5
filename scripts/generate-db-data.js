@@ -36,7 +36,7 @@ module.exports.generateQuests = ({questsCount = 10}) => {
                 let questData = {
                     title: `${constants.quest.titlePrefix} ${i}`,
                     description: `${constants.quest.descriptionPrefix} ${i}`,
-                    author: user,
+                    authorId: user._id,
                     images: generateImages({questId: i}),
                     slug: `${i}`,
                     city: constants.quest.city
