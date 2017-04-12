@@ -1,7 +1,5 @@
 /* eslint-env mocha */
 
-// test
-
 require('chai').should();
 const mongoose = require('mongoose');
 const Quest = require('../../models/quest');
