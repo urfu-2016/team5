@@ -94,6 +94,8 @@ questSchema.statics.removeBySlug = function (slug) {
     return this.remove({slug}).exec();
 };
 
+// test
+
 questSchema.statics.search = function (searchData) {
     const andList = searchData.reduce((acc, searchObject) => {
         const orList = searchObject.fields.map(property => {
