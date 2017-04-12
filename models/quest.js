@@ -123,3 +123,4 @@ questSchema.statics.searchByAuthor = function (searchString) {
 };
 
 module.exports = mongoose.model('Quest', questSchema);
+// test
