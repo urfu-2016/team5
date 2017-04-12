@@ -119,6 +119,7 @@ describe('models:Quest', () => {
             .then(() => User.getById(questData.authorId))
             .then(user => Quest.searchByAuthor(user.username[0]))
             .then(quests => {
+                console.log(quests[0]);
                 quests.length
                     .should.equal(1);
                 quests[0].author._id
