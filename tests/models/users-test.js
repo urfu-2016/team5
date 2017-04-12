@@ -62,7 +62,7 @@ describe('models:user', () => {
 
         return User.create(userData)
             .then(savedUser => User.getById(savedUser._id))
-            .then(foundedUser => foundedUser.username.should.equal(userData.username));
+            .then(foundUser => foundUser.username.should.equal(userData.username));
     });
 
     it('should remove by username', () => {
