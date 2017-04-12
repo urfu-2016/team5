@@ -183,6 +183,5 @@ describe('models:Quest', () => {
         const quests = await searchQuests(requestBody);
 
         quests.length.should.equal(1);
-        // test
     });
 });
