@@ -113,4 +113,4 @@ questSchema.statics.search = function (searchData) {
         .exec();
 };
 
-module.exports = mongoose.model('Quest', questSchema
+module.exports = mongoose.model('Quest', questSchema);
