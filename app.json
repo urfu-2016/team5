@@ -9,6 +9,9 @@
     },
     "mongoPass": {
       "required": true
+    },
+    "secret": {
+      "required": true
     }
   },
   "formation": {
