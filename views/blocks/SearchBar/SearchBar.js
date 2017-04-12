@@ -1,8 +1,8 @@
 /* global React:true */
 
 import './SearchBar.css';
-import SearchBarInput from './SearchBarInput';
-import SearchBarParams from './SearchBarParams';
+import SearchBarInput from './SearchBarInput/SearchBarInput';
+import SearchBarParams from './SearchBarParams/SearchBarParams';
 
 const SBParams = require('./params');
 

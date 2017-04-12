@@ -1,5 +1,7 @@
 /* global React:true */
 
+import './SearchBarInput.css';
+
 class SearchBarInput extends React.Component {
     render() {
         return (

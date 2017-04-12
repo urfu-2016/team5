@@ -6,8 +6,8 @@ function Param(title, name, options) {
 
 module.exports = {
     params: {
-        likesCount: new Param('Количество likov', 'countOfLikes', {}),
-        reviewsCount: new Param('Количество otzivov', 'reviwesCount', {}),
+        likesCount: new Param('Количество ♥', 'countOfLikes', {}),
+        reviewsCount: new Param('Количество отзывов', 'reviwesCount', {}),
         searchCity: new Param('Город', 'searchCity', {}),
         searchByField: new Param('Искать только в поле:', 'searchByField', {}),
         imagesCount: new Param('Количество картинок', 'imagesCount', {})
