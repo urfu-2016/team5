@@ -1,5 +1,4 @@
 /* eslint-env mocha */
-// test
 
 require('chai').should();
 const mongoose = require('mongoose');
