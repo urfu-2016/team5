@@ -118,6 +118,5 @@ module.exports = {
                     return quest.author.username.indexOf(searchString) === 0;
                 });
             });
-
     }
 };
