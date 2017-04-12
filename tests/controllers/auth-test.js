@@ -42,7 +42,7 @@ describe('controller:auth', () => {
                 .then(() => signUpAccount(mocks.accWithCorrectPassword))
                 .catch(err => {
                     const username = mocks.accWithCorrectPassword.username;
-                    const message = constants.controllers.auth.alreadyExistsPattern(username);
+                    const message = constants.models.Account.alreadyExistsPattern(username);
 
                     err.status.should.be.equal(httpStatus.BAD_REQUEST);
                     err.response.body.message.should.be.equal(message);

@@ -5,7 +5,6 @@ const hbs = require('hbs');
 const express = require('express');
 const path = require('path');
 const config = require('config');
-const constants = require('./constants/constants');
 // Const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
@@ -13,7 +12,6 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const layouts = require('handlebars-layouts');
 const cdn = require('express-simple-cdn');
-const ENV = process.env.NODE_ENV || 'development';
 
 const index = require('./routes/index');
 const quests = require('./routes/quests');
@@ -25,13 +23,7 @@ const passport = require('./libs/passport');
 const app = express();
 
 hbs.localsAsTemplateData(app);
-app.locals.CDN = function (path) {
-    if (ENV === 'production') {
-        return cdn(path, constants.paths.pathToProdStatics);
-    }
-
-    return cdn(path, constants.paths.pathToDevStatics);
-};
+app.locals.CDN = path => cdn(path, config.staticPath);
 
 // View engine setup
 app.set('views', path.join(__dirname, 'views/pages'));

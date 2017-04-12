@@ -33,8 +33,8 @@ module.exports = {
         return Account
             .create(account)
             .then(() => () => constants.signedUpPattern(req.body.username))
-            .catch(() => () => {
-                throw new Error(constants.alreadyExistsPattern(req.body.username));
+            .catch(err => () => {
+                throw err;
             })
             .then(callbackResult => baseApi.resolveRequestPromise(callbackResult, res, statusCodes));
     },

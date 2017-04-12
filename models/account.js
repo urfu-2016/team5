@@ -3,7 +3,7 @@
 const mongoose = require('../libs/mongoose-connection');
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
-const constants = require('../constants/models').Account;
+const constants = require('../constants/constants');
 
 const accountSchema = new mongoose.Schema({
     username: {
@@ -32,11 +32,18 @@ const saltRounds = 10;
 module.exports = {
     create(accountData) {
         if (!accountData.password) {
-            return Promise.reject(new Error(constants.passwordRequiredMessage));
+            return Promise.reject(new Error(constants.models.Account.passwordRequiredMessage));
         }
 
         return User
             .create({username: accountData.username})
+            .catch(err => {
+                if (err.code === constants.mongoose.mongoDuplicateErrorCode) {
+                    err.message = constants.models.Account.alreadyExistsPattern(accountData.username);
+                }
+
+                throw err;
+            })
             .then(user => {
                 return bcrypt
                     .hash(accountData.password, saltRounds)
@@ -51,6 +58,7 @@ module.exports = {
                     .save()
                     .catch(err => {
                         User.removeByUsername(accountData.username);
+
                         throw err;
                     });
             });
@@ -82,7 +90,7 @@ module.exports = {
             .verifyPassword(account)
             .then(verificationResult => {
                 if (!verificationResult) {
-                    throw new Error(constants.wrongPasswordOrNameMessage);
+                    throw new Error(constants.models.Account.wrongPasswordOrNameMessage);
                 }
 
                 return AccountModel

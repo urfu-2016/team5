@@ -11,7 +11,6 @@ module.exports = {
 
     auth: {
         signedUpPattern: username => `${username} was signed up`,
-        alreadyExistsPattern: username => `${username} already exists`,
         signedInPattern: username => `${username}, поздравляем, вы аутентифицированы!`
     }
 };
