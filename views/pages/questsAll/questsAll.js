@@ -1,5 +1,11 @@
-require('../../blocks/questCard/questCard.css');
-require('../../blocks/header/header.css');
-require('./questsAll.css');
+/* global ReactDOM:true */
 
-require('../../blocks/searchbar/searchbar.css');
+import Search from '../../blocks/Search/search';
+
+ReactDOM.render(
+    <div>
+        <h2 className="page__title">Все квесты</h2>
+        <Search />
+    </div>,
+    document.getElementById('root')
+);
