@@ -1,7 +1,44 @@
 .searchbar
 {
-    display: inline-block;
-    border: 1px solid #111;
+    padding: 5px;
+}
+
+.searchbar__input-group
+{
+    display: flex;
+    flex-direction: row;
+    border: 1px solid #aaa;
+    border-radius: 3px;
+    padding: 0 5px;
+}
+
+.searchbar__input
+{
+    margin: 0;
+    padding: 10px;
+    outline: 0;
+    border: 0;
+    flex: 1;
+}
+
+.searchbar__btn-params
+{
+    background: #fff;
+    border: 0;
+    outline: 0;
+}
+
+.searchbar__btn-submit
+{
+    background: #fff;
+    border: 0;
+    outline: 0;
+}
+
+.searchbar-input
+{
+    display: flex;
+    padding: 5px;
 }
 
 .searchbar__radio-group__label
@@ -10,7 +47,34 @@
     font-size: 15px;
 }
 
-.searchbar__input-group
+.searchbar__params-group
 {
-    margin-left: 15px;
+    margin: 10px 0;
+    border: 1px solid #aaa;
+    background: #fff;
+    padding: 10px;
+    border-radius: 3px;
+}
+
+.params-group_hidden
+{
+    display: none;
+}
+
+.sort
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.sort__items
+{
+    display: flex;
+    flex-direction: row;
+    overflow: auto;
+}
+
+.sort__items span
+{
+    flex: 0 0 150px;
 }

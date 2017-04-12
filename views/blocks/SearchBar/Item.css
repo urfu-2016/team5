@@ -1,0 +1,15 @@
+.params-item
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.params-item__title
+{
+    margin: 5px 0;
+}
+
+.params-item__input
+{
+    margin: 5px 0;
+}
