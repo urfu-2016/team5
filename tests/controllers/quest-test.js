@@ -24,6 +24,7 @@ describe('controller:quest', () => {
 
         return Quest._setAuthor(quest)
             .then(() => {
+                console.log(quest);
                 return chai
                     .request(server)
                     .post('/api/quests')

@@ -3,6 +3,7 @@
 require('chai').should();
 const mongoose = require('mongoose');
 const Quest = require('../../models/quest');
+const User = require('../../models/user');
 const questsMocks = require('../mocks/quests');
 const dbClearer = require('../../scripts/clear-db');
 
@@ -113,12 +114,14 @@ describe('models:Quest', () => {
 
         return Quest._setAuthor(questData)
             .then(() => Quest.create(questData))
-            .then(() => Quest.searchByAuthor(questData.author.username[0]))
+            .then(() => User.getById(questData.authorId))
+            .then(user => Quest.searchByAuthor(user.username[0]))
             .then(quests => {
+                console.log(quests[0]);
                 quests.length
                     .should.equal(1);
-                quests[0].authorId.username
-                    .should.equal(questData.author.username);
+                quests[0].author._id.toString()
+                    .should.be.equal(questData.authorId.toString());
             });
     });
 });
