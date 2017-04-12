@@ -6,7 +6,6 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 const Image = require('./schemas/image');
 const slugify = require('slug');
 const shortid = require('shortid');
-const User = require('./user');
 
 const questSchema = new mongoose.Schema({
     title: {type: String, required: true},
@@ -119,26 +118,5 @@ module.exports = {
                     return quest.author.username.indexOf(searchString) === 0;
                 });
             });
-    },
-
-    // Нужно для тестов и генерации
-    _createWithAuthor({title = '', description = '', city = '', tags}) {
-        const username = 'User_' + shortid.generate();
-
-        return User.create({username})
-            .then(author => this.create({authorId: author._id, title, description, city, tags}));
-    },
-
-    // Нужно для тестов
-    _setAuthor(questData) {
-        const username = 'User' + Date.now();
-
-        return new Promise(resolve => {
-            User.create({username})
-                .then(user => {
-                    questData.authorId = user._id;
-                    resolve();
-                });
-        });
     }
 };
