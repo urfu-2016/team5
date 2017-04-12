@@ -57,6 +57,14 @@ describe('models:user', () => {
             .then(foundUser => foundUser.username.should.equal(userData.username));
     });
 
+    it('should get by id', () => {
+        const userData = usersMocks.regularUser;
+
+        return User.create(userData)
+            .then(savedUser => User.getById(savedUser._id))
+            .then(foundedUser => foundedUser.username.should.equal(userData.username));
+    });
+
     it('should remove by username', () => {
         const userData = usersMocks.regularUser;
 
