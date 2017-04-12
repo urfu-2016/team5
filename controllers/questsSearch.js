@@ -2,6 +2,7 @@
 
 const constants = require('../constants/controllers').questSearchController;
 const Quest = require('../models/quest');
+const countCards = 4;
 
 function getSearchPropsByRequest(req) {
     const searchProperties = [];
@@ -19,6 +20,7 @@ module.exports = {
     getFoundQuests(req, res) {
         const searchProperties = getSearchPropsByRequest(req);
         const searchString = req.query.searchString || '';
+        const searchPage = req.query.searchPage || 1;
         const searchPromises = [];
 
         if (req.query.searchByAuthor) {
@@ -46,13 +48,19 @@ module.exports = {
                     });
             })
             .then(quests => {
+                quests = quests || [];
+                quests.sort();
+                const firstCardNumber = (searchPage - 1) * countCards;
+                const lastCardNumber = searchPage * countCards;
                 const renderData = {
+                    page: Number(searchPage),
+                    maxPage: Math.ceil(quests.length / countCards),
                     title: constants.title,
-                    quests: quests || [],
+                    quests: quests.slice(firstCardNumber, lastCardNumber),
                     isEmptyQuests: quests.length === 0
                 };
 
-                res.render('questsAll/quests-all', renderData);
+                res.send(renderData);
             });
     }
 };
