@@ -15,7 +15,7 @@ const questSchema = new mongoose.Schema({
         type: [Image],
         default: []
     },
-    authorId: {
+    author: {
         type: ObjectId,
         ref: 'User',
         required: true
@@ -40,12 +40,12 @@ const questSchema = new mongoose.Schema({
 const QuestModel = mongoose.model('Quest', questSchema);
 
 module.exports = {
-    create({author, title = '', description = '', city = '', tags = [], images = []}) {
+    create({authorId, title = '', description = '', city = '', tags = [], images = []}) {
         const quest = new QuestModel({
             title,
             description,
             slug: slugify(title),
-            authorId: author ? author._id : undefined,
+            author: authorId,
             city, tags, images
         });
 
@@ -110,13 +110,13 @@ module.exports = {
     searchByAuthor(searchString) {
         return QuestModel
             .find({})
-            .populate('authorId')
+            .populate('author')
             .exec()
             .then(quests => {
                 searchString = searchString.toLowerCase();
 
                 return quests.filter(quest => {
-                    return quest.authorId.username.indexOf(searchString) === 0;
+                    return quest.author.username.indexOf(searchString) === 0;
                 });
             });
     },
@@ -126,7 +126,7 @@ module.exports = {
         const username = 'User_' + shortid.generate();
 
         return User.create({username})
-            .then(author => this.create({author, title, description, city, tags}));
+            .then(author => this.create({authorId: author._id, title, description, city, tags}));
     },
 
     // Нужно для тестов
@@ -136,7 +136,7 @@ module.exports = {
         return new Promise(resolve => {
             User.create({username})
                 .then(user => {
-                    questData.author = user;
+                    questData.authorId = user._id;
                     resolve();
                 });
         });
