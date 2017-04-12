@@ -24,7 +24,7 @@ describe('models:Account', () => {
            .then(() => AccountMongo.find({}).exec())
            .then(accounts => {
                accounts.length.should.be.equal(1);
-               accounts[0].get('username').should.be.equal(account.username);
+               accounts[0].username.should.be.equal(account.username);
            });
     });
 

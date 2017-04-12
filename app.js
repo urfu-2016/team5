@@ -4,6 +4,7 @@ const hbs = require('hbs');
 // Const handlebars = require('handlebars');
 const express = require('express');
 const path = require('path');
+const config = require('config');
 const constants = require('./constants/constants');
 // Const favicon = require('serve-favicon');
 const logger = require('morgan');
@@ -14,7 +15,6 @@ const layouts = require('handlebars-layouts');
 const cdn = require('express-simple-cdn');
 const ENV = process.env.NODE_ENV || 'development';
 
-const config = require('config');
 const index = require('./routes/index');
 const quests = require('./routes/quests');
 const users = require('./routes/users');
