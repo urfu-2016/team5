@@ -14,12 +14,13 @@ const layouts = require('handlebars-layouts');
 const cdn = require('express-simple-cdn');
 const ENV = process.env.NODE_ENV || 'development';
 
+const config = require('config');
 const index = require('./routes/index');
 const quests = require('./routes/quests');
 const users = require('./routes/users');
 const auth = require('./routes/auth');
 
-const passport = require('./libs/passport/passport-init');
+const passport = require('./libs/passport');
 
 const app = express();
 
@@ -45,11 +46,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
-app.use(session({
-    secret: require('config').secret,
-    resave: false,
-    saveUninitialized: false
-}));
+app.use(session(config.passportSession));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/quests', express.static(path.join(__dirname, 'public')));
 

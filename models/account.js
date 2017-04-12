@@ -65,13 +65,7 @@ module.exports = {
 
     changePassword(account, newPassword) {
         return this
-            .verifyPassword(account)
-            .then(verificationResult => {
-                if (!verificationResult) {
-                    throw new Error(constants.wrongPasswordOrNameMessage);
-                }
-            })
-            .then(() => AccountModel.findOne({username: account.username}).exec())
+            .getAccountOnCorrectPassword(account)
             .then(acc => {
                 return bcrypt
                     .hash(newPassword, saltRounds)
@@ -80,6 +74,20 @@ module.exports = {
 
                         return acc.save();
                     });
+            });
+    },
+
+    getAccountOnCorrectPassword(account) {
+        return this
+            .verifyPassword(account)
+            .then(verificationResult => {
+                if (!verificationResult) {
+                    throw new Error(constants.wrongPasswordOrNameMessage);
+                }
+
+                return AccountModel
+                    .findOne({username: account.username})
+                    .exec();
             });
     }
 };

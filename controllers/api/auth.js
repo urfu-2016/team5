@@ -2,7 +2,7 @@
 
 const httpStatus = require('http-status-codes');
 const baseApi = require('./baseApi');
-const passport = require('../../libs/passport/passport-init');
+const passport = require('../../libs/passport');
 const Account = require('../../models/account');
 
 const constants = require('../../constants/constants').controllers.auth;
@@ -20,10 +20,18 @@ module.exports = {
     },
 
     signUp(req, res) {
-        const statusCodes = {successCode: httpStatus.CREATED, failureCode: httpStatus.BAD_REQUEST};
+        const statusCodes = {
+            successCode: httpStatus.CREATED,
+            failureCode: httpStatus.BAD_REQUEST
+        };
+
+        const account = {
+            username: req.body.username,
+            password: req.body.password
+        };
 
         return Account
-            .create({username: req.body.username, password: req.body.password})
+            .create(account)
             .then(() => () => constants.signedUpPattern(req.body.username))
             .catch(() => () => {
                 throw new Error(constants.alreadyExistsPattern(req.body.username));
