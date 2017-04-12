@@ -1,12 +1,13 @@
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const path = require('path');
+const webpack = require('webpack');
+const NODE_ENV = process.env.NODE_ENV || 'development';
 
 module.exports = {
     context: path.join(__dirname, '/views/pages'),
     entry: {
         questsId: './questsId/quests-id.js',
         questsAll: './questsAll/questsAll.js',
-        playQuest: './playQuest/playQuest.js',
         layout: './layout.js'
     },
     output: {
@@ -19,7 +20,7 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader'})
-            }, 
+            },
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
@@ -31,6 +32,15 @@ module.exports = {
         ]
     },
     plugins: [
-        new ExtractTextPlugin('stylesheets/[name].css')
+        new ExtractTextPlugin('stylesheets/[name].css'),
+        new webpack.NoEmitOnErrorsPlugin()
     ]
 };
+
+if (NODE_ENV === 'production') {
+    module.exports.plugins.push(
+        new webpack.optimize.UglifyJsPlugin({
+            warnings: false
+        })
+    );
+}

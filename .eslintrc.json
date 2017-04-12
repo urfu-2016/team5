@@ -1,14 +1,21 @@
 {
   "parserOptions": {
-    "ecmaVersion": 6
+    "ecmaVersion": 6,
+    "ecmaFeatures": {
+        "jsx": true
+        }
   },
   "env": {
     "node": true,
-    "mocha": true
+    "mocha": true,
+    "browser": true
   },
-  "extends": "xo",
+  "extends": ["xo", "plugin:react/recommended"],
   "rules": {
     "indent": [2, 4, {"SwitchCase": 1}],
-    "linebreak-style": ["error", "unix"]
-  }
+    "linebreak-style": ["error", "unix"],
+    "react/prop-types": [0],
+    "react/react-in-jsx-scope": [0]
+  },
+  "plugins": ["react"]
 }
