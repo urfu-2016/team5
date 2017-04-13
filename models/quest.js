@@ -6,7 +6,6 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 const Image = require('./schemas/image');
 const slugify = require('slug');
 const shortid = require('shortid');
-const User = require('./user');
 
 const questSchema = new mongoose.Schema({
     title: {type: String, required: true},
@@ -15,7 +14,7 @@ const questSchema = new mongoose.Schema({
         type: [Image],
         default: []
     },
-    authorId: {
+    author: {
         type: ObjectId,
         ref: 'User',
         required: true
@@ -40,12 +39,12 @@ const questSchema = new mongoose.Schema({
 const QuestModel = mongoose.model('Quest', questSchema);
 
 module.exports = {
-    create({author, title = '', description = '', city = '', tags = [], images = []}) {
+    create({authorId, title = '', description = '', city = '', tags = [], images = []}) {
         const quest = new QuestModel({
             title,
             description,
             slug: slugify(title),
-            authorId: author._id,
+            author: authorId,
             city, tags, images
         });
 
@@ -110,35 +109,14 @@ module.exports = {
     searchByAuthor(searchString) {
         return QuestModel
             .find({})
-            .populate('authorId')
+            .populate('author')
             .exec()
             .then(quests => {
                 searchString = searchString.toLowerCase();
 
                 return quests.filter(quest => {
-                    return quest.authorId.username.indexOf(searchString) === 0;
+                    return quest.author.username.indexOf(searchString) === 0;
                 });
             });
-    },
-
-    // Нужно для тестов и генерации
-    _createWithAuthor({title = '', description = '', city = '', tags}) {
-        const username = 'User_' + shortid.generate();
-
-        return User.create({username})
-            .then(author => this.create({author, title, description, city, tags}));
-    },
-
-    // Нужно для тестов
-    _setAuthor(questData) {
-        const username = 'User' + Date.now();
-
-        return new Promise(resolve => {
-            User.create({username})
-                .then(user => {
-                    questData.author = user;
-                    resolve();
-                });
-        });
     }
 };
