@@ -8,26 +8,12 @@ module.exports = function (server) {
     const agent = chai.request.agent(server);
 
     return {
-        get: url => {
-            return agent
-                .get(url);
-        },
+        get: url => agent.get(url),
 
-        post: (url, data) => {
-            return agent
-                .post(url)
-                .send(data);
-        },
+        post: (url, data) => agent.post(url).send(data),
 
-        put: (url, data) => {
-            return agent
-                .put(url)
-                .send(data);
-        },
+        put: (url, data) => agent.put(url).send(data),
 
-        delete: url => {
-            return agent
-                .delete(url);
-        }
+        delete: url => agent.delete(url)
     };
 };
