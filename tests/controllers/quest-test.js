@@ -1,3 +1,4 @@
+
 /* eslint-env mocha */
 
 const chai = require('chai');
@@ -99,15 +100,6 @@ describe('controller:quest', () => {
             })
             .then(res => {
                 res.status.should.equal(HttpStatus.OK);
-            })
-            .then(() => {
-                return chai
-                    .request(server)
-                    .delete(`/api/quests/${slug}`)
-                    .send();
-            })
-            .catch(err => {
-                err.status.should.equal(HttpStatus.NOT_FOUND);
             });
     });
 
