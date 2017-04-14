@@ -3,7 +3,7 @@
 import './SearchResult.css';
 import SearchPaginationControl from './../SearchPaginationControl/SearchPaginationControl';
 
-class SearchResult extends React.Component {
+export default class SearchResult extends React.Component {
     render() {
         const {onPageChange, currentPage, pageCount, children} = this.props;
         return (
@@ -19,5 +19,3 @@ class SearchResult extends React.Component {
         );
     }
 }
-
-export default SearchResult;

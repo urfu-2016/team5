@@ -14,7 +14,7 @@ function itemWithDropDownButton(className, param, params) {
         </Item>);
 }
 
-class SearchBarParams extends React.Component {
+export default class SearchBarParams extends React.Component {
     render() {
         const {
             imagesCount,
@@ -42,5 +42,3 @@ class SearchBarParams extends React.Component {
             </div>);
     }
 }
-
-export default SearchBarParams;

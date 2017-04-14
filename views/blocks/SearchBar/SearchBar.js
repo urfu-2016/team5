@@ -6,7 +6,7 @@ import SearchBarParams from './SearchBarParams/SearchBarParams';
 
 const SBParams = require('./params');
 
-class SearchBar extends React.Component {
+export default class SearchBar extends React.Component {
     constructor(props) {
         super(props);
 
@@ -54,5 +54,3 @@ class SearchBar extends React.Component {
         );
     }
 }
-
-export default SearchBar;

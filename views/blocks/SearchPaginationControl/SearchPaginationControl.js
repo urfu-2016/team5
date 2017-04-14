@@ -1,6 +1,6 @@
 /* global React:true */
 
-class SearchPaginationControl extends React.Component {
+export default class SearchPaginationControl extends React.Component {
     constructor(props) {
         super(props);
         this.handlePage = this.handlePage.bind(this);
@@ -37,5 +37,3 @@ class SearchPaginationControl extends React.Component {
         );
     }
 }
-
-export default SearchPaginationControl;

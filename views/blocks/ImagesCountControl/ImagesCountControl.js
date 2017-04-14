@@ -3,7 +3,7 @@
 import './ImagesCountControl.css';
 import './../Input.css';
 
-class ImagesCountControl extends React.Component {
+export default class ImagesCountControl extends React.Component {
     render() {
         const {value, name} = this.props;
 
@@ -22,5 +22,3 @@ class ImagesCountControl extends React.Component {
             </div>);
     }
 }
-
-export default ImagesCountControl;

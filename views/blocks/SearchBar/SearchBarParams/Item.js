@@ -2,7 +2,7 @@
 
 import './Item.css';
 
-class Item extends React.Component {
+export default class Item extends React.Component {
     render() {
         const {title, className, children} = this.props;
         return (
@@ -12,5 +12,3 @@ class Item extends React.Component {
             </div>);
     }
 }
-
-export default Item;

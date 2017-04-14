@@ -1,6 +1,6 @@
 /* global React:true */
 
-class SearchResultItem extends React.Component {
+export default class SearchResultItem extends React.Component {
     render() {
         return (
             <div className="quests__item">
@@ -9,5 +9,3 @@ class SearchResultItem extends React.Component {
         );
     }
 }
-
-export default SearchResultItem;

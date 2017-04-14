@@ -4,7 +4,7 @@ import './SearchBarInput.css';
 const SearchBarInputPlaceholder = 'Введите данные';
 const FindString = 'Найти';
 
-class SearchBarInput extends React.Component {
+export default class SearchBarInput extends React.Component {
     render() {
         const {searchString, onShowParams} = this.props;
         return (
@@ -19,5 +19,3 @@ class SearchBarInput extends React.Component {
             </div>);
     }
 }
-
-export default SearchBarInput;
