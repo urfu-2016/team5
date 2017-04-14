@@ -1,14 +1,12 @@
 'use strict';
 
-const mongoose = require('../../mongoose-connection');
-require('../../../models/account');
+const Account = require('../../../models/account');
 
 module.exports = {
     serialize: (user, done) => done(null, user.id),
 
     deserialize: (id, done) => {
-        return mongoose
-            .model('Account')
+        return Account
             .findById(id)
             .exec()
             .then(user => done(null, user))

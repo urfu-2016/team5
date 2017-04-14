@@ -99,6 +99,4 @@ accountSchema.statics.getAccountOnCorrectPassword = function (account) {
         });
 };
 
-const AccountModel = mongoose.model('Account', accountSchema);
-
-module.exports = AccountModel;
+module.exports = mongoose.model('Account', accountSchema);
