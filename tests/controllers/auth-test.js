@@ -1,29 +1,19 @@
 /* eslint-env mocha */
 
-const chai = require('chai');
-const chaiHttp = require('chai-http');
 const server = require('../../app');
 const httpStatus = require('http-status-codes');
 const dbClearer = require('../../scripts/clear-db');
-
-chai.should();
-chai.use(chaiHttp);
+const chaiRequest = require('../commonTestLogic/chaiRequest')(server);
 
 const constants = require('../../constants/constants');
 const mocks = require('../mocks/account');
 
 function signUpAccount(account) {
-    return chai
-        .request(server)
-        .post('/signup')
-        .send(account);
+    return chaiRequest.post('/signup', account);
 }
 
 function signInAccount(account) {
-    return chai
-        .request(server)
-        .post('/signin')
-        .send(account);
+    return chaiRequest.post('/signin', account);
 }
 
 describe('controller:auth', () => {
