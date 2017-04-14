@@ -3,7 +3,7 @@
     "ecmaVersion": 6,
     "ecmaFeatures": {
         "jsx": true
-        }
+    }
   },
   "env": {
     "node": true,
