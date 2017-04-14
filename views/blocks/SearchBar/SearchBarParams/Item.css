@@ -1,15 +1,27 @@
-.params-item
+.item
 {
     display: flex;
     flex-direction: column;
+    margin: 5px;
 }
 
-.params-item__title
+.item__title
 {
-    margin: 6px 0;
+    margin-bottom: 6px;
 }
 
-.params-item__input
+@media (min-width: 425px)
 {
-    margin: 5px 0;
+    .item
+    {
+        flex: 0 0 calc(33.33% - 10px);
+    }
+}
+
+@media (min-width: 425px) and (max-width: 652px)
+{
+    .item
+    {
+        flex: 0 0 calc(50% - 10px);
+    }
 }

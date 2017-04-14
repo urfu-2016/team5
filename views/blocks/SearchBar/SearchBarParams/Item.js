@@ -4,14 +4,11 @@ import './Item.css';
 
 class Item extends React.Component {
     render() {
+        const {title, className, children} = this.props;
         return (
-            <div className="params-item">
-                <span className="params-item__title">
-                    {this.props.title}
-                </span>
-                <div className="params-item__input">
-                    {this.props.children}
-                </div>
+            <div className={`item ${className}`}>
+                <span className="item__title">{title}</span>
+                {children}
             </div>);
     }
 }

@@ -1,36 +1,44 @@
 /* global React:true */
 
-import DropDownBtn from './../../DropDownButton/DropDownButton';
+import DropDownButton from './../../DropDownButton/DropDownButton';
 import Item from './Item';
+import ImagesCountControl from './../../ImagesCountControl/ImagesCountControl';
 import './SearchBarParams.css';
+
+function itemWithDropDownButton(className, param, params) {
+    return (
+        <Item className={className} title={param.title}>
+            <DropDownButton options={param.options}
+                    value={params[param.name]}
+                    name={param.name}/>
+        </Item>);
+}
 
 class SearchBarParams extends React.Component {
     render() {
+        const {
+            imagesCount,
+            searchCity,
+            likesCount,
+            reviewsCount,
+            searchByField,
+            params} = this.props;
+
+        const imagesCountValue = {
+            from: params[imagesCount.name.from],
+            to: params[imagesCount.name.to]};
+
         return (
-            <div className={'searchbar__params-group ' + (this.props.showParams ? '' : 'params-group_hidden')}>
-                <Item title={this.props.likesCount.title}>
-                    <DropDownBtn options={this.props.likesCount.options}
-                        value={this.props.params[this.props.likesCount.name]}
-                        name={this.props.likesCount.name}/>
-                </Item>
-                <Item title={this.props.imagesCount.title}>
-                    <input value={this.props[this.props.imagesCount.name]}></input>
-                </Item>
-                <Item title={this.props.likesCount.title}>
-                    <DropDownBtn options={this.props.likesCount.options}
-                        value={this.props.params[this.props.likesCount.name]}
-                        name={this.props.likesCount.name}/>
-                </Item>
-                <Item title={this.props.reviewsCount.title}>
-                    <DropDownBtn options={this.props.reviewsCount.options}
-                        value={this.props.params[this.props.reviewsCount.name]}
-                        name={this.props.reviewsCount.name}/>
-                </Item>
-                <Item title={this.props.searchByField.title}>
-                    <DropDownBtn options={this.props.searchByField.options}
-                        value={this.props.params[this.props.searchByField.name]}
-                        name={this.props.searchByField.name}/>
-                </Item>
+            <div className={'conteiner ' + (this.props.showParams ? '' : 'conteiner_hidden')}>
+                <div className={'searchbar__params-group ' + (this.props.showParams ? '' : 'params-group_hidden')}>
+                    <Item className="param-item param-item_n1" title={imagesCount.title}>
+                        <ImagesCountControl value={imagesCountValue} name={imagesCount.name} />
+                    </Item>
+                    {itemWithDropDownButton('param-item param-item_n2', searchCity, params)}
+                    {itemWithDropDownButton('param-item param-item_n3', likesCount, params)}
+                    {itemWithDropDownButton('param-item param-item_n4', reviewsCount, params)}
+                    {itemWithDropDownButton('param-item param-item_n5', searchByField, params)}
+                </div>
             </div>);
     }
 }

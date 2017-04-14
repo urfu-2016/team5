@@ -23,7 +23,8 @@ class Search extends React.Component {
             reviewsCount: 0,
             searchCity: 0,
             searchByField: 0,
-            imagesCount: 0,
+            imagesCountFrom: 5,
+            imagesCountTo: 15,
             currentPage: 1,
             pageCount: 1
         };
@@ -39,7 +40,13 @@ class Search extends React.Component {
 
     search(newPageNumber) {
         var params = {
-            searchString: this.state.searchString
+            searchString: this.state.searchString,
+            likesCount: this.state.likesCount,
+            reviewsCount: this.state.reviewsCount,
+            searchCity: this.state.searchCity,
+            searchByField: this.state.searchByField,
+            imagesCountFrom: this.state.imagesCountFrom,
+            imagesCountTo: this.state.imagesCountTo
         };
 
         SearchFunctionality.search(params, newPageNumber)
@@ -53,7 +60,7 @@ class Search extends React.Component {
         this.setState({
             result: data.quests,
             currentPage: data.pageNumber,
-            countPage: data.maxPageNumber
+            pageCount: data.maxPageNumber
         });
     }
 
@@ -63,21 +70,25 @@ class Search extends React.Component {
         });
     }
 
+    renderResult() {
+        return (
+            <SearchResult currentPage={this.state.currentPage}
+                pageCount={this.state.pageCount} onPageChange={this.search}>
+                {this.state.result.map(card =>
+                    <SearchResultItem key={card.slug.toString()}>
+                        <Card card={card} />
+                    </SearchResultItem>)}
+            </SearchResult>);
+    }
+
     render() {
         return (
             <div className="Search">
                 <SearchBar handleSubmit={this.handleSubmit}
                     onInputChange={this.handleInputChange} params={this.state}/>
-                {this.state.result.length > 0 ? (
-                    <SearchResult currentPage={this.state.currentPage}
-                        pageCount={this.state.pageCount} handleChangePage={this.search}>
-                        {this.state.result.map(card =>
-                            <SearchResultItem key={card.slug.toString()}>
-                                <Card card={card} />
-                            </SearchResultItem>)}
-                    </SearchResult>
-                ) : (
-                    <div>Таких квестов нет :(</div>)}
+                {(this.state.result.length > 0) ?
+                    this.renderResult() :
+                    <div>Таких квестов нет :(</div>}
             </div>
         );
     }
