@@ -73,16 +73,10 @@ describe('models:Quest', () => {
             createQuestWithAuthor(questData),
             createQuestWithAuthor(questData)
         ])
-            .then(() => {
-                return Quest
-                    .searchByInternalProps(['title', 'tags'], questPartTitle);
-            })
+            .then(() => Quest.searchByInternalProps(['title', 'tags'], questPartTitle))
             .then(quests => {
-                quests.length
-                    .should.equal(2);
-
-                quests[0].description
-                    .should.equal(questData.description);
+                quests.length.should.equal(2);
+                quests[0].description.should.equal(questData.description);
             });
     });
 
@@ -92,11 +86,8 @@ describe('models:Quest', () => {
         return createQuestWithAuthor(questData)
             .then(() => Quest.searchByInternalProps(['tags'], questData.tags[0]))
             .then(quests => {
-                quests.length
-                    .should.equal(1);
-
-                quests[0].title
-                    .should.equal(questData.title);
+                quests.length.should.equal(1);
+                quests[0].title.should.equal(questData.title);
             });
     });
 
@@ -104,10 +95,7 @@ describe('models:Quest', () => {
         const questData = questsMocks.questForSearch;
 
         return createQuestWithAuthor(questData)
-            .then(() => {
-                return Quest
-                    .searchByInternalProps(['tags'], questData.description);
-            })
+            .then(() => Quest.searchByInternalProps(['tags'], questData.description))
             .then(quests => quests.length.should.equal(0));
     });
 
@@ -119,10 +107,8 @@ describe('models:Quest', () => {
             .then(() => User.getById(questData.authorId))
             .then(user => Quest.searchByAuthor(user.username[0]))
             .then(quests => {
-                quests.length
-                    .should.equal(1);
-                quests[0].author._id
-                    .should.deep.equal(questData.authorId);
+                quests.length.should.equal(1);
+                quests[0].author._id.should.deep.equal(questData.authorId);
             });
     });
 });
