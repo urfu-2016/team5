@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "export NODE_ENV=development; npm run prepare && node index.js",
-    "review": "export NODE_ENV=review; npm run prepare && node index.js",
-    "production": "export NODE_ENV=production; npm run build && node index.js",
+    "start": "NODE_ENV=development; npm run prepare && node index.js",
+    "review": "NODE_ENV=review; npm run prepare && node index.js",
+    "production": "NODE_ENV=production; npm run build && node index.js",
     "prepare": "npm run generate && npm run build",
     "lint": "npm run lint:style && npm run lint:js",
     "lint:style": "stylelint --ignore-path .gitignore *.css **/*.css",
