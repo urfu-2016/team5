@@ -5,15 +5,16 @@ import SearchPaginationControl from './../SearchPaginationControl/SearchPaginati
 
 class SearchResult extends React.Component {
     render() {
+        const {onPageChange, currentPage, pageCount, children} = this.props;
         return (
             <div>
                 <div className="search-result quests">
-                    {this.props.children}
+                    {children}
                 </div>
                 <SearchPaginationControl
-                    onChangePage={this.props.handleChangePage}
-                    currentPage={this.props.currentPage}
-                    pageCount={this.props.pageCount}/>
+                    onPageChange={onPageChange}
+                    currentPage={currentPage}
+                    pageCount={pageCount}/>
             </div>
         );
     }

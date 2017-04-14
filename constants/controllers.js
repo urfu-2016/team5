@@ -3,7 +3,7 @@
 module.exports = {
     questSearchController: {
         title: 'Список квестов',
-        cardsCount: 4
+        cardsCount: 6
     },
     indexController: {
         title: 'Список квестов'

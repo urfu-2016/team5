@@ -27,7 +27,7 @@ class Card extends React.Component {
                     <span className="statistics__count statistics__count_likes">{this.props.card.likesCount}</span>
                     <span className="statistics__count statistics__count_comments">{this.props.card.commentsCount}</span>
                 </div>
-                <a className="mini-quest-card__link mini-quest-card__link_yellow" href={'/quests/' + this.props.card.slug}></a>
+                <a className="mini-quest-card__link mini-quest-card__link_yellow" href={`/quests/${this.props.card.slug}`}></a>
             </article>
         );
     }

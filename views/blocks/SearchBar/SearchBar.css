@@ -1,0 +1,14 @@
+.searchbar
+{
+    width: calc(66.66% - 10px);
+    margin: 5px;
+    transition: width 0.5s ease;
+}
+
+@media (max-width: 768px)
+{
+    .searchbar
+          {
+        width: calc(100% - 10px);
+    }
+}
