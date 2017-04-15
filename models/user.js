@@ -12,10 +12,12 @@ const userSchema = new mongoose.Schema({
         unique: true,
         required: true
     },
+
     createdQuests: {
         type: [{type: ObjectId, ref: 'Quest'}],
         default: []
     },
+
     quests: {
         type: [{
             questId: {type: ObjectId, ref: 'Quest'},
@@ -25,37 +27,39 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-const UserModel = mongoose.model('User', userSchema);
+userSchema.statics.create = function ({firstname = '', surname = '', username}) {
+    const user = new this({firstname, surname, username});
 
-module.exports = {
-    create({firstname = '', surname = '', username}) {
-        const user = new UserModel({
-            firstname,
-            surname,
-            username
-        });
-
-        return user.save();
-    },
-
-    update(username, {firstname, surname}) {
-        return UserModel
-            .findOne({username})
-            .then(user => {
-                user.firstname = firstname ? firstname : user.firstname;
-                user.surname = surname ? surname : user.surname;
-
-                return user.save();
-            });
-    },
-
-    getAll: () => UserModel.find({}).exec(),
-
-    getByUsername: username => UserModel.findOne({username}).exec(),
-
-    getById: id => UserModel.findById(id),
-
-    removeByUsername: username => UserModel
-        .findOne({username})
-        .then(user => user.remove())
+    return user.save();
 };
+
+userSchema.statics.update = function (username, {firstname, surname}) {
+    return this
+        .findOne({username})
+        .then(user => {
+            user.firstname = firstname ? firstname : user.firstname;
+            user.surname = surname ? surname : user.surname;
+
+            return user.save();
+        });
+};
+
+userSchema.statics.getAll = function () {
+    return this.find({});
+};
+
+userSchema.statics.getByUsername = function (username) {
+    return this.findOne({username});
+};
+
+userSchema.statics.getById = function (id) {
+    return this.findById(id);
+};
+
+userSchema.statics.removeByUsername = function (username) {
+    return this
+        .findOne({username})
+        .then(user => user.remove());
+};
+
+module.exports = mongoose.model('User', userSchema);
