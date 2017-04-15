@@ -11,10 +11,11 @@ router.get('/', function (req, res) {
     Quest.getAll().then(data => {
         const renderData = {
             title: constants.title,
+            isUserAutorized: true,
             quests: data
         };
 
-        res.render('questsAll/quests-all', renderData);
+        res.render('mainPage/mainPage', renderData);
     });
 });
 router.get('/search', questsSearch.getFoundQuests);
