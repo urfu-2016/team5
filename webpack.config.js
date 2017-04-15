@@ -24,8 +24,8 @@ module.exports = {
     plugins: [
         new ExtractTextPlugin('css/[name].css'),
         new webpack.ProvidePlugin({
-            $: "jquery",
-            jQuery: "jquery"
+            $: 'jquery',
+            jQuery: 'jquery'
         })
     ],
     externals: {

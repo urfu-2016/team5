@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "npm tun generate && npm run build && node index.js",
+    "start": "npm run generate && npm run build && node index.js",
     "debug": "npm run generate && npm run build",
     "production": "NODE_ENV=production node index.js",
     "prepush": "npm run lint && npm run test",
@@ -26,7 +26,6 @@
     "express-session": "^1.15.2",
     "express-simple-cdn": "^1.0.1",
     "extract-text-webpack-plugin": "^2.1.0",
-    "glob-all": "^3.1.0",
     "global": "^4.3.1",
     "handlebars-layouts": "^3.1.4",
     "hbs": "~4.0.1",
@@ -54,7 +53,6 @@
     "stylelint": "^7.9.0",
     "stylelint-config-standard": "^16.0.0",
     "surge": "^0.18.0",
-    "webpack": "^2.3.2",
-    "glob-all": "^3.1.0"
+    "webpack": "^2.3.2"
   }
 }
