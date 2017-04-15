@@ -15,7 +15,7 @@ router.get('/', function (req, res) {
             quests: data
         };
 
-        res.render('mainPage/mainPage', renderData);
+        res.render('mainpage/mainpage', renderData);
     });
 });
 router.get('/search', questsSearch.getFoundQuests);

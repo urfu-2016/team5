@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "npm run generate && npm run build && node index.js",
+    "start": "npm tun generate && npm run build && node index.js",
     "debug": "npm run generate && npm run build",
     "production": "NODE_ENV=production node index.js",
     "prepush": "npm run lint && npm run test",
