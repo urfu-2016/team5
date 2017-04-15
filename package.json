@@ -11,7 +11,7 @@
     "test": "mocha --recursive ./tests",
     "generate": "node ./scripts/generate-db-data-console.js",
     "deploy:surge": "surge -p ./public -d team5.surge.sh",
-    "build": "webpack",
+    "build": "webpack"
   },
   "dependencies": {
     "b_": "^1.3.3",
