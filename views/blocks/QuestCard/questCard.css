@@ -34,6 +34,13 @@
     justify-content: space-between;
 }
 
+.mini-quest-card__link
+{
+    text-decoration: none;
+    padding: 5px;
+    text-align: center;
+}
+
 .mini-quest-card__link_yellow
 {
     border: 1px solid #ffd700;

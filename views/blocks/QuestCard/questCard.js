@@ -1,33 +1,37 @@
-/* global React:true */
-
+import React from 'react';
 import './questCard.css';
+import b from 'b_';
+const cardS = b.with('mini-quest-card');
+const stat = b.with('statistics');
 
 class Card extends React.Component {
     render() {
+        const {card} = this.props;
+
         return (
-            <article className="mini-quest-card">
-                <div className="mini-quest-card__title-image title-image">
-                    <img className="title-image__img" src={this.props.card.images[0].src}></img>
-                    <div className="title-image__caption">
-                        <h3 className="mini-quest-card__title">{this.props.card.title}</h3>
+            <article className={cardS()}>
+                <div className={`${cardS('title-image')} ${b('title-image')}`}>
+                    <img className={b('title-image', 'img')} src={card.images[0].src}></img>
+                    <div className={b('title-image', 'caption')}>
+                        <h3 className={cardS('title')}>{card.title}</h3>
                     </div>
                 </div>
-                <p className="mini-quest-card__city">
-                    {this.props.card.city}
+                <p className={cardS('city')}>
+                    {card.city}
                 </p>
-                <p className="mini-quest-card__author">
-                    {this.props.card.author}
+                <p className={cardS('author')}>
+                    {card.author}
                 </p>
-                <div className="mini-quest-card__tags">
-                    {this.props.card.tags.map(tag => <span className="tag tag_link">{tag}</span>)
-                    }
+                <p className={cardS('tags')}>
+                    {card.tags.map(tag =>
+                        <span key={tag} className={b('tag', 'link')}>{tag}</span>)}
+                </p>
+                <div className={`${cardS('statistics')} ${stat()}`}>
+                    <span className={stat('count', {images: true})}>&#128173; {card.imagesCount}</span>
+                    <span className={stat('count', {likes: true})}>{card.likesCount}</span>
+                    <span className={stat('count', {comments: true})}>{card.commentsCount}</span>
                 </div>
-                <div className="mini-quest-card__statistics statistics">
-                    <span className="statistics__count statistics__count_images">&#128173; {this.props.card.imagesCount}</span>
-                    <span className="statistics__count statistics__count_likes">{this.props.card.likesCount}</span>
-                    <span className="statistics__count statistics__count_comments">{this.props.card.commentsCount}</span>
-                </div>
-                <a className="mini-quest-card__link mini-quest-card__link_yellow" href={`/quests/${this.props.card.slug}`}></a>
+                <a className={cardS('link', {yellow: true})} href={`/quests/${card.slug}`}>Посмотреть</a>
             </article>
         );
     }

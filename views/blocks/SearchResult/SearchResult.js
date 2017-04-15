@@ -1,20 +1,21 @@
-/* global React:true */
-
-import './SearchResult.css';
+import React from 'react';
 import SearchPaginationControl from './../SearchPaginationControl/SearchPaginationControl';
+import './SearchResult.css';
+import b from 'b_';
 
 export default class SearchResult extends React.Component {
     render() {
         const {onPageChange, currentPage, pageCount, children} = this.props;
         return (
             <div>
-                <div className="search-result quests">
+                <div className={`quests ${b('search', 'result')}`} >
                     {children}
                 </div>
                 <SearchPaginationControl
                     onPageChange={onPageChange}
                     currentPage={currentPage}
-                    pageCount={pageCount}/>
+                    pageCount={pageCount}
+                />
             </div>
         );
     }

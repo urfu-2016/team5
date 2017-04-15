@@ -1,5 +1,5 @@
-/* global ReactDOM:true */
-
+import React from 'react';
+import ReactDOM from 'react-dom';
 import Search from '../../blocks/Search/search';
 
 ReactDOM.render(
