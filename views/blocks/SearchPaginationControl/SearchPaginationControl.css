@@ -1,0 +1,32 @@
+.pagination
+{
+    display: flex;
+    flex-direction: row;
+    height: 35px;
+}
+
+.pagination__item
+{
+    flex: 0 0 31px;
+    margin: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    outline: 0;
+    border: 1px solid #aaa;
+    border-radius: 3px;
+    cursor: pointer;
+    background: #fff;
+}
+
+.pagination__item_active,
+.pagination__item:hover
+{
+    border-color: #ffb000;
+}
+
+.pagination__item_type_end,
+.pagination__item_type_start
+{
+    flex: 0 0 80px;
+}

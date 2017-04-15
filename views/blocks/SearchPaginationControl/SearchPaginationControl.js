@@ -1,4 +1,8 @@
-/* global React:true */
+import React from 'react';
+import './SearchPaginationControl.css';
+import b from 'b_';
+const startString = 'В начало';
+const endString = 'В конец';
 
 export default class SearchPaginationControl extends React.Component {
     constructor(props) {
@@ -19,20 +23,20 @@ export default class SearchPaginationControl extends React.Component {
         var isFirstPage = currentPage === 1;
 
         return (
-            <div className="pagination" onClick={this.handlePage}>
+            <div className={b('pagination')} onClick={this.handlePage}>
                 {(pageCount > 3 && currentPage > 2) &&
-                    <button className="pagination__item pagination__item_start" data-page={1}>В начало</button>}
+                    <button className={b('pagination', 'item', {type: 'start'})} data-page={1}>{startString}</button>}
                 {(pageCount > 2 && isLastPage) &&
-                    <button className="pagination__item" data-page={currentPage - 2}>{currentPage - 2}</button>}
+                    <button className={b('pagination', 'item')} data-page={currentPage - 2}>{currentPage - 2}</button>}
                 {currentPage > 1 &&
-                    <button className="pagination__item" data-page={currentPage - 1}>{currentPage - 1}</button>}
-                <span className="pagination__item pagination__item_active">{currentPage}</span>
+                    <button className= {b('pagination', 'item')} data-page={currentPage - 1}>{currentPage - 1}</button>}
+                <span className= {b('pagination', 'item', {active: true})}>{currentPage}</span>
                 {currentPage < pageCount &&
-                    <button className="btn-right" data-page={currentPage + 1}>{currentPage + 1}</button>}
+                    <button className= {b('pagination', 'item')} data-page={currentPage + 1}>{currentPage + 1}</button>}
                 {(pageCount > 2 && isFirstPage) &&
-                    <button className="pagination__item" data-page={currentPage + 2}>{currentPage + 2}</button>}
+                    <button className= {b('pagination', 'item')} data-page={currentPage + 2}>{currentPage + 2}</button>}
                 {(pageCount > 3 && currentPage < pageCount - 1) &&
-                    <button className="pagination__item pager__item_end" data-page={pageCount}>В конец</button> }
+                    <button className= {b('pagination', 'item', {type: 'end'})} data-page={pageCount}>{endString}</button> }
             </div>
         );
     }
