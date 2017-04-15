@@ -1,3 +1,5 @@
+/* global $:true */
+
 require('./dropdown-menu.css');
 require('./__item/dropdown-menu__item.css');
 

@@ -1,3 +1,5 @@
+/* global $:true */
+
 require('./modal.css');
 require('./__backdrop/modal__backdrop.css');
 require('./__body/modal__body.css');
