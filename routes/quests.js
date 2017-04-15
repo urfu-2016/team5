@@ -3,19 +3,11 @@
 
 const express = require('express');
 const router = express.Router();
-const constants = require('../constants/controllers');
 const questsController = require('../controllers/api/quests');
 const Quest = require('../models/quest');
 
 router.get('/quests', function (req, res) {
-    Quest.getAll().then(data => {
-        const renderData = {
-            title: constants.title,
-            quests: data
-        };
-
-        res.render('questsAll/quests-all', renderData);
-    });
+    res.render('questsAll/quests-all');
 });
 
 router.route('/quests/:slug').get(function (req, res) {
