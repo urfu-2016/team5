@@ -1,11 +1,11 @@
-/* global React:true */
-
+import React from 'react';
 import SearchBar from './../SearchBar/SearchBar';
 import SearchResult from './../SearchResult/SearchResult';
 import SearchResultItem from './../SearchResult/ResultItem';
 import Card from './../QuestCard/questCard';
+import constants from './constants';
 
-const SearchFunctionality = require('./searchFunctionality.js');
+const Searcher = require('./Searcher.js');
 
 class Search extends React.Component {
     constructor(props) {
@@ -16,18 +16,7 @@ class Search extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.search = this.search.bind(this);
 
-        this.state = {
-            result: [],
-            searchString: '',
-            likesCount: 0,
-            reviewsCount: 0,
-            searchCity: 0,
-            searchByField: 0,
-            imagesCountFrom: 5,
-            imagesCountTo: 15,
-            currentPage: 1,
-            pageCount: 1
-        };
+        this.state = constants.defaultState;
     }
 
     componentDidMount() {
@@ -39,17 +28,9 @@ class Search extends React.Component {
     }
 
     search(newPageNumber) {
-        var params = {
-            searchString: this.state.searchString,
-            likesCount: this.state.likesCount,
-            reviewsCount: this.state.reviewsCount,
-            searchCity: this.state.searchCity,
-            searchByField: this.state.searchByField,
-            imagesCountFrom: this.state.imagesCountFrom,
-            imagesCountTo: this.state.imagesCountTo
-        };
+        var params = Searcher.getSearchParameters(this.state, newPageNumber);
 
-        SearchFunctionality.search(params, newPageNumber)
+        Searcher.searchRequest(params)
             .then(function (response) {
                 return response.json();
             })
