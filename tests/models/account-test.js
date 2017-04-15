@@ -1,7 +1,6 @@
 'use strict';
 
 const Account = require('../../models/account');
-const AccountMongo = require('mongoose').model('Account');
 const User = require('../../models/user');
 const DBClearer = require('../../scripts/clear-db');
 require('chai').should();
@@ -21,10 +20,10 @@ describe('models:Account', () => {
     it('creates account', () => {
         return Account
            .create(account)
-           .then(() => AccountMongo.find({}).exec())
+           .then(() => Account.find({}).exec())
            .then(accounts => {
                accounts.length.should.be.equal(1);
-               accounts[0].get('username').should.be.equal(account.username);
+               accounts[0].username.should.be.equal(account.username);
            });
     });
 
@@ -57,7 +56,7 @@ describe('models:Account', () => {
     it('check that password was hashed', () => {
         return Account
            .create(account)
-           .then(() => AccountMongo.find({}).exec())
+           .then(() => Account.find({}).exec())
            .then(users => users[0].password.should.not.be.equal(account.password));
     });
 
@@ -70,7 +69,7 @@ describe('models:Account', () => {
             .catch(err => {
                 err.code.should.be.equal(constants.mongoose.mongoDuplicateErrorCode);
 
-                return AccountMongo
+                return Account
                     .find(userObject)
                     .exec()
                     .then(accounts => accounts.length.should.equal(0));
@@ -96,7 +95,7 @@ describe('models:Account', () => {
             .catch(err => err.name.should.be.equal(constants.mongoose.validationErrorName));
     });
 
-    it('verifies password', () => {
+    it('gets true by verification a correct password', () => {
         return Account
             .create(account)
             .then(() => Account.verifyPassword(account))
@@ -107,7 +106,7 @@ describe('models:Account', () => {
         return Account
             .create(account)
             .then(() => Account.verifyPassword(accountWithWrongPassword))
-            .then(result => result.should.not.be.ok);
+            .catch(err => err.message.should.be.equal(constants.models.Account.wrongPasswordOrNameMessage));
     });
 
     it('changes password', () => {
@@ -124,6 +123,6 @@ describe('models:Account', () => {
         return Account
             .create(account)
             .then(() => Account.changePassword(accountWithWrongPassword, account.password))
-            .catch(err => err.message.should.be.equal(constants.models.Account.wrongPasswordMessage));
+            .catch(err => err.message.should.be.equal(constants.models.Account.wrongPasswordOrNameMessage));
     });
 });

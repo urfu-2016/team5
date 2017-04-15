@@ -1,16 +1,14 @@
+
 /* eslint-env mocha */
 
-const chai = require('chai');
-const chaiHttp = require('chai-http');
 const server = require('../../app');
-const Quest = require('../../models/quest');
 const HttpStatus = require('http-status-codes');
 const dbClearer = require('../../scripts/clear-db');
 const slugify = require('slug');
 const questsMocks = require('../mocks/quests');
-
-chai.should();
-chai.use(chaiHttp);
+const setAuthor = require('../../scripts/generate-db-data').setAuthor;
+const createQuestWithAuthor = require('../../scripts/generate-db-data').createQuestWithAuthor;
+const chaiRequest = require('../commonTestLogic/chaiRequest')(server);
 
 describe('controller:quest', () => {
     const questData = questsMocks.regularQuest;
@@ -22,13 +20,8 @@ describe('controller:quest', () => {
     it('should create the quest', () => {
         let quest = Object.assign({}, questData);
 
-        return Quest._setAuthor(quest)
-            .then(() => {
-                return chai
-                    .request(server)
-                    .post('/api/quests')
-                    .send(quest);
-            })
+        return setAuthor(quest)
+            .then(() => chaiRequest.post('/api/quests', quest))
             .then(res => {
                 res.status.should.equal(HttpStatus.CREATED);
                 res.body.data.title.should.equal(questData.title);
@@ -37,13 +30,9 @@ describe('controller:quest', () => {
     });
 
     it('should GET all the quests', () => {
-        return Quest._createWithAuthor(questData)
-            .then(() => Quest._createWithAuthor(questData))
-            .then(() => {
-                return chai.request(server)
-                    .get('/api/quests')
-                    .send();
-            })
+        return createQuestWithAuthor(questData)
+            .then(() => createQuestWithAuthor(questData))
+            .then(() => chaiRequest.get('/api/quests'))
             .then(res => {
                 res.status.should.equal(HttpStatus.OK);
                 res.body.data.should.length.of.at(2);
@@ -53,12 +42,8 @@ describe('controller:quest', () => {
     it('should GET a quest by the given slug', () => {
         const slug = slugify(questData.title);
 
-        return Quest._createWithAuthor(questData)
-            .then(() => {
-                return chai.request(server)
-                    .get(`/api/quests/${slug}`)
-                    .send();
-            })
+        return createQuestWithAuthor(questData)
+            .then(() => chaiRequest.get(`/api/quests/${slug}`))
             .then(res => {
                 res.status.should.equal(HttpStatus.OK);
                 res.body.data.slug.should.equal(slug);
@@ -72,12 +57,8 @@ describe('controller:quest', () => {
             description: 'SomeOtherDescription'
         };
 
-        return Quest._createWithAuthor(questData)
-            .then(() => {
-                return chai.request(server)
-                    .put(`/api/quests/${slug}`)
-                    .send(updateData);
-            })
+        return createQuestWithAuthor(questData)
+            .then(() => chaiRequest.put(`/api/quests/${slug}`, updateData))
             .then(res => {
                 res.status.should.equal(HttpStatus.OK);
                 res.body.data.title.should.equal(updateData.title);
@@ -88,32 +69,16 @@ describe('controller:quest', () => {
     it('should delete a quest', () => {
         const slug = slugify(questData.title);
 
-        return Quest._createWithAuthor(questData)
-            .then(() => {
-                return chai
-                    .request(server)
-                    .delete(`/api/quests/${slug}`)
-                    .send();
-            })
+        return createQuestWithAuthor(questData)
+            .then(() => chaiRequest.delete(`/api/quests/${slug}`))
             .then(res => {
                 res.status.should.equal(HttpStatus.OK);
-            })
-            .then(() => {
-                return chai
-                    .request(server)
-                    .delete(`/api/quests/${slug}`)
-                    .send();
-            })
-            .catch(err => {
-                err.status.should.equal(HttpStatus.NOT_FOUND);
             });
     });
 
     it('should answer with status 404', () => {
-        return chai
-            .request(server)
+        return chaiRequest
             .get(`/api/quests/some-bad-slug`)
-            .send()
             .catch(err => {
                 err.status.should.equal(HttpStatus.NOT_FOUND);
             });

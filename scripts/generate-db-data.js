@@ -3,6 +3,7 @@
 const User = require('../models/user');
 const Quest = require('../models/quest');
 const constants = require('../constants/generation');
+const shortid = require('shortid');
 
 function createAll(model, allData) {
     return Promise.all(
@@ -36,7 +37,7 @@ module.exports.generateQuests = ({questsCount = 10}) => {
                 let questData = {
                     title: `${constants.quest.titlePrefix} ${i}`,
                     description: `${constants.quest.descriptionPrefix} ${i}`,
-                    author: user,
+                    authorId: user._id,
                     images: generateImages({questId: i}),
                     slug: `${i}`,
                     city: constants.quest.city
@@ -73,8 +74,34 @@ module.exports.createUsersFromJson = json => {
 
 module.exports.createQuestsFromJson = json => {
     const data = JSON.parse(json).data;
+    const self = this;
 
     return Promise.all(
-        data.map(data => Quest._createWithAuthor(data))
+        data.map(data => self.createQuestWithAuthor(data))
     );
+};
+
+module.exports.setAuthor = data => {
+    const username = 'User_' + shortid.generate();
+
+    return new Promise(resolve => {
+        User.create({username})
+            .then(user => {
+                data.authorId = user._id;
+                resolve();
+            });
+    });
+};
+
+module.exports.createQuestWithAuthor = data => {
+    const username = 'User_' + shortid.generate();
+
+    return User.create({username})
+        .then(author => Quest.create({
+            authorId: author._id,
+            title: data.title,
+            description: data.description || '',
+            city: data.city || '',
+            tags: data.tags || ''
+        }));
 };

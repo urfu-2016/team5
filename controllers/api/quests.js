@@ -3,13 +3,14 @@
 const HttpStatus = require('http-status-codes');
 const Quest = require('../../models/quest');
 const resolveRequestPromise = require('./baseApi').resolveRequestPromise;
+const constants = require('../../constants/controllers').quest;
 
 module.exports = {
     createQuest(req, res) {
         const quest = {
             title: req.body.title,
             description: req.body.description,
-            author: req.body.author,
+            authorId: req.body.authorId,
             city: req.body.city,
             tags: req.body.tags
         };
@@ -46,7 +47,7 @@ module.exports = {
             .getAll()
             .then(quests => {
                 return quests.length === 0 ? () => {
-                    throw new Error('Quests was not found');
+                    throw new Error(constants.questNotFoundErrorMessage);
                 } : () => quests;
             })
             .then(resultCallback => resolveRequestPromise(resultCallback, res));
@@ -57,7 +58,7 @@ module.exports = {
             .getBySlug(req.params.slug)
             .then(quest => {
                 return quest === null ? () => {
-                    throw new Error('Quests wasn\'t found');
+                    throw new Error(constants.questNotFoundErrorMessage);
                 } : () => quest;
             })
             .then(resultCallback => resolveRequestPromise(resultCallback, res));
@@ -68,7 +69,7 @@ module.exports = {
             .removeBySlug(req.params.slug)
             .then(res => {
                 return res.result.n === 0 ? () => {
-                    throw new Error('Quests wasn\'t found');
+                    throw new Error(constants.questNotFoundErrorMessage);
                 } : () => res;
             })
             .then(resultCallback => resolveRequestPromise(resultCallback, res));

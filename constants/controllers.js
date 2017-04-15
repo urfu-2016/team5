@@ -1,11 +1,24 @@
 'use strict';
 
 module.exports = {
-    questSearchController: {
-        title: 'Список квестов',
-        cardsCount: 6
-    },
-    indexController: {
+    questSearch: {
         title: 'Список квестов'
+    },
+
+    user: {
+        userNotFoundErrorMessage: 'User was not found'
+    },
+
+    quest: {
+        questNotFoundErrorMessage: 'Quests was not found'
+    },
+
+    index: {
+        title: 'Список квестов'
+    },
+
+    auth: {
+        signedUpPattern: username => `${username} was signed up`,
+        signedInPattern: username => `${username}, поздравляем, вы аутентифицированы!`
     }
 };
