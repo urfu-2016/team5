@@ -1,0 +1,12 @@
+.input-group
+{
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.input-group .fa
+{
+    display: block;
+    font-size: 1.5rem;
+}

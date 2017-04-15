@@ -1,0 +1,22 @@
+.navbar__brand
+{
+    align-self: flex-start;
+    overflow: visible;
+    white-space: nowrap;
+    display: inline-block;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    margin-right: 1rem;
+    font-size: 1.25rem;
+    line-height: inherit;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.navbar-brand:focus,
+.navbar-brand:hover
+{
+    text-decoration: none;
+    color: #fff;
+}

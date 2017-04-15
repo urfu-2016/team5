@@ -1,17 +1,17 @@
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
-    context: path.join(__dirname, '/views/pages'),
+    context: path.join(__dirname, '/views'),
     entry: {
-        questsId: './questsId/quests-id.js',
-        questsAll: './questsAll/questsAll.js',
-        layout: './layout.js'
+        header: './blocks/header/header',
+        mainPage: './pages/mainPage/mainPage'
     },
     output: {
         path: path.join(__dirname, '/public'),
         publicPath: '/',
-        filename: '[name].js'
+        filename: 'js/[name].js'
     },
     module: {
         rules: [
@@ -22,6 +22,13 @@ module.exports = {
         ]
     },
     plugins: [
-        new ExtractTextPlugin('stylesheets/[name].css')
-    ]
+        new ExtractTextPlugin('css/[name].css'),
+        new webpack.ProvidePlugin({
+            $: "jquery",
+            jQuery: "jquery"
+        })
+    ],
+    externals: {
+        jquery: 'jQuery'
+    }
 };
