@@ -5,6 +5,14 @@ module.exports = {
         title: 'Список квестов'
     },
 
+    user: {
+        userNotFoundErrorMessage: 'User was not found'
+    },
+
+    quest: {
+        questNotFoundErrorMessage: 'Quests was not found'
+    },
+
     index: {
         title: 'Список квестов'
     },
