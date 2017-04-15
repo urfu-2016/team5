@@ -9,6 +9,7 @@ install:
 script:
 - npm run lint
 - npm run test
+- npm run build
 env:
 - CXX=g++-4.8
 addons:
@@ -19,7 +20,6 @@ addons:
       - g++-4.8
 deploy:
   skip_cleanup: true
-  before_deploy: npm run build
 
   provider: heroku
   api_key:
