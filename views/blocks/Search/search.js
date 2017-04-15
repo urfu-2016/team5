@@ -19,7 +19,7 @@ class Search extends React.Component {
         this.state = constants.defaultState;
     }
 
-    componentDidMount() {
+    componentWillMount() {
         this.search(this.state.currentPage);
     }
 

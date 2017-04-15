@@ -25,6 +25,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    margin: 10px 0;
 }
 
 .mini-quest-card__info
@@ -90,7 +91,7 @@
     padding-right: 10px;
 }
 
-.statistics__count_comments:before
+.statistics__count_images:before
 {
     content: '\2691';
     padding-right: 10px;

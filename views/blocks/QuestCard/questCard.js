@@ -17,19 +17,19 @@ class Card extends React.Component {
                     </div>
                 </div>
                 <p className={cardS('city')}>
-                    {card.city}
+                    <span>Город: {card.city}</span>
                 </p>
                 <p className={cardS('author')}>
-                    {card.author}
+                    <span>Автор: {card.author}</span>
                 </p>
                 <p className={cardS('tags')}>
                     {card.tags.map(tag =>
                         <span key={tag} className={b('tag', 'link')}>{tag}</span>)}
                 </p>
                 <div className={`${cardS('statistics')} ${stat()}`}>
-                    <span className={stat('count', {images: true})}>&#128173; {card.imagesCount}</span>
-                    <span className={stat('count', {likes: true})}>{card.likesCount}</span>
-                    <span className={stat('count', {comments: true})}>{card.commentsCount}</span>
+                    <span className={stat('count', {images: true})}>{card.commentsCount} {card.images.length}</span>
+                    <span className={stat('count', {likes: true})}>{card.likes.length}</span>
+                    <span className={stat('count', {comments: true})}>&#128173; 0</span>
                 </div>
                 <a className={cardS('link', {yellow: true})} href={`/quests/${card.slug}`}>Посмотреть</a>
             </article>

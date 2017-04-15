@@ -4,7 +4,6 @@
     flex-direction: row;
     border: 1px solid #aaa;
     border-radius: 3px;
-    padding: 0 5px;
 }
 
 .searchbar__input
@@ -17,6 +16,34 @@
     line-height: 20px;
     font-size: 18px;
     width: 70%;
+    border-radius: 3px;
+}
+
+.searchbar__button
+{
+    cursor: pointer;
+}
+
+.searchbar__button:hover
+{
+    background: #fff8aa;
+}
+
+.searchbar__button:active
+{
+    padding-top: 3px;
+}
+
+.searchbar__button_type_parameters
+{
+    padding: 0 10px;
+}
+
+.searchbar__button_type_submit
+{
+    padding: 0 10px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
 }
 
 .button
