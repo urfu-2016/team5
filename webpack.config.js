@@ -26,7 +26,8 @@ module.exports = {
                 exclude: /node_modules/,
                 loader: 'babel-loader',
                 query: {
-                    presets: ['es2015', 'react']
+                    presets: ['es2015', 'react'],
+                    plugins: ['transform-runtime']
                 }
             }
         ]
@@ -34,13 +35,29 @@ module.exports = {
     plugins: [
         new ExtractTextPlugin('stylesheets/[name].css'),
         new webpack.NoEmitOnErrorsPlugin()
-    ]
+    ],
+    externals: {
+        react: 'React',
+        'react-dom': 'ReactDOM'
+    }
 };
 
 if (config.mode === 'production') {
     module.exports.plugins.push(
-        new webpack.optimize.UglifyJsPlugin({
-            warnings: false
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: JSON.stringify('production')
+            }
         })
     );
+
+    module.exports.plugins.push(
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false
+            }
+        })
+    );
+
+    module.exports.devtool = 'cheap-module-sourece-map';
 }

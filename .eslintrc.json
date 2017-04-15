@@ -15,7 +15,8 @@
     "indent": [2, 4, {"SwitchCase": 1}],
     "linebreak-style": ["error", "unix"],
     "react/prop-types": [0],
-    "react/react-in-jsx-scope": [0]
+    "react/no-array-index-key": "error",
+    "react/jsx-key": "error"
   },
   "plugins": ["react"]
 }
