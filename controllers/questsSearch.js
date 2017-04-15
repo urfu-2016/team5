@@ -6,11 +6,11 @@ const Quest = require('../models/quest');
 function getSearchPropsByRequest(searchByField) {
     const searchProperties = [];
 
-    if (searchByField === 2) {
+    if (searchByField === constants.searchBy.Title) {
         searchProperties.push('title');
     }
 
-    if (searchByField === 3) {
+    if (searchByField === constants.searchBy.Tags) {
         searchProperties.push('tags');
     }
 
@@ -19,22 +19,18 @@ function getSearchPropsByRequest(searchByField) {
 
 module.exports = {
     getFoundQuests(req, res) {
-        var searchByField;
-        if (req.query.searchByField) {
-            searchByField = Number(req.query.searchByField);
-        }
-
+        const searchByField = Number(req.query.searchByField);
         const searchProperties = getSearchPropsByRequest(searchByField);
         const searchString = req.query.searchString || '';
         const searchPromises = [];
+        var searchPage = 1;
 
-        var searchPage;
         if (req.query.searchPage) {
             searchPage = Number(req.query.searchPage);
             searchPage = searchPage < 0 ? 1 : searchPage;
         }
 
-        if (req.query.searchByField === 1) {
+        if (req.query.searchByField === constants.searchBy.Author) {
             searchPromises.push(Quest.searchByAuthor(searchString));
         }
 

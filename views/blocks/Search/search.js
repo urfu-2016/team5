@@ -19,12 +19,15 @@ class Search extends React.Component {
         this.state = constants.defaultState;
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.search(this.state.currentPage);
     }
 
     handleSubmit() {
         this.search(1);
+        this.setState({
+            loading: true
+        });
     }
 
     search(newPageNumber) {
@@ -41,7 +44,8 @@ class Search extends React.Component {
         this.setState({
             result: data.quests,
             currentPage: data.pageNumber,
-            pageCount: data.maxPageNumber
+            pageCount: data.maxPageNumber,
+            loading: false
         });
     }
 
@@ -69,7 +73,7 @@ class Search extends React.Component {
                     onInputChange={this.handleInputChange} params={this.state}/>
                 {(this.state.result.length > 0) ?
                     this.renderResult() :
-                    <div>Таких квестов нет :(</div>}
+                    !this.state.loading && <div>Таких квестов нет :(</div>}
             </div>
         );
     }

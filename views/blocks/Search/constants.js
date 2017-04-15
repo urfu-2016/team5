@@ -1,6 +1,7 @@
 module.exports = {
     defaultState: {
         result: [],
+        loading: true,
         searchString: '',
         likesCount: 0,
         reviewsCount: 0,
