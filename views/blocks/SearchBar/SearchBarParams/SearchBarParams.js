@@ -1,16 +1,17 @@
-/* global React:true */
-
-import DropDownButton from './../../DropDownButton/DropDownButton';
-import Item from './Item';
+import React from 'react';
 import ImagesCountControl from './../../ImagesCountControl/ImagesCountControl';
+import DropDownButton from './../../DropDownButton/DropDownButton';
 import './SearchBarParams.css';
+import Item from './Item';
+import b from 'b_';
 
 function itemWithDropDownButton(className, param, params) {
     return (
         <Item className={className} title={param.title}>
             <DropDownButton options={param.options}
                     value={params[param.name]}
-                    name={param.name}/>
+                    name={param.name}
+            />
         </Item>);
 }
 
@@ -29,15 +30,15 @@ export default class SearchBarParams extends React.Component {
             to: params[imagesCount.name.to]};
 
         return (
-            <div className={'conteiner ' + (this.props.showParams ? '' : 'conteiner_hidden')}>
-                <div className={'searchbar__params-group ' + (this.props.showParams ? '' : 'params-group_hidden')}>
-                    <Item className="param-item param-item_n1" title={imagesCount.title}>
+            <div className={b('container', {hidden: !this.props.showParams})}>
+                <div className={b('searchbar', 'params-group', {hidden: !this.props.showParams})}>
+                    <Item className={b('param-item', {n: 1})} title={imagesCount.title}>
                         <ImagesCountControl value={imagesCountValue} name={imagesCount.name} />
                     </Item>
-                    {itemWithDropDownButton('param-item param-item_n2', searchCity, params)}
-                    {itemWithDropDownButton('param-item param-item_n3', likesCount, params)}
-                    {itemWithDropDownButton('param-item param-item_n4', reviewsCount, params)}
-                    {itemWithDropDownButton('param-item param-item_n5', searchByField, params)}
+                    {itemWithDropDownButton(b('param-item', {n: 2}), searchCity, params)}
+                    {itemWithDropDownButton(b('param-item', {n: 3}), likesCount, params)}
+                    {itemWithDropDownButton(b('param-item', {n: 4}), reviewsCount, params)}
+                    {itemWithDropDownButton(b('param-item', {n: 5}), searchByField, params)}
                 </div>
             </div>);
     }

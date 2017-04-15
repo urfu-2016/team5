@@ -1,5 +1,4 @@
-/* global React:true */
-
+import React from 'react';
 import './SearchBar.css';
 import SearchBarInput from './SearchBarInput/SearchBarInput';
 import SearchBarParams from './SearchBarParams/SearchBarParams';
@@ -45,11 +44,13 @@ export default class SearchBar extends React.Component {
                 onChange={this.handleInputChange}>
                 <SearchBarInput
                     searchString={this.props.params.searchString}
-                    onShowParams={this.handleShowParams}/>
+                    onShowParams={this.handleShowParams}
+                />
                 <SearchBarParams
                     showParams={this.state.showParams}
                     params={this.props.params}
-                    {...SBParams.params}/>
+                    {...SBParams.params}
+                />
             </form>
         );
     }
