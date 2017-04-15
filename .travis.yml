@@ -19,6 +19,7 @@ addons:
       - g++-4.8
 deploy:
   skip_cleanup: true
+  before_deploy: npm run build
 
   provider: heroku
   api_key:
