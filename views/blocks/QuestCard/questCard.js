@@ -1,5 +1,6 @@
 import React from 'react';
 import './questCard.css';
+import {QuestCardStrings} from './../../constants/strings';
 import b from 'b_';
 const questCard = b.with('mini-quest-card');
 const stat = b.with('statistics');
@@ -17,10 +18,10 @@ class Card extends React.Component {
                     </div>
                 </div>
                 <p className={questCard('city')}>
-                    <span>Город: {card.city}</span>
+                    <span>{QuestCardStrings.city} {card.city}</span>
                 </p>
                 <p className={questCard('author')}>
-                    <span>Автор: {card.author}</span>
+                    <span>{QuestCardStrings.author} {card.author}</span>
                 </p>
                 <p className={questCard('tags')}>
                     {card.tags.map(tag =>

@@ -1,8 +1,7 @@
 import React from 'react';
 import './SearchBarInput.css';
 import b from 'b_';
-const SearchBarInputPlaceholder = 'Введите данные';
-const FindString = 'Найти';
+import {SearchBarInputString} from './../../../constants/strings';
 
 export default class SearchBarInput extends React.Component {
     render() {
@@ -10,14 +9,14 @@ export default class SearchBarInput extends React.Component {
         return (
             <div className={b('searchbar', 'input-group')}>
                 <input className={b('searchbar', 'input')} type="search" name="searchString"
-                    placeholder={SearchBarInputPlaceholder} value={searchString}>
+                    placeholder={SearchBarInputString.placeholder} value={searchString}>
                 </input>
                 <input type="button" className={`button ${b('searchbar', 'button', {type: 'parameters'})}`}
                     value="&#9776;" onClick={onShowParams}>
                 </input>
                 <button className={`button ${b('searchbar', 'button', {type: 'submit'})}`}
                     type="submit" name="search-btn">
-                    {FindString}
+                    {SearchBarInputString.find}
                 </button>
             </div>);
     }

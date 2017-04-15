@@ -14,7 +14,7 @@ function getSearchParameters(state, newPageNumber) {
         searchByField: state.searchByField,
         imagesCountFrom: state.imagesCountFrom,
         imagesCountTo: state.imagesCountTo,
-        searchPage: newPageNumber
+        searchPageNumber: newPageNumber
     };
 }
 

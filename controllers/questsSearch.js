@@ -6,11 +6,11 @@ const Quest = require('../models/quest');
 function getSearchPropsByRequest(searchByField) {
     const searchProperties = [];
 
-    if (searchByField === constants.searchBy.Title) {
+    if (searchByField === constants.searchFieldsCodes.title) {
         searchProperties.push('title');
     }
 
-    if (searchByField === constants.searchBy.Tags) {
+    if (searchByField === constants.searchFieldsCodes.tags) {
         searchProperties.push('tags');
     }
 
@@ -23,14 +23,14 @@ module.exports = {
         const searchProperties = getSearchPropsByRequest(searchByField);
         const searchString = req.query.searchString || '';
         const searchPromises = [];
-        var searchPage = 1;
+        var searchPageNumber = 1;
 
-        if (req.query.searchPage) {
-            searchPage = Number(req.query.searchPage);
-            searchPage = searchPage < 0 ? 1 : searchPage;
+        if (req.query.searchPageNumber) {
+            searchPageNumber = Number(req.query.searchPageNumber);
+            searchPageNumber = searchPageNumber < 0 ? 1 : searchPageNumber;
         }
 
-        if (req.query.searchByField === constants.searchBy.Author) {
+        if (req.query.searchByField === constants.searchFieldsCodes.author) {
             searchPromises.push(Quest.searchByAuthor(searchString));
         }
 
@@ -55,10 +55,10 @@ module.exports = {
                     });
             })
             .then(quests => {
-                const firstCardNumber = (searchPage - 1) * constants.cardsCount;
+                const firstCardNumber = (searchPageNumber - 1) * constants.cardsCount;
                 const lastCardNumber = firstCardNumber + constants.cardsCount;
                 const renderData = {
-                    pageNumber: searchPage,
+                    pageNumber: searchPageNumber,
                     maxPageNumber: Math.ceil(quests.length / constants.cardsCount),
                     title: constants.title,
                     quests: quests.slice(firstCardNumber, lastCardNumber),

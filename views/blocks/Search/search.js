@@ -3,7 +3,7 @@ import SearchBar from './../SearchBar/SearchBar';
 import SearchResult from './../SearchResult/SearchResult';
 import SearchResultItem from './../SearchResult/ResultItem';
 import Card from './../QuestCard/questCard';
-import constants from './constants';
+import constants from './../../constants/defaultStates';
 
 const Searcher = require('./Searcher.js');
 

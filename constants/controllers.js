@@ -4,10 +4,10 @@ module.exports = {
     questSearch: {
         title: 'Список квестов',
         cardsCount: 6,
-        searchBy: {
-            Author: 1,
-            Title: 2,
-            Tags: 3
+        searchFieldsCodes: {
+            author: 1,
+            title: 2,
+            tags: 3
         }
     },
 
