@@ -1,5 +1,5 @@
-/* global React:true */
-
+import React from 'react';
+import b from 'b_';
 import './DropDownButton.css';
 import './../Input.css';
 
@@ -9,7 +9,7 @@ export default class DropDownButton extends React.Component {
         var keys = Object.keys(options);
 
         return (
-            <select className="input drop-down-input" value={value} name={name}>
+            <select className={b('input', {type: 'drop-down'})} value={value} name={name}>
                 {keys.map(key =>
                     <option key={key} value={key}>{options[key]}</option>
                 )}
