@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "cross-env NODE_ENV=development \"npm run prepare && node index.js\"",
-    "review": "cross-env NODE_ENV=review \"npm run generate && node index.js\"",
+    "review": "cross-env NODE_ENV=review \"npm run prepare && node index.js\"",
     "production": "cross-env NODE_ENV=production node index.js",
     "prepare": "npm run generate && npm run build",
     "lint": "npm run lint:style && npm run lint:js",
