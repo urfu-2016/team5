@@ -36,6 +36,7 @@
     "express-simple-cdn": "^1.0.1",
     "extract-text-webpack-plugin": "^2.1.0",
     "global": "^4.3.1",
+    "handlebars-helper-equal": "^1.0.0",
     "handlebars-layouts": "^3.1.4",
     "hbs": "~4.0.1",
     "http-status-codes": "^1.1.6",
