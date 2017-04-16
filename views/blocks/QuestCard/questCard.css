@@ -5,8 +5,9 @@
     min-width: 300px;
     padding: 10px;
     box-sizing: border-box;
-    position: relative;
     flex: 1 1 100%;
+    border: 1px solid #aaa;
+    border-radius: 3px;
 }
 
 .mini-quest-card__title-image
@@ -24,6 +25,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    margin: 10px 0;
 }
 
 .mini-quest-card__info
@@ -35,11 +37,9 @@
 
 .mini-quest-card__link
 {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
+    text-decoration: none;
+    padding: 5px;
+    text-align: center;
 }
 
 .mini-quest-card__link_yellow
@@ -91,9 +91,8 @@
     padding-right: 10px;
 }
 
-.statistics__count_comments:before
+.statistics__count_images:before
 {
     content: '\2691';
     padding-right: 10px;
 }
-

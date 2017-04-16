@@ -2,7 +2,13 @@
 
 module.exports = {
     questSearch: {
-        title: 'Список квестов'
+        title: 'Список квестов',
+        cardsCount: 6,
+        searchFieldsCodes: {
+            author: 1,
+            title: 2,
+            tags: 3
+        }
     },
 
     user: {

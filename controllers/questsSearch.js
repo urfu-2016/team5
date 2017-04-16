@@ -3,12 +3,14 @@
 const constants = require('../constants/controllers').questSearch;
 const Quest = require('../models/quest');
 
-function getSearchPropsByRequest(req) {
+function getSearchPropsByRequest(searchFieldsCodes) {
     const searchProperties = [];
-    if (req.query.searchByTitle) {
+
+    if (searchFieldsCodes === constants.searchFieldsCodes.title) {
         searchProperties.push('title');
     }
-    if (req.query.searchByTags) {
+
+    if (searchFieldsCodes === constants.searchFieldsCodes.tags) {
         searchProperties.push('tags');
     }
 
@@ -17,11 +19,18 @@ function getSearchPropsByRequest(req) {
 
 module.exports = {
     getFoundQuests(req, res) {
-        const searchProperties = getSearchPropsByRequest(req);
+        const searchFieldsCodes = Number(req.query.searchFieldsCodes);
+        const searchProperties = getSearchPropsByRequest(searchFieldsCodes);
         const searchString = req.query.searchString || '';
         const searchPromises = [];
+        var searchPageNumber = 1;
 
-        if (req.query.searchByAuthor) {
+        if (req.query.searchPageNumber) {
+            searchPageNumber = Number(req.query.searchPageNumber);
+            searchPageNumber = searchPageNumber < 0 ? 1 : searchPageNumber;
+        }
+
+        if (req.query.searchFieldsCodes === constants.searchFieldsCodes.author) {
             searchPromises.push(Quest.searchByAuthor(searchString));
         }
 
@@ -46,13 +55,17 @@ module.exports = {
                     });
             })
             .then(quests => {
+                const firstCardNumber = (searchPageNumber - 1) * constants.cardsCount;
+                const lastCardNumber = firstCardNumber + constants.cardsCount;
                 const renderData = {
+                    pageNumber: searchPageNumber,
+                    maxPageNumber: Math.ceil(quests.length / constants.cardsCount),
                     title: constants.title,
-                    quests: quests || [],
+                    quests: quests.slice(firstCardNumber, lastCardNumber),
                     isEmptyQuests: quests.length === 0
                 };
 
-                res.render('questsAll/quests-all', renderData);
+                res.send(renderData);
             });
     }
 };
