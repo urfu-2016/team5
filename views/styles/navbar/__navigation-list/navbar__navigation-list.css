@@ -1,4 +1,5 @@
-.navbar__navigation-list {
+.navbar__navigation-list
+{
     display: flex;
     width: 100%;
 }
@@ -10,8 +11,8 @@
         display: none;
     }
 
-     .collapse.show
-     {
-         display: block;
-     }
+    .collapse.show
+    {
+        display: block;
+    }
 }
