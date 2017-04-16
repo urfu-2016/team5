@@ -1,8 +1,5 @@
-const queryString = require('query-string');
-
 function searchRequest(params) {
-    var uri = queryString.stringify(params);
-    return fetch(`/search/?${uri}`);
+    return fetch('/search', {method: 'POST', body: JSON.stringify(params)});
 }
 
 function getSearchParameters(state, newPageNumber) {

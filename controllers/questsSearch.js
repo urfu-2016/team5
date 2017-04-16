@@ -3,14 +3,14 @@
 const constants = require('../constants/controllers').questSearch;
 const Quest = require('../models/quest');
 
-function getSearchPropsByRequest(searchByField) {
+function getSearchPropsByRequest(searchFieldsCodes) {
     const searchProperties = [];
 
-    if (searchByField === constants.searchFieldsCodes.title) {
+    if (searchFieldsCodes === constants.searchFieldsCodes.title) {
         searchProperties.push('title');
     }
 
-    if (searchByField === constants.searchFieldsCodes.tags) {
+    if (searchFieldsCodes === constants.searchFieldsCodes.tags) {
         searchProperties.push('tags');
     }
 
@@ -19,8 +19,8 @@ function getSearchPropsByRequest(searchByField) {
 
 module.exports = {
     getFoundQuests(req, res) {
-        const searchByField = Number(req.query.searchByField);
-        const searchProperties = getSearchPropsByRequest(searchByField);
+        const searchFieldsCodes = Number(req.query.searchFieldsCodes);
+        const searchProperties = getSearchPropsByRequest(searchFieldsCodes);
         const searchString = req.query.searchString || '';
         const searchPromises = [];
         var searchPageNumber = 1;
@@ -30,7 +30,7 @@ module.exports = {
             searchPageNumber = searchPageNumber < 0 ? 1 : searchPageNumber;
         }
 
-        if (req.query.searchByField === constants.searchFieldsCodes.author) {
+        if (req.query.searchFieldsCodes === constants.searchFieldsCodes.author) {
             searchPromises.push(Quest.searchByAuthor(searchString));
         }
 
