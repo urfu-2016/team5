@@ -4,7 +4,7 @@ const express = require('express');
 const router = new express.Router();
 const Quest = require('../models/quest');
 
-router.get('/quests', function (req, res) {
+router.get('/', function (req, res) {
     const renderData = {
         activePage: '/quests'
     };
