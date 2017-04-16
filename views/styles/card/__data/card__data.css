@@ -1,0 +1,26 @@
+.card__data
+{
+    background-color: #3e4551;
+    color: #fff;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.card__data ul
+{
+    font-size: 0.9rem;
+    margin: 0;
+    padding: 0;
+}
+
+.card__data ul li
+{
+    margin: 2px;
+    list-style-type: none;
+}
+
+.card__data ul a
+{
+    color: #fff;
+    text-decoration: none;
+}

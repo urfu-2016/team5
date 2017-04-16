@@ -1,0 +1,31 @@
+.card__image
+{
+    overflow: hidden;
+    position: relative;
+    cursor: default;
+}
+
+.card__image img
+{
+    max-width: 100%;
+    height: auto;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-style: none;
+    vertical-align: middle;
+    transition: all 0.2s linear;
+}
+
+.mask
+{
+    background-color: rgba(255, 255, 255, 0.1);
+    opacity: 0;
+    transition: all 0.4s ease-in-out;
+    background-attachment: fixed;
+    position: absolute;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+}
