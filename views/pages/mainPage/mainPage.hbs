@@ -5,6 +5,18 @@
     {{/content}}
 
     {{#content "body"}}
-        <div class="main">Hello user =)</div>
+
+        <div class="container">
+            <h2>Recent quests</h2>
+            <hr class="extra-margins">
+            <div class="row">
+                {{#each quests}}
+                <div class="col_4">
+                    {{> mainCard/card}}
+                </div>
+                {{/each}}
+            </div>
+        </div>
+
     {{/content}}
 {{/extend}}
