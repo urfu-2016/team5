@@ -1,9 +1,21 @@
-@media (max-width: 991px)
+html
 {
-    .collapse
-    {
-        display: none;
-    }
+    font-family: sans-serif;
+}
+
+main
+{
+    padding-top: 7rem;
+    padding-bottom: 2rem;
+}
+
+.extra-margins
+{
+    margin-top: 1rem;
+    margin-bottom: 2.5rem;
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, .1);
+    height: 0;
 }
 
 .collapse.show
@@ -20,12 +32,6 @@
 .show
 {
     display: block;
-}
-
-main
-{
-    padding-top: 7rem;
-    padding-bottom: 2rem;
 }
 
 h1,
@@ -74,99 +80,10 @@ h6
     font-size: 1rem;
 }
 
-.extra-margins
+@media (max-width: 991px)
 {
-    margin-top: 1rem;
-    margin-bottom: 2.5rem;
-}
-
-html
-{
-    font-family: sans-serif;
-}
-
-.preview
-{
-    margin-bottom: 50px;
-}
-
-.add-quest
-{
-    position: fixed;
-    bottom: 50px;
-    right: 50px;
-}
-
-.info-bottom
-{
-    position: absolute;
-    bottom: 0;
-    right: 0;
-}
-
-.info-bottom ul
-{
-    display: flex;
-    justify-content: space-between;
-}
-
-.info-bottom ul li
-{
-    margin: 10px;
-}
-
-.card .card-data
-{
-    background-color: #3e4551;
-    color: #fff;
-    text-align: center;
-    height: auto;
-    padding: 10px;
-    margin-bottom: 10px;
-}
-
-.card .card-data ul
-{
-    margin-bottom: 0;
-    font-size: 0.9rem;
-}
-
-.card .card-data ul li,
-.card .card-review ul li
-{
-    display: inline;
-    margin: 2px;
-}
-
-.card .card-data ul a
-{
-    color: #fff;
-}
-
-.likes-count
-{
-    color: #000;
-}
-
-.like
-{
-    color: #c00;
-}
-
-div#OR
-{
-    height: 30px;
-    width: 30px;
-    border: 1px solid #c2c2c2;
-    border-radius: 50%;
-    font-weight: bold;
-    line-height: 28px;
-    text-align: center;
-    font-size: 12px;
-    float: right;
-    position: absolute;
-    right: -16px;
-    top: 40%;
-    z-index: 1;
-    background: #dfdfdf;
+    .collapse
+    {
+        display: none;
+    }
 }
