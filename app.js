@@ -8,7 +8,7 @@ const config = require('config');
 // Const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
-const session = require('express-session');
+const expressSession = require('express-session');
 const bodyParser = require('body-parser');
 const layouts = require('handlebars-layouts');
 const cdn = require('express-simple-cdn');
@@ -40,12 +40,13 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
-app.use(session(config.passportSession));
+app.use(expressSession(config.sessionConfig));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/quests', express.static(path.join(__dirname, 'public')));
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use('/quests', express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/', auth);

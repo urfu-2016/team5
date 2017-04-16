@@ -8,7 +8,7 @@ module.exports = {
     port: 80,
     mode: 'production',
     mongoUri: `mongodb://${login}:${password}@${uri}`,
-    passportSession: {
+    sessionConfig: {
         secret: process.env.secret,
         resave: false,
         saveUninitialized: false

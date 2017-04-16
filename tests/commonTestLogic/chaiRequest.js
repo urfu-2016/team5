@@ -14,6 +14,19 @@ module.exports = function (server) {
 
         put: (url, data) => agent.put(url).send(data),
 
-        delete: url => agent.delete(url)
+        delete: url => agent.delete(url),
+
+        signUp: function (account) {
+            return this
+                .post('/singup')
+                .send(account);
+        },
+
+        signInAndGetCookies: function (account) {
+            return this
+                .post('/signin')
+                .send(account)
+                .then(res => console.log(res.cookies));
+        }
     };
 };

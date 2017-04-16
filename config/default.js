@@ -1,6 +1,6 @@
 module.exports = {
     staticPath: '',
-    passportSession: {
+    sessionConfig: {
         secret: 'Секретный секрет',
         resave: false,
         saveUninitialized: false
