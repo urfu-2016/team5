@@ -15,8 +15,8 @@ const cdn = require('express-simple-cdn');
 
 const index = require('./routes/index');
 const quests = require('./routes/quests');
-const users = require('./routes/users');
 const auth = require('./routes/auth');
+const api = require('./routes/api');
 
 const passport = require('./libs/passport');
 
@@ -48,9 +48,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/', index);
-app.use('/', quests);
-app.use('/', users);
 app.use('/', auth);
+app.use('/api', api);
+app.use('/quests', quests);
 
 // Catch 404 and forward to error handler
 app.use(function (req, res, next) {
