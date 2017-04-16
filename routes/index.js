@@ -53,7 +53,7 @@ router.get('/', function (req, res) {
                 avatar: 'http://www.lovemarks.com/wp-content/uploads/profile-avatars/default-avatar-knives-ninja.png'
             },
             quests: data.map(q => {
-                q.dateOfCreation = q.dateOfCreation.format('dd-mm-yy HH:MM');
+                q.dateOfCreation = q.dateOfCreation.getDate();
                 return q;
             }),
             activePage: '/'
