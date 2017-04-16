@@ -1,5 +1,17 @@
-.navbar__navigation-list
-{
+.navbar__navigation-list {
     display: flex;
     width: 100%;
+}
+
+@media screen and (max-width: 991px)
+{
+    .collapse
+    {
+        display: none;
+    }
+
+     .collapse.show
+     {
+         display: block;
+     }
 }
