@@ -4,14 +4,53 @@ function getParams(title, name, options) {
 
 module.exports = {
     params: {
-        likesCount: getParams('Количество ♥', 'countOfLikes',
-            {0: 'Выберите количество', 1: 'Не менее 10', 2: 'Не менее 20', 3: 'Не менее 40'}),
-        reviewsCount: getParams('Количество отзывов', 'reviwesCount',
-            {0: 'Выберите количество', 1: 'Не менее 10', 2: 'Не менее 20', 3: 'Не менее 40'}),
-        searchCity: getParams('Город', 'searchCity',
-            {0: 'Выберите город', 1: 'Екатеринбург', 2: 'Каменск-Уральский', 3: 'Ивдель'}),
-        searchByField: getParams('Искать только в поле:', 'searchByField',
-            {0: 'Выберите поле', 1: 'Автор', 2: 'Название', 3: 'Тег'}),
-        imagesCount: getParams('Количество картинок', {from: 'imagesCountFrom', to: 'imagesCountTo'}, {})
+        likesCount: getParams(
+            'Количество ♥',
+            'likesCount',
+            {
+                'Выберите количество': 0,
+                'Не менее 10': 10,
+                'Не менее 20': 20,
+                'Не менее 40': 40
+            }
+        ),
+        reviewsCount: getParams(
+            'Количество отзывов',
+            'reviwesCount',
+            {
+                'Выберите количество': 0,
+                'Не менее 10': 10,
+                'Не менее 20': 20,
+                'Не менее 40': 40
+            }
+        ),
+        searchCity: getParams(
+            'Город',
+            'searchCity',
+            {
+                'Выберите город': '',
+                Екатеринбург: 'Екатеринбург',
+                'Каменск-Уральский': 'Каменск-Уральский',
+                Ивдель: 'Ивдель'
+            }
+        ),
+        searchByField: getParams(
+            'Искать только в поле:',
+            'searchByField',
+            {
+                'Выберите поле': '',
+                Автор: 'author',
+                Название: 'title',
+                Тег: 'tags'
+            }
+        ),
+        imagesCount: getParams(
+            'Количество картинок',
+            {
+                from: 'imagesCountFrom',
+                to: 'imagesCountTo'
+            },
+            {}
+        )
     }
 };

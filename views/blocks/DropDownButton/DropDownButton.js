@@ -11,7 +11,7 @@ export default class DropDownButton extends React.Component {
         return (
             <select className={b('input', {type: 'drop-down'})} value={value} name={name}>
                 {keys.map(key =>
-                    <option key={key} value={key}>{options[key]}</option>
+                    <option key={options[key]} value={options[key]}>{key}</option>
                 )}
             </select>);
     }
