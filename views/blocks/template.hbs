@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {{#block "head"}}
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>{{title}}</title>
+        <link rel="stylesheet" href="css/header.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css">
+    {{/block}}
+</head>
+<body>
+{{> header/header }}
+
+<main>
+{{#block "body"}}
+{{/block}}
+</main>
+
+{{> footer/footer }}
+
+<script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
+<script type="text/javascript" src="js/header.js"></script>
+</body>
+</html>

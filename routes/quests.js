@@ -5,7 +5,11 @@ const router = new express.Router();
 const Quest = require('../models/quest');
 
 router.get('/', function (req, res) {
-    res.render('questsAll/quests-all');
+    const renderData = {
+        activePage: '/quests'
+    };
+
+    res.render('questsAll/quests-all', renderData);
 });
 
 router.route('/:slug').get(function (req, res) {

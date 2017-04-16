@@ -1,0 +1,17 @@
+.btn_primary
+{
+    color: #fff;
+    background-color: #0275d8;
+    border-color: #0275d8;
+}
+
+.btn_primary:hover
+{
+    color: #fff;
+    border-color: #01549b;
+}
+
+.btn_primary:focus
+{
+    box-shadow: 0 0 0 2px rgba(2, 117, 216, 0.5);
+}

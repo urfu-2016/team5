@@ -1,9 +1,6 @@
-{{#extend "layout"}}
-{{#content "head" mode="append"}}
-    <link href="stylesheets/questsId.css" rel="stylesheet" type="text/css">
-{{/content}}
+{{#extend "template"}}
 
-{{#content "content"}}
+{{#content "body"}}
     <div class="content">
         <div class="content__info block block_yellow">
             {{> card/card}}
@@ -43,4 +40,5 @@
         </div>
     </div>
 {{/content}}
+
 {{/extend}}

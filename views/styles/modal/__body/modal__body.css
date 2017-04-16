@@ -1,0 +1,10 @@
+.modal__body
+{
+    position: relative;
+    flex: 1 1 auto;
+    padding: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}

@@ -1,0 +1,30 @@
+.navbar__container
+{
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+    padding-right: 15px;
+    padding-left: 15px;
+    width: 60%;
+    position: relative;
+}
+
+@media (max-width: 991px)
+{
+    .navbar__container
+    {
+        width: 100%;
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 575px)
+{
+    .navbar__container
+    {
+        padding-right: 0;
+        padding-left: 0;
+    }
+}
