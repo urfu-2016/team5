@@ -16,7 +16,7 @@ module.exports = {
         ),
         reviewsCount: getParams(
             'Количество отзывов',
-            'reviwesCount',
+            'reviewsCount',
             {
                 'Выберите количество': 0,
                 'Не менее 10': 10,
