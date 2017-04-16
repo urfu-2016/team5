@@ -35,13 +35,13 @@
                     <input class="navbar__input" type="text" placeholder="Search">
                 </form>
                 <ul class="navbar__categories">
-                    {{#if isUserAutorized }}
+                    {{#if user }}
                     <li class="navbar__item">
                         <a class="navbar__link">1 <span class="fa fa-envelope"></span></a>
                     </li>
                     <li class="navbar__item avatar">
                         <a class="navbar__link dropdown-toggle" href="#">
-                            <img width="35px" src="https://mdbootstrap.com/img/Photos/Avatars/avatar-2.jpg" class="avatar__image">
+                            <img width="35px" src="{{user.avatar}}" class="avatar__image">
                         </a>
                         <div class="dropdown-menu">
                             <a class="dropdown-menu__item" href="#">My profile</a>
@@ -59,7 +59,7 @@
         </div>
     </nav>
 
-    {{#unless isUserAutorized }}
+    {{#unless user }}
     <!-- Autorize modal -->
     <div class="modal" id="signForm">
         <div class="modal__dialog">
