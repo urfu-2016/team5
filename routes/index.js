@@ -12,7 +12,8 @@ router.get('/', function (req, res) {
         const renderData = {
             title: constants.title,
             isUserAutorized: true,
-            quests: data
+            quests: data,
+            activePage: '/'
         };
 
         res.render('mainPage/mainPage', renderData);

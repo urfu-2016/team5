@@ -28,8 +28,10 @@ app.locals.CDN = path => cdn(path, config.staticPath);
 // View engine setup
 app.set('views', path.join(__dirname, 'views/pages'));
 app.set('view engine', 'hbs');
+
 hbs.registerPartials(path.join(__dirname, '/views/blocks'));
 hbs.registerHelper(layouts(hbs.handlebars));
+hbs.registerHelper('equal', require('handlebars-helper-equal'));
 
 // Uncomment after placing your favicon in /public
 // app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));

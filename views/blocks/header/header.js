@@ -1,6 +1,5 @@
 require('../../styles/main.css');
 require('../../styles/btn/btn');
-require('../../styles/container/container');
 require('../../styles/dropdown-menu/dropdown-menu');
 require('../../styles/input-group/input-group');
 require('../../styles/modal/modal');

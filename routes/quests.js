@@ -7,7 +7,11 @@ const questsController = require('../controllers/api/quests');
 const Quest = require('../models/quest');
 
 router.get('/quests', function (req, res) {
-    res.render('questsAll/quests-all');
+    const renderData = {
+        activePage: '/quests'
+    };
+
+    res.render('questsAll/quests-all', renderData);
 });
 
 router.route('/quests/:slug').get(function (req, res) {

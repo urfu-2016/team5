@@ -8,3 +8,4 @@ require('./__navigation-list/navbar__navigation-list.css');
 require('./__toggler/navbar__toggler.css');
 require('./__toggler/navbar__toggler');
 require('./__toggler/_icon/navbar__togler_icon.css');
+require('./__container/navbar__container.css');

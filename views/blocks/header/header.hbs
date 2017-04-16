@@ -1,6 +1,6 @@
 <header>
     <nav class="navbar">
-        <div class="container">
+        <div class="navbar__container">
             <button class="navbar__toggler" type="button" data-toggle="collapse" data-target="#navigation-list" aria-controls="navigation-list" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar__toggler_icon"></span>
             </button>
@@ -9,14 +9,26 @@
             </a>
             <div class="navbar__navigation-list collapse" id="navigation-list" aria-expanded="false">
                 <ul class="navbar__categories left">
-                    <li class="navbar__item active">
-                        <a class="navbar__link">Home</a>
+                    <li class="navbar__item
+                    {{#equal activePage '/'}}
+                        active
+                    {{/equal}}
+                    ">
+                        <a href="/" class="navbar__link">Home</a>
                     </li>
-                    <li class="navbar__item">
+                    <li class="navbar__item
+                    {{#equal activePage '/news'}}
+                        active
+                    {{/equal}}
+                    ">
                         <a class="navbar__link">News</a>
                     </li>
-                    <li class="navbar__item">
-                        <a class="navbar__link">All quests</a>
+                    <li class="navbar__item
+                    {{#equal activePage '/quests'}}
+                        active
+                    {{/equal}}
+                    ">
+                        <a href="/quests" class="navbar__link">All quests</a>
                     </li>
                 </ul>
                 <form class="">

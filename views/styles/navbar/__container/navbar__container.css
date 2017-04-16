@@ -1,12 +1,8 @@
-.navbar .container
+.navbar__container
 {
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
-}
-
-.container
-{
     margin-left: auto;
     margin-right: auto;
     padding-right: 15px;
@@ -17,7 +13,7 @@
 
 @media (max-width: 991px)
 {
-    .navbar .container
+    .navbar__container
     {
         width: 100%;
         flex-direction: column;
@@ -26,7 +22,7 @@
 
 @media (max-width: 575px)
 {
-    .navbar > .container
+    .navbar__container
     {
         padding-right: 0;
         padding-left: 0;

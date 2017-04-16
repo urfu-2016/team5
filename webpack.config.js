@@ -7,7 +7,8 @@ module.exports = {
     context: path.join(__dirname, '/views'),
     entry: {
         header: './blocks/header/header',
-        mainPage: './pages/mainPage/mainPage'
+        mainPage: './pages/mainPage/mainPage',
+        questsAll: './pages/questsAll/questsAll'
     },
     output: {
         path: path.join(__dirname, '/public'),
