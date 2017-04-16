@@ -49,8 +49,7 @@ module.exports = {
             {
                 from: 'imagesCountFrom',
                 to: 'imagesCountTo'
-            },
-            {}
+            }
         )
     }
 };
