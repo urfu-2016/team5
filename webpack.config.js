@@ -1,6 +1,7 @@
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const path = require('path');
 const webpack = require('webpack');
+const config = require('config');
 
 module.exports = {
     context: path.join(__dirname, '/views'),
@@ -18,17 +19,49 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader'})
+            },
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                loader: 'babel-loader',
+                query: {
+                    presets: ['es2015', 'react'],
+                    plugins: ['transform-runtime']
+                }
             }
         ]
     },
     plugins: [
-        new ExtractTextPlugin('css/[name].css'),
+        new ExtractTextPlugin('stylesheets/[name].css'),
+        new webpack.NoEmitOnErrorsPlugin(),
         new webpack.ProvidePlugin({
             $: 'jquery',
             jQuery: 'jquery'
         })
     ],
     externals: {
+        react: 'React',
+        'react-dom': 'ReactDOM',
         jquery: 'jQuery'
     }
 };
+
+if (config.mode === 'production') {
+    module.exports.plugins.push(
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: JSON.stringify('production')
+            }
+        })
+    );
+
+    module.exports.plugins.push(
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false
+            }
+        })
+    );
+
+    module.exports.devtool = 'cheap-module-sourece-map';
+}

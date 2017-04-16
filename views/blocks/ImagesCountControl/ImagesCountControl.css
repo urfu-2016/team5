@@ -1,0 +1,16 @@
+.images-count-control,
+.images-count-control__item
+{
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.images-count-control__input
+{
+    width: 65%;
+    margin: 0 6px;
+}
+

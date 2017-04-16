@@ -1,15 +1,11 @@
 /* eslint-env mocha */
 
-const chai = require('chai');
-const chaiHttp = require('chai-http');
 const server = require('../../app');
 const User = require('../../models/user');
 const userMocks = require('../mocks/users');
 const HttpStatus = require('http-status-codes');
 const removeAllUsers = require('../../scripts/clear-db').removeAllUsers;
-
-chai.should();
-chai.use(chaiHttp);
+const chaiRequest = require('../commonTestLogic/chaiRequest')(server);
 
 describe('controller:users', () => {
     beforeEach(() => removeAllUsers());
@@ -21,12 +17,7 @@ describe('controller:users', () => {
 
         return User
             .create(userData)
-            .then(() => {
-                return chai
-                    .request(server)
-                    .get('/api/users')
-                    .send();
-            })
+            .then(() => chaiRequest.get('/api/users'))
             .then(res => {
                 res.status.should.equal(HttpStatus.OK);
                 res.body.data.should.length.of.at(1);
@@ -38,12 +29,7 @@ describe('controller:users', () => {
 
         return User
             .create(userData)
-            .then(() => {
-                return chai
-                    .request(server)
-                    .get(`/api/users/${userData.username}`)
-                    .send();
-            })
+            .then(() => chaiRequest.get(`/api/users/${userData.username}`))
             .then(res => {
                 res.status.should.equal(HttpStatus.OK);
                 res.body.data.username.should.equal(userData.username);
@@ -51,10 +37,8 @@ describe('controller:users', () => {
     });
 
     it('should answer with status 404', () => {
-        return chai
-            .request(server)
+        return chaiRequest
             .get(`/api/users/some-bad-username`)
-            .send()
             .catch(err => {
                 err.status.should.equal(HttpStatus.NOT_FOUND);
             });
