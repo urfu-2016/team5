@@ -7,6 +7,7 @@ const uri = 'ds145359.mlab.com:45359/quests-team5';
 module.exports = {
     port: 80,
     mode: 'production',
+    staticPath: '//team5.surge.sh',
     mongoUri: `mongodb://${login}:${password}@${uri}`,
     sessionConfig: {
         secret: process.env.secret,
