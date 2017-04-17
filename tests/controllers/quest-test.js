@@ -42,7 +42,6 @@ describe('controller:quest', () => {
         const slug = slugify(questData.title);
 
         await createQuestWithAuthor(questData);
-
         const res = await chaiRequest.get(`/api/quests/${slug}`);
 
         res.status.should.equal(HttpStatus.OK);
@@ -57,7 +56,6 @@ describe('controller:quest', () => {
         };
 
         await createQuestWithAuthor(questData);
-
         const res = await chaiRequest.put(`/api/quests/${slug}`, updateData);
 
         res.status.should.equal(HttpStatus.OK);
@@ -69,7 +67,6 @@ describe('controller:quest', () => {
         const slug = slugify(questData.title);
 
         await createQuestWithAuthor(questData);
-
         const res = await chaiRequest.delete(`/api/quests/${slug}`);
 
         res.status.should.equal(HttpStatus.OK);

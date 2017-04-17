@@ -93,7 +93,7 @@ module.exports.createQuestWithAuthor = async data => {
 
     const author = await User.create({username});
 
-    await Quest.create({
+    return await Quest.create({
         authorId: author._id,
         title: data.title,
         description: data.description || '',

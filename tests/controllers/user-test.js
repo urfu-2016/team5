@@ -16,7 +16,6 @@ describe('controller:users', () => {
         const userData = userMocks.regularUser;
 
         await User.create(userData);
-
         const res = await chaiRequest.get('/api/users');
 
         res.status.should.equal(HttpStatus.OK);
@@ -27,7 +26,6 @@ describe('controller:users', () => {
         const userData = userMocks.regularUser;
 
         await User.create(userData);
-
         const res = await chaiRequest.get(`/api/users/${userData.username}`);
 
         res.status.should.equal(HttpStatus.OK);

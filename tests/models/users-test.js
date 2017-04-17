@@ -11,66 +11,62 @@ describe('models:user', () => {
 
     after(() => removeAllUsers());
 
-    it('should create model', () => {
+    it('should create model', async () => {
         const userData = usersMocks.regularUser;
 
-        return User.create(userData)
-            .then(savedUser => {
-                savedUser.firstname.should.equal(userData.firstname);
-                savedUser.username.should.equal(userData.username);
-                savedUser.surname.should.equal(userData.surname);
-            });
+        const savedUser = await User.create(userData);
+
+        savedUser.firstname.should.equal(userData.firstname);
+        savedUser.username.should.equal(userData.username);
+        savedUser.surname.should.equal(userData.surname);
     });
 
-    it('error on save without required parameter', () => {
+    it('error on save without required parameter', async () => {
         const userData = usersMocks.userWithoutRequiredFields;
         const ValidationError = mongoose.Error.ValidationError;
 
-        return User.create(userData)
-            .catch(error => {
-                error.name.should.equal(ValidationError.name);
-            });
+        try {
+            await User.create(userData);
+        } catch (err) {
+            err.name.should.equal(ValidationError.name);
+        }
     });
 
-    it('should update by username', () => {
+    it('should update by username', async () => {
         const userData = usersMocks.regularUser;
         const firstname = 'Othername';
 
-        return User.create(userData)
-            .then(savedUser => User.update(savedUser.username, {firstname}))
-            .then(updatedUser => updatedUser.firstname.should.equal(firstname));
+        const savedUser = await User.create(userData);
+        const updatedUser = await User.update(savedUser.username, {firstname});
+
+        updatedUser.firstname.should.equal(firstname);
     });
 
-    it('should get by username', () => {
+    it('should get by username', async () => {
         const userData = usersMocks.regularUser;
 
-        return User.create(userData)
-            .then(savedUser => User.getByUsername(savedUser.username))
-            .then(foundUser => foundUser.username.should.equal(userData.username));
+        const savedUser = await User.create(userData);
+        const foundUser = await User.getByUsername(savedUser.username);
+
+        foundUser.username.should.equal(userData.username);
     });
 
-    it('should get by id', () => {
+    it('should get by id', async () => {
         const userData = usersMocks.regularUser;
 
-        return User.create(userData)
-            .then(savedUser => User.getById(savedUser._id))
-            .then(foundUser => foundUser.username.should.equal(userData.username));
+        const savedUser = await User.create(userData);
+        const foundUser = await User.getById(savedUser._id);
+
+        foundUser.username.should.equal(userData.username);
     });
 
-    it('should get by id', () => {
+    it('should remove by username', async () => {
         const userData = usersMocks.regularUser;
 
-        return User.create(userData)
-            .then(savedUser => User.getById(savedUser._id))
-            .then(foundUser => foundUser.username.should.equal(userData.username));
-    });
+        const savedUser = await User.create(userData);
+        await User.removeByUsername(savedUser.username);
+        const user = await User.getByUsername(userData.username);
 
-    it('should remove by username', () => {
-        const userData = usersMocks.regularUser;
-
-        return User.create(userData)
-            .then(savedUser => User.removeByUsername(savedUser.username))
-            .then(() => User.getByUsername(userData.username))
-            .then(user => (user === null).should.be.true);
+        (user === null).should.be.equal(true);
     });
 });
