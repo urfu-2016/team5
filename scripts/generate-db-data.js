@@ -30,8 +30,9 @@ function generateImages({questId, imagesCount = 10}) {
 
 module.exports.generateQuests = ({questsCount = 10}) => {
     const quests = [];
+    const password = 'password';
 
-    return User.create({username: 'User' + Date.now()})
+    return User.create({username: 'User' + Date.now(), password})
         .then(user => {
             for (let i = 0; i < questsCount; i++) {
                 let questData = {
@@ -57,7 +58,8 @@ module.exports.generateUsers = ({usersCount = 1}) => {
         let userData = {
             firstname: `${constants.user.firstnamePrefix} ${i}`,
             surname: `${constants.user.surnamePrefix} ${i}`,
-            username: `${constants.user.usernamePrefix}${i}`
+            username: `${constants.user.usernamePrefix}${i}`,
+            password: 'password'
         };
 
         users.push(userData);
@@ -83,15 +85,16 @@ module.exports.createQuestsFromJson = json => {
 
 module.exports.setAuthor = async data => {
     const username = 'User_' + shortid.generate();
+    const password = 'password';
 
-    const user = await User.create({username});
+    const user = await User.create({username, password});
     data.authorId = user._id;
 };
 
 module.exports.createQuestWithAuthor = async data => {
     const username = 'User_' + shortid.generate();
-
-    const author = await User.create({username});
+    const password = 'password';
+    const author = await User.create({username, password});
 
     return await Quest.create({
         authorId: author._id,

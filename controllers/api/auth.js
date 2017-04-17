@@ -3,19 +3,21 @@
 const httpStatus = require('http-status-codes');
 const baseApi = require('./baseApi');
 const passport = require('../../libs/passport');
-const Account = require('../../models/account');
+const User = require('../../models/user');
 
 const constants = require('../../constants/constants').controllers.auth;
 
-const authorizedUsers = new Set();
-
 module.exports = {
     signIn(req, res, next) {
-        passport.authenticate('local', (err, account) => {
+        passport.authenticate('local', (err, user) => {
             // TODO: проверка, что пользователь уже авторизован
 
-            if (req.session.user) {
+            if (!user) {
+                res.send('Неверное имя пользователя или пароль.');
+                return;
+            } else if (req.session.user) {
                 res.send('Вы уже аутентифицированы');
+                return;
             }
 
             const data = {message: constants.signedInPattern(req.body.username)};
@@ -23,10 +25,9 @@ module.exports = {
                 return baseApi.getErrorCallback(res, httpStatus.BAD_REQUEST)(err);
             }
 
-            req.session.user = account._id;
-            authorizedUsers.add(account._id);
+            req.session.user = user._id;
 
-            return req.logIn(account, () => baseApi.getSuccessCallback(res, httpStatus.OK)(data));
+            return req.logIn(user, () => baseApi.getSuccessCallback(res, httpStatus.OK)(data));
         })(req, res, next);
     },
 
@@ -36,13 +37,13 @@ module.exports = {
             failureCode: httpStatus.BAD_REQUEST
         };
 
-        const account = {
+        const user = {
             username: req.body.username,
             password: req.body.password
         };
 
-        return Account
-            .create(account)
+        return User
+            .create(user)
             .then(() => () => constants.signedUpPattern(req.body.username))
             .catch(err => () => {
                 throw err;
@@ -51,7 +52,7 @@ module.exports = {
     },
 
     changePassword(req, res) {
-        const account = {
+        const user = {
             username: req.body.username,
             password: req.body.password
         };
@@ -61,8 +62,8 @@ module.exports = {
             console.log(req.session.user);
         }
 
-        return Account
-            .changePassword(account, newPassword)
+        return User
+            .changePassword(user, newPassword)
             .then(() => () => 'Ваш пароль был изменен')
             .catch(err => () => {
                 throw err;

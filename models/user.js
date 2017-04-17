@@ -2,6 +2,8 @@
 
 const mongoose = require('../libs/mongoose-connection');
 const ObjectId = mongoose.Schema.Types.ObjectId;
+const bcrypt = require('bcrypt');
+const constants = require('../constants/constants');
 
 const userSchema = new mongoose.Schema({
     firstname: String,
@@ -9,7 +11,13 @@ const userSchema = new mongoose.Schema({
     username: {
         type: String,
         lowercase: true,
+        index: true,
         unique: true,
+        required: true
+    },
+
+    password: {
+        type: String,
         required: true
     },
 
@@ -27,10 +35,62 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-userSchema.statics.create = function ({firstname = '', surname = '', username}) {
-    const user = new this({firstname, surname, username});
+const saltRounds = 10;
 
-    return user.save();
+userSchema.statics.create = function ({username, password}) {
+    if (!password) {
+        return Promise.reject(new Error(constants.models.User.passwordRequiredMessage));
+    }
+
+    return bcrypt
+        .hash(password, saltRounds)
+        .then(hash => new this({
+            username,
+            password: hash
+        }))
+        .then(user => user.save())
+        .catch(err => {
+            if (err.code === constants.mongoose.mongoDuplicateErrorCode) {
+                err.message = constants.models.User.alreadyExistsPattern(username);
+            }
+
+            throw err;
+        });
+};
+
+userSchema.statics.verifyPassword = function (account) {
+    return this
+        .findOne({username: account.username})
+        .exec()
+        .then(acc => acc ? bcrypt.compare(account.password, acc.password) : false);
+};
+
+userSchema.statics.changePassword = function (account, newPassword) {
+    return this
+        .getAccountOnCorrectPassword(account)
+        .then(acc => {
+            return bcrypt
+                .hash(newPassword, saltRounds)
+                .then(hash => {
+                    acc.password = hash;
+
+                    return acc.save();
+                });
+        });
+};
+
+userSchema.statics.getAccountOnCorrectPassword = function (account) {
+    return this
+        .verifyPassword(account)
+        .then(verificationResult => {
+            if (!verificationResult) {
+                throw new Error(constants.models.User.wrongPasswordOrNameMessage);
+            }
+
+            return this
+                .findOne({username: account.username})
+                .exec();
+        });
 };
 
 userSchema.statics.update = function (username, {firstname, surname}) {

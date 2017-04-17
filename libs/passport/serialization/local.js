@@ -1,6 +1,6 @@
 'use strict';
 
-const Account = require('../../../models/account');
+const Account = require('../../../models/user');
 
 module.exports = {
     serialize: (user, done) => done(null, user.id),

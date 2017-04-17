@@ -1,6 +1,6 @@
 require('../models/user');
 require('../models/quest');
-require('../models/account');
+require('../models/user');
 
 const mongoose = require('mongoose');
 
@@ -9,13 +9,13 @@ module.exports = {
 
     removeAllUsers: () => removeAllItems('User'),
 
-    removeAllAccounts: () => removeAllItems('Account'),
+    removeAllAccounts: () => removeAllItems('User'),
 
     removeAll() {
         return Promise.all([
             removeAllItems('Quest'),
             removeAllItems('User'),
-            removeAllItems('Account')
+            removeAllItems('User')
         ]);
     },
 

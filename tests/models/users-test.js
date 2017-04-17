@@ -1,9 +1,10 @@
 /* global it, describe, beforeEach */
 
 require('chai').should();
-const mongoose = require('mongoose');
 const User = require('../../models/user');
 const usersMocks = require('../mocks/users');
+const constants = require('../../constants/constants');
+const mongoose = require('../../libs/mongoose-connection');
 const removeAllUsers = require('../../scripts/clear-db').removeAllUsers;
 
 describe('models:user', () => {
@@ -13,23 +14,72 @@ describe('models:user', () => {
 
     it('should create model', async () => {
         const userData = usersMocks.regularUser;
-
         const savedUser = await User.create(userData);
 
-        savedUser.firstname.should.equal(userData.firstname);
         savedUser.username.should.equal(userData.username);
-        savedUser.surname.should.equal(userData.surname);
     });
 
-    it('error on save without required parameter', async () => {
-        const userData = usersMocks.userWithoutRequiredFields;
-        const ValidationError = mongoose.Error.ValidationError;
+    it('fails creation of account if it already exists', () => {
+        const userData = usersMocks.regularUser;
 
-        try {
-            await User.create(userData);
-        } catch (err) {
-            err.name.should.equal(ValidationError.name);
-        }
+        return User
+            .create(userData)
+            .then(() => User.create(userData))
+            .catch(err => err.code.should.be.equal(constants.mongoose.mongoDuplicateErrorCode));
+    });
+
+    it('should not create account without password', () => {
+        const userData = usersMocks.regularUser;
+
+        return User
+            .create({username: userData.username})
+            .catch(err => err.message.should.be.equal(constants.models.User.passwordRequiredMessage));
+    });
+
+    it('should not create account without username', () => {
+        return User
+            .create({password: usersMocks.regularUser.password})
+            .catch(err => err.name.should.be.equal(constants.mongoose.validationErrorName));
+    });
+
+    it('gets true by verification a correct password', () => {
+        return User
+            .create(usersMocks.regularUser)
+            .then(() => User.verifyPassword(usersMocks.regularUser))
+            .then(res => res.should.be.equal(true));
+    });
+
+    it('fails verification on wrong password', () => {
+        return User
+            .create(usersMocks.regularUser)
+            .then(() => User.verifyPassword(usersMocks.userWithIncorrectPassword))
+            .catch(err => err.message.should.be.equal(constants.models.User.wrongPasswordOrNameMessage));
+    });
+
+    it('changes password', () => {
+        const newPassword = 'newPassword';
+
+        return User
+            .create(usersMocks.regularUser)
+            .then(() => User.changePassword(usersMocks.regularUser, newPassword))
+            .then(() => User.verifyPassword({username: usersMocks.regularUser.username, password: newPassword}))
+            .then(verificationResult => verificationResult.should.be.ok);
+    });
+
+    it('fails changing password on wrong old password', () => {
+        return User
+            .create(usersMocks.regularUser)
+            .then(() => User.changePassword(usersMocks.userWithIncorrectPassword, usersMocks.regularUser.password))
+            .catch(err => err.message.should.be.equal(constants.models.User.wrongPasswordOrNameMessage));
+    });
+
+    it('check that password was hashed', () => {
+        const userData = usersMocks.regularUser;
+
+        return User
+            .create(userData)
+            .then(() => User.find({}).exec())
+            .then(users => users[0].password.should.not.be.equal(userData.password));
     });
 
     it('should update by username', async () => {

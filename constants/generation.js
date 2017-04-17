@@ -15,6 +15,7 @@ module.exports = {
     user: {
         firstnamePrefix: 'Пользователь',
         surnamePrefix: 'Фамилия',
-        usernamePrefix: 'user_'
+        usernamePrefix: 'user_',
+        password: 'password'
     }
 };
