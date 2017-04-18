@@ -10,12 +10,10 @@ const constants = require('../../constants/constants').controllers.auth;
 module.exports = {
     signIn(req, res, next) {
         passport.authenticate('local', (err, user) => {
-            // TODO: проверка, что пользователь уже авторизован
-
             if (!user) {
                 res.send('Неверное имя пользователя или пароль.');
                 return;
-            } else if (req.session.user) {
+            } else if (req.user) {
                 res.send('Вы уже аутентифицированы');
                 return;
             }
@@ -31,24 +29,29 @@ module.exports = {
         })(req, res, next);
     },
 
-    signUp(req, res) {
+    async signUp(req, res) {
         const statusCodes = {
             successCode: httpStatus.CREATED,
             failureCode: httpStatus.BAD_REQUEST
         };
 
-        const user = {
+        const userData = {
             username: req.body.username,
             password: req.body.password
         };
 
-        return User
-            .create(user)
-            .then(() => () => constants.signedUpPattern(req.body.username))
-            .catch(err => () => {
+        let callbackResult;
+        try {
+            await User.create(userData);
+
+            callbackResult = () => constants.signedUpPattern(req.body.username);
+        } catch (err) {
+            callbackResult = () => {
                 throw err;
-            })
-            .then(callbackResult => baseApi.resolveRequestPromise(callbackResult, res, statusCodes));
+            };
+        }
+
+        return await baseApi.resolveRequestPromise(callbackResult, res, statusCodes);
     },
 
     changePassword(req, res) {
