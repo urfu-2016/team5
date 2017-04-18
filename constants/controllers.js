@@ -7,8 +7,11 @@ module.exports = {
         searchFieldsCodes: {
             author: 1,
             title: 2,
-            tags: 3
-        }
+            tags: 3,
+            city: 4,
+            description: 5
+        },
+        searchFields: ['author', 'title', 'tags', 'city', 'description']
     },
 
     user: {
