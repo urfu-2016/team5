@@ -12,35 +12,31 @@ describe('controller:users', () => {
 
     after(() => removeAllUsers());
 
-    it('should GET all the users', () => {
+    it('should GET all the users', async () => {
         const userData = userMocks.regularUser;
 
-        return User
-            .create(userData)
-            .then(() => chaiRequest.get('/api/users'))
-            .then(res => {
-                res.status.should.equal(HttpStatus.OK);
-                res.body.data.should.length.of.at(1);
-            });
+        await User.create(userData);
+        const res = await chaiRequest.get('/api/users');
+
+        res.status.should.equal(HttpStatus.OK);
+        res.body.data.should.length.of.at(1);
     });
 
-    it('should GET a user by the given username', () => {
+    it('should GET a user by the given username', async () => {
         const userData = userMocks.regularUser;
 
-        return User
-            .create(userData)
-            .then(() => chaiRequest.get(`/api/users/${userData.username}`))
-            .then(res => {
-                res.status.should.equal(HttpStatus.OK);
-                res.body.data.username.should.equal(userData.username);
-            });
+        await User.create(userData);
+        const res = await chaiRequest.get(`/api/users/${userData.username}`);
+
+        res.status.should.equal(HttpStatus.OK);
+        res.body.data.username.should.equal(userData.username);
     });
 
-    it('should answer with status 404', () => {
-        return chaiRequest
-            .get(`/api/users/some-bad-username`)
-            .catch(err => {
-                err.status.should.equal(HttpStatus.NOT_FOUND);
-            });
+    it('should answer with status 404', async () => {
+        try {
+            await chaiRequest.get(`/api/users/some-bad-username`);
+        } catch (err) {
+            err.status.should.equal(HttpStatus.NOT_FOUND);
+        }
     });
 });

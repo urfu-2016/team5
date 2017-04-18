@@ -81,27 +81,23 @@ module.exports.createQuestsFromJson = json => {
     );
 };
 
-module.exports.setAuthor = data => {
+module.exports.setAuthor = async data => {
     const username = 'User_' + shortid.generate();
 
-    return new Promise(resolve => {
-        User.create({username})
-            .then(user => {
-                data.authorId = user._id;
-                resolve();
-            });
-    });
+    const user = await User.create({username});
+    data.authorId = user._id;
 };
 
-module.exports.createQuestWithAuthor = data => {
+module.exports.createQuestWithAuthor = async data => {
     const username = 'User_' + shortid.generate();
 
-    return User.create({username})
-        .then(author => Quest.create({
-            authorId: author._id,
-            title: data.title,
-            description: data.description || '',
-            city: data.city || '',
-            tags: data.tags || ''
-        }));
+    const author = await User.create({username});
+
+    return await Quest.create({
+        authorId: author._id,
+        title: data.title,
+        description: data.description || '',
+        city: data.city || '',
+        tags: data.tags || ''
+    });
 };

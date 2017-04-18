@@ -14,101 +14,106 @@ describe('models:Quest', () => {
 
     after(() => dbClearer.removeAll());
 
-    it('should create model', () => {
+    it('should create model', async () => {
         const questData = questsMocks.regularQuest;
 
-        return createQuestWithAuthor(questData)
-            .then(savedQuest => {
-                savedQuest.title.should.equal(questData.title);
-                savedQuest.description.should.equal(questData.description);
-            });
+        const savedQuest = await createQuestWithAuthor(questData);
+
+        savedQuest.title.should.equal(questData.title);
+        savedQuest.description.should.equal(questData.description);
     });
 
-    it('error on save without required parameter', () => {
+    it('error on save without required parameter', async () => {
         const questData = questsMocks.questWithoutRequiredFields;
         const ValidationError = mongoose.Error.ValidationError;
 
-        return createQuestWithAuthor(questData)
-            .catch(error => error.name.should.equal(ValidationError.name));
+        try {
+            await createQuestWithAuthor(questData);
+        } catch (err) {
+            err.name.should.equal(ValidationError.name);
+        }
     });
 
-    it('error on save without required author', () => {
+    it('error on save without required author', async () => {
         const questData = questsMocks.regularQuest;
         const ValidationError = mongoose.Error.ValidationError;
 
-        return Quest.create(questData)
-            .catch(error => error.name.should.equal(ValidationError.name));
+        try {
+            await Quest.create(questData);
+        } catch (err) {
+            err.name.should.equal(ValidationError.name);
+        }
     });
 
-    it('should update by slug', () => {
+    it('should update by slug', async () => {
         const questData = questsMocks.regularQuest;
         const city = 'Екатеринбург';
 
-        return createQuestWithAuthor(questData)
-            .then(savedQuest => Quest.update(savedQuest.slug, {city}))
-            .then(updatedQuest => updatedQuest.city.should.equal(city));
+        const savedQuest = await createQuestWithAuthor(questData);
+        const updatedQuest = await Quest.update(savedQuest.slug, {city});
+
+        updatedQuest.city.should.equal(city);
     });
 
-    it('should get by slug', () => {
+    it('should get by slug', async () => {
         const questData = questsMocks.regularQuest;
 
-        return createQuestWithAuthor(questData)
-            .then(savedQuest => Quest.getBySlug(savedQuest.slug))
-            .then(foundQuest => foundQuest.title.should.equal(questData.title));
+        const savedQuest = await createQuestWithAuthor(questData);
+        const foundQuest = await Quest.getBySlug(savedQuest.slug);
+
+        foundQuest.title.should.equal(questData.title);
     });
 
-    it('should remove by slug', () => {
+    it('should remove by slug', async () => {
         const questData = questsMocks.regularQuest;
 
-        return createQuestWithAuthor(questData)
-            .then(savedQuest => Quest.removeBySlug(savedQuest.slug))
-            .then(() => Quest.getBySlug(questData.slug).should.empty);
+        const savedQuest = await createQuestWithAuthor(questData);
+        await Quest.removeBySlug(savedQuest.slug);
+        const res = await Quest.getBySlug(questData.slug);
+
+        (res === null).should.be.equal(true);
     });
 
-    it('should get filtered quests by title and tags', () => {
+    it('should get filtered quests by title and tags', async () => {
         const questData = questsMocks.questForSearch;
         const questPartTitle = questData.title[0];
 
-        return Promise.all([
-            createQuestWithAuthor(questData),
-            createQuestWithAuthor(questData)
-        ])
-            .then(() => Quest.searchByInternalProps(['title', 'tags'], questPartTitle))
-            .then(quests => {
-                quests.length.should.equal(2);
-                quests[0].description.should.equal(questData.description);
-            });
+        await createQuestWithAuthor(questData);
+        await createQuestWithAuthor(questData);
+        const quests = await Quest.searchByInternalProps(['title', 'tags'], questPartTitle);
+
+        quests.length.should.equal(2);
+        quests[0].description.should.equal(questData.description);
     });
 
-    it('should get filtered quests by tags', () => {
+    it('should get filtered quests by tags', async () => {
         const questData = questsMocks.questForSearch;
 
-        return createQuestWithAuthor(questData)
-            .then(() => Quest.searchByInternalProps(['tags'], questData.tags[0]))
-            .then(quests => {
-                quests.length.should.equal(1);
-                quests[0].title.should.equal(questData.title);
-            });
+        await createQuestWithAuthor(questData);
+        const quests = await Quest.searchByInternalProps(['tags'], questData.tags[0]);
+
+        quests.length.should.equal(1);
+        quests[0].title.should.equal(questData.title);
     });
 
-    it('should get empty array', () => {
+    it('should get empty array', async () => {
         const questData = questsMocks.questForSearch;
 
-        return createQuestWithAuthor(questData)
-            .then(() => Quest.searchByInternalProps(['tags'], questData.description))
-            .then(quests => quests.length.should.equal(0));
+        await createQuestWithAuthor(questData);
+        const quests = await Quest.searchByInternalProps(['tags'], questData.description);
+
+        quests.length.should.equal(0);
     });
 
-    it('should get quests by author', () => {
+    it('should get quests by author', async () => {
         let questData = Object.assign({}, questsMocks.questForSearch);
 
-        return setAuthor(questData)
-            .then(() => Quest.create(questData))
-            .then(() => User.getById(questData.authorId))
-            .then(user => Quest.searchByAuthor(user.username[0]))
-            .then(quests => {
-                quests.length.should.equal(1);
-                quests[0].author._id.should.deep.equal(questData.authorId);
-            });
+        await setAuthor(questData);
+        await Quest.create(questData);
+        const user = await User.getById(questData.authorId);
+        const quests = await Quest.searchByAuthor(user.username[0]);
+
+        quests.length.should.equal(1);
+        quests[0].author._id.should.deep.equal(questData.authorId);
     });
 });
