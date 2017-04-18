@@ -8,7 +8,7 @@ const questsMocks = require('../mocks/quests');
 const dbClearer = require('../../scripts/clear-db');
 const setAuthor = require('../../scripts/generate-db-data').setAuthor;
 const createQuestWithAuthor = require('../../scripts/generate-db-data').createQuestWithAuthor;
-const queryBuilder = require('../../libs/queryBuilder/queryBuilder');
+const queryBuilder = require('../../libs/queryBuilder');
 
 describe('models:Quest', () => {
     beforeEach(() => dbClearer.removeAll());

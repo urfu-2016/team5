@@ -2,10 +2,10 @@
 
 const constants = require('../constants/controllers').questSearch;
 const Quest = require('../models/quest');
-const queryBuilder = require('../libs/queryBuilder/queryBuilder');
+const queryBuilder = require('../libs/queryBuilder');
 
 module.exports = {
-    getFoundQuests(req, res) {
+    findQuests(req, res) {
         return queryBuilder.build(req.body)
             .then(buildData => Quest.search(buildData))
             .then(quests => {

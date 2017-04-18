@@ -11,7 +11,8 @@ module.exports = {
             city: 4,
             description: 5
         },
-        searchFields: ['author', 'title', 'tags', 'city', 'description']
+        searchFields: ['author', 'title', 'tags', 'city', 'description', 'images', 'likesCount'],
+        internalProperties: ['city', 'title', 'description', 'tags']
     },
 
     user: {
