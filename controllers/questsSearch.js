@@ -7,12 +7,7 @@ const queryBuilder = require('../libs/queryBuilder/queryBuilder');
 module.exports = {
     getFoundQuests(req, res) {
         return queryBuilder.build(req.body)
-            .then(buildData => {
-                console.log(req.body);
-                console.log(buildData);
-
-                return Quest.search(buildData);
-            })
+            .then(buildData => Quest.search(buildData))
             .then(quests => {
                 // FIXME заглушка для страниц
                 const searchPageNumber = 1;
