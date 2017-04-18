@@ -4,14 +4,18 @@ function searchRequest(params) {
 
 function getSearchParameters(state, newPageNumber) {
     return {
-        searchString: state.searchString,
-        likesCount: state.likesCount,
-        reviewsCount: state.reviewsCount,
-        searchCity: state.searchCity,
-        searchByField: state.searchByField,
-        imagesCountFrom: state.imagesCountFrom,
-        imagesCountTo: state.imagesCountTo,
-        searchPageNumber: newPageNumber
+        search: {
+            text: state.searchString,
+            field: state.searchByField
+        },
+        city: state.searchCity,
+        images: {
+            from: Number(state.imagesCountFrom),
+            to: Number(state.imagesCountTo)
+        },
+        page: newPageNumber,
+        likesCount: Number(state.likesCount),
+        reviewsCount: Number(state.reviewsCount)
     };
 }
 
