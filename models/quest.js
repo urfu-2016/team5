@@ -95,15 +95,18 @@ questSchema.statics.removeBySlug = function (slug) {
 };
 
 questSchema.statics.search = function (searchData) {
-    const andList = searchData.map(searchObject => {
+    const andList = searchData.reduce((acc, searchObject) => {
         const orList = searchObject.field.map(property => {
             return {[property]: searchObject.value};
         });
+        if (orList.length) {
+            acc.push({$or: orList});
+        }
 
-        return {$or: orList};
-    });
+        return acc;
+    }, []);
 
-    const findObject = {$and: andList};
+    const findObject = andList.length ? {$and: andList} : {};
 
     return this
         .find(findObject)

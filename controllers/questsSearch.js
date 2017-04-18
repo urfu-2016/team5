@@ -10,6 +10,9 @@ module.exports = {
 
         return queryBuilder.build(req.body)
             .then(buildData => {
+                console.log(req.body);
+                console.log(buildData);
+
                 return Quest.search(buildData);
             })
             .then(quests => {
