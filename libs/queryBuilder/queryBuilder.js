@@ -13,20 +13,18 @@ function build(data) {
         defaultStrategy
     ];
     const keys = Object.keys(data);
-    let result = [];
+    const promises = [];
 
-    const promises = keys.map(key => {
-        return strateges
-            .find(strategy => strategy.canApply(key, data[key]))
-            .apply(data[key], key)
-            .then(buildData => {
-                result = result.concat(buildData);
-            });
+    keys.forEach(key => {
+        const foundStrategy = strateges.find(strategy => strategy.canApply(key, data[key]));
+        if (foundStrategy) {
+            promises.push(foundStrategy.apply(data[key], key));
+        }
     });
 
     return Promise.all(promises)
-        .then(() => {
-            return result;
+        .then(promiseResults => {
+            return promiseResults.reduce((acc, data) => acc.concat(data), []);
         });
 }
 

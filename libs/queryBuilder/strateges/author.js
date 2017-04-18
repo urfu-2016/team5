@@ -12,9 +12,10 @@ module.exports = {
     apply(data) {
         return User.find({username: {$regex: data.text, $options: 'i'}})
             .then(users => {
-                const filteredParams = users.map(user => {
+                let filteredParams = users.map(user => {
                     return {author: user._id};
                 });
+                filteredParams = filteredParams.length ? filteredParams : [{author: null}];
 
                 return {
                     field: filteredParams.map(() => '$or'),

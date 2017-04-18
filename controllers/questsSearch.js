@@ -6,8 +6,6 @@ const queryBuilder = require('../libs/queryBuilder/queryBuilder');
 
 module.exports = {
     getFoundQuests(req, res) {
-        delete req.body.searchPageNumber;
-
         return queryBuilder.build(req.body)
             .then(buildData => {
                 console.log(req.body);

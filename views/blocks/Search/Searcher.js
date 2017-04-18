@@ -1,5 +1,14 @@
 function searchRequest(params) {
-    return fetch('/search', {method: 'POST', body: JSON.stringify(params)});
+    return fetch('/search',
+        {
+            method: 'POST',
+            body: JSON.stringify(params),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }
+    );
 }
 
 function getSearchParameters(state, newPageNumber) {
