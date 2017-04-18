@@ -75,7 +75,7 @@ describe('models:Quest', () => {
         (res === null).should.be.equal(true);
     });
 
-    it('should get filtered quests by title', () => {
+    it('should get filtered quests by title', async () => {
         const questData = questsMocks.questForSearch;
         const requestBody = Object.assign({}, questsMocks.requestBody);
         requestBody.search.text = questData.title[0];
@@ -131,13 +131,13 @@ describe('models:Quest', () => {
         quests[0].author.should.deep.equal(questData.authorId);
     });
 
-    it('should get quests by city', () => {
+    it('should get quests by city', async () => {
         const questData = Object.assign({}, questsMocks.questForSearch);
         const requestBody = questsMocks.requestBody;
         requestBody.city = questData.city[0];
 
-        await setAuthor(questData)
-        await Quest.create(questData)
+        await setAuthor(questData);
+        await Quest.create(questData);
         const buildData = await queryBuilder.build(requestBody);
         const quests = await Quest.search(buildData);
 
@@ -145,12 +145,12 @@ describe('models:Quest', () => {
         quests[0].city.should.equal(questData.city);
     });
 
-    it('should get quests by images count', () => {
+    it('should get quests by images count', async () => {
         const questData = Object.assign({}, questsMocks.questForSearch);
         const requestBody = questsMocks.requestBody;
 
-        await setAuthor(questData)
-        await Quest.create(questData)
+        await setAuthor(questData);
+        await Quest.create(questData);
         const buildData = await queryBuilder.build(requestBody);
         const quests = await Quest.search(buildData);
 
@@ -158,12 +158,12 @@ describe('models:Quest', () => {
         quests[0].images.length.should.equal(0);
     });
 
-    it('should get quests by likes count', () => {
+    it('should get quests by likes count', async () => {
         const questData = Object.assign({}, questsMocks.questForSearch);
         const requestBody = questsMocks.requestBody;
 
-        await setAuthor(questData)
-        await Quest.create(questData)
+        await setAuthor(questData);
+        await Quest.create(questData);
         const buildData = await queryBuilder.build(requestBody);
         const quests = await Quest.search(buildData);
 
@@ -171,14 +171,14 @@ describe('models:Quest', () => {
         quests[0].likes.length.should.equal(0);
     });
 
-    it('should get quests by default request', () => {
+    it('should get quests by default request', async () => {
         const questData = Object.assign({}, questsMocks.questForSearch);
         const requestBody = questsMocks.requestBody;
         requestBody.search.field = '';
         requestBody.search.text = questData.city[0];
 
-        await setAuthor(questData)
-        await Quest.create(questData)
+        await setAuthor(questData);
+        await Quest.create(questData);
         const buildData = await queryBuilder.build(requestBody);
         const quests = await Quest.search(buildData);
 
