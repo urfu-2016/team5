@@ -4,7 +4,6 @@ function searchRequest(params) {
             method: 'POST',
             body: JSON.stringify(params),
             headers: {
-                'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
         }
