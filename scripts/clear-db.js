@@ -8,8 +8,8 @@ module.exports = {
     removeAllUsers: () => User.remove({}),
 
     async removeAll() {
-        await User.remove({});
-        await Quest.remove({});
+        await this.removeAllUsers();
+        await this.removeAllQuests();
     },
 
     dropAll() {

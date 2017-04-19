@@ -4,6 +4,7 @@ const User = require('../models/user');
 const Quest = require('../models/quest');
 const constants = require('../constants/generation');
 const shortid = require('shortid');
+const password = 'password';
 
 function createAll(model, allData) {
     return Promise.all(
@@ -30,7 +31,6 @@ function generateImages({questId, imagesCount = 10}) {
 
 module.exports.generateQuests = ({questsCount = 10}) => {
     const quests = [];
-    const password = 'password';
 
     return User.create({username: 'User' + Date.now(), password})
         .then(user => {
@@ -59,7 +59,7 @@ module.exports.generateUsers = ({usersCount = 1}) => {
             firstname: `${constants.user.firstnamePrefix} ${i}`,
             surname: `${constants.user.surnamePrefix} ${i}`,
             username: `${constants.user.usernamePrefix}${i}`,
-            password: 'password'
+            password
         };
 
         users.push(userData);
@@ -85,15 +85,12 @@ module.exports.createQuestsFromJson = json => {
 
 module.exports.setAuthor = async data => {
     const username = 'User_' + shortid.generate();
-    const password = 'password';
-
     const user = await User.create({username, password});
     data.authorId = user._id;
 };
 
 module.exports.createQuestWithAuthor = async (data, user) => {
     const username = 'User_' + shortid.generate();
-    const password = 'password';
     const author = user || await User.create({username, password});
 
     return await Quest.create({

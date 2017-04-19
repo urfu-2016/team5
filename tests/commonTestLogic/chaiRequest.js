@@ -16,10 +16,8 @@ module.exports = function (server) {
 
         delete: url => agent.delete(url),
 
-        signInAndGetCookies: async user => {
-            const res = await agent.post('/signin').send(user);
-
-            return res.headers['set-cookie'][0];
+        signInUser: async user => {
+            await agent.post('/signin').send(user);
         }
     };
 };
