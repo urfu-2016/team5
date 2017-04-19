@@ -4,21 +4,22 @@ const httpStatus = require('http-status-codes');
 const baseApi = require('./baseApi');
 const passport = require('../../libs/passport');
 const User = require('../../models/user');
-
-const constants = require('../../constants/constants').controllers.auth;
+const constants = require('../../constants/constants');
 
 module.exports = {
     signIn(req, res, next) {
         passport.authenticate('local', (err, user) => {
             if (!user) {
-                res.send('Неверное имя пользователя или пароль.');
-                return;
-            } else if (req.user) {
-                res.send('Вы уже аутентифицированы');
+                res.send(constants.models.User.wrongPasswordOrNameMessage);
                 return;
             }
 
-            const data = {message: constants.signedInPattern(req.body.username)};
+            if (req.user) {
+                res.send(constants.controllers.auth.alreadyAuthenticated);
+                return;
+            }
+
+            const data = {message: constants.controllers.auth.signedInPattern(req.body.username)};
             if (err) {
                 return baseApi.getErrorCallback(res, httpStatus.BAD_REQUEST)(err);
             }
@@ -43,8 +44,7 @@ module.exports = {
         let callbackResult;
         try {
             await User.create(userData);
-
-            callbackResult = () => constants.signedUpPattern(req.body.username);
+            callbackResult = () => constants.controllers.auth.signedUpPattern(req.body.username);
         } catch (err) {
             callbackResult = () => {
                 throw err;
@@ -54,31 +54,11 @@ module.exports = {
         return await baseApi.resolveRequestPromise(callbackResult, res, statusCodes);
     },
 
-    changePassword(req, res) {
-        const user = {
-            username: req.body.username,
-            password: req.body.password
-        };
-
-        const newPassword = req.body.newpassword;
-        if (req.session.user) {
-            console.log(req.session.user);
-        }
-
-        return User
-            .changePassword(user, newPassword)
-            .then(() => () => 'Ваш пароль был изменен')
-            .catch(err => () => {
-                throw err;
-            })
-            .then(callbackResult => baseApi.resolveRequestPromise(callbackResult, res));
-    },
-
     authorizedOnly(req, res, next) {
-        if (req.session.user) {
+        if (req.user) {
             next();
         } else {
-            res.send('Необходима авторизация.');
+            res.status(httpStatus.BAD_REQUEST).send(constants.controllers.auth.authorizationRequired);
         }
     },
 

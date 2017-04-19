@@ -16,17 +16,10 @@ module.exports = function (server) {
 
         delete: url => agent.delete(url),
 
-        signUp: function (account) {
-            return this
-                .post('/singup')
-                .send(account);
-        },
+        signInAndGetCookies: async user => {
+            const res = await agent.post('/signin').send(user);
 
-        signInAndGetCookies: function (account) {
-            return this
-                .post('/signin')
-                .send(account)
-                .then(res => console.log(res.cookies));
+            return res.headers['set-cookie'][0];
         }
     };
 };

@@ -25,6 +25,8 @@ module.exports = {
 
     auth: {
         signedUpPattern: username => `${username} was signed up`,
-        signedInPattern: username => `${username}, поздравляем, вы аутентифицированы!`
+        signedInPattern: username => `${username}, поздравляем, вы аутентифицированы!`,
+        authorizationRequired: 'Необходима авторизация.',
+        alreadyAuthenticated: 'Вы уже аутентифицированы.'
     }
 };

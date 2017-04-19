@@ -3,11 +3,11 @@
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('../../../models/user');
 
-module.exports = new LocalStrategy(async (username, password, done) => {
+module.exports = new LocalStrategy(async (username, password, next) => {
     try {
         const user = await User.getAccountOnCorrectPassword({username, password});
-        done(null, user);
+        next(null, user);
     } catch (err) {
-        done(err);
+        next(err);
     }
 });

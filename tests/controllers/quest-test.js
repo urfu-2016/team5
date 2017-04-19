@@ -6,22 +6,34 @@ const HttpStatus = require('http-status-codes');
 const dbClearer = require('../../scripts/clear-db');
 const slugify = require('slug');
 const questsMocks = require('../mocks/quests');
-const setAuthor = require('../../scripts/generate-db-data').setAuthor;
+const userMocks = require('../mocks/users');
+const User = require('../../models/user');
 const createQuestWithAuthor = require('../../scripts/generate-db-data').createQuestWithAuthor;
 const chaiRequest = require('../commonTestLogic/chaiRequest')(server);
 
-describe('controller:quest', () => {
-    const questData = questsMocks.regularQuest;
+const questData = questsMocks.regularQuest;
 
+async function getCookie(user) {
+    await User.create(user);
+
+    return await chaiRequest.signInAndGetCookies(user);
+}
+
+async function createQuestWithCookie(cookies) {
+    return await (chaiRequest
+        .post('/api/quests', questData)
+        .set('cookies', cookies));
+}
+
+describe('controller:quest', () => {
     beforeEach(() => dbClearer.removeAll());
 
     after(() => dbClearer.removeAll());
 
     it('should create the quest', async () => {
-        let quest = Object.assign({}, questData);
-        await setAuthor(quest);
-
-        const res = await chaiRequest.post('/api/quests', quest);
+        const cookies = await getCookie(userMocks.regularUser);
+        const res = await createQuestWithCookie(cookies);
+        await chaiRequest.post('/logout').set('cookies', cookies);
 
         res.status.should.equal(HttpStatus.CREATED);
         res.body.data.title.should.equal(questData.title);
@@ -55,8 +67,13 @@ describe('controller:quest', () => {
             description: 'SomeOtherDescription'
         };
 
-        await createQuestWithAuthor(questData);
-        const res = await chaiRequest.put(`/api/quests/${slug}`, updateData);
+        const cookies = await getCookie(userMocks.regularUser);
+        await createQuestWithCookie(cookies);
+
+        const res = await chaiRequest
+            .put(`/api/quests/${slug}`, updateData)
+            .set('cookies', cookies);
+        await chaiRequest.post('/logout').set('cookies', cookies);
 
         res.status.should.equal(HttpStatus.OK);
         res.body.data.title.should.equal(updateData.title);
@@ -65,9 +82,12 @@ describe('controller:quest', () => {
 
     it('should delete a quest', async () => {
         const slug = slugify(questData.title);
-
-        await createQuestWithAuthor(questData);
-        const res = await chaiRequest.delete(`/api/quests/${slug}`);
+        const cookies = await getCookie(userMocks.regularUser);
+        await createQuestWithCookie(cookies);
+        const res = await chaiRequest
+            .delete(`/api/quests/${slug}`)
+            .set('cookies', cookies);
+        await chaiRequest.post('/logout').set('cookies', cookies);
 
         res.status.should.equal(HttpStatus.OK);
     });

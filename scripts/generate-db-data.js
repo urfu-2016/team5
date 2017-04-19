@@ -91,10 +91,10 @@ module.exports.setAuthor = async data => {
     data.authorId = user._id;
 };
 
-module.exports.createQuestWithAuthor = async data => {
+module.exports.createQuestWithAuthor = async (data, user) => {
     const username = 'User_' + shortid.generate();
     const password = 'password';
-    const author = await User.create({username, password});
+    const author = user || await User.create({username, password});
 
     return await Quest.create({
         authorId: author._id,

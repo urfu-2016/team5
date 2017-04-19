@@ -10,7 +10,7 @@ module.exports = {
         const quest = {
             title: req.body.title,
             description: req.body.description,
-            authorId: req.body.authorId,
+            authorId: req.user.id,
             city: req.body.city,
             tags: req.body.tags
         };

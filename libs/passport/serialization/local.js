@@ -3,13 +3,13 @@
 const User = require('../../../models/user');
 
 module.exports = {
-    serialize: (user, done) => done(null, user.id),
+    serialize: (user, next) => next(null, user.id),
 
-    deserialize: async (id, done) => {
+    deserialize: async (id, next) => {
         try {
-            done(null, await User.findById(id));
+            next(null, await User.findById(id));
         } catch (err) {
-            done(err);
+            next(err);
         }
     }
 };
