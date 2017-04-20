@@ -4,7 +4,7 @@ const internalProperties = require('../../../constants/controllers').questSearch
 module.exports = {
     canApply: key => (key === 'search'),
 
-    apply(data) {
+    getFilter(data) {
         return Promise.resolve({
             fields: data.field.length ? [data.field] : internalProperties,
             values: strategyBuilder.getMongoRegExp(data.text)

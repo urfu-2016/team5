@@ -3,7 +3,7 @@ const User = require('../../../models/user');
 module.exports = {
     canApply: (key, data) => key === 'search' && data.field === 'author',
 
-    apply(data) {
+    getFilter(data) {
         return User.find({username: {$regex: data.text, $options: 'i'}})
             .then(users => {
                 let authorIds = users.map(user => ({author: user._id}));

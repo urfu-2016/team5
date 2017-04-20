@@ -4,7 +4,7 @@ const canApplyKeys = require('../../../constants/controllers').questSearch.searc
 module.exports = {
     canApply: key => canApplyKeys.indexOf(key) >= 0,
 
-    apply(data, key) {
+    getFilter(data, key) {
         return Promise.resolve({
             fields: [key],
             values: getMongoRegExp(data)

@@ -1,7 +1,7 @@
 module.exports = {
     canApply: key => (key === 'images'),
 
-    apply(data) {
+    getFilter(data) {
         return Promise.resolve([
             {
                 fields: ['$where'],

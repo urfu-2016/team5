@@ -1,27 +1,36 @@
-const strategies = [
-    require('./strategies/author'),
-    require('./strategies/text'),
-    require('./strategies/images'),
-    require('./strategies/likes'),
-    require('./strategies/default')
-];
+const filterCreater = require('./filterCreater');
 
-function build(data) {
-    const keys = Object.keys(data);
+class QueryBuilder {
+    constructor() {
+        this.filtersPromises = [];
+    }
 
-    const promises = keys.reduce((promises, key) => {
-        const foundStrategy = strategies.find(strategy => strategy.canApply(key, data[key]));
-        if (foundStrategy) {
-            promises.push(foundStrategy.apply(data[key], key));
+    applyFilter(key, value) {
+        const promise = filterCreater.createFilter(key, value);
+
+        if (promise) {
+            this.filtersPromises.push(promise);
         }
 
-        return promises;
-    }, []);
+        return this;
+    }
 
-    return Promise.all(promises)
-        .then(promiseResults => {
-            return promiseResults.reduce((acc, data) => acc.concat(data), []);
+    applyFilters(data) {
+        const keys = Object.keys(data);
+
+        keys.forEach(key => {
+            this.applyFilter(key, data[key]);
         });
+
+        return this;
+    }
+
+    build() {
+        return Promise.all(this.filtersPromises)
+            .then(results => {
+                return results.reduce((acc, data) => acc.concat(data), []);
+            });
+    }
 }
 
-module.exports = {build};
+module.exports = QueryBuilder;
