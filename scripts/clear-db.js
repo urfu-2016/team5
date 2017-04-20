@@ -20,10 +20,8 @@ module.exports = {
     },
 
     dropAll() {
-        return mongoose.connection.db.dropDatabase(err => {
-            if (err) {
-                console.log(err);
-            }
+        return mongoose.connection.once('connected', () => {
+            mongoose.connection.db.dropDatabase();
         });
     }
 };
