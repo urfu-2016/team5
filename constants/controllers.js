@@ -12,11 +12,11 @@ module.exports = {
     },
 
     user: {
-        userNotFoundErrorMessage: 'user was not found'
+        userNotFoundErrorMessage: 'Такого пользователя не существует'
     },
 
     quest: {
-        questNotFoundErrorMessage: 'Quests was not found'
+        questNotFoundErrorMessage: 'Такого квеста не существует'
     },
 
     index: {
@@ -24,7 +24,7 @@ module.exports = {
     },
 
     auth: {
-        signedUpPattern: username => `${username} was signed up`,
+        signedUpPattern: username => `${username} был зарегистрирован`,
         signedInPattern: username => `${username}, поздравляем, вы аутентифицированы!`,
         authorizationRequired: 'Необходима авторизация.',
         alreadyAuthenticated: 'Вы уже аутентифицированы.'

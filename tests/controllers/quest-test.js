@@ -33,7 +33,7 @@ describe('controller:quest', () => {
     after(() => dbClearer.removeAll());
 
     describe('required auth', () => {
-        beforeEach(() => createUserAndSignIn(userMocks.regularUser));
+        beforeEach(() => createUserAndSignIn(userMocks.UserWithCorrectPassword));
 
         describe('success with auth', () => {
             afterEach(() => logout());

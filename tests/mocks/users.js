@@ -6,7 +6,7 @@ const userWithCorrectPassword = {
 };
 
 module.exports = {
-    regularUser: userWithCorrectPassword,
+    UserWithCorrectPassword: userWithCorrectPassword,
 
     userWithIncorrectPassword: Object.assign({}, userWithCorrectPassword, {
         password: userWithCorrectPassword.password + '0'

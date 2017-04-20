@@ -97,8 +97,8 @@ userSchema.statics.getById = function (id) {
     return this.findById(id);
 };
 
-userSchema.statics.removeByUsername = async function (username) {
-    return await this.remove({username});
+userSchema.statics.removeByUsername = function (username) {
+    return this.remove({username});
 };
 
 module.exports = mongoose.model('User', userSchema);
