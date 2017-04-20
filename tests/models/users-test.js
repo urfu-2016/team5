@@ -64,7 +64,6 @@ describe('models:user', () => {
 
     it('changes password', async () => {
         const newPassword = 'newPassword';
-
         await User.create(usersMocks.regularUser);
         await User.changePassword(usersMocks.regularUser, newPassword);
         const result = await User.verifyPassword({username: usersMocks.regularUser.username, password: newPassword});
@@ -92,7 +91,6 @@ describe('models:user', () => {
 
     it('should update by username', async () => {
         const firstname = 'Othername';
-
         const savedUser = await User.create(usersMocks.regularUser);
         const updatedUser = await User.update(savedUser.username, {firstname});
 
@@ -101,7 +99,6 @@ describe('models:user', () => {
 
     it('should get by username', async () => {
         const userData = usersMocks.regularUser;
-
         const savedUser = await User.create(userData);
         const foundUser = await User.getByUsername(savedUser.username);
 
@@ -110,7 +107,6 @@ describe('models:user', () => {
 
     it('should get by id', async () => {
         const userData = usersMocks.regularUser;
-
         const savedUser = await User.create(userData);
         const foundUser = await User.getById(savedUser._id);
 
@@ -119,7 +115,6 @@ describe('models:user', () => {
 
     it('should remove by username', async () => {
         const userData = usersMocks.regularUser;
-
         const savedUser = await User.create(userData);
         await User.removeByUsername(savedUser.username);
         const user = await User.getByUsername(userData.username);

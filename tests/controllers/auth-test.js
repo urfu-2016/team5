@@ -4,7 +4,6 @@ const server = require('../../app');
 const httpStatus = require('http-status-codes');
 const dbClearer = require('../../scripts/clear-db');
 const chaiRequest = require('../commonTestLogic/chaiRequest')(server);
-
 const constants = require('../../constants/constants');
 const mocks = require('../mocks/users');
 
@@ -59,6 +58,29 @@ describe('controller:auth', () => {
             } catch (err) {
                 err.status.should.equal(httpStatus.BAD_REQUEST);
                 err.response.body.message.should.equal(constants.models.user.wrongPasswordOrNameMessage);
+            }
+        });
+    });
+
+    describe('logout', () => {
+        beforeEach(() => chaiRequest.post('/signup').send(mocks.regularUser));
+
+        it('should end session after logout', async () => {
+            await chaiRequest.post('/signin').send(mocks.regularUser);
+
+            try {
+                const res = await chaiRequest.post('/logout');
+                Object.prototype.hasOwnProperty.call(res.headers, 'set-cookies').should.equal(false);
+            } catch (err) {
+                throw err;
+            }
+        });
+
+        it('should not logout without auth', async () => {
+            try {
+                await chaiRequest.post('/logout');
+            } catch (err) {
+                err.response.status.should.equal(httpStatus.BAD_REQUEST);
             }
         });
     });
