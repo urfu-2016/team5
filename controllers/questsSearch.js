@@ -2,11 +2,13 @@
 
 const constants = require('../constants/controllers').questSearch;
 const Quest = require('../models/quest');
-const queryBuilder = require('../libs/queryBuilder');
+const QueryBuilder = require('../libs/queryBuilder');
 
 module.exports = {
     findQuests(req, res) {
-        return queryBuilder.build(req.body)
+        return (new QueryBuilder())
+            .applyFilters(req.body)
+            .build()
             .then(buildData => Quest.search(buildData))
             .then(quests => {
                 // FIXME заглушка для страниц
