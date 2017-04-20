@@ -32,10 +32,10 @@ describe('controller:quest', () => {
 
     after(() => dbClearer.removeAll());
 
-    describe('tests required auth', () => {
+    describe('required auth', () => {
         beforeEach(() => createUserAndSignIn(userMocks.regularUser));
 
-        describe('success tests with auth', () => {
+        describe('success with auth', () => {
             afterEach(() => logout());
 
             it('should create the quest', async () => {
@@ -70,7 +70,7 @@ describe('controller:quest', () => {
             });
         });
 
-        describe('fail tests without auth', () => {
+        describe('fails without auth', () => {
             it('should not create the quest without auth', async () => {
                 logout();
 
@@ -112,7 +112,7 @@ describe('controller:quest', () => {
         });
     });
 
-    describe('tests not depended on auth', () => {
+    describe('not depended on auth', () => {
         it('should GET all the quests', async () => {
             await createQuestWithAuthor(questData);
             await createQuestWithAuthor(questData);
