@@ -12,7 +12,7 @@ module.exports = {
     },
 
     user: {
-        userNotFoundErrorMessage: 'User was not found'
+        userNotFoundErrorMessage: 'user was not found'
     },
 
     quest: {

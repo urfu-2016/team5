@@ -10,7 +10,7 @@ module.exports = {
     signIn(req, res, next) {
         passport.authenticate('local', (err, user) => {
             if (!user) {
-                res.send(constants.models.User.wrongPasswordOrNameMessage);
+                res.send(constants.models.user.wrongPasswordOrNameMessage);
                 return;
             }
 

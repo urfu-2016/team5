@@ -16,8 +16,6 @@ module.exports = function (server) {
 
         delete: url => agent.delete(url),
 
-        signInUser: async user => {
-            await agent.post('/signin').send(user);
-        }
+        signInUser: user => agent.post('/signin').send(user)
     };
 };

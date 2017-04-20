@@ -35,23 +35,21 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-const saltRounds = 10;
-
 userSchema.statics.create = async function ({username, password}) {
     if (!password) {
-        throw new Error(constants.models.User.passwordRequiredMessage);
+        throw new Error(constants.models.user.passwordRequiredMessage);
     }
 
     try {
         const user = new this({
             username,
-            password: await bcrypt.hash(password, saltRounds)
+            password: await bcrypt.hash(password, constants.models.user.saltRounds)
         });
 
         return await user.save();
     } catch (err) {
         if (err.code === constants.mongoose.mongoDuplicateErrorCode) {
-            err.message = constants.models.User.alreadyExistsPattern(username);
+            err.message = constants.models.user.alreadyExistsPattern(username);
         }
 
         throw err;
@@ -66,7 +64,7 @@ userSchema.statics.verifyPassword = async function (account) {
 
 userSchema.statics.changePassword = async function (account, newPassword) {
     const user = await this.getAccountOnCorrectPassword(account);
-    user.password = await bcrypt.hash(newPassword, saltRounds);
+    user.password = await bcrypt.hash(newPassword, constants.models.user.saltRounds);
 
     return user.save();
 };
@@ -76,7 +74,7 @@ userSchema.statics.getAccountOnCorrectPassword = async function (account) {
         return await this.findOne({username: account.username});
     }
 
-    throw new Error(constants.models.User.wrongPasswordOrNameMessage);
+    throw new Error(constants.models.user.wrongPasswordOrNameMessage);
 };
 
 userSchema.statics.update = async function (username, {firstname, surname}) {
@@ -100,7 +98,7 @@ userSchema.statics.getById = function (id) {
 };
 
 userSchema.statics.removeByUsername = async function (username) {
-    return await this.findOne({username}).remove();
+    return await this.remove({username});
 };
 
 module.exports = mongoose.model('User', userSchema);

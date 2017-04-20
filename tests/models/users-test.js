@@ -33,7 +33,7 @@ describe('models:user', () => {
         try {
             await User.create({username: usersMocks.regularUser.username});
         } catch (err) {
-            err.message.should.be.equal(constants.models.User.passwordRequiredMessage);
+            err.message.should.be.equal(constants.models.user.passwordRequiredMessage);
         }
     });
 
@@ -58,7 +58,7 @@ describe('models:user', () => {
         try {
             await User.verifyPassword(usersMocks.userWithIncorrectPassword);
         } catch (err) {
-            err.message.should.be.equal(constants.models.User.wrongPasswordOrNameMessage);
+            err.message.should.be.equal(constants.models.user.wrongPasswordOrNameMessage);
         }
     });
 
@@ -78,16 +78,16 @@ describe('models:user', () => {
         try {
             await User.changePassword(usersMocks.userWithIncorrectPassword, usersMocks.regularUser.password);
         } catch (err) {
-            err.message.should.be.equal(constants.models.User.wrongPasswordOrNameMessage);
+            err.message.should.be.equal(constants.models.user.wrongPasswordOrNameMessage);
         }
     });
 
     it('check that password was hashed', async () => {
         const userData = usersMocks.regularUser;
         await User.create(userData);
-        const users = await User.find({});
+        const user = await User.getByUsername(userData.username);
 
-        users[0].password.should.not.be.equal(userData.password);
+        user.password.should.not.be.equal(userData.password);
     });
 
     it('should update by username', async () => {

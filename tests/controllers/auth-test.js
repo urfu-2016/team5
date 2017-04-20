@@ -26,7 +26,7 @@ describe('controller:auth', () => {
                 await chaiRequest.post('/signup', mocks.regularUser);
             } catch (err) {
                 const username = mocks.regularUser.username;
-                const message = constants.models.User.alreadyExistsPattern(username);
+                const message = constants.models.user.alreadyExistsPattern(username);
 
                 err.status.should.be.equal(httpStatus.BAD_REQUEST);
                 err.response.body.message.should.be.equal(message);
@@ -48,7 +48,7 @@ describe('controller:auth', () => {
             try {
                 await chaiRequest.post('/signin', mocks.userWithIncorrectPassword);
             } catch (err) {
-                err.response.body.message.should.equal(constants.models.User.wrongPasswordOrNameMessage);
+                err.response.body.message.should.equal(constants.models.user.wrongPasswordOrNameMessage);
                 err.status.should.equal(httpStatus.BAD_REQUEST);
             }
         });
@@ -58,7 +58,7 @@ describe('controller:auth', () => {
                 await chaiRequest.post('/signin', mocks.regularUser);
             } catch (err) {
                 err.status.should.equal(httpStatus.BAD_REQUEST);
-                err.response.body.message.should.equal(constants.models.User.wrongPasswordOrNameMessage);
+                err.response.body.message.should.equal(constants.models.user.wrongPasswordOrNameMessage);
             }
         });
     });
