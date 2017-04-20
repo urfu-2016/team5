@@ -1,4 +1,3 @@
-const strategyBuilder = require('../strategyBuilder');
 const internalProperties = require('../../../constants/controllers').questSearch.internalProperties;
 
 module.exports = {
@@ -7,7 +6,7 @@ module.exports = {
     getFilter(data) {
         return Promise.resolve({
             fields: data.field.length ? [data.field] : internalProperties,
-            values: strategyBuilder.getMongoRegExp(data.text)
+            values: {$regex: data.text, $options: 'i'}
         });
     }
 };

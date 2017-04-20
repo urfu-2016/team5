@@ -1,4 +1,3 @@
-const getMongoRegExp = require('../strategyBuilder').getMongoRegExp;
 const canApplyKeys = require('../../../constants/controllers').questSearch.searchFields;
 
 module.exports = {
@@ -7,7 +6,7 @@ module.exports = {
     getFilter(data, key) {
         return Promise.resolve({
             fields: [key],
-            values: getMongoRegExp(data)
+            values: {$regex: data, $options: 'i'}
         });
     }
 };
