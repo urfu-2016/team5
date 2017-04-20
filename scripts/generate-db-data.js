@@ -98,6 +98,7 @@ module.exports.createQuestWithAuthor = async data => {
         title: data.title,
         description: data.description || '',
         city: data.city || '',
-        tags: data.tags || ''
+        tags: data.tags || '',
+        images: data.images || []
     });
 };
