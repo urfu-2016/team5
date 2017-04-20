@@ -16,17 +16,6 @@ module.exports = function (server) {
 
         delete: url => agent.delete(url),
 
-        signUp: function (account) {
-            return this
-                .post('/singup')
-                .send(account);
-        },
-
-        signInAndGetCookies: function (account) {
-            return this
-                .post('/signin')
-                .send(account)
-                .then(res => console.log(res.cookies));
-        }
+        signInUser: user => agent.post('/signin').send(user)
     };
 };

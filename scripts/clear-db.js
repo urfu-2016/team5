@@ -1,22 +1,15 @@
-require('../models/user');
-require('../models/quest');
-require('../models/account');
-
+const User = require('../models/user');
+const Quest = require('../models/quest');
 const mongoose = require('mongoose');
 
 module.exports = {
-    removeAllQuests: () => removeAllItems('Quest'),
+    removeAllQuests: () => Quest.remove({}),
 
-    removeAllUsers: () => removeAllItems('User'),
+    removeAllUsers: () => User.remove({}),
 
-    removeAllAccounts: () => removeAllItems('Account'),
-
-    removeAll() {
-        return Promise.all([
-            removeAllItems('Quest'),
-            removeAllItems('User'),
-            removeAllItems('Account')
-        ]);
+    async removeAll() {
+        await this.removeAllUsers();
+        await this.removeAllQuests();
     },
 
     dropAll() {
@@ -27,10 +20,4 @@ module.exports = {
         });
     }
 };
-
-function removeAllItems(modelName) {
-    return mongoose.model(modelName)
-        .remove({})
-        .exec();
-}
 
