@@ -17,19 +17,15 @@ class QueryBuilder {
 
     applyFilters(data) {
         const keys = Object.keys(data);
-
-        keys.forEach(key => {
-            this.applyFilter(key, data[key]);
-        });
+        keys.forEach(key => this.applyFilter(key, data[key]));
 
         return this;
     }
 
-    build() {
-        return Promise.all(this.filtersPromises)
-            .then(results => {
-                return results.reduce((acc, data) => acc.concat(data), []);
-            });
+    async build() {
+        const buildData = await Promise.all(this.filtersPromises);
+
+        return buildData.reduce((acc, data) => acc.concat(data), []);
     }
 }
 

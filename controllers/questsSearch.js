@@ -12,7 +12,7 @@ module.exports = {
             .then(buildData => Quest.search(buildData))
             .then(quests => {
                 // FIXME заглушка для страниц
-                const searchPageNumber = 1;
+                const searchPageNumber = req.body.page;
                 const firstCardNumber = (searchPageNumber - 1) * constants.cardsCount;
                 const lastCardNumber = firstCardNumber + constants.cardsCount;
                 const renderData = {

@@ -11,7 +11,9 @@ const createQuestWithAuthor = require('../../scripts/generate-db-data').createQu
 const QueryBuilder = require('../../libs/queryBuilder');
 
 async function searchQuests(requestBody) {
-    const buildData = await (new QueryBuilder()).applyFilters(requestBody).build();
+    const buildData = await (new QueryBuilder())
+        .applyFilters(requestBody)
+        .build();
 
     return await Quest.search(buildData);
 }
