@@ -1,4 +1,3 @@
-
 /* eslint-env mocha */
 
 const server = require('../../app');

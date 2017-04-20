@@ -8,7 +8,13 @@ const questsMocks = require('../mocks/quests');
 const dbClearer = require('../../scripts/clear-db');
 const setAuthor = require('../../scripts/generate-db-data').setAuthor;
 const createQuestWithAuthor = require('../../scripts/generate-db-data').createQuestWithAuthor;
-const queryBuilder = require('../../libs/queryBuilder');
+const QueryBuilder = require('../../libs/queryBuilder');
+
+async function searchQuests(requestBody) {
+    const buildData = await (new QueryBuilder()).applyFilters(requestBody).build();
+
+    return await Quest.search(buildData);
+}
 
 describe('models:Quest', () => {
     beforeEach(() => dbClearer.removeAll());
@@ -82,8 +88,7 @@ describe('models:Quest', () => {
 
         await createQuestWithAuthor(questData);
         await createQuestWithAuthor(questData);
-        const buildData = await queryBuilder.build(requestBody);
-        const quests = await Quest.search(buildData);
+        const quests = await searchQuests(requestBody);
 
         quests.length.should.equal(2);
         quests[0].description.should.equal(questData.description);
@@ -96,8 +101,7 @@ describe('models:Quest', () => {
         requestBody.search.field = 'tags';
 
         await createQuestWithAuthor(questData);
-        const buildData = await queryBuilder.build(requestBody);
-        const quests = await Quest.search(buildData);
+        const quests = await searchQuests(requestBody);
 
         quests.length.should.equal(1);
         quests[0].title.should.equal(questData.title);
@@ -109,8 +113,7 @@ describe('models:Quest', () => {
         requestBody.search.text = questData.description;
 
         await createQuestWithAuthor(questData);
-        const buildData = await queryBuilder.build(requestBody);
-        const quests = await Quest.search(buildData);
+        const quests = await searchQuests(requestBody);
 
         quests.length.should.equal(0);
     });
@@ -124,8 +127,7 @@ describe('models:Quest', () => {
         await Quest.create(questData);
         const user = await User.getById(questData.authorId);
         requestBody.search.text = user.username[0];
-        const buildData = await queryBuilder.build(requestBody);
-        const quests = await Quest.search(buildData);
+        const quests = await searchQuests(requestBody);
 
         quests.length.should.equal(1);
         quests[0].author.should.deep.equal(questData.authorId);
@@ -138,8 +140,7 @@ describe('models:Quest', () => {
 
         await setAuthor(questData);
         await Quest.create(questData);
-        const buildData = await queryBuilder.build(requestBody);
-        const quests = await Quest.search(buildData);
+        const quests = await searchQuests(requestBody);
 
         quests.length.should.equal(1);
         quests[0].city.should.equal(questData.city);
@@ -151,8 +152,7 @@ describe('models:Quest', () => {
 
         await setAuthor(questData);
         await Quest.create(questData);
-        const buildData = await queryBuilder.build(requestBody);
-        const quests = await Quest.search(buildData);
+        const quests = await searchQuests(requestBody);
 
         quests.length.should.equal(1);
         quests[0].images.length.should.equal(0);
@@ -164,8 +164,7 @@ describe('models:Quest', () => {
 
         await setAuthor(questData);
         await Quest.create(questData);
-        const buildData = await queryBuilder.build(requestBody);
-        const quests = await Quest.search(buildData);
+        const quests = await searchQuests(requestBody);
 
         quests.length.should.equal(1);
         quests[0].likes.length.should.equal(0);
@@ -179,8 +178,7 @@ describe('models:Quest', () => {
 
         await setAuthor(questData);
         await Quest.create(questData);
-        const buildData = await queryBuilder.build(requestBody);
-        const quests = await Quest.search(buildData);
+        const quests = await searchQuests(requestBody);
 
         quests.length.should.equal(1);
     });
