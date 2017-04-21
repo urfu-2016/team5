@@ -8,20 +8,24 @@ const consoleArgs = require('command-line-args')([
     {name: 'users-count', alias: 'u', type: Number, defaultValue: 1},
     {name: 'quests-count', alias: 'q', type: Number, defaultValue: 10},
     {name: 'users-file', type: String, defaultValue: path.join(__dirname, '../mocks/users.json')},
-    {name: 'quests-file', type: String, defaultValue: path.join(__dirname, '../mocks/quests.json')}
+    {name: 'quests-file', type: String, defaultValue: path.join(__dirname, '../mocks/quests.json')},
+    {name: 'need-clear', type: Boolean, defaultValue: false}
 ]);
 
 const questsJson = fs.readFileSync(consoleArgs['quests-file']);
 const usersJson = fs.readFileSync(consoleArgs['users-file']);
 const questsCount = consoleArgs['quests-count'];
 const usersCount = consoleArgs['users-count'];
+const needClear = consoleArgs['need-clear'];
 
-clearDb.removeAll()
-    .then(() => clearDb.dropAll())
-    .then(() => Promise.all([
-        generateDb.createQuestsFromJson(questsJson),
-        generateDb.createUsersFromJson(usersJson),
-        generateDb.generateQuests(questsCount),
-        generateDb.generateUsers(usersCount)
-    ]))
-    .then(() => process.exit());
+if (needClear) {
+    clearDb.removeAll()
+        .then(() => clearDb.dropAll())
+        .then(() => Promise.all([
+            generateDb.createQuestsFromJson(questsJson),
+            generateDb.createUsersFromJson(usersJson),
+            generateDb.generateQuests(questsCount),
+            generateDb.generateUsers(usersCount)
+        ]))
+        .then(() => process.exit());
+}
