@@ -7,6 +7,7 @@ const constants = require('../constants/controllers');
 const questsSearch = require('../controllers/questsSearch');
 const Quest = require('../models/quest');
 
+const authController = require('../controllers/api/auth');
 router.get('/', function (req, res) {
     /*
     Const renderData = {
@@ -21,6 +22,9 @@ router.get('/', function (req, res) {
     */
 
     Quest.getAll().then(data => {
+        console.log(req.session);
+        console.log(req.user);
+        // console.log(req);
         const renderData = {
             title: constants.title,
             user: {
@@ -36,6 +40,9 @@ router.get('/', function (req, res) {
         res.render('mainPage/mainPage', renderData);
     });
 });
-router.post('/search', questsSearch.findQuests);
+
+// authController.authorizedOnly
+
+router.post('/search', authController.authorizedOnly, questsSearch.findQuests);
 
 module.exports = router;

@@ -45,6 +45,8 @@ module.exports = {
     },
 
     authorizedOnly(req, res, next) {
+        console.log('asd');
+        console.log(req.user);
         if (req.user) {
             next();
         } else {
