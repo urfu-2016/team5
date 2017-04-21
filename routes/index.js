@@ -36,6 +36,6 @@ router.get('/', function (req, res) {
         res.render('mainPage/mainPage', renderData);
     });
 });
-router.get('/search', questsSearch.getFoundQuests);
+router.post('/search', questsSearch.findQuests);
 
 module.exports = router;

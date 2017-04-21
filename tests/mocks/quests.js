@@ -13,7 +13,8 @@ module.exports = {
     questForSearch: {
         title: 'Описание',
         description: 'Описание',
-        tags: ['Заголовок']
+        tags: ['Заголовок'],
+        city: 'Екатеринбург'
     },
 
     oneMoreQuest: {
@@ -25,5 +26,17 @@ module.exports = {
     questWithoutSlug: {
         title: 'Заголовок',
         description: 'Описание'
+    },
+
+    requestBody: {
+        search: {
+            field: 'title',
+            text: ''
+        },
+        likesCount: 0,
+        images: {
+            from: 0,
+            to: 10
+        }
     }
 };
