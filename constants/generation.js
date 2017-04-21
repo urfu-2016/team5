@@ -3,18 +3,21 @@
 module.exports = {
     image: {
         dummyUrl: 'https://dummyimage.com',
-        imageSize: '300x300',
+        imageSize: '1000x1000',
         backgroundColor: '555',
         foregroundColor: 'ffd70'
     },
+
     quest: {
         titlePrefix: 'Заголовок',
         descriptionPrefix: 'Описание',
         city: 'Екатеринбург'
     },
+
     user: {
         firstnamePrefix: 'Пользователь',
         surnamePrefix: 'Фамилия',
-        usernamePrefix: 'user_'
+        usernamePrefix: 'user_',
+        password: 'password'
     }
 };

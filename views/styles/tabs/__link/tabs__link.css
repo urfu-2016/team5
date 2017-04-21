@@ -1,0 +1,24 @@
+.tabs__link.active
+{
+    border: none;
+    background-color: #3f729b;
+    color: #fff;
+    border-radius: 2px;
+    transition: all 0.4s;
+    box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+}
+
+.tabs__link
+{
+    color: #666;
+    text-align: center;
+    padding: 10px;
+    text-decoration: none;
+    outline: none;
+}
+
+.tabs__link:hover:not(.active)
+{
+    background-color: rgba(158, 158, 158, 0.3);
+    transition: all 0.4s;
+}

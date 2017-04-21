@@ -31,7 +31,7 @@ function generateImages({questId, imagesCount = 10}) {
 module.exports.generateQuests = ({questsCount = 10}) => {
     const quests = [];
 
-    return User.create({username: 'User' + Date.now()})
+    return User.create({username: 'User' + Date.now(), password: constants.user.password})
         .then(user => {
             for (let i = 0; i < questsCount; i++) {
                 let questData = {
@@ -57,7 +57,8 @@ module.exports.generateUsers = ({usersCount = 1}) => {
         let userData = {
             firstname: `${constants.user.firstnamePrefix} ${i}`,
             surname: `${constants.user.surnamePrefix} ${i}`,
-            username: `${constants.user.usernamePrefix}${i}`
+            username: `${constants.user.usernamePrefix}${i}`,
+            password: constants.user.password
         };
 
         users.push(userData);
@@ -81,27 +82,22 @@ module.exports.createQuestsFromJson = json => {
     );
 };
 
-module.exports.setAuthor = data => {
+module.exports.setAuthor = async data => {
     const username = 'User_' + shortid.generate();
-
-    return new Promise(resolve => {
-        User.create({username})
-            .then(user => {
-                data.authorId = user._id;
-                resolve();
-            });
-    });
+    const user = await User.create({username, password: constants.user.password});
+    data.authorId = user._id;
 };
 
-module.exports.createQuestWithAuthor = data => {
+module.exports.createQuestWithAuthor = async (data, user) => {
     const username = 'User_' + shortid.generate();
+    const author = user || await User.create({username, password: constants.user.password});
 
-    return User.create({username})
-        .then(author => Quest.create({
-            authorId: author._id,
-            title: data.title,
-            description: data.description || '',
-            city: data.city || '',
-            tags: data.tags || ''
-        }));
+    return await Quest.create({
+        authorId: author._id,
+        title: data.title,
+        description: data.description || '',
+        city: data.city || '',
+        tags: data.tags || '',
+        images: data.images || []
+    });
 };

@@ -2,57 +2,27 @@
 
 const constants = require('../constants/controllers').questSearch;
 const Quest = require('../models/quest');
-
-function getSearchPropsByRequest(req) {
-    const searchProperties = [];
-    if (req.query.searchByTitle) {
-        searchProperties.push('title');
-    }
-    if (req.query.searchByTags) {
-        searchProperties.push('tags');
-    }
-
-    return searchProperties;
-}
+const QueryBuilder = require('../libs/queryBuilder');
 
 module.exports = {
-    getFoundQuests(req, res) {
-        const searchProperties = getSearchPropsByRequest(req);
-        const searchString = req.query.searchString || '';
-        const searchPromises = [];
-
-        if (req.query.searchByAuthor) {
-            searchPromises.push(Quest.searchByAuthor(searchString));
-        }
-
-        const questsPromise = Quest
-            .searchByInternalProps(searchProperties, searchString);
-
-        searchPromises.push(questsPromise);
-
-        // FIXME: Было жалко убирать все связанное с поиском по автору,
-        // FIXME: поэтому пока сделал так
-        Promise.all(searchPromises)
-            .then(data => {
-                const quests = data.reduce((acc, quests) => {
-                    quests.forEach(quest => acc.add(quest));
-
-                    return acc;
-                }, new Set());
-
-                return Array.from(quests)
-                    .sort((a, b) => {
-                        return new Date(b.dateOfCreation) - new Date(a.dateOfCreation);
-                    });
-            })
+    findQuests(req, res) {
+        return (new QueryBuilder())
+            .applyFilters(req.body)
+            .build()
+            .then(buildData => Quest.search(buildData))
             .then(quests => {
+                const searchPageNumber = req.body.page;
+                const firstCardNumber = (searchPageNumber - 1) * constants.cardsCount;
+                const lastCardNumber = firstCardNumber + constants.cardsCount;
                 const renderData = {
+                    pageNumber: searchPageNumber,
+                    maxPageNumber: Math.ceil(quests.length / constants.cardsCount),
                     title: constants.title,
-                    quests: quests || [],
+                    quests: quests.slice(firstCardNumber, lastCardNumber),
                     isEmptyQuests: quests.length === 0
                 };
 
-                res.render('questsAll/quests-all', renderData);
+                res.send(renderData);
             });
     }
 };

@@ -1,0 +1,37 @@
+.card__image
+{
+    overflow: hidden;
+    position: relative;
+    cursor: default;
+    height: 250px;
+    display: flex;
+}
+
+.card__image img
+{
+    max-width: 100%;
+    height: auto;
+    border-style: none;
+    vertical-align: middle;
+    transition: all 0.2s linear;
+}
+
+.mask:hover
+{
+    opacity: 1;
+}
+
+.mask
+{
+    background-color: rgba(255, 255, 255, 0.2);
+    opacity: 0;
+    transition: all 0.4s ease-in-out;
+    background-attachment: fixed;
+    position: absolute;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    z-index: 500;
+}

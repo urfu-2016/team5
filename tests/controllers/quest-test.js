@@ -1,123 +1,141 @@
 /* eslint-env mocha */
 
-const chai = require('chai');
-const chaiHttp = require('chai-http');
 const server = require('../../app');
 const HttpStatus = require('http-status-codes');
 const dbClearer = require('../../scripts/clear-db');
 const slugify = require('slug');
 const questsMocks = require('../mocks/quests');
-const setAuthor = require('../../scripts/generate-db-data').setAuthor;
+const userMocks = require('../mocks/users');
+const User = require('../../models/user');
 const createQuestWithAuthor = require('../../scripts/generate-db-data').createQuestWithAuthor;
+const chaiRequest = require('../commonTestLogic/chaiRequest')(server);
 
-chai.should();
-chai.use(chaiHttp);
+const questData = questsMocks.regularQuest;
+
+async function createUserAndSignIn(user) {
+    await User.create(user);
+
+    return await chaiRequest.signInUser(user);
+}
+
+async function logout() {
+    return await chaiRequest.post('/logout');
+}
+
+async function createQuest() {
+    return await chaiRequest.post('/api/quests', questData);
+}
 
 describe('controller:quest', () => {
-    const questData = questsMocks.regularQuest;
-
     beforeEach(() => dbClearer.removeAll());
 
     after(() => dbClearer.removeAll());
 
-    it('should create the quest', () => {
-        let quest = Object.assign({}, questData);
+    describe('required auth', () => {
+        beforeEach(() => createUserAndSignIn(userMocks.UserWithCorrectPassword));
 
-        return setAuthor(quest)
-            .then(() => {
-                console.log(quest);
-                return chai
-                    .request(server)
-                    .post('/api/quests')
-                    .send(quest);
-            })
-            .then(res => {
+        describe('success with auth', () => {
+            afterEach(() => logout());
+
+            it('should create the quest', async () => {
+                const res = await createQuest();
+
                 res.status.should.equal(HttpStatus.CREATED);
                 res.body.data.title.should.equal(questData.title);
                 res.body.data.slug.should.equal(slugify(questData.title));
             });
-    });
 
-    it('should GET all the quests', () => {
-        return createQuestWithAuthor(questData)
-            .then(() => createQuestWithAuthor(questData))
-            .then(() => {
-                return chai.request(server)
-                    .get('/api/quests')
-                    .send();
-            })
-            .then(res => {
-                res.status.should.equal(HttpStatus.OK);
-                res.body.data.should.length.of.at(2);
-            });
-    });
+            it('should PUT a quest', async () => {
+                const slug = slugify(questData.title);
+                const updateData = {
+                    title: 'SomeOther',
+                    description: 'SomeOtherDescription'
+                };
 
-    it('should GET a quest by the given slug', () => {
-        const slug = slugify(questData.title);
+                await createQuest();
+                const res = await chaiRequest.put(`/api/quests/${slug}`, updateData);
 
-        return createQuestWithAuthor(questData)
-            .then(() => {
-                return chai.request(server)
-                    .get(`/api/quests/${slug}`)
-                    .send();
-            })
-            .then(res => {
-                res.status.should.equal(HttpStatus.OK);
-                res.body.data.slug.should.equal(slug);
-            });
-    });
-
-    it('should PUT a quest', () => {
-        const slug = slugify(questData.title);
-        const updateData = {
-            title: 'SomeOther',
-            description: 'SomeOtherDescription'
-        };
-
-        return createQuestWithAuthor(questData)
-            .then(() => {
-                return chai.request(server)
-                    .put(`/api/quests/${slug}`)
-                    .send(updateData);
-            })
-            .then(res => {
                 res.status.should.equal(HttpStatus.OK);
                 res.body.data.title.should.equal(updateData.title);
                 res.body.data.description.should.equal(updateData.description);
             });
-    });
 
-    it('should delete a quest', () => {
-        const slug = slugify(questData.title);
+            it('should delete a quest', async () => {
+                const slug = slugify(questData.title);
+                await createQuest();
+                const res = await chaiRequest.delete(`/api/quests/${slug}`);
 
-        return createQuestWithAuthor(questData)
-            .then(() => {
-                return chai
-                    .request(server)
-                    .delete(`/api/quests/${slug}`)
-                    .send();
-            })
-            .then(res => {
                 res.status.should.equal(HttpStatus.OK);
-            })
-            .then(() => {
-                return chai
-                    .request(server)
-                    .delete(`/api/quests/${slug}`)
-                    .send();
-            })
-            .catch(err => {
-                err.status.should.equal(HttpStatus.NOT_FOUND);
             });
+        });
+
+        describe('fails without auth', () => {
+            it('should not create the quest without auth', async () => {
+                logout();
+
+                try {
+                    await createQuest();
+                } catch (err) {
+                    err.response.status.should.equal(HttpStatus.BAD_REQUEST);
+                }
+            });
+
+            it('should not put a quest without auth', async () => {
+                const slug = slugify(questData.title);
+                const updateData = {
+                    title: 'SomeOther',
+                    description: 'SomeOtherDescription'
+                };
+
+                await createQuest();
+                await logout();
+
+                try {
+                    await chaiRequest.put(`/api/quests/${slug}`, updateData);
+                } catch (err) {
+                    err.response.status.should.equal(HttpStatus.BAD_REQUEST);
+                }
+            });
+
+            it('should not delete a quest without auth', async () => {
+                const slug = slugify(questData.title);
+                await createQuest();
+                await logout();
+
+                try {
+                    await chaiRequest.delete(`/api/quests/${slug}`);
+                } catch (err) {
+                    err.response.status.should.equal(HttpStatus.BAD_REQUEST);
+                }
+            });
+        });
     });
 
-    it('should answer with status 404', () => {
-        return chai
-            .request(server)
-            .get(`/api/quests/some-bad-slug`)
-            .send()
-            .catch(err => {
+    describe('not depended on auth', () => {
+        it('should GET all the quests', async () => {
+            await createQuestWithAuthor(questData);
+            await createQuestWithAuthor(questData);
+            const res = await chaiRequest.get('/api/quests');
+
+            res.status.should.equal(HttpStatus.OK);
+            res.body.data.should.length.of.at(2);
+        });
+
+        it('should GET a quest by the given slug', async () => {
+            const slug = slugify(questData.title);
+            await createQuestWithAuthor(questData);
+            const res = await chaiRequest.get(`/api/quests/${slug}`);
+
+            res.status.should.equal(HttpStatus.OK);
+            res.body.data.slug.should.equal(slug);
+        });
+
+        it('should not found nonexistent quest', async () => {
+            try {
+                await chaiRequest.get(`/api/quests/some-bad-slug`);
+            } catch (err) {
                 err.status.should.equal(HttpStatus.NOT_FOUND);
-            });
+            }
+        });
     });
 });

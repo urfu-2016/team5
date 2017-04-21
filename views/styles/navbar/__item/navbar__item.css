@@ -1,0 +1,30 @@
+.navbar__item
+{
+    position: relative;
+}
+
+.navbar__item a
+{
+    color: #fff;
+    transition: 0.35s;
+}
+
+.navbar__item a:hover
+{
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.navbar__item.active
+{
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.navbar__item.avatar
+{
+    padding: 0;
+}
+
+.navbar__item.avatar.active
+{
+    background-color: transparent !important;
+}

@@ -1,0 +1,9 @@
+.modal__header
+{
+    display: flex;
+    padding: 15px;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #eceeef;
+    background-color: #ff9800 !important;
+}

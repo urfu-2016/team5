@@ -1,13 +1,18 @@
-/* eslint-disable new-cap */
 'use strict';
 
 const express = require('express');
-const router = express.Router();
-
-const questsController = require('../controllers/api/quests');
+const router = new express.Router();
 const Quest = require('../models/quest');
 
-router.route('/quests/:slug').get(function (req, res) {
+router.get('/', function (req, res) {
+    const renderData = {
+        activePage: '/quests'
+    };
+
+    res.render('questsAll/quests-all', renderData);
+});
+
+router.route('/:slug').get(function (req, res) {
     Quest.getBySlug(req.params.slug).then(questData => {
         const renderData = {
             title: 'Квест',
@@ -19,14 +24,5 @@ router.route('/quests/:slug').get(function (req, res) {
         res.render('questsId/quests-id', renderData);
     });
 });
-
-router.route('/api/quests')
-    .get(questsController.getQuests)
-    .post(questsController.createQuest);
-
-router.route('/api/quests/:slug')
-    .get(questsController.getQuestBySlug)
-    .put(questsController.updateQuest)
-    .delete(questsController.removeQuest);
 
 module.exports = router;

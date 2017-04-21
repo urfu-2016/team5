@@ -7,12 +7,10 @@ const path = require('path');
 const dbClearer = require('../../scripts/clear-db');
 const dbGenerator = require('../../scripts/generate-db-data');
 
-function modelsCountShouldEqual(model, expectedCount) {
-    return model.find({})
-        .exec()
-        .then(models => {
-            models.length.should.equal(expectedCount);
-        });
+async function modelsCountShouldEqual(model, expectedCount) {
+    const models = await model.find({}).exec();
+
+    models.length.should.be.equal(expectedCount);
 }
 
 describe('scripts:generate-db-data:generateQuests', () => {
@@ -22,26 +20,29 @@ describe('scripts:generate-db-data:generateQuests', () => {
 
     after(() => dbClearer.removeAllQuests());
 
-    it('should generate 10 quests by default', () => {
+    it('should generate 10 quests by default', async () => {
         const questsCount = 10;
 
-        return dbGenerator.generateQuests({})
-            .then(() => modelsCountShouldEqual(Quest, questsCount));
+        await dbGenerator.generateQuests({});
+
+        await modelsCountShouldEqual(Quest, questsCount);
     });
 
-    it('should generate needed quests count', () => {
+    it('should generate needed quests count', async () => {
         const questsCount = 11;
 
-        return dbGenerator.generateQuests({questsCount})
-            .then(() => modelsCountShouldEqual(Quest, questsCount));
+        await dbGenerator.generateQuests({questsCount});
+
+        await modelsCountShouldEqual(Quest, questsCount);
     });
 
-    it('should create models from json', () => {
+    it('should create models from json', async () => {
         const questsCount = 3;
         const fileWithJson = path.join(__dirname, 'testQuests.json');
 
-        return dbGenerator.createQuestsFromJson(fs.readFileSync(fileWithJson))
-            .then(() => modelsCountShouldEqual(Quest, questsCount));
+        await dbGenerator.createQuestsFromJson(fs.readFileSync(fileWithJson));
+
+        await modelsCountShouldEqual(Quest, questsCount);
     });
 });
 
@@ -52,25 +53,28 @@ describe('scripts:generate-db-data:generateUsers', () => {
 
     after(() => dbClearer.removeAllUsers());
 
-    it('should generate 1 user by default', () => {
+    it('should generate 1 user by default', async () => {
         const usersCount = 1;
 
-        return dbGenerator.generateUsers({})
-            .then(() => modelsCountShouldEqual(User, usersCount));
+        await dbGenerator.generateUsers({});
+
+        await modelsCountShouldEqual(User, usersCount);
     });
 
-    it('should generate needed users count', () => {
+    it('should generate needed users count', async () => {
         const usersCount = 11;
 
-        return dbGenerator.generateUsers({usersCount})
-            .then(() => modelsCountShouldEqual(User, usersCount));
+        await dbGenerator.generateUsers({usersCount});
+
+        await modelsCountShouldEqual(User, usersCount);
     });
 
-    it('should create models from json', () => {
+    it('should create models from json', async () => {
         const usersCount = 3;
         const fileWithJson = path.join(__dirname, 'testUsers.json');
 
-        return dbGenerator.createUsersFromJson(fs.readFileSync(fileWithJson))
-            .then(() => modelsCountShouldEqual(User, usersCount));
+        await dbGenerator.createUsersFromJson(fs.readFileSync(fileWithJson));
+
+        await modelsCountShouldEqual(User, usersCount);
     });
 });

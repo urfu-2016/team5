@@ -1,11 +1,13 @@
 'use strict';
 
 const LocalStrategy = require('passport-local').Strategy;
-const Account = require('../../../models/account');
+const User = require('../../../models/user');
 
-module.exports = new LocalStrategy((username, password, done) => {
-    return Account
-        .getAccountOnCorrectPassword({username, password})
-        .then(acc => done(null, acc))
-        .catch(err => done(err));
+module.exports = new LocalStrategy(async (username, password, next) => {
+    try {
+        const user = await User.getAccountOnCorrectPassword({username, password});
+        next(null, user);
+    } catch (err) {
+        next(err);
+    }
 });

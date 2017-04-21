@@ -1,0 +1,11 @@
+.tabs__item
+{
+    list-style-type: none;
+    margin: 10px;
+}
+
+.tabs__item:hover
+{
+    color: #45526e;
+    font-weight: 500;
+}

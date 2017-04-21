@@ -1,0 +1,42 @@
+.input-group__input
+{
+    display: block;
+    width: 90%;
+    vertical-align: middle;
+    margin: 0 5px 1px 8px;
+    height: 1rem;
+    color: #666;
+    border: none;
+    border-bottom: 1px solid #a9a9a9;
+    transition: all ease-in-out 0.15s;
+    padding: 0.5rem 0 0.6rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    background-color: transparent;
+    outline: 0;
+    box-shadow: none;
+    box-sizing: content-box;
+    background-clip: padding-box;
+    font-family: sans-serif;
+    overflow: visible;
+}
+
+.input-group__input::-webkit-input-placeholder
+{
+    color: #666;
+    opacity: 0.6;
+}
+
+.input-group__input:focus
+{
+    border-bottom: 1px solid #5189c8;
+    transition: all 0.15s;
+}
+
+.input-group__input:disabled
+{
+    cursor: not-allowed;
+    opacity: 1;
+    background-color: transparent;
+    border-bottom: 1px solid #e0e0e0;
+}

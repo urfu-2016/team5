@@ -1,15 +1,15 @@
 'use strict';
 
-const Account = require('../../../models/account');
+const User = require('../../../models/user');
 
 module.exports = {
-    serialize: (user, done) => done(null, user.id),
+    serialize: (user, next) => next(null, user.id),
 
-    deserialize: (id, done) => {
-        return Account
-            .findById(id)
-            .exec()
-            .then(user => done(null, user))
-            .catch(err => done(err));
+    deserialize: async (id, next) => {
+        try {
+            next(null, await User.findById(id));
+        } catch (err) {
+            next(err);
+        }
     }
 };

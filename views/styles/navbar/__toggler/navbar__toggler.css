@@ -1,0 +1,32 @@
+.navbar__toggler
+{
+    position: absolute;
+    right: 1rem;
+    align-self: flex-start;
+    padding: 0.25rem 0.75rem;
+    font-size: 1.25rem;
+    line-height: 1;
+    background: 0 0;
+    display: none;
+    border: none;
+    color: #fff;
+    z-index: 500;
+    outline: none;
+}
+
+.navbar__toggler:focus,
+.navbar__toggler:hover,
+.navbar__toggler:active
+{
+    text-decoration: none;
+    border: none;
+}
+
+@media (max-width: 991px)
+{
+    .navbar__toggler
+    {
+        right: 0;
+        display: block;
+    }
+}

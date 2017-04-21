@@ -1,0 +1,22 @@
+.navbar__categories
+{
+    display: flex;
+    flex-direction: column;
+    padding-left: 0;
+    margin-bottom: 0;
+    margin-top: 0;
+    list-style: none;
+}
+
+.left
+{
+    margin-right: auto !important;
+}
+
+@media (min-width: 991px)
+{
+    .navbar__categories
+    {
+        flex-direction: row;
+    }
+}

@@ -1,0 +1,98 @@
+.searchbar__params-group
+{
+    background: #fff;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.container
+{
+    height: 122px;
+    transition: height 0.7s ease;
+    margin: 5px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+@media (min-width: 425px) and (max-width: 652px)
+{
+    .container
+    {
+        height: 188px;
+    }
+}
+
+@media (max-width: 425px)
+{
+    .searchbar__params-group
+      {
+        flex-direction: column;
+        flex-wrap: nowrap;
+    }
+
+    .container
+        {
+        height: 310px;
+    }
+}
+
+.container_hidden
+{
+    height: 0;
+    transition: height 0.7s ease 0.3s;
+}
+
+.searchbar__params-group_hidden > .param-item
+{
+    opacity: 0;
+}
+
+.param-item_n_1
+{
+    transition: opacity 0.1s ease 0.1s;
+}
+
+.param-item_n_2
+{
+    transition: opacity 0.1s ease 0.2s;
+}
+
+.param-item_n_3
+{
+    transition: opacity 0.1s ease 0.3s;
+}
+
+.param-item_n_4
+{
+    transition: opacity 0.1s ease 0.4s;
+}
+
+.param-item_n_5
+{
+    transition: opacity 0.1s ease 0.5s;
+}
+
+.searchbar__params-group_hidden > .param-item_n_1
+{
+    transition: opacity 0.1s ease 0.4s;
+}
+
+.searchbar__params-group_hidden > .param-item_n_2
+{
+    transition: opacity 0.1s ease 0.3s;
+}
+
+.searchbar__params-group_hidden > .param-item_n_3
+{
+    transition: opacity 0.1s ease 0.2s;
+}
+
+.searchbar__params-group_hidden > .param-item_n_4
+{
+    transition: opacity 0.1s ease 0.1s;
+}
+
+.searchbar__params-group_hidden > .param-item_n_5
+{
+    transition: opacity 0.1s ease;
+}

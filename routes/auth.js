@@ -12,6 +12,6 @@ router.route('/signin')
     .post(authController.signIn);
 
 router.route('/logout')
-    .post(authController.logout);
+    .post(authController.authorizedOnly, authController.logout);
 
 module.exports = router;

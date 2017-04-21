@@ -1,0 +1,4 @@
+.tab-content__panel:not(.active)
+{
+    display: none;
+}
