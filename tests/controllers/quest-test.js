@@ -9,6 +9,7 @@ const userMocks = require('../mocks/users');
 const User = require('../../models/user');
 const createQuestWithAuthor = require('../../scripts/generate-db-data').createQuestWithAuthor;
 const chaiRequest = require('../commonTestLogic/chaiRequest')(server);
+const constants = require('../../constants/controllers');
 
 const questData = questsMocks.regularQuest;
 
@@ -41,8 +42,8 @@ describe('controller:quest', () => {
                 const res = await createQuest();
 
                 res.status.should.equal(HttpStatus.CREATED);
-                res.body.data.title.should.equal(questData.title);
-                res.body.data.slug.should.equal(slugify(questData.title));
+                res.body.title.should.equal(questData.title);
+                res.body.slug.should.equal(slugify(questData.title));
             });
 
             it('should PUT a quest', async () => {
@@ -56,8 +57,8 @@ describe('controller:quest', () => {
                 const res = await chaiRequest.put(`/api/quests/${slug}`, updateData);
 
                 res.status.should.equal(HttpStatus.OK);
-                res.body.data.title.should.equal(updateData.title);
-                res.body.data.description.should.equal(updateData.description);
+                res.body.title.should.equal(updateData.title);
+                res.body.description.should.equal(updateData.description);
             });
 
             it('should delete a quest', async () => {
@@ -118,7 +119,7 @@ describe('controller:quest', () => {
             const res = await chaiRequest.get('/api/quests');
 
             res.status.should.equal(HttpStatus.OK);
-            res.body.data.should.length.of.at(2);
+            res.body.should.length.of.at(2);
         });
 
         it('should GET a quest by the given slug', async () => {
@@ -127,7 +128,7 @@ describe('controller:quest', () => {
             const res = await chaiRequest.get(`/api/quests/${slug}`);
 
             res.status.should.equal(HttpStatus.OK);
-            res.body.data.slug.should.equal(slug);
+            res.body.slug.should.equal(slug);
         });
 
         it('should not found nonexistent quest', async () => {
@@ -135,6 +136,7 @@ describe('controller:quest', () => {
                 await chaiRequest.get(`/api/quests/some-bad-slug`);
             } catch (err) {
                 err.status.should.equal(HttpStatus.NOT_FOUND);
+                err.response.text.should.equal(constants.quest.questNotFoundErrorMessage);
             }
         });
     });
