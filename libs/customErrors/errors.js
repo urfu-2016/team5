@@ -2,7 +2,7 @@
 const httpStatus = require('http-status-codes');
 
 class RequestError extends Error {
-    constructor(errorMessage, status) {
+    constructor(errorMessage = 'Bad request', status) {
         super(errorMessage);
         this.status = status;
     }
