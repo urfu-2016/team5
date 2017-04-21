@@ -2,14 +2,14 @@ const filterCreater = require('./filterCreater');
 
 class QueryBuilder {
     constructor() {
-        this.filtersPromises = [];
+        this.filters = [];
     }
 
     applyFilter(key, value) {
-        const promise = filterCreater.createFilter(key, value);
+        const filter = filterCreater.createFilter(key, value);
 
-        if (promise) {
-            this.filtersPromises.push(promise);
+        if (filter) {
+            this.filters.push(filter);
         }
 
         return this;
@@ -23,7 +23,7 @@ class QueryBuilder {
     }
 
     async build() {
-        const buildData = await Promise.all(this.filtersPromises);
+        const buildData = await Promise.all(this.filters);
 
         return buildData.reduce((acc, data) => acc.concat(data), []);
     }
