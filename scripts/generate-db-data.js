@@ -55,7 +55,8 @@ module.exports.generateUsers = ({usersCount = 1}) => {
         let userData = {
             firstname: `${constants.user.firstnamePrefix} ${i} ${shortid.generate()}`,
             surname: `${constants.user.surnamePrefix} ${i}`,
-            username: `${constants.user.usernamePrefix}${i}`
+            username: `${constants.user.usernamePrefix}${i}`,
+            password: constants.user.password
         };
 
         users.push(userData);
@@ -81,21 +82,20 @@ module.exports.createQuestsFromJson = json => {
 
 module.exports.setAuthor = async data => {
     const username = 'User_' + shortid.generate();
-
-    const user = await User.create({username});
+    const user = await User.create({username, password: constants.user.password});
     data.authorId = user._id;
 };
 
-module.exports.createQuestWithAuthor = async data => {
+module.exports.createQuestWithAuthor = async (data, user) => {
     const username = 'User_' + shortid.generate();
-
-    const author = await User.create({username});
+    const author = user || await User.create({username, password: constants.user.password});
 
     return await Quest.create({
         authorId: author._id,
         title: data.title,
         description: data.description || '',
         city: data.city || '',
-        tags: data.tags || ''
+        tags: data.tags || '',
+        images: data.images || []
     });
 };

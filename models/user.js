@@ -2,6 +2,8 @@
 
 const mongoose = require('../libs/mongoose-connection');
 const ObjectId = mongoose.Schema.Types.ObjectId;
+const bcrypt = require('bcrypt');
+const constants = require('../constants/constants');
 
 const userSchema = new mongoose.Schema({
     firstname: String,
@@ -9,7 +11,13 @@ const userSchema = new mongoose.Schema({
     username: {
         type: String,
         lowercase: true,
+        index: true,
         unique: true,
+        required: true
+    },
+
+    password: {
+        type: String,
         required: true
     },
 
@@ -27,21 +35,54 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-userSchema.statics.create = function ({firstname = '', surname = '', username}) {
-    const user = new this({firstname, surname, username});
+userSchema.statics.create = async function ({username, password}) {
+    if (!password) {
+        throw new Error(constants.models.user.passwordRequiredMessage);
+    }
+
+    try {
+        const user = new this({
+            username,
+            password: await bcrypt.hash(password, constants.models.user.saltRounds)
+        });
+
+        return await user.save();
+    } catch (err) {
+        if (err.code === constants.mongoose.mongoDuplicateErrorCode) {
+            err.message = constants.models.user.alreadyExistsPattern(username);
+        }
+
+        throw err;
+    }
+};
+
+userSchema.statics.verifyPassword = async function (account) {
+    const user = await this.findOne({username: account.username});
+
+    return user ? bcrypt.compare(account.password, user.password) : false;
+};
+
+userSchema.statics.changePassword = async function (account, newPassword) {
+    const user = await this.getAccountOnCorrectPassword(account);
+    user.password = await bcrypt.hash(newPassword, constants.models.user.saltRounds);
 
     return user.save();
 };
 
-userSchema.statics.update = function (username, {firstname, surname}) {
-    return this
-        .findOne({username})
-        .then(user => {
-            user.firstname = firstname ? firstname : user.firstname;
-            user.surname = surname ? surname : user.surname;
+userSchema.statics.getAccountOnCorrectPassword = async function (account) {
+    if (await this.verifyPassword(account)) {
+        return await this.findOne({username: account.username});
+    }
 
-            return user.save();
-        });
+    throw new Error(constants.models.user.wrongPasswordOrNameMessage);
+};
+
+userSchema.statics.update = async function (username, {firstname, surname}) {
+    const user = await this.findOne({username});
+    user.firstname = firstname ? firstname : user.firstname;
+    user.surname = surname ? surname : user.surname;
+
+    return await user.save();
 };
 
 userSchema.statics.getAll = function () {
@@ -57,9 +98,7 @@ userSchema.statics.getById = function (id) {
 };
 
 userSchema.statics.removeByUsername = function (username) {
-    return this
-        .findOne({username})
-        .then(user => user.remove());
+    return this.remove({username});
 };
 
 module.exports = mongoose.model('User', userSchema);

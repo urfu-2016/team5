@@ -1,9 +1,9 @@
 'use strict';
 
 const passport = require('passport');
-const serialization = require('./passport/serialization/local');
+const serialization = require('./serialization/local');
 
-passport.use(require('./passport/strategies/localStrategy'));
+passport.use(require('./strategies/localStrategy'));
 
 passport.serializeUser(serialization.serialize);
 passport.deserializeUser(serialization.deserialize);

@@ -1,11 +1,16 @@
 'use strict';
 
+const userWithCorrectPassword = {
+    username: 'user',
+    password: 'password'
+};
+
 module.exports = {
-    regularUser: {
-        firstname: 'Имя',
-        surname: 'Фамилия',
-        username: 'user'
-    },
+    UserWithCorrectPassword: userWithCorrectPassword,
+
+    userWithIncorrectPassword: Object.assign({}, userWithCorrectPassword, {
+        password: userWithCorrectPassword.password + '0'
+    }),
 
     userWithoutRequiredFields: {}
 };

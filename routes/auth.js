@@ -11,10 +11,7 @@ router.route('/signup')
 router.route('/signin')
     .post(authController.signIn);
 
-router.route('/changepassword')
-    .post(authController.authorizedOnly, authController.changePassword);
-
 router.route('/logout')
-    .post(authController.logout);
+    .post(authController.authorizedOnly, authController.logout);
 
 module.exports = router;

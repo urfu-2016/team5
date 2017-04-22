@@ -94,32 +94,23 @@ questSchema.statics.removeBySlug = function (slug) {
     return this.remove({slug}).exec();
 };
 
-questSchema.statics.searchByInternalProps = function (searchProperties, searchString) {
-    const findParams = searchProperties.reduce((findParams, property) => {
-        let searchObject = {};
-        searchObject[property] = {$regex: searchString, $options: 'i'};
-        findParams.push(searchObject);
+questSchema.statics.search = function (searchData) {
+    const andList = searchData.reduce((acc, searchObject) => {
+        const orList = searchObject.fields.map(property => {
+            return {[property]: searchObject.values};
+        });
+        if (orList.length) {
+            acc.push({$or: orList});
+        }
 
-        return findParams;
+        return acc;
     }, []);
 
-    const findObject = findParams.length ? {$or: findParams} : {};
+    const findObject = andList.length ? {$and: andList} : {};
 
     return this
         .find(findObject)
         .exec();
-};
-
-questSchema.statics.searchByAuthor = function (searchString) {
-    return this
-        .find({})
-        .populate('author')
-        .exec()
-        .then(quests => {
-            searchString = searchString.toLowerCase();
-
-            return quests.filter(quest => quest.author.username.indexOf(searchString) === 0);
-        });
 };
 
 module.exports = mongoose.model('Quest', questSchema);

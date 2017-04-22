@@ -8,6 +8,15 @@ const questsMocks = require('../mocks/quests');
 const dbClearer = require('../../scripts/clear-db');
 const setAuthor = require('../../scripts/generate-db-data').setAuthor;
 const createQuestWithAuthor = require('../../scripts/generate-db-data').createQuestWithAuthor;
+const QueryBuilder = require('../../libs/queryBuilder');
+
+async function searchQuests(requestBody) {
+    const buildData = await (new QueryBuilder())
+        .applyFilters(requestBody)
+        .build();
+
+    return await Quest.search(buildData);
+}
 
 describe('models:Quest', () => {
     beforeEach(() => dbClearer.removeAll());
@@ -74,13 +83,14 @@ describe('models:Quest', () => {
         (res === null).should.be.equal(true);
     });
 
-    it('should get filtered quests by title and tags', async () => {
+    it('should get filtered quests by title', async () => {
         const questData = questsMocks.questForSearch;
-        const questPartTitle = questData.title[0];
+        const requestBody = Object.assign({}, questsMocks.requestBody);
+        requestBody.search.text = questData.title[0];
 
         await createQuestWithAuthor(questData);
         await createQuestWithAuthor(questData);
-        const quests = await Quest.searchByInternalProps(['title', 'tags'], questPartTitle);
+        const quests = await searchQuests(requestBody);
 
         quests.length.should.equal(2);
         quests[0].description.should.equal(questData.description);
@@ -88,9 +98,12 @@ describe('models:Quest', () => {
 
     it('should get filtered quests by tags', async () => {
         const questData = questsMocks.questForSearch;
+        const requestBody = Object.assign({}, questsMocks.requestBody);
+        requestBody.search.text = questData.tags[0];
+        requestBody.search.field = 'tags';
 
         await createQuestWithAuthor(questData);
-        const quests = await Quest.searchByInternalProps(['tags'], questData.tags[0]);
+        const quests = await searchQuests(requestBody);
 
         quests.length.should.equal(1);
         quests[0].title.should.equal(questData.title);
@@ -98,22 +111,77 @@ describe('models:Quest', () => {
 
     it('should get empty array', async () => {
         const questData = questsMocks.questForSearch;
+        const requestBody = Object.assign({}, questsMocks.requestBody);
+        requestBody.search.text = questData.description;
 
         await createQuestWithAuthor(questData);
-        const quests = await Quest.searchByInternalProps(['tags'], questData.description);
+        const quests = await searchQuests(requestBody);
 
         quests.length.should.equal(0);
     });
 
     it('should get quests by author', async () => {
-        let questData = Object.assign({}, questsMocks.questForSearch);
+        const questData = Object.assign({}, questsMocks.questForSearch);
+        const requestBody = questsMocks.requestBody;
+        requestBody.search.field = 'author';
 
         await setAuthor(questData);
         await Quest.create(questData);
         const user = await User.getById(questData.authorId);
-        const quests = await Quest.searchByAuthor(user.username[0]);
+        requestBody.search.text = user.username[0];
+        const quests = await searchQuests(requestBody);
 
         quests.length.should.equal(1);
-        quests[0].author._id.should.deep.equal(questData.authorId);
+        quests[0].author.should.deep.equal(questData.authorId);
+    });
+
+    it('should get quests by city', async () => {
+        const questData = Object.assign({}, questsMocks.questForSearch);
+        const requestBody = questsMocks.requestBody;
+        requestBody.city = questData.city[0];
+
+        await setAuthor(questData);
+        await Quest.create(questData);
+        const quests = await searchQuests(requestBody);
+
+        quests.length.should.equal(1);
+        quests[0].city.should.equal(questData.city);
+    });
+
+    it('should get quests by images count', async () => {
+        const questData = Object.assign({}, questsMocks.questForSearch);
+        const requestBody = questsMocks.requestBody;
+
+        await setAuthor(questData);
+        await Quest.create(questData);
+        const quests = await searchQuests(requestBody);
+
+        quests.length.should.equal(1);
+        quests[0].images.length.should.equal(0);
+    });
+
+    it('should get quests by likes count', async () => {
+        const questData = Object.assign({}, questsMocks.questForSearch);
+        const requestBody = questsMocks.requestBody;
+
+        await setAuthor(questData);
+        await Quest.create(questData);
+        const quests = await searchQuests(requestBody);
+
+        quests.length.should.equal(1);
+        quests[0].likes.length.should.equal(0);
+    });
+
+    it('should get quests by default request', async () => {
+        const questData = Object.assign({}, questsMocks.questForSearch);
+        const requestBody = questsMocks.requestBody;
+        requestBody.search.field = '';
+        requestBody.search.text = questData.city[0];
+
+        await setAuthor(questData);
+        await Quest.create(questData);
+        const quests = await searchQuests(requestBody);
+
+        quests.length.should.equal(1);
     });
 });
