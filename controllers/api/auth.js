@@ -38,7 +38,7 @@ module.exports = {
             await User.create(userData);
             res
                 .status(httpStatus.CREATED)
-                .send(constants.controllers.auth.signedUpPattern(req.body.username));
+                .send({message: constants.controllers.auth.signedUpPattern(req.body.username)});
         } catch (err) {
             next(new BadRequestError(err.message));
         }
@@ -50,7 +50,7 @@ module.exports = {
         } else {
             res
                 .status(httpStatus.BAD_REQUEST)
-                .send(constants.controllers.auth.authorizationRequired);
+                .send({message: constants.controllers.auth.authorizationRequired});
         }
     },
 

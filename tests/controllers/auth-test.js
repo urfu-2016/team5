@@ -68,6 +68,7 @@ describe('controller:auth', () => {
         it('should end session after logout', async () => {
             await chaiRequest.post('/signin').send(mocks.UserWithCorrectPassword);
             const res = await chaiRequest.post('/logout');
+
             Object.prototype.hasOwnProperty.call(res.headers, 'set-cookies').should.equal(false);
         });
 

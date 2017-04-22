@@ -17,7 +17,7 @@ module.exports = {
 
         try {
             const quest = await Quest.create(questData);
-            res.status(httpStatus.CREATED).send(quest);
+            res.status(httpStatus.CREATED).send({data: quest});
         } catch (err) {
             next(new errors.BadRequestError(err.message));
         }
@@ -34,7 +34,7 @@ module.exports = {
 
         try {
             await Quest.update(req.params.slug, questData);
-            res.status(httpStatus.OK).send(questData);
+            res.status(httpStatus.OK).send({data: questData});
         } catch (err) {
             next(new errors.BadRequestError(err.message));
         }
@@ -46,7 +46,7 @@ module.exports = {
             return next(new errors.BadRequestError(constants.questNotFoundErrorMessage));
         }
 
-        res.status(httpStatus.OK).send(quests);
+        res.status(httpStatus.OK).send({data: quests});
     },
 
     async getQuestBySlug(req, res, next) {
@@ -55,7 +55,7 @@ module.exports = {
             return next(new errors.NotFoundError(constants.questNotFoundErrorMessage));
         }
 
-        res.status(httpStatus.OK).send(quest);
+        res.status(httpStatus.OK).send({data: quest});
     },
 
     async removeQuest(req, res, next) {

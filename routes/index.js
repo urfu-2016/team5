@@ -36,7 +36,6 @@ router.get('/', function (req, res) {
         res.render('mainPage/mainPage', renderData);
     });
 });
-const authController = require('../controllers/api/auth');
-router.route('/search').post(authController.authorizedOnly, questsSearch.findQuests);
+router.post('/search', questsSearch.findQuests);
 
 module.exports = router;
