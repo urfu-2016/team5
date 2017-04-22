@@ -44,6 +44,7 @@ describe('controller:quest', () => {
                 res.status.should.equal(HttpStatus.CREATED);
                 res.body.data.title.should.equal(questData.title);
                 res.body.data.slug.should.equal(slugify(questData.title));
+                res.body.data.isMyQuest.should.equal(true);
             });
 
             it('should PUT a quest', async () => {
@@ -59,6 +60,7 @@ describe('controller:quest', () => {
                 res.status.should.equal(HttpStatus.OK);
                 res.body.data.title.should.equal(updateData.title);
                 res.body.data.description.should.equal(updateData.description);
+                res.body.data.isMyQuest.should.equal(true);
             });
 
             it('should delete a quest', async () => {
@@ -120,6 +122,7 @@ describe('controller:quest', () => {
 
             res.status.should.equal(HttpStatus.OK);
             res.body.data.should.length.of.at(2);
+            res.body.data[0].isMyQuest.should.equal(false);
         });
 
         it('should GET a quest by the given slug', async () => {
@@ -129,6 +132,7 @@ describe('controller:quest', () => {
 
             res.status.should.equal(HttpStatus.OK);
             res.body.data.slug.should.equal(slug);
+            res.body.data.isMyQuest.should.equal(false);
         });
 
         it('should not found nonexistent quest', async () => {
