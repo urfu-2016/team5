@@ -4,6 +4,8 @@ const fs = require('fs');
 const path = require('path');
 const clearDb = require('./clear-db');
 const generateDb = require('./generate-db-data');
+const mongoose = require('../libs/mongoose-connection');
+
 const consoleArgs = require('command-line-args')([
     {name: 'users-count', alias: 'u', type: Number, defaultValue: 1},
     {name: 'quests-count', alias: 'q', type: Number, defaultValue: 10},
@@ -27,6 +29,8 @@ async function main() {
     await generateDb.createUsersFromJson(usersJson);
     await generateDb.generateQuests(questsCount);
     await generateDb.generateUsers(usersCount);
+
+    await mongoose.connection.close();
 
     process.exit();
 }
