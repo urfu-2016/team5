@@ -110,6 +110,7 @@ questSchema.statics.search = function (searchData) {
 
     return this
         .find(findObject)
+        .populate('author')
         .exec();
 };
 
