@@ -1,6 +1,7 @@
 'use strict';
 
 module.exports = {
+    dateFormat: 'D MMMM YYYY',
     user: {
         wrongPasswordOrNameMessage: 'Неверное имя пользователя или пароль.',
         passwordRequiredMessage: 'Введите пароль.',
