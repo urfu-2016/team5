@@ -31,8 +31,6 @@ async function main() {
     await generateDb.generateUsers(usersCount);
 
     await mongoose.connection.close();
-
-    process.exit();
 }
 
 main();
