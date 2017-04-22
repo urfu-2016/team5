@@ -55,8 +55,8 @@ describe('controller:auth', () => {
 
         it('should fails sign in if already signed in', async () => {
             await chaiRequest.post('/signup', mocks.userWithCorrectPassword);
+            await chaiRequest.post('/signin', mocks.userWithCorrectPassword);
             try {
-                await chaiRequest.post('/signin', mocks.userWithCorrectPassword);
                 await chaiRequest.post('/signin', mocks.userWithCorrectPassword);
             } catch (err) {
                 err.status.should.equal(httpStatus.BAD_REQUEST);
@@ -81,7 +81,7 @@ describe('controller:auth', () => {
             await chaiRequest.post('/signin').send(mocks.userWithCorrectPassword);
             const res = await chaiRequest.post('/logout');
 
-            Object.prototype.hasOwnProperty.call(res.headers, 'set-cookies').should.equal(false);
+            Object.hasOwnProperty.call(res.headers, 'set-cookies').should.equal(false);
         });
 
         it('should not logout without auth', async () => {
