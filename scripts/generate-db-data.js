@@ -30,7 +30,10 @@ function generateImages({questId, imagesCount = 10}) {
 
 module.exports.generateQuests = async ({questsCount = 10}) => {
     const quests = [];
-    const user = await User.create({username: 'User' + Date.now()});
+    const user = await User.create({
+        username: 'User' + Date.now(),
+        password: constants.user.password
+    });
 
     for (let i = 0; i < questsCount; i++) {
         let questData = {
