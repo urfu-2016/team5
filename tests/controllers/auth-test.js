@@ -14,47 +14,59 @@ describe('controller:auth', () => {
 
     describe('signup', () => {
         it('should sign up new user', async () => {
-            const res = await chaiRequest.post('/signup', mocks.UserWithCorrectPassword);
+            const res = await chaiRequest.post('/signup', mocks.userWithCorrectPassword);
+            const username = mocks.userWithCorrectPassword.username;
 
             res.status.should.be.equal(httpStatus.CREATED);
+            res.text.should.be.equal(constants.controllers.auth.signedUpPattern(username));
         });
 
         it('should fail sign up for already used username', async () => {
-            await chaiRequest.post('/signup', mocks.UserWithCorrectPassword);
+            await chaiRequest.post('/signup', mocks.userWithCorrectPassword);
             try {
-                await chaiRequest.post('/signup', mocks.UserWithCorrectPassword);
+                await chaiRequest.post('/signup', mocks.userWithCorrectPassword);
             } catch (err) {
-                const username = mocks.UserWithCorrectPassword.username;
-                const message = constants.models.user.alreadyExistsPattern(username);
+                const username = mocks.userWithCorrectPassword.username;
 
                 err.status.should.be.equal(httpStatus.BAD_REQUEST);
-                err.response.text.should.be.equal(message);
+                err.response.text.should.be.equal(constants.models.user.alreadyExistsPattern(username));
             }
         });
     });
 
     describe('signin', () => {
         it('should sign in with correct password', async () => {
-            await chaiRequest.post('/signup', mocks.UserWithCorrectPassword);
-            const res = await chaiRequest.post('/signin', mocks.UserWithCorrectPassword);
+            await chaiRequest.post('/signup', mocks.userWithCorrectPassword);
+            const res = await chaiRequest.post('/signin', mocks.userWithCorrectPassword);
 
-            const username = mocks.UserWithCorrectPassword.username;
+            const username = mocks.userWithCorrectPassword.username;
             res.body.message.should.equal(constants.controllers.auth.signedInPattern(username));
         });
 
         it('should fails sign in with wrong password', async () => {
-            await chaiRequest.post('/signup', mocks.UserWithCorrectPassword);
+            await chaiRequest.post('/signup', mocks.userWithCorrectPassword);
             try {
                 await chaiRequest.post('/signin', mocks.userWithIncorrectPassword);
             } catch (err) {
-                err.response.text.should.equal(constants.models.user.wrongPasswordOrNameMessage);
                 err.status.should.equal(httpStatus.BAD_REQUEST);
+                err.response.text.should.equal(constants.models.user.wrongPasswordOrNameMessage);
+            }
+        });
+
+        it('should fails sign in if already signed in', async () => {
+            await chaiRequest.post('/signup', mocks.userWithCorrectPassword);
+            try {
+                await chaiRequest.post('/signin', mocks.userWithCorrectPassword);
+                await chaiRequest.post('/signin', mocks.userWithCorrectPassword);
+            } catch (err) {
+                err.status.should.equal(httpStatus.BAD_REQUEST);
+                err.response.text.should.equal(constants.controllers.auth.alreadyAuthenticated);
             }
         });
 
         it('should fails sign in to non-existent account', async () => {
             try {
-                await chaiRequest.post('/signin', mocks.UserWithCorrectPassword);
+                await chaiRequest.post('/signin', mocks.userWithCorrectPassword);
             } catch (err) {
                 err.status.should.equal(httpStatus.BAD_REQUEST);
                 err.response.text.should.equal(constants.models.user.wrongPasswordOrNameMessage);
@@ -63,10 +75,10 @@ describe('controller:auth', () => {
     });
 
     describe('logout', () => {
-        beforeEach(() => chaiRequest.post('/signup').send(mocks.UserWithCorrectPassword));
+        beforeEach(() => chaiRequest.post('/signup').send(mocks.userWithCorrectPassword));
 
         it('should end session after logout', async () => {
-            await chaiRequest.post('/signin').send(mocks.UserWithCorrectPassword);
+            await chaiRequest.post('/signin').send(mocks.userWithCorrectPassword);
             const res = await chaiRequest.post('/logout');
 
             Object.prototype.hasOwnProperty.call(res.headers, 'set-cookies').should.equal(false);
@@ -77,6 +89,7 @@ describe('controller:auth', () => {
                 await chaiRequest.post('/logout');
             } catch (err) {
                 err.response.status.should.equal(httpStatus.BAD_REQUEST);
+                err.response.text.should.equal(constants.controllers.auth.authorizationRequired);
             }
         });
     });

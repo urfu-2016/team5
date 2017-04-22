@@ -12,14 +12,14 @@ describe('models:user', () => {
     after(() => removeAllUsers());
 
     it('should create model', async () => {
-        const userData = usersMocks.UserWithCorrectPassword;
+        const userData = usersMocks.userWithCorrectPassword;
         const savedUser = await User.create(userData);
 
         savedUser.username.should.equal(userData.username);
     });
 
     it('fails creation of account if it already exists', async () => {
-        const userData = usersMocks.UserWithCorrectPassword;
+        const userData = usersMocks.userWithCorrectPassword;
         await User.create(userData);
 
         try {
@@ -31,7 +31,7 @@ describe('models:user', () => {
 
     it('should not create account without password', async () => {
         try {
-            await User.create({username: usersMocks.UserWithCorrectPassword.username});
+            await User.create({username: usersMocks.userWithCorrectPassword.username});
         } catch (err) {
             err.message.should.be.equal(constants.models.user.passwordRequiredMessage);
         }
@@ -39,21 +39,21 @@ describe('models:user', () => {
 
     it('should not create account without username', async () => {
         try {
-            await User.create({password: usersMocks.UserWithCorrectPassword.password});
+            await User.create({password: usersMocks.userWithCorrectPassword.password});
         } catch (err) {
             err.name.should.be.equal(constants.mongoose.validationErrorName);
         }
     });
 
     it('gets true by verification a correct password', async () => {
-        await User.create(usersMocks.UserWithCorrectPassword);
-        const result = await User.verifyPassword(usersMocks.UserWithCorrectPassword);
+        await User.create(usersMocks.userWithCorrectPassword);
+        const result = await User.verifyPassword(usersMocks.userWithCorrectPassword);
 
         result.should.be.equal(true);
     });
 
     it('fails verification on wrong password', async () => {
-        await User.create(usersMocks.UserWithCorrectPassword);
+        await User.create(usersMocks.userWithCorrectPassword);
 
         try {
             await User.verifyPassword(usersMocks.userWithIncorrectPassword);
@@ -64,25 +64,25 @@ describe('models:user', () => {
 
     it('changes password', async () => {
         const newPassword = 'newPassword';
-        await User.create(usersMocks.UserWithCorrectPassword);
-        await User.changePassword(usersMocks.UserWithCorrectPassword, newPassword);
-        const result = await User.verifyPassword({username: usersMocks.UserWithCorrectPassword.username, password: newPassword});
+        await User.create(usersMocks.userWithCorrectPassword);
+        await User.changePassword(usersMocks.userWithCorrectPassword, newPassword);
+        const result = await User.verifyPassword({username: usersMocks.userWithCorrectPassword.username, password: newPassword});
 
         result.should.be.equal(true);
     });
 
     it('fails changing password on wrong old password', async () => {
-        await User.create(usersMocks.UserWithCorrectPassword);
+        await User.create(usersMocks.userWithCorrectPassword);
 
         try {
-            await User.changePassword(usersMocks.userWithIncorrectPassword, usersMocks.UserWithCorrectPassword.password);
+            await User.changePassword(usersMocks.userWithIncorrectPassword, usersMocks.userWithCorrectPassword.password);
         } catch (err) {
             err.message.should.be.equal(constants.models.user.wrongPasswordOrNameMessage);
         }
     });
 
     it('check that password was hashed', async () => {
-        const userData = usersMocks.UserWithCorrectPassword;
+        const userData = usersMocks.userWithCorrectPassword;
         await User.create(userData);
         const user = await User.getByUsername(userData.username);
 
@@ -91,14 +91,14 @@ describe('models:user', () => {
 
     it('should update by username', async () => {
         const firstname = 'Othername';
-        const savedUser = await User.create(usersMocks.UserWithCorrectPassword);
+        const savedUser = await User.create(usersMocks.userWithCorrectPassword);
         const updatedUser = await User.update(savedUser.username, {firstname});
 
         updatedUser.firstname.should.equal(firstname);
     });
 
     it('should get by username', async () => {
-        const userData = usersMocks.UserWithCorrectPassword;
+        const userData = usersMocks.userWithCorrectPassword;
         const savedUser = await User.create(userData);
         const foundUser = await User.getByUsername(savedUser.username);
 
@@ -106,7 +106,7 @@ describe('models:user', () => {
     });
 
     it('should get by id', async () => {
-        const userData = usersMocks.UserWithCorrectPassword;
+        const userData = usersMocks.userWithCorrectPassword;
         const savedUser = await User.create(userData);
         const foundUser = await User.getById(savedUser._id);
 
@@ -114,7 +114,7 @@ describe('models:user', () => {
     });
 
     it('should remove by username', async () => {
-        const userData = usersMocks.UserWithCorrectPassword;
+        const userData = usersMocks.userWithCorrectPassword;
         const savedUser = await User.create(userData);
         await User.removeByUsername(savedUser.username);
         const user = await User.getByUsername(userData.username);
