@@ -7,5 +7,8 @@ module.exports = {
         passwordRequiredMessage: 'Введите пароль.',
         alreadyExistsPattern: username => `${username} уже зарегистрирован`,
         saltRounds: 10
+    },
+    comment: {
+        maxLength: 300
     }
 };

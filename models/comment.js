@@ -2,14 +2,14 @@
 
 const moment = require('moment');
 const autoIncrement = require('mongoose-auto-increment');
-const dateFormat = require('../constants/models').dateFormat;
+const constants = require('../constants/models');
 const mongoose = require('../libs/mongoose-connection');
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const commentSchema = new mongoose.Schema({
     message: {
         type: String,
-        maxlength: 300
+        maxlength: constants.comment.maxLength
     },
     author: {type: ObjectId, ref: 'User'},
     likes: {
@@ -33,7 +33,7 @@ commentSchema.statics.create = async function (author, message) {
 };
 
 commentSchema.statics.delete = async function (id) {
-    await this.findById(id).remove().exec();
+    return await this.findById(id).remove();
 };
 
 commentSchema.methods.like = async function (username) {
@@ -48,7 +48,7 @@ commentSchema.methods.like = async function (username) {
 
 commentSchema.methods.likedBy = async function (username) {
     const user = await mongoose.model('User').findOne({username});
-    return this.likes.indexOf(user._id) !== -1;
+    return this.likes.includes(user._id);
 };
 
 commentSchema.methods.checkAuthor = function (username) {
@@ -59,7 +59,7 @@ commentSchema.virtual('likesCount')
     .get(() => this.likes.length);
 
 commentSchema.virtual('formattedDate')
-    .get(() => moment(this.dateOfCreation).format(dateFormat));
+    .get(() => moment(this.dateOfCreation).format(constants.dateFormat));
 
 commentSchema.plugin(autoIncrement.plugin, 'Comment');
 module.exports = mongoose.model('Comment', commentSchema);
