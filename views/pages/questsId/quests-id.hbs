@@ -1,11 +1,15 @@
 {{#extend "template"}}
+{{#content "head" mode="append"}}
+    <link href="{{CDN 'css/questId.css'}}" rel="stylesheet" type="text/css">
+    <script src="https://unpkg.com/react@15/dist/react.js"></script>
+    <script src="https://unpkg.com/react-dom@15/dist/react-dom.js"></script>
+{{/content}}
 
 {{#content "body"}}
     <div class="content">
         <div class="content__info block block_yellow">
             {{> card/card}}
         </div>
-        {{#if isAuth}}
         <div class="content__action actions">
             {{#unless isCreator}}
             <button class="btn btn_yellow row__item">
@@ -29,16 +33,10 @@
             </button>
             {{/if}}
         </div>
-        {{else}}
-            <div class="content__msg block block_light-yellow">
-                 <span>Чтобы пройти квест или оставить комментрий, пожалуйста, войдите в аккаунт.</span>
-            </div>
-        {{/if}}
-        
-        <div class="content__comments block block_yellow">
-            {{> comments/comments}}
-        </div>
     </div>
+    <div id="comments-root" data-slug="quests/1">
+    </div>
+    <script src="js/questId.js"></script>
 {{/content}}
 
 {{/extend}}

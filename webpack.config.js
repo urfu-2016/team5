@@ -6,9 +6,10 @@ const config = require('config');
 module.exports = {
     context: path.join(__dirname, '/views'),
     entry: {
-        header: './blocks/header/header',
-        mainPage: './pages/mainPage/mainPage',
-        questsAll: './pages/questsAll/questsAll'
+        // header: './blocks/header/header',
+        // mainPage: './pages/mainPage/mainPage',
+        questsAll: './pages/questsAll/questsAll',
+        questId: './pages/questsId/quest'
     },
     output: {
         path: path.join(__dirname, '/public'),
