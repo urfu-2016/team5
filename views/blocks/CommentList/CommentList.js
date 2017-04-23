@@ -11,8 +11,8 @@ const commentItems = comments => comments.map(comment =>
 
 export default class CommentList extends React.Component {
     componentDidMount() {
-        Emitter.on('updateCommentList', this.props.onSubmit);
-        this.timerID = setInterval(() => this.props.onSubmit(), 100000);
+        Emitter.on('updateCommentList', this.props.onAction);
+        this.timerID = setInterval(() => this.props.onAction(), 100000);
         this.props.onAction();
     }
 

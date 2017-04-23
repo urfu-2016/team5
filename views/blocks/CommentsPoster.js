@@ -9,27 +9,34 @@ class CommentsPoster {
         this.slug = slug;
     }
 
-    getComments(callback) {
+    getComments(data, handles) {
         const url = `api/comments/${this.slug}`;
         fetch(url)
-        .then(function (res) {
-            if (res.status === 200) {
-                callback(res.json());
-            }
-        });
+            .then(function (res) {
+                if (!res.ok) {
+                    return handles.handleFailedSend(res.status);
+                }
+
+                handles.handleSuccessfulSend(res.json());
+            })
+            .catch(function () {
+                setTimeout(handles.handleNoConnecting, 0);
+            });
     }
 
     sendComment(text, handles) {
         const url = `api/comments/${this.slug}`;
         fetch(url, {method: 'POST', body: JSON.stringify({text: text})})
-        .then(function (res) {
-            if (res.status !== 200) {
-                return handles.handleFailedSend(res.status);
-            }
+            .then(function (res) {
+                if (!res.ok) {
+                    return handles.handleFailedSend(res.status);
+                }
 
-            handles.handleSuccessfulSend();
-        })
-        .catch(handles.handleNoConnecting);
+                handles.handleSuccessfulSend();
+            })
+            .catch(function () {
+                setTimeout(handles.handleNoConnecting, 0);
+            });
     }
 }
 
