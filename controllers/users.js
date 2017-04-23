@@ -1,9 +1,9 @@
 'use strict';
 
-const User = require('../../models/user');
-const constants = require('../../constants/controllers').user;
+const User = require('../models/user');
+const constants = require('../constants/controllers').user;
 const httpStatus = require('http-status-codes');
-const errors = require('../../libs/customErrors/errors');
+const errors = require('../libs/customErrors/errors');
 
 module.exports = {
     async getUsers(req, res) {
