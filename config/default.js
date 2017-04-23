@@ -1,4 +1,4 @@
-const session = require('./session');
+const session = require('../libs/express-session');
 
 module.exports = {
     staticPath: '',
