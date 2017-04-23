@@ -8,16 +8,14 @@ const searchConstants = require('../constants/controllers').questSearch;
 const QueryBuilder = require('../libs/queryBuilder');
 const errors = require('../../libs/customErrors/errors');
 
-function isMyQuest(quest, req) {
-    return req.user ? (req.user._id.equals(quest.author)) : false;
+function isMyQuest(quest, user) {
+    return user ? (user._id.equals(quest.author)) : false;
 }
 
-// FIXME Не знаю как ее назвать адекватнее.
-function getQuestWithNewProps(quest, pairs) {
+function getQuestObject(quest, req) {
     quest = quest.toObject();
-    pairs.forEach(pair => {
-        quest[pair.property] = pair.value;
-    });
+    quest.isMyQuest = isMyQuest(quest, req.user);
+    quest.dateOfCreation = quest.dateOfCreation.getDate();
 
     return quest;
 }
@@ -32,8 +30,11 @@ module.exports = {
             tags: req.body.tags
         };
 
+<<<<<<< 4b8d15b8e3b453535e5e0faee81704451d40fac4
         try {
             const quest = await Quest.create(questData);
+            quest = getQuestObject(quest, req);
+
             res.status(httpStatus.CREATED).send({data: quest});
         } catch (err) {
             next(new errors.BadRequestError(err.message));
@@ -50,8 +51,10 @@ module.exports = {
         };
 
         try {
-            await Quest.update(req.params.slug, questData);
-            res.status(httpStatus.OK).send({data: questData});
+            const quest = await Quest.update(req.params.slug, questData);
+            quest = getQuestObject(quest, req);
+
+            res.status(httpStatus.OK).send({data: quest});
         } catch (err) {
             next(new errors.BadRequestError(err.message));
         }
@@ -59,6 +62,8 @@ module.exports = {
 
     async getQuests(req, res) {
         const quests = await Quest.getAll();
+        quests = quests.map(quest => getQuestObject(quest, req));
+
         res.status(httpStatus.OK).send({data: quests});
     },
 
@@ -67,6 +72,7 @@ module.exports = {
         if (quest === null) {
             return next(new errors.NotFoundError(constants.questNotFoundErrorMessage));
         }
+        quest = getQuestObject(quest, req);
 
         res.status(httpStatus.OK).send({data: quest});
     },
@@ -91,14 +97,7 @@ module.exports = {
                 const lastCardNumber = firstCardNumber + searchConstants.cardsCount;
                 const renderQuests = quests
                     .slice(firstCardNumber, lastCardNumber)
-                    .map(quest => {
-                        const pairs = [{
-                            property: 'isMyQuest',
-                            value: isMyQuest(quest, req)
-                        }];
-
-                        return getQuestWithNewProps(quest, pairs);
-                    });
+                    .map(quest => getQuestObject(quest, req));
 
                 const renderData = {
                     pageNumber: searchPageNumber,
@@ -113,18 +112,6 @@ module.exports = {
     },
 
     renderAllQuests(req, res) {
-        /*
-        Const renderData = {
-            title: constants.title,
-            activePage: '/',
-            user: {
-                avatar: 'http://www.lovemarks.com/wp-content/uploads/profile-avatars/default-avatar-knives-ninja.png'
-            },
-        };
-
-        res.render('mainPage/mainPage', renderData);
-        */
-
         Quest.getAll()
             .then(data => {
                 const renderData = {
@@ -132,21 +119,7 @@ module.exports = {
                     user: {
                         avatar: 'http://www.lovemarks.com/wp-content/uploads/profile-avatars/default-avatar-knives-ninja.png'
                     },
-                    quests: data.map(quest => {
-                        // FIXME Слишком большой объект
-                        const pairs = [
-                            {
-                                property: 'isMyQuest',
-                                value: isMyQuest(quest, req)
-                            },
-                            {
-                                property: 'dateOfCreation',
-                                value: quest.dateOfCreation.toString()
-                            }
-                        ];
-
-                        return getQuestWithNewProps(quest, pairs);
-                    }),
+                    quests: data.map(quest => getQuestObject(quest, req)),
                     activePage: '/'
                 };
 
