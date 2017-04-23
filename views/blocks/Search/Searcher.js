@@ -5,7 +5,8 @@ function searchRequest(params) {
             body: JSON.stringify(params),
             headers: {
                 'Content-Type': 'application/json'
-            }
+            },
+            credentials: 'include'
         }
     );
 }

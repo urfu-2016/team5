@@ -3,7 +3,7 @@
 const express = require('express');
 const router = new express.Router();
 
-const authController = require('../controllers/api/auth');
+const authController = require('../controllers/auth');
 
 router.route('/signup')
     .post(authController.signUp);
