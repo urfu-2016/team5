@@ -6,8 +6,8 @@ const config = require('config');
 module.exports = {
     context: path.join(__dirname, '/views'),
     entry: {
-        // header: './blocks/header/header',
-        // mainPage: './pages/mainPage/mainPage',
+        header: './blocks/header/header',
+        mainPage: './pages/mainPage/mainPage',
         questsAll: './pages/questsAll/questsAll',
         questId: './pages/questsId/quest'
     },
