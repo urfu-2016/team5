@@ -11,9 +11,6 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const layouts = require('handlebars-layouts');
 const cdn = require('express-simple-cdn');
-const mongoose = require('./libs/mongoose-connection');
-const session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
 
 const index = require('./routes/index');
 const quests = require('./routes/quests');
@@ -43,13 +40,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 
-const sessionConfig = Object.assign(
-    {},
-    config.sessionConfig,
-    {store: new MongoStore({mongooseConnection: mongoose.connection})}
-);
-
-app.use(session(sessionConfig));
+app.use(config.session());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
