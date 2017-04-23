@@ -9,6 +9,7 @@ const userMocks = require('../mocks/users');
 const User = require('../../models/user');
 const createQuestWithAuthor = require('../../scripts/generate-db-data').createQuestWithAuthor;
 const chaiRequest = require('../commonTestLogic/chaiRequest')(server);
+const constants = require('../../constants/controllers');
 
 const questData = questsMocks.regularQuest;
 
@@ -32,7 +33,7 @@ describe('controller:quest', () => {
     after(() => dbClearer.removeAll());
 
     describe('required auth', () => {
-        beforeEach(() => createUserAndSignIn(userMocks.UserWithCorrectPassword));
+        beforeEach(() => createUserAndSignIn(userMocks.userWithCorrectPassword));
 
         describe('success with auth', () => {
             afterEach(() => logout());
@@ -135,6 +136,7 @@ describe('controller:quest', () => {
                 await chaiRequest.get(`/api/quests/some-bad-slug`);
             } catch (err) {
                 err.status.should.equal(HttpStatus.NOT_FOUND);
+                err.response.text.should.equal(constants.quest.questNotFoundErrorMessage);
             }
         });
     });

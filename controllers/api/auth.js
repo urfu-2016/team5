@@ -1,64 +1,56 @@
 'use strict';
 
 const httpStatus = require('http-status-codes');
-const baseApi = require('./baseApi');
 const passport = require('../../libs/passport');
 const User = require('../../models/user');
 const constants = require('../../constants/constants');
+const BadRequestError = require('../../libs/customErrors/errors').BadRequestError;
 
 module.exports = {
     signIn(req, res, next) {
         passport.authenticate('local', (err, user) => {
             if (!user) {
-                res.send(constants.models.user.wrongPasswordOrNameMessage);
-                return;
+                return next(new BadRequestError(constants.models.user.wrongPasswordOrNameMessage));
             }
 
             if (req.user) {
-                res.send(constants.controllers.auth.alreadyAuthenticated);
-                return;
+                return next(new BadRequestError(constants.controllers.auth.alreadyAuthenticated));
             }
 
-            const data = {message: constants.controllers.auth.signedInPattern(req.body.username)};
             if (err) {
-                return baseApi.getErrorCallback(res, httpStatus.BAD_REQUEST)(err);
+                return next(new BadRequestError(err.message));
             }
 
-            req.session.user = user._id;
-
-            return req.logIn(user, () => baseApi.getSuccessCallback(res, httpStatus.OK)(data));
+            return req.logIn(user, () => res
+                .status(httpStatus.OK)
+                .send({message: constants.controllers.auth.signedInPattern(req.body.username)})
+            );
         })(req, res, next);
     },
 
-    async signUp(req, res) {
-        const statusCodes = {
-            successCode: httpStatus.CREATED,
-            failureCode: httpStatus.BAD_REQUEST
-        };
-
+    async signUp(req, res, next) {
         const userData = {
             username: req.body.username,
             password: req.body.password
         };
 
-        let callbackResult;
         try {
             await User.create(userData);
-            callbackResult = () => constants.controllers.auth.signedUpPattern(req.body.username);
+            res
+                .status(httpStatus.CREATED)
+                .send(constants.controllers.auth.signedUpPattern(req.body.username));
         } catch (err) {
-            callbackResult = () => {
-                throw err;
-            };
+            next(new BadRequestError(err.message));
         }
-
-        return await baseApi.resolveRequestPromise(callbackResult, res, statusCodes);
     },
 
     authorizedOnly(req, res, next) {
         if (req.user) {
             next();
         } else {
-            res.status(httpStatus.BAD_REQUEST).send(constants.controllers.auth.authorizationRequired);
+            res
+                .status(httpStatus.BAD_REQUEST)
+                .send(constants.controllers.auth.authorizationRequired);
         }
     },
 

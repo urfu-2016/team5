@@ -1,13 +1,13 @@
 'use strict';
 
-const HttpStatus = require('http-status-codes');
+const httpStatus = require('http-status-codes');
 const Quest = require('../../models/quest');
-const resolveRequestPromise = require('./baseApi').resolveRequestPromise;
 const constants = require('../../constants/controllers').quest;
+const errors = require('../../libs/customErrors/errors');
 
 module.exports = {
-    createQuest(req, res) {
-        const quest = {
+    async createQuest(req, res, next) {
+        const questData = {
             title: req.body.title,
             description: req.body.description,
             authorId: req.user.id,
@@ -15,16 +15,15 @@ module.exports = {
             tags: req.body.tags
         };
 
-        return Quest
-            .create(quest)
-            .then(quest => () => quest)
-            .catch(err => () => {
-                throw err;
-            })
-            .then(resultCallback => resolveRequestPromise(resultCallback, res, {successCode: HttpStatus.CREATED}));
+        try {
+            const quest = await Quest.create(questData);
+            res.status(httpStatus.CREATED).send({data: quest});
+        } catch (err) {
+            next(new errors.BadRequestError(err.message));
+        }
     },
 
-    updateQuest(req, res) {
+    async updateQuest(req, res, next) {
         const questData = {
             slug: req.body.slug,
             title: req.body.title,
@@ -33,45 +32,34 @@ module.exports = {
             tags: req.body.tags
         };
 
-        return Quest
-            .update(req.params.slug, questData)
-            .then(res => () => res)
-            .catch(err => () => {
-                throw err;
-            })
-            .then(resultCallback => resolveRequestPromise(resultCallback, res));
+        try {
+            await Quest.update(req.params.slug, questData);
+            res.status(httpStatus.OK).send({data: questData});
+        } catch (err) {
+            next(new errors.BadRequestError(err.message));
+        }
     },
 
-    getQuests(req, res) {
-        return Quest
-            .getAll()
-            .then(quests => {
-                return quests.length === 0 ? () => {
-                    throw new Error(constants.questNotFoundErrorMessage);
-                } : () => quests;
-            })
-            .then(resultCallback => resolveRequestPromise(resultCallback, res));
+    async getQuests(req, res) {
+        const quests = await Quest.getAll();
+        res.status(httpStatus.OK).send({data: quests});
     },
 
-    getQuestBySlug(req, res) {
-        return Quest
-            .getBySlug(req.params.slug)
-            .then(quest => {
-                return quest === null ? () => {
-                    throw new Error(constants.questNotFoundErrorMessage);
-                } : () => quest;
-            })
-            .then(resultCallback => resolveRequestPromise(resultCallback, res));
+    async getQuestBySlug(req, res, next) {
+        const quest = await Quest.getBySlug(req.params.slug);
+        if (quest === null) {
+            return next(new errors.NotFoundError(constants.questNotFoundErrorMessage));
+        }
+
+        res.status(httpStatus.OK).send({data: quest});
     },
 
-    removeQuest(req, res) {
-        return Quest
-            .removeBySlug(req.params.slug)
-            .then(res => {
-                return res.result.n === 0 ? () => {
-                    throw new Error(constants.questNotFoundErrorMessage);
-                } : () => res;
-            })
-            .then(resultCallback => resolveRequestPromise(resultCallback, res));
+    async removeQuest(req, res, next) {
+        const status = await Quest.removeBySlug(req.params.slug);
+        if (status.result.n === 0) {
+            return next(new errors.NotFoundError(constants.questNotFoundErrorMessage));
+        }
+
+        res.status(httpStatus.OK).send();
     }
 };
