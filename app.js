@@ -8,12 +8,12 @@ const config = require('config');
 // Const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
-const expressSession = require('express-session');
-const mongoose = require('./libs/mongoose-connection');
-const MongoStore = require('connect-mongo')(expressSession);
 const bodyParser = require('body-parser');
 const layouts = require('handlebars-layouts');
 const cdn = require('express-simple-cdn');
+const mongoose = require('./libs/mongoose-connection');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 
 const index = require('./routes/index');
 const quests = require('./routes/quests');
@@ -48,7 +48,8 @@ const sessionConfig = Object.assign(
     config.sessionConfig,
     {store: new MongoStore({mongooseConnection: mongoose.connection})}
 );
-app.use(expressSession(sessionConfig));
+
+app.use(session(sessionConfig));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
