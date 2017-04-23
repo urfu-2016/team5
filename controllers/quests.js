@@ -2,13 +2,12 @@
 
 const httpStatus = require('http-status-codes');
 const Quest = require('../models/quest');
-const constants = require('../constants/controllers').quest;
-const dateFormat = require('../constants/controllers').dateFormat;
+const constants = require('../constants/controllers');
 const searchConstants = require('../constants/controllers').questSearch;
 const QueryBuilder = require('../libs/queryBuilder');
 const errors = require('../libs/customErrors/errors');
 const moment = require('moment');
-moment.locale('ru');
+moment.locale(constants.momentLanguage);
 
 function isMyQuest(quest, user) {
     return user ? (user._id.equals(quest.author)) : false;
@@ -17,7 +16,7 @@ function isMyQuest(quest, user) {
 function getQuestObject(quest, req) {
     quest = quest.toObject();
     quest.isMyQuest = isMyQuest(quest, req.user);
-    quest.dateOfCreation = moment(quest.dateOfCreation).format(dateFormat);
+    quest.dateOfCreation = moment(quest.dateOfCreation).format(constants.dateFormat);
 
     return quest;
 }
@@ -71,7 +70,7 @@ module.exports = {
     async getQuestBySlug(req, res, next) {
         let quest = await Quest.getBySlug(req.params.slug);
         if (quest === null) {
-            return next(new errors.NotFoundError(constants.questNotFoundErrorMessage));
+            return next(new errors.NotFoundError(constants.quest.questNotFoundErrorMessage));
         }
         quest = getQuestObject(quest, req);
 
@@ -81,7 +80,7 @@ module.exports = {
     async removeQuest(req, res, next) {
         const status = await Quest.removeBySlug(req.params.slug);
         if (status.result.n === 0) {
-            return next(new errors.NotFoundError(constants.questNotFoundErrorMessage));
+            return next(new errors.NotFoundError(constants.quest.questNotFoundErrorMessage));
         }
 
         res.status(httpStatus.OK).send();
@@ -114,7 +113,7 @@ module.exports = {
     async renderAllQuests(req, res) {
         const quests = await Quest.getAll();
         const renderData = {
-            title: constants.title,
+            title: constants.quest.title,
             user: {
                 avatar: 'http://www.lovemarks.com/wp-content/uploads/profile-avatars/default-avatar-knives-ninja.png'
             },

@@ -34,5 +34,6 @@ module.exports = {
         alreadyAuthenticated: 'Вы уже аутентифицированы.'
     },
 
-    dateFormat: 'L'
+    dateFormat: 'L',
+    momentLanguage: 'ru'
 };
