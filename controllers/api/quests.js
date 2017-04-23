@@ -40,12 +40,8 @@ module.exports = {
         }
     },
 
-    async getQuests(req, res, next) {
+    async getQuests(req, res) {
         const quests = await Quest.getAll();
-        if (quests.length === 0) {
-            return next(new errors.BadRequestError(constants.questNotFoundErrorMessage));
-        }
-
         res.status(httpStatus.OK).send({data: quests});
     },
 

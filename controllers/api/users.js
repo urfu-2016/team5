@@ -6,12 +6,8 @@ const httpStatus = require('http-status-codes');
 const errors = require('../../libs/customErrors/errors');
 
 module.exports = {
-    async getUsers(req, res, next) {
+    async getUsers(req, res) {
         const users = await User.getAll();
-        if (users.length === 0) {
-            return next(new errors.NotFoundError(constants.userNotFoundErrorMessage));
-        }
-
         res.status(httpStatus.OK).send({data: users});
     },
 

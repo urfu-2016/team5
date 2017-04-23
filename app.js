@@ -9,6 +9,8 @@ const config = require('config');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
+const mongoose = require('./libs/mongoose-connection');
+const MongoStore = require('connect-mongo')(expressSession);
 const bodyParser = require('body-parser');
 const layouts = require('handlebars-layouts');
 const cdn = require('express-simple-cdn');
@@ -40,7 +42,14 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
-app.use(expressSession(config.sessionConfig));
+
+const sessionConfig = Object.assign(
+    {},
+    config.sessionConfig,
+    {store: new MongoStore({mongooseConnection: mongoose.connection})}
+);
+app.use(expressSession(sessionConfig));
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(passport.initialize());
