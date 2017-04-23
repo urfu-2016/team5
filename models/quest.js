@@ -110,8 +110,7 @@ questSchema.statics.search = function (searchData) {
 
     return this
         .find(findObject)
-        .populate('author')
-        .exec();
+        .populate('author');
 };
 
 module.exports = mongoose.model('Quest', questSchema);

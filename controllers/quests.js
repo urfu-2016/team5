@@ -3,9 +3,12 @@
 const httpStatus = require('http-status-codes');
 const Quest = require('../models/quest');
 const constants = require('../constants/controllers').quest;
+const dateFormat = require('../constants/controllers').dateFormat;
 const searchConstants = require('../constants/controllers').questSearch;
 const QueryBuilder = require('../libs/queryBuilder');
 const errors = require('../libs/customErrors/errors');
+const moment = require('moment');
+moment.locale('ru');
 
 function isMyQuest(quest, user) {
     return user ? (user._id.equals(quest.author)) : false;
@@ -14,7 +17,7 @@ function isMyQuest(quest, user) {
 function getQuestObject(quest, req) {
     quest = quest.toObject();
     quest.isMyQuest = isMyQuest(quest, req.user);
-    quest.dateOfCreation = quest.dateOfCreation.getDate();
+    quest.dateOfCreation = moment(quest.dateOfCreation).format(dateFormat);
 
     return quest;
 }
