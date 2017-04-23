@@ -132,7 +132,7 @@ describe('models:Quest', () => {
         const quests = await searchQuests(requestBody);
 
         quests.length.should.equal(1);
-        quests[0].author.id.should.deep.equal(questData.authorId);
+        quests[0].author._id.should.deep.equal(questData.authorId);
     });
 
     it('should get quests by city', async () => {
