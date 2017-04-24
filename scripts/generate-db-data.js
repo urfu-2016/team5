@@ -28,26 +28,27 @@ function generateImages({questId, imagesCount = 10}) {
     return images;
 }
 
-module.exports.generateQuests = ({questsCount = 10}) => {
+module.exports.generateQuests = async ({questsCount = 10}) => {
     const quests = [];
+    const user = await User.create({
+        username: 'User' + Date.now(),
+        password: constants.user.password
+    });
 
-    return User.create({username: 'User' + Date.now(), password: constants.user.password})
-        .then(user => {
-            for (let i = 0; i < questsCount; i++) {
-                let questData = {
-                    title: `${constants.quest.titlePrefix} ${i}`,
-                    description: `${constants.quest.descriptionPrefix} ${i}`,
-                    authorId: user._id,
-                    images: generateImages({questId: i}),
-                    slug: `${i}`,
-                    city: constants.quest.city
-                };
+    for (let i = 0; i < questsCount; i++) {
+        let questData = {
+            title: `${constants.quest.titlePrefix} ${i}`,
+            description: `${constants.quest.descriptionPrefix} ${i}`,
+            authorId: user._id,
+            images: generateImages({questId: i}),
+            slug: `${i}`,
+            city: constants.quest.city
+        };
 
-                quests.push(questData);
-            }
+        quests.push(questData);
+    }
 
-            return createAll(Quest, quests);
-        });
+    return createAll(Quest, quests);
 };
 
 module.exports.generateUsers = ({usersCount = 1}) => {
@@ -55,7 +56,7 @@ module.exports.generateUsers = ({usersCount = 1}) => {
 
     for (let i = 0; i < usersCount; i++) {
         let userData = {
-            firstname: `${constants.user.firstnamePrefix} ${i}`,
+            firstname: `${constants.user.firstnamePrefix} ${i} ${shortid.generate()}`,
             surname: `${constants.user.surnamePrefix} ${i}`,
             username: `${constants.user.usernamePrefix}${i}`,
             password: constants.user.password

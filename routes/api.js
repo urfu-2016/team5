@@ -2,9 +2,9 @@
 
 const express = require('express');
 const router = new express.Router();
-const usersController = require('../controllers/api/users');
-const questsController = require('../controllers/api/quests');
-const authController = require('../controllers/api/auth');
+const usersController = require('../controllers/users');
+const questsController = require('../controllers/quests');
+const authController = require('../controllers/auth');
 
 router.route('/users')
     .get(usersController.getUsers);

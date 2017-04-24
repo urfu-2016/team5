@@ -3,39 +3,10 @@
 
 const express = require('express');
 const router = express.Router();
-const constants = require('../constants/controllers');
-const questsSearch = require('../controllers/questsSearch');
-const Quest = require('../models/quest');
+const questsController = require('../controllers/quests');
 
-router.get('/', function (req, res) {
-    /*
-    Const renderData = {
-        title: constants.title,
-        activePage: '/',
-        user: {
-            avatar: 'http://www.lovemarks.com/wp-content/uploads/profile-avatars/default-avatar-knives-ninja.png'
-        },
-    };
+router.get('/', questsController.renderAllQuests);
 
-    res.render('mainPage/mainPage', renderData);
-    */
-
-    Quest.getAll().then(data => {
-        const renderData = {
-            title: constants.title,
-            user: {
-                avatar: 'http://www.lovemarks.com/wp-content/uploads/profile-avatars/default-avatar-knives-ninja.png'
-            },
-            quests: data.map(q => {
-                q.dateOfCreation = q.dateOfCreation.getDate();
-                return q;
-            }),
-            activePage: '/'
-        };
-
-        res.render('mainPage/mainPage', renderData);
-    });
-});
-router.post('/search', questsSearch.findQuests);
+router.post('/search', questsController.findQuests);
 
 module.exports = router;

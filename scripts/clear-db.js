@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const Quest = require('../models/quest');
+const Comment = require('../models/comment');
 const mongoose = require('mongoose');
 
 module.exports = {
@@ -7,16 +8,17 @@ module.exports = {
 
     removeAllUsers: () => User.remove({}),
 
+    removeAllComments: () => Comment.remove({}),
+
     async removeAll() {
         await this.removeAllUsers();
         await this.removeAllQuests();
+        await this.removeAllComments();
     },
 
     dropAll() {
-        return mongoose.connection.db.dropDatabase(err => {
-            if (err) {
-                console.log(err);
-            }
+        return mongoose.connection.once('connected', () => {
+            mongoose.connection.db.dropDatabase();
         });
     }
 };
