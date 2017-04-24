@@ -61,26 +61,26 @@ questSchema.statics.create = async function ({authorId, title = '', description 
 };
 
 questSchema.statics.update = async function (slug, {title, description, city, tags}) {
-    let quest = await this.findOne({slug}).exec();
-    quest.title = title ? title : quest.title;
-    quest.description = description ? description : quest.description;
-    quest.city = city ? city : quest.city;
+    let quest = await this.findOne({slug});
+    quest.title = title || quest.title;
+    quest.description = description || quest.description;
+    quest.city = city || quest.city;
     quest.slug = title ? slugify(title) + shortid.generate() : quest.slug;
-    quest.tags = tags ? tags : quest.tags;
+    quest.tags = tags || quest.tags;
 
     return quest.save();
 };
 
 questSchema.statics.getAll = function () {
-    return this.find({}).exec();
+    return this.find({});
 };
 
 questSchema.statics.getBySlug = function (slug) {
-    return this.findOne({slug}).exec();
+    return this.findOne({slug});
 };
 
 questSchema.statics.removeBySlug = function (slug) {
-    return this.remove({slug}).exec();
+    return this.remove({slug});
 };
 
 questSchema.statics.search = async function (searchData) {
