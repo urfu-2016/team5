@@ -9,7 +9,8 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 const commentSchema = new mongoose.Schema({
     message: {
         type: String,
-        maxlength: constants.comment.maxLength
+        maxlength: constants.comment.maxLength,
+        required: true
     },
     author: {type: ObjectId, ref: 'User'},
     likes: {
@@ -20,12 +21,12 @@ const commentSchema = new mongoose.Schema({
 });
 
 commentSchema.statics.getAll = function () {
-    return this.find({}).exec();
+    return this.find({});
 };
 
-commentSchema.statics.create = async function (author, message) {
+commentSchema.statics.create = async function (user, message) {
     const comment = new this({
-        author: author._id,
+        author: user._id,
         message
     });
 
@@ -33,33 +34,37 @@ commentSchema.statics.create = async function (author, message) {
 };
 
 commentSchema.statics.delete = async function (id) {
-    return await this.findById(id).remove();
+    return await this.findByIdAndRemove(id);
 };
 
-commentSchema.methods.like = async function (username) {
-    const user = await mongoose.model('User').findOne({username});
-    if (this.likedBy(username)) {
-        const ind = this.likes.indexOf(user._id);
-        this.likes.splice(ind, 1);
+commentSchema.methods.like = async function (user) {
+    if (await this.likedBy(user.username)) {
+        const index = this.likes.indexOf(user.id);
+        this.likes.splice(index, 1);
     } else {
-        this.likes.push(user._id);
+        this.likes.push(user.id);
     }
+    await this.save();
 };
 
 commentSchema.methods.likedBy = async function (username) {
     const user = await mongoose.model('User').findOne({username});
-    return this.likes.includes(user._id);
+    return this.likes.some(x => x.equals(user.id));
 };
 
-commentSchema.methods.checkAuthor = function (username) {
-    return this.author.username === username;
+commentSchema.methods.createdBy = async function (username) {
+    const user = await mongoose.model('User').findOne({username});
+    return this.author.equals(user.id);
 };
 
-commentSchema.virtual('likesCount')
-    .get(() => this.likes.length);
+commentSchema.virtual('likesCount').get(function () {
+    return this.likes.length;
+});
 
-commentSchema.virtual('formattedDate')
-    .get(() => moment(this.dateOfCreation).format(constants.dateFormat));
+commentSchema.virtual('formattedDate').get(function () {
+    return moment(this.dateOfCreation).format(constants.dateFormat);
+});
 
+autoIncrement.initialize(mongoose.connection);
 commentSchema.plugin(autoIncrement.plugin, 'Comment');
 module.exports = mongoose.model('Comment', commentSchema);
