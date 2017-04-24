@@ -13,7 +13,7 @@ describe('controller:users', () => {
     after(() => removeAllUsers());
 
     it('should GET all the users', async () => {
-        const userData = userMocks.UserWithCorrectPassword;
+        const userData = userMocks.userWithCorrectPassword;
 
         await User.create(userData);
         const res = await chaiRequest.get('/api/users');
@@ -23,7 +23,7 @@ describe('controller:users', () => {
     });
 
     it('should GET a user by the given username', async () => {
-        const userData = userMocks.UserWithCorrectPassword;
+        const userData = userMocks.userWithCorrectPassword;
 
         await User.create(userData);
         const res = await chaiRequest.get(`/api/users/${userData.username}`);

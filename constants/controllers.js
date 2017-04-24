@@ -32,5 +32,8 @@ module.exports = {
         signedInPattern: username => `${username}, поздравляем, вы аутентифицированы!`,
         authorizationRequired: 'Необходима авторизация.',
         alreadyAuthenticated: 'Вы уже аутентифицированы.'
-    }
+    },
+
+    dateFormat: 'L',
+    momentLanguage: 'ru'
 };
