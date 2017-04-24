@@ -36,8 +36,8 @@ const questSchema = new mongoose.Schema({
     }
 });
 
-questSchema.statics.create = function ({authorId, title = '', description = '', city = '', tags = [], images = []}) {
-    const quest = new this({
+questSchema.statics.create = async function ({authorId, title = '', description = '', city = '', tags = [], images = []}) {
+    let quest = new this({
         title,
         description,
         slug: slugify(title),
@@ -45,41 +45,30 @@ questSchema.statics.create = function ({authorId, title = '', description = '', 
         city, tags, images
     });
 
-    return quest
-        .save()
-        .catch(err => {
-            const isMongoDuplicateKeyError = err.name === constants.mongoErrorName &&
-                err.code === constants.mongoDuplicateErrorCode;
-            if (!isMongoDuplicateKeyError) {
-                throw err;
-            }
+    try {
+        quest = await quest.save();
+    } catch (err) {
+        const isMongoDuplicateKeyError = err.name === constants.mongoErrorName &&
+            err.code === constants.mongoDuplicateErrorCode;
+        if (!isMongoDuplicateKeyError) {
+            throw err;
+        }
+        quest.slug += shortid.generate();
+        quest = await quest.save();
+    }
 
-            return false;
-        })
-        .then(data => {
-            if (!data) {
-                quest.slug += shortid.generate();
-
-                return quest.save();
-            }
-
-            return data;
-        });
+    return quest;
 };
 
-questSchema.statics.update = function (slug, {title, description, city, tags}) {
-    return this
-        .findOne({slug})
-        .exec()
-        .then(quest => {
-            quest.title = title ? title : quest.title;
-            quest.description = description ? description : quest.description;
-            quest.city = city ? city : quest.city;
-            quest.slug = title ? slugify(title) + shortid.generate() : quest.slug;
-            quest.tags = tags ? tags : quest.tags;
+questSchema.statics.update = async function (slug, {title, description, city, tags}) {
+    let quest = await this.findOne({slug}).exec();
+    quest.title = title ? title : quest.title;
+    quest.description = description ? description : quest.description;
+    quest.city = city ? city : quest.city;
+    quest.slug = title ? slugify(title) + shortid.generate() : quest.slug;
+    quest.tags = tags ? tags : quest.tags;
 
-            return quest.save();
-        });
+    return quest.save();
 };
 
 questSchema.statics.getAll = function () {
@@ -94,7 +83,7 @@ questSchema.statics.removeBySlug = function (slug) {
     return this.remove({slug}).exec();
 };
 
-questSchema.statics.search = function (searchData) {
+questSchema.statics.search = async function (searchData) {
     const andList = searchData.reduce((acc, searchObject) => {
         const orList = searchObject.fields.map(property => {
             return {[property]: searchObject.values};
@@ -107,8 +96,7 @@ questSchema.statics.search = function (searchData) {
     }, []);
 
     const findObject = andList.length ? {$and: andList} : {};
-
-    return this
+    return await this
         .find(findObject)
         .populate('author');
 };
