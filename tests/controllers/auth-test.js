@@ -75,7 +75,7 @@ describe('controller:auth', () => {
         it('should fails sign in with wrong password', async () => {
             await chaiRequest.post('/signup', mocks.userWithCorrectPassword);
             try {
-                await chaiRequest.post('/signin', mocks.userWithCorrectPassword);
+                await chaiRequest.post('/signin', mocks.userWithIncorrectPassword);
             } catch (err) {
                 err.status.should.equal(httpStatus.BAD_REQUEST);
                 err.response.text.should.equal(constants.models.user.wrongPasswordOrNameMessage);
