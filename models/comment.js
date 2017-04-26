@@ -54,7 +54,7 @@ commentSchema.methods.likedBy = async function (username) {
 
 commentSchema.methods.createdBy = async function (username) {
     const user = await mongoose.model('User').findOne({username});
-    return this.author.equals(user.id);
+    return this.author.equals(user._id);
 };
 
 commentSchema.virtual('likesCount').get(function () {

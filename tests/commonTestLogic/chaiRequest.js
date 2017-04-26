@@ -1,5 +1,6 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
+const User = require('../../models/user');
 
 chai.should();
 chai.use(chaiHttp);
@@ -16,6 +17,14 @@ module.exports = function (server) {
 
         delete: url => agent.delete(url),
 
-        signInUser: user => agent.post('/signin').send(user)
+        signInUser: user => agent.post('/signin').send(user),
+
+        createUserAndSignIn: async user => {
+            await User.create(user);
+
+            return await agent.post('/signin').send(user);
+        },
+
+        logout: async () => await agent.post('/logout')
     };
 };

@@ -23,6 +23,10 @@ module.exports = {
         questNotFoundErrorMessage: 'Такого квеста не существует'
     },
 
+    comment: {
+        notFoundMessage: 'Комментария с таким id не существует'
+    },
+
     index: {
         title: 'Список квестов'
     },
@@ -31,7 +35,8 @@ module.exports = {
         signedUpPattern: username => `${username} был зарегистрирован`,
         signedInPattern: username => `${username}, поздравляем, вы аутентифицированы!`,
         authorizationRequired: 'Необходима авторизация.',
-        alreadyAuthenticated: 'Вы уже аутентифицированы.'
+        alreadyAuthenticated: 'Вы уже аутентифицированы.',
+        permissionDenied: 'У вас не хватает прав'
     },
 
     dateFormat: 'L',
