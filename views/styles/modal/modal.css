@@ -9,14 +9,13 @@
     outline: 0;
     display: none;
     opacity: 0;
-    transition: all 0.5s;
+    transition: opacity 1s linear;
 }
 
 .modal.show
 {
-    display: block;
     opacity: 1;
-    transition: all 0.5s;
+    display: block;
 }
 
 @keyframes fadeInDown
@@ -32,22 +31,4 @@
         opacity: 1;
         transform: none;
     }
-}
-
-div#OR
-{
-    height: 30px;
-    width: 30px;
-    border: 1px solid #c2c2c2;
-    border-radius: 50%;
-    font-weight: bold;
-    line-height: 28px;
-    text-align: center;
-    font-size: 12px;
-    float: right;
-    position: absolute;
-    right: -16px;
-    top: 40%;
-    z-index: 1;
-    background: #dfdfdf;
 }

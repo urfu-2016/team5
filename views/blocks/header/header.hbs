@@ -128,4 +128,53 @@
         <div class="modal__backdrop"></div>
     </div>
     {{/unless}}
+    {{#if isAuth }}
+        <div class="modal" id="createQuest">
+            <div class="modal__dialog">
+                <form method="post" action="/quests">
+                    <div class="modal__header">
+                        <h4 class="modal__title">Create quest</h4>
+                        <button type="button" class="modal__close">×</button>
+                    </div>
+                    <div class="modal__body">
+                        <div class="input-group">
+                            <label for="title">Title</label>
+                            <input name="title" type="text" id="title" class="input-group__input input_dark">
+                        </div>
+
+                        <div class="input-group">
+                            <label for="city">City</label>
+                            <input name="city" type="text" id="city" class="input-group__input input_dark">
+                        </div>
+
+                        <div class="input-group">
+                            <label for="description">Description</label>
+                            <textarea name="description" id="description" class="input-group__textarea"></textarea>
+                        </div>
+
+                        <div class="image-preview">
+                            <div class="image-preview___preview">
+                                <input id="img1" class="image-preview__input" type="file">
+                                <label for="img1"><img class="image-preview__img" src="img/add_photo.png" alt="add photo"></label>
+                            </div>
+                            <div class="image-preview___preview">
+                                <input id="img2" class="image-preview__input" type="file">
+                                <label for="img2"><img class="image-preview__img" src="img/add_photo.png" alt="add photo"></label>
+                            </div>
+                            <div class="image-preview___preview">
+                                <input id="img3" class="image-preview__input" type="file">
+                                <label for="img3"><img class="image-preview__img" src="img/add_photo.png" alt="add photo"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal__footer">
+                        <button type="submit" class="btn btn_primary">Submit</button>
+                        <a href="/createquest">Go to the full form</a>
+                    </div>
+                </form>
+                <!--/.Content-->
+            </div>
+            <div class="modal__backdrop"></div>
+        </div>
+    {{/if}}
 </header>

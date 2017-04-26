@@ -1,7 +1,6 @@
 require('./navbar.css');
 require('./__brand/navbar__brand.css');
 require('./__categories/navbar__categories.css');
-require('./__input/navbar__input.css');
 require('./__item/navbar__item.css');
 require('./__link/navbar__link.css');
 require('./__button/navbar__button.css');

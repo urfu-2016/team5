@@ -1,0 +1,15 @@
+.image-preview___preview
+{
+    margin: 5px;
+}
+
+.image-preview___preview input
+{
+    display: none;
+}
+
+.image-preview___preview img
+{
+    width: 82px;
+    height: 82px;
+}

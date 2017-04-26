@@ -1,0 +1,8 @@
+.image-preview
+{
+    display: flex;
+    flex-wrap: nowrap;
+    overflow: hidden;
+    justify-content: center;
+    margin-top: 0.8rem;
+}
