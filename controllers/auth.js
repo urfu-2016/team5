@@ -23,7 +23,7 @@ module.exports = {
 
             return req.logIn(user, () => res
                 .status(httpStatus.OK)
-                .send({message: constants.controllers.auth.signedInPattern(req.body.username)})
+                .send({message: constants.controllers.auth.signedInPattern(user.username)})
             );
         })(req, res, next);
     },

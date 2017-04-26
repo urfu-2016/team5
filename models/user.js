@@ -47,6 +47,11 @@ userSchema.statics.create = async function ({username, email, password}) {
         throw new Error(constants.models.user.passwordRequiredMessage);
     }
 
+    // TODO: добавить нормальную проверку
+    if (email && !email.includes('@')) {
+        throw new Error(constants.models.user.incorrectEmail);
+    }
+
     try {
         const user = new this({
             username,
@@ -57,7 +62,13 @@ userSchema.statics.create = async function ({username, email, password}) {
         return await user.save();
     } catch (err) {
         if (err.code === constants.mongoose.mongoDuplicateErrorCode) {
-            err.message = constants.models.user.alreadyExistsPattern(username);
+            if (err.errmsg.includes('email')) {
+                err.message = constants.models.user.alreadyExistsPattern(email);
+            } else if (err.errmsg.includes('username')) {
+                err.message = constants.models.user.alreadyExistsPattern(username);
+            }
+        } else if (err.name === constants.mongoose.validationErrorName) {
+            err.message = constants.models.user.emptySignUpField;
         }
 
         throw err;
@@ -72,7 +83,10 @@ userSchema.statics.changePassword = async function (account, newPassword) {
 };
 
 userSchema.statics.getUserOnCorrectPassword = async function (account) {
-    const user = await this.findOne({username: account.username});
+    const user = await this.findOne(
+        account.email ? {email: account.email} : {username: account.username}
+    );
+
     if (user && await bcrypt.compare(account.password, user.password)) {
         return user;
     }
