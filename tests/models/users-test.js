@@ -45,18 +45,19 @@ describe('models:user', () => {
         }
     });
 
-    it('gets true by verification a correct password', async () => {
+    it('gets user on correct password', async () => {
         await User.create(usersMocks.userWithCorrectPassword);
-        const result = await User.verifyPassword(usersMocks.userWithCorrectPassword);
+        const result = await User.getUserOnCorrectPassword(usersMocks.userWithCorrectPassword);
 
-        result.should.be.equal(true);
+        const expected = await User.findOne({username: usersMocks.userWithCorrectPassword.username});
+        result.username.should.equal(expected.username);
     });
 
-    it('fails verification on wrong password', async () => {
+    it('fails getting user on wrong password', async () => {
         await User.create(usersMocks.userWithCorrectPassword);
 
         try {
-            await User.verifyPassword(usersMocks.userWithIncorrectPassword);
+            await User.getUserOnCorrectPassword(usersMocks.userWithIncorrectPassword);
         } catch (err) {
             err.message.should.be.equal(constants.models.user.wrongPasswordOrNameMessage);
         }
@@ -66,9 +67,13 @@ describe('models:user', () => {
         const newPassword = 'newPassword';
         await User.create(usersMocks.userWithCorrectPassword);
         await User.changePassword(usersMocks.userWithCorrectPassword, newPassword);
-        const result = await User.verifyPassword({username: usersMocks.userWithCorrectPassword.username, password: newPassword});
+        const result = await User.getUserOnCorrectPassword({
+            username: usersMocks.userWithCorrectPassword.username,
+            password: newPassword
+        });
 
-        result.should.be.equal(true);
+        const expected = await User.findOne({username: usersMocks.userWithCorrectPassword.username});
+        result.username.should.equal(expected.username);
     });
 
     it('fails changing password on wrong old password', async () => {

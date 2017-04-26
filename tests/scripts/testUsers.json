@@ -2,14 +2,17 @@
   "data": [
     {
       "username": "user_1",
+      "email": "email1@mail.ru",
       "password": "password"
     },
     {
       "username": "user_2",
+      "email": "email2@mail.ru",
       "password": "password"
     },
     {
       "username": "user_3",
+      "email": "email3@mail.ru",
       "password": "password"
     }
   ]

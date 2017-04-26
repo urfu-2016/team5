@@ -5,7 +5,7 @@ const User = require('../../../models/user');
 
 module.exports = new LocalStrategy(async (username, password, next) => {
     try {
-        const user = await User.getAccountOnCorrectPassword({username, password});
+        const user = await User.getUserOnCorrectPassword({username, password});
         next(null, user);
     } catch (err) {
         next(err);

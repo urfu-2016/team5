@@ -16,6 +16,13 @@ const userSchema = new mongoose.Schema({
         required: true
     },
 
+    email: {
+        type: String,
+        lowercase: true,
+        unique: true,
+        required: true
+    },
+
     password: {
         type: String,
         required: true
@@ -35,7 +42,7 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-userSchema.statics.create = async function ({username, password}) {
+userSchema.statics.create = async function ({username, email, password}) {
     if (!password) {
         throw new Error(constants.models.user.passwordRequiredMessage);
     }
@@ -43,6 +50,7 @@ userSchema.statics.create = async function ({username, password}) {
     try {
         const user = new this({
             username,
+            email,
             password: await bcrypt.hash(password, constants.models.user.saltRounds)
         });
 
@@ -56,22 +64,17 @@ userSchema.statics.create = async function ({username, password}) {
     }
 };
 
-userSchema.statics.verifyPassword = async function (account) {
-    const user = await this.findOne({username: account.username});
-
-    return user ? bcrypt.compare(account.password, user.password) : false;
-};
-
 userSchema.statics.changePassword = async function (account, newPassword) {
-    const user = await this.getAccountOnCorrectPassword(account);
+    const user = await this.getUserOnCorrectPassword(account);
     user.password = await bcrypt.hash(newPassword, constants.models.user.saltRounds);
 
     return user.save();
 };
 
-userSchema.statics.getAccountOnCorrectPassword = async function (account) {
-    if (await this.verifyPassword(account)) {
-        return await this.findOne({username: account.username});
+userSchema.statics.getUserOnCorrectPassword = async function (account) {
+    const user = await this.findOne({username: account.username});
+    if (user && await bcrypt.compare(account.password, user.password)) {
+        return user;
     }
 
     throw new Error(constants.models.user.wrongPasswordOrNameMessage);

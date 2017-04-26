@@ -2,6 +2,7 @@
 
 const userWithCorrectPassword = {
     username: 'user',
+    email: 'somemail@mail.ru',
     password: 'password'
 };
 

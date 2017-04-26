@@ -18,6 +18,7 @@ module.exports = {
         firstnamePrefix: 'Пользователь',
         surnamePrefix: 'Фамилия',
         usernamePrefix: 'user_',
-        password: 'password'
+        password: 'password',
+        email: 'somemail@mail.ru'
     }
 };

@@ -31,6 +31,7 @@ module.exports = {
     async signUp(req, res, next) {
         const userData = {
             username: req.body.username,
+            email: req.body.email,
             password: req.body.password
         };
 
