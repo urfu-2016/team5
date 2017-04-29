@@ -9,10 +9,9 @@ async function getCommentObject(comment, currentUser) {
     const author = (await comment.populate('author')).author;
     const username = currentUser ? currentUser.username : undefined;
     const liked = await comment.likedBy(username);
-    const isAuthor = await comment.createdBy(username);
+    const isAuthor = author.equals(currentUser._id);
 
     return {
-        id: comment.id,
         message: comment.message,
         author: author.username,
         date: comment.formattedDate,
@@ -24,7 +23,7 @@ async function getCommentObject(comment, currentUser) {
 module.exports = {
     async createComment(req, res, next) {
         try {
-            const quest = await Quest.getBySlug(req.params.questSlug);
+            const quest = await Quest.getBySlug(req.params.slug);
             let comment = await quest.addComment(req.user, req.body.text);
             comment = await getCommentObject(comment, req.user);
 
@@ -35,7 +34,7 @@ module.exports = {
     },
 
     async getComments(req, res, next) {
-        const quest = await Quest.getBySlug(req.params.questSlug);
+        const quest = await Quest.getBySlug(req.params.slug);
         if (quest === null) {
             return next(new errors.NotFoundError(constants.quest.questNotFoundErrorMessage));
         }
@@ -49,7 +48,7 @@ module.exports = {
 
     async getCommentByPosition(req, res, next) {
         const position = Number(req.params.position);
-        const quest = await Quest.getBySlug(req.params.questSlug);
+        const quest = await Quest.getBySlug(req.params.slug);
         const comments = await quest.getComments();
         if (position >= comments.length) {
             return next(new errors.NotFoundError(constants.quest.questNotFoundErrorMessage));
@@ -61,7 +60,7 @@ module.exports = {
 
     async removeComment(req, res, next) {
         const position = Number(req.params.position);
-        const quest = await Quest.getBySlug(req.params.questSlug);
+        const quest = await Quest.getBySlug(req.params.slug);
         const comments = await quest.getComments();
         if (position >= comments.length) {
             return next(new errors.NotFoundError(constants.quest.questNotFoundErrorMessage));
@@ -77,7 +76,7 @@ module.exports = {
 
     async likeComment(req, res, next) {
         const position = Number(req.params.position);
-        const quest = await Quest.getBySlug(req.params.questSlug);
+        const quest = await Quest.getBySlug(req.params.slug);
         const comments = await quest.getComments();
         if (position >= comments.length) {
             return next(new errors.NotFoundError(constants.quest.questNotFoundErrorMessage));
