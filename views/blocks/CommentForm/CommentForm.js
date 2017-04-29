@@ -3,6 +3,7 @@ import './CommentForm.css';
 import b from 'b_';
 import './../Input.css';
 import {CommentFormStrings} from './../../constants/strings';
+import {CommentFormConstants} from './../../constants/constants';
 
 const commentForm = b.lock('comment-form');
 
@@ -34,7 +35,7 @@ export default class CommentForm extends React.Component {
                     <textarea
                         onChange={this.handleTextChange}
                         className={['input', commentForm('text-field', {sending})].join(' ')}
-                        maxLength={300}
+                        maxLength={CommentFormConstants.maxLength}
                         placeholder={CommentFormStrings.placeholder}
                         name="comment"
                         value={this.props.text}
