@@ -14,14 +14,19 @@ router.get('/', function (req, res) {
 
 router.route('/:slug').get(function (req, res) {
     Quest.getBySlug(req.params.slug).then(questData => {
-        const renderData = {
-            title: 'Квест',
-            quest: questData,
-            isAuth: req.user ? 1 : 0, // TODO: Убрать эти заглушки
-            isCreator: false  // TODO: Убрать эти заглушки
-        };
+        console.info(questData);
+        if (questData) {
+            const renderData = {
+                title: questData.title,
+                quest: questData,
+                isAuth: req.user ? 1 : 0, // TODO: Убрать эти заглушки
+                isCreator: false  // TODO: Убрать эти заглушкиs
+            };
 
-        res.render('questsId/quests-id', renderData);
+            res.render('questsId/quests-id', renderData);
+        } else {
+            res.render('notFound/notFound');
+        }
     });
 });
 
