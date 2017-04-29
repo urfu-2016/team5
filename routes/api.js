@@ -22,15 +22,15 @@ router.route('/quests/:slug')
     .put(authController.authorizedOnly, questsController.updateQuest)
     .delete(authController.authorizedOnly, questsController.removeQuest);
 
-router.route('/comments')
+router.route('/comments/:questSlug')
     .get(commentsController.getComments)
     .post(authController.authorizedOnly, commentsController.createComment);
 
-router.route('/comments/:id')
-    .get(commentsController.getCommentById)
+router.route('/comments/:questSlug/:position')
+    .get(commentsController.getCommentByPosition)
     .delete(authController.authorizedOnly, commentsController.removeComment);
 
-router.route('/comments/:id/like')
+router.route('/comments/:questSlug/:position/like')
     .post(authController.authorizedOnly, commentsController.likeComment);
 
 module.exports = router;
