@@ -10,6 +10,6 @@ const commentsRoot = document.getElementById('comments-root');
 CommentsPoster.setSlug(commentsRoot.dataset.slug);
 
 ReactDOM.render(
-    <Comments isAuth={commentsRoot.dataset.isAuth}/>,
+    <Comments isAuth={Number(commentsRoot.dataset.isAuth)}/>,
     document.getElementById('comments-root')
 );
