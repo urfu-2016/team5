@@ -1,8 +1,11 @@
 import React from 'react';
 import CommentFormContainer from './../CommentForm/CommentFormContainer';
 import CommentListContainer from './../CommentList/CommentListContainer';
+import {CommentsStrings} from './../../constants/strings';
 import './comments.css';
 import b from 'b_';
+
+const comments = b.lock('comments');
 
 function FormBlock(props) {
     if (props.isAuth) {
@@ -10,20 +13,21 @@ function FormBlock(props) {
     }
 
     return (
-        <div className={[b('comments', 'message'), b('block', {yellow: true})].join(' ')}>
-            Чтобы оставить комментарии, пожалуйста, войдите в аккаунт или зарегистрируйтесь.
-        </div>);
+        <div className={comments('message')}>
+            {CommentsStrings.message}
+        </div>
+    );
 }
 
 export default class Comments extends React.Component {
     render() {
         return (
-            <div className={b('comments')}>
-                <div className={[b('comments', 'form'), b('block', {yellow: true})].join(' ')}>
-                    <FormBlock {...this.props} />
+            <div className={comments()}>
+                <div className={[b('block', {gray: true}), comments('form')].join(' ')}>
+                    <FormBlock isAuth={this.props.isAuth} />
                 </div>
-                <div className={[b('comments', 'list'), b('block', {yellow: true})].join(' ')}>
-                    <CommentListContainer />
+                <div className={[comments('list'), b('block', {gray: true})].join(' ')}>
+                    <CommentListContainer isAuth={this.props.isAuth}/>
                 </div>
             </div>
         );

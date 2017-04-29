@@ -1,9 +1,15 @@
-.comment__text
-{
-    padding-left: 5%;
-}
-
 .comments__message
 {
     padding: 20px;
+    text-align: center;
+}
+
+.comments__form
+{
+    padding: 0;
+}
+
+.comments__list
+{
+    padding: 0;
 }

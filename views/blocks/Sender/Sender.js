@@ -10,38 +10,43 @@ export default function Sender(Component) {
 
             this.handleSuccessfulSend = this.handleSuccessfulSend.bind(this);
             this.handleFailedSend = this.handleFailedSend.bind(this);
-            this.handleNoConnecting = this.handleNoConnecting.bind(this);
             this.handleAction = this.handleAction.bind(this);
         }
 
-        handleAction(data) {
+        handleAction() {
             this.setState(states.actionState);
-            this.props.handleAction(data,
+
+            if (this.props.onActon) {
+                this.props.onActon();
+            }
+
+            this.props.handleAction(
                 {
                     handleSuccessfulSend: this.handleSuccessfulSend,
-                    handleFailedSend: this.handleFailedSend,
-                    handleNoConnecting: this.handleNoConnecting
-                }
+                    handleFailedSend: this.handleFailedSend
+                },
+                this.props.data
             );
-        }
-
-        handleNoConnecting() {
-            this.setState(states.noConnectionState);
         }
 
         handleSuccessfulSend(data) {
             this.setState(states.defaultState);
-            this.props.onSuccesfulEnd(data);
+            if (this.props.onSuccesfulEnd) {
+                this.props.onSuccesfulEnd(data);
+            }
         }
 
-        handleFailedSend() {
-            this.setState(states.failedState);
+        handleFailedSend(error) {
+            this.setState(states.defaultState);
+            if (this.props.onFailedSend) {
+                this.props.onFailedSend(error.isNoConection);
+            }
         }
 
         render() {
             return (
-                <Component onAction={this.handleAction}
-                    {...this.state} {...this.props}
+                <Component {...this.state} {...this.props}
+                    onAction={this.handleAction}
                 />
             );
         }

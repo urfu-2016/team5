@@ -3,7 +3,7 @@ import './CommentForm.css';
 import CommentForm from './CommentForm';
 import sender from './../Sender/Sender';
 import Emitter from './../Emitter.js';
-import CommentsPoster from './../CommentsPoster.js';
+import CommentsPoster from './../comments/CommentsPoster.js';
 
 const CommentFormWithSending = sender(CommentForm);
 
@@ -12,34 +12,50 @@ export default class CommentFormContainer extends React.Component {
         super(props);
 
         this.state = {
-            text: ''
+            text: '',
+            rows: 4,
+            showError: false,
+            noConnection: false
         };
 
         this.handleSuccesfulEnd = this.handleSuccesfulEnd.bind(this);
         this.handleTextChange = this.handleTextChange.bind(this);
+        this.handleFailedSend = this.handleFailedSend.bind(this);
     }
 
-    handleTextChange(e) {
+    handleTextChange(text) {
         this.setState({
-            text: e.target.value
+            text: text
         });
     }
 
     handleSuccesfulEnd() {
+        this.handleTextChange('');
+        Emitter.emit('updateCommentList');
+    }
+
+    handleFailedSend(isNoConection) {
         this.setState({
-            text: ''
+            showError: true,
+            noConnection: isNoConection
         });
 
-        Emitter.emit('updateCommentList');
+        setTimeout(function () {
+            this.setState({
+                showError: false
+            });
+        }.bind(this), 3000);
     }
 
     render() {
         return (
             <CommentFormWithSending
-                text={this.state.text}
+                {...this.state}
+                data={this.state.text}
                 onChangeText={this.handleTextChange}
                 handleAction={CommentsPoster.sendComment}
                 onSuccesfulEnd={this.handleSuccesfulEnd}
+                onFailedSend={this.handleFailedSend}
             />
         );
     }

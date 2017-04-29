@@ -1,37 +1,36 @@
 import React from 'react';
-import Comment from './../Comment/Comment';
 import Emitter from './../Emitter.js';
 import './CommentList.css';
 import b from 'b_';
+import CommentContainer from './../Comment/CommentContainer';
+import {CommentListStrings} from './../../constants/strings';
 
-const commentItems = comments => comments.map(comment =>
-    <div key={comment.id} className={b('comment-list', 'item')}>
-        <Comment {...comment} key={comment.id} />
-    </div>);
+const commentList = b.lock('comment-list');
 
 export default class CommentList extends React.Component {
     componentDidMount() {
         Emitter.on('updateCommentList', this.props.onAction);
-        this.timerID = setInterval(() => this.props.onAction(), 100000);
         this.props.onAction();
     }
 
     componentWillUnMount() {
         Emitter.off('updateCommentList');
-        clearInterval(this.timerID);
     }
 
     render() {
-        const {comments} = this.props;
+        const {comments, isAuth} = this.props;
 
         return (
-            <div className={b('comment-list')}>
-                {comments.length > 0 && commentItems(comments)}
-                {comments.length === 0 &&
-                    <div className={b('comment-list', 'message')}>
-                        Здесь пока нет коментариев)
+            <div className={commentList()}>
+                {comments.length > 0 ? (
+                    comments.map(comment =>
+                        <CommentContainer {...comment} isAuth={isAuth} key={comment.id} />
+                    )
+                ) : (
+                    <div className={commentList('message')}>
+                        {CommentListStrings.message}
                     </div>
-                }
+                )}
             </div>
         );
     }

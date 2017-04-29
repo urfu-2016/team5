@@ -7,36 +7,35 @@
 
 {{#content "body"}}
     <div class="content">
-        <div class="content__info block block_yellow">
+        <div class="content__info block block_gray">
             {{> card/card}}
         </div>
         <div class="content__action actions">
             {{#unless isCreator}}
-            <button class="btn btn_yellow row__item">
+            <button class="btn btn_gray row__item">
                 <span>&#128150;</span>
                 <span>{{quest.likes.length}}</span>
             </button>
             {{/unless}}
             {{#if isCreator}}
-            <button class="btn btn_yellow row__item">
+            <button class="btn btn_gray row__item">
                 <span>Удалить квест</span>
             </button>
-            <button class="btn btn_yellow row__item">
+            <button class="btn btn_gray row__item">
                 <span>Изменить квест</span>
             </button>
             {{else}}
-            <button class="btn btn_yellow row__item">
+            <button class="btn btn_grayrow__item">
                 <span>&#128278;</span>
             </button>
-            <button class="btn btn_yellow row__item">
+            <button class="btn btn_gray row__item">
                 <span>Пройти квест</span>
             </button>
             {{/if}}
         </div>
-    </div>
-    <div id="comments-root" data-slug="quests/1">
+        <div id="comments-root" data-is-auth={{isAuth}} data-slug={{slug}} >
+        </div>
     </div>
     <script src="js/questId.js"></script>
 {{/content}}
-
 {{/extend}}
