@@ -13,7 +13,7 @@ async function getCommentObject(comment, currentUser) {
     const isAuthor = currentUser && author.equals(currentUser._id);
 
     return {
-        id: comment.id,
+        id: comment.shortid,
         message: comment.message,
         author: author.username,
         date: comment.formattedDate,
@@ -54,7 +54,7 @@ module.exports = {
         if (!commentId) {
             return next(new errors.NotFoundError(constants.quest.questNotFoundErrorMessage));
         }
-        const comment = await Comment.findById(commentId);
+        const comment = await Comment.findOne({shortid: commentId});
         const data = await getCommentObject(comment, req.user);
 
         res.status(httpStatus.OK).send({data});
@@ -66,7 +66,7 @@ module.exports = {
         if (!commentId) {
             return next(new errors.NotFoundError(constants.comment.notFoundMessage));
         }
-        const comment = await Comment.findById(commentId);
+        const comment = await Comment.findOne({shortid: commentId});
         if (!(await comment.createdBy(req.user.username))) {
             return next(new errors.BadRequestError(constants.auth.permissionDenied));
         }
@@ -81,7 +81,7 @@ module.exports = {
         if (!commentId) {
             return next(new errors.NotFoundError(constants.comment.notFoundMessage));
         }
-        const comment = await Comment.findById(commentId);
+        const comment = await Comment.findOne({shortid: commentId});
         await comment.like(req.user);
 
         res.status(httpStatus.OK).send();

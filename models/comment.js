@@ -7,7 +7,7 @@ const mongoose = require('../libs/mongoose-connection');
 const ObjectId = mongoose.Schema.ObjectId;
 
 const commentSchema = new mongoose.Schema({
-    _id: {
+    shortid: {
         type: String,
         default: shortid.generate
     },

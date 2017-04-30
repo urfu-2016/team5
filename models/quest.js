@@ -65,13 +65,13 @@ questSchema.statics.create = async function ({authorId, title = '', description 
 questSchema.methods.getComments = async function () {
     // Fixme: какой-то костыль, но по непонятной причине populate('comments') не работает
     return await Promise.all(
-        this.comments.map(async id => await Comment.findById(id))
+        this.comments.map(async id => await Comment.findOne({shortid: id}))
     );
 };
 
 questSchema.methods.addComment = async function (user, message) {
     const comment = await Comment.create(user, message);
-    this.comments.push(comment);
+    this.comments.push(comment.shortid);
     await this.save();
     return comment;
 };
@@ -79,7 +79,7 @@ questSchema.methods.addComment = async function (user, message) {
 questSchema.methods.removeComment = async function (id) {
     const removedCommentIndex = this.comments.findIndex(comment => comment === id);
     if (removedCommentIndex !== -1) {
-        const removedComment = await Comment.findById(id);
+        const removedComment = await Comment.findOne({shortid: id});
         await removedComment.remove();
         this.comments.splice(removedCommentIndex, 1);
         await this.save();
