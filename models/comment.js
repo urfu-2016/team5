@@ -39,11 +39,13 @@ commentSchema.methods.like = async function (user) {
 
 commentSchema.methods.likedBy = async function (username) {
     const user = await mongoose.model('User').findOne({username});
+    
     return this.likes.some(x => x.equals(user.id));
 };
 
 commentSchema.methods.createdBy = async function (username) {
     const user = await mongoose.model('User').findOne({username});
+    
     return this.author.equals(user._id);
 };
 
