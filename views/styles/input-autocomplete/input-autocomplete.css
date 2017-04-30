@@ -1,0 +1,91 @@
+.easy-autocomplete
+{
+    position: relative;
+}
+
+.easy-autocomplete input
+{
+    width: 100%;
+}
+
+.easy-autocomplete a
+{
+    display: block;
+}
+
+.easy-autocomplete-container
+{
+    left: 0;
+    position: absolute;
+    width: 100%;
+    z-index: 2;
+}
+
+.easy-autocomplete-container ul
+{
+    background: none repeat scroll 0 0 #ffffff;
+    border-top: 1px dotted #ccc;
+    display: none;
+    margin-top: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    position: relative;
+    top: -1px;
+}
+
+.easy-autocomplete-container ul li
+{
+    background: inherit;
+    border-color: #ccc;
+    border-image: none;
+    border-style: solid;
+    border-width: 0 1px;
+    display: block;
+    font-size: 14px;
+    font-weight: normal;
+    padding: 8px 12px;
+
+}
+.easy-autocomplete-container ul li:last-child
+{
+    border-radius: 0 0 2px 2px;
+    border-width: 0 1px 1px;
+}
+
+.easy-autocomplete-container ul li.selected
+{
+    background-color: #f80;
+    color: #fff;
+    cursor: pointer;
+}
+
+.easy-autocomplete-container ul li.selected div
+{
+    font-weight: normal;
+}
+
+.easy-autocomplete-container ul li div
+{
+    display: block;
+    font-weight: normal;
+    word-break: break-all;
+}
+
+.easy-autocomplete-container ul li b
+{
+    font-weight: bold;
+}
+
+.eac-description .eac-item span
+{
+    color: #aaa;
+    font-style: italic;
+    font-size: 0.9em;
+}
+
+.eac-icon-right .eac-item
+{
+    margin-top: 8px;
+    min-height: 24px;
+    position: relative;
+}

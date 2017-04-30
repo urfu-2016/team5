@@ -1,9 +1,7 @@
 .input-group__input
 {
     display: block;
-    width: 90%;
     vertical-align: middle;
-    margin: 0 5px 1px 8px;
     height: 1rem;
     border: none;
     transition: all ease-in-out 0.15s;

@@ -1,6 +1,7 @@
 .image-preview___preview
 {
     margin: 5px;
+    vertical-align: middle;
 }
 
 .image-preview___preview input
@@ -11,5 +12,4 @@
 .image-preview___preview img
 {
     width: 82px;
-    height: 82px;
 }
