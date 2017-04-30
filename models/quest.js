@@ -24,7 +24,7 @@ const questSchema = new mongoose.Schema({
         type: [{type: ObjectId, ref: 'User'}],
         default: []
     },
-    comments: [{type: ObjectId, ref: 'Comment'}],
+    comments: [String],
     tags: {
         type: [String],
         default: []
@@ -76,12 +76,16 @@ questSchema.methods.addComment = async function (user, message) {
     return comment;
 };
 
-questSchema.methods.removeComment = async function (position) {
-    const removedCommentId = this.comments.splice(position, 1)[0];
-    const removedComment = await Comment.findById(removedCommentId);
-    await removedComment.remove();
-    await this.save();
-    return removedComment;
+questSchema.methods.removeComment = async function (id) {
+    const removedCommentIndex = this.comments.findIndex(comment => comment === id);
+    if (removedCommentIndex !== -1) {
+        const removedComment = await Comment.findById(id);
+        await removedComment.remove();
+        this.comments.splice(removedCommentIndex, 1);
+        await this.save();
+
+        return removedComment;
+    }
 };
 
 questSchema.statics.update = async function (slug, {title, description, city, tags}) {

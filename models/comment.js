@@ -1,11 +1,16 @@
 'use strict';
 
 const moment = require('moment');
+const shortid = require('shortid');
 const constants = require('../constants/models');
 const mongoose = require('../libs/mongoose-connection');
-const ObjectId = mongoose.Schema.Types.ObjectId;
+const ObjectId = mongoose.Schema.ObjectId;
 
 const commentSchema = new mongoose.Schema({
+    _id: {
+        type: String,
+        default: shortid.generate
+    },
     message: {
         type: String,
         maxlength: constants.comment.maxLength,
