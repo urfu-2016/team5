@@ -69,7 +69,10 @@ describe('controller:comment', () => {
             const comment = (await createComment('blah', quest.slug)).body.data;
             await chaiRequest.logout();
 
-            const user = {username: 'hacker', password: '$o_S+r0n9_Pa$$woгd'};
+            const user = {
+                username: 'hacker', password: '$o_S+r0n9_Pa$$woгd',
+                email: 'some@mail.ru', login: 'hacker'
+            };
             await chaiRequest.createUserAndSignIn(user);
 
             try {
