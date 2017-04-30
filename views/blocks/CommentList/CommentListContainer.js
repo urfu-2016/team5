@@ -18,7 +18,7 @@ export default class CommentListContainer extends React.Component {
 
     handleCommentsChange(data) {
         this.setState({
-            comments: data.comments
+            comments: data.data
         });
     }
 

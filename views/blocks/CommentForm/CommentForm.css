@@ -50,34 +50,42 @@
     border: 1px solid #ff8f00;
 }
 
-.comment-form__input-group_sending,
-.comment-form__text-field_sending
+.comment-form__text-field:disabled
 {
     cursor: progress;
     opacity: 0.4;
 }
 
-.comment-form__button_submit
+.comment-form__button
 {
-    background: rgb(255, 164, 37);
+    background: #ff8f00;
     border-radius: 3px;
-    border: 1px solid #ffb455;
+    border: 0;
     padding: 8px 55px;
     outline: 0;
     font-size: 15px;
     color: #fff;
+    
 }
 
-.comment-form__button_submit:hover,
-.comment-form__button_submit:disabled
+.comment-form__button_readyToSend
 {
-    background: #ff8f00;
+    box-shadow: 0 0 5px #aaa;
+}
+
+.comment-form__button_readyToSend:hover
+{
     cursor: pointer;
     box-shadow: 0 0 5px #ff8f00;
-    border: 1px solid #ff8f00;
 }
 
-.comment-form__button_submit:disabled
+.comment-form__button:disabled
+{
+    background: rgb(255, 204, 138);
+    cursor: default;
+}
+
+.comment-form__button_sending
 {
     cursor: progress;
 }

@@ -23,7 +23,9 @@ export default class Likes extends React.Component {
                 <button className={[likeCounter('button', {liked: !disabledLike && liked}), 'button_icon'].join(' ')}
                     disabled={disabledLike} onClick={this.handleClick}>
                         <i className={'fa fa-heart'} aria-hidden={true}></i>
-                        <span className={likeCounter('value')}>{likesCount}</span>
+                        {likesCount > 0 &&
+                            <span className={likeCounter('value')}>{likesCount}</span>
+                        }
                 </button>
             </div>);
     }

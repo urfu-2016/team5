@@ -24,24 +24,29 @@ export default class CommentForm extends React.Component {
     }
 
     render() {
-        const {sending, noConnection, showError} = this.props;
+        const {sending, noConnection, showError, text, rows} = this.props;
+        const readyToSend = text.length !== 0 && !sending;
+
         return (
             <div className={commentForm()}>
                 <form
                     onSubmit={this.handleSubmit}
                     autoComplete="off"
-                    className={commentForm('input-group', {sending})}
+                    className={commentForm('input-group')}
                     method="post">
                     <textarea
                         onChange={this.handleTextChange}
                         className={['input', commentForm('text-field', {sending})].join(' ')}
+                        disabled={sending}
                         maxLength={CommentFormConstants.maxLength}
                         placeholder={CommentFormStrings.placeholder}
                         name="comment"
-                        value={this.props.text}
-                        rows={this.props.rows}>
+                        value={text}
+                        rows={rows}>
                     </textarea>
-                    <button type="submit" disabled={sending} className={commentForm('button', {submit: true})}>
+                    <button type="submit"
+                        disabled={!readyToSend}
+                        className={commentForm('button', {readyToSend, sending})}>
                         {CommentFormStrings.sendComment}
                     </button>
                 </form>

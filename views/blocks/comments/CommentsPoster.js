@@ -38,7 +38,7 @@ class CommentsPoster {
     }
 
     getComment(handles, id) {
-        this.request(`api/comments/${this.slug}/${id}`,
+        this.request(`../api/comments/${this.slug}/${id}`,
             {
                 method: 'GET',
                 credentials: 'include'
@@ -46,7 +46,7 @@ class CommentsPoster {
     }
 
     getComments(handles) {
-        this.request(`api/comments/${this.slug}`,
+        this.request(`../api/comments/${this.slug}`,
             {
                 method: 'GET',
                 credentials: 'include'
@@ -54,7 +54,7 @@ class CommentsPoster {
     }
 
     sendComment(handles, text) {
-        this.request(`api/comments/${this.slug}`,
+        this.request(`../api/comments/${this.slug}`,
             {
                 method: 'POST',
                 body: JSON.stringify({text}),
@@ -66,7 +66,7 @@ class CommentsPoster {
     }
 
     removeComment(handles, id) {
-        this.request(`api/comments/${this.slug}/${id}`,
+        this.request(`../api/comments/${this.slug}/${id}`,
             {
                 method: 'DELETE',
                 credentials: 'include'
@@ -74,7 +74,7 @@ class CommentsPoster {
     }
 
     likeComment(handles, id) {
-        this.request(`api/comments/${this.slug}/${id}/like`,
+        this.request(`../api/comments/${this.slug}/${id}/like`,
             {
                 method: 'POST',
                 credentials: 'include'

@@ -14,7 +14,6 @@ router.get('/', function (req, res) {
 
 router.route('/:slug').get(function (req, res) {
     Quest.getBySlug(req.params.slug).then(questData => {
-        console.info(questData);
         if (questData) {
             const renderData = {
                 title: questData.title,
