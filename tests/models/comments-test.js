@@ -25,12 +25,6 @@ describe('models:Comments', () => {
         (await comment.createdBy(user.username)).should.be.equal(true);
     });
 
-    it('should get all comments', async () => {
-        await Comment.create(user, message);
-        await Comment.create(user, message);
-        (await Comment.getAll()).length.should.equal(2);
-    });
-
     it('should error when message to long', async () => {
         const ValidationError = mongoose.Error.ValidationError;
         let message = '';
@@ -42,12 +36,6 @@ describe('models:Comments', () => {
         } catch (err) {
             err.name.should.equal(ValidationError.name);
         }
-    });
-
-    it('should remove by id', async () => {
-        const comment = await Comment.create(user, message);
-        await Comment.delete(comment._id);
-        (await Comment.getAll()).length.should.equal(0);
     });
 
     it('should be liked by user', async () => {

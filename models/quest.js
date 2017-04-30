@@ -2,7 +2,8 @@
 
 const constants = require('../constants/mongoose');
 const mongoose = require('../libs/mongoose-connection');
-const ObjectId = mongoose.Schema.Types.ObjectId;
+const ObjectId = mongoose.Schema.ObjectId;
+const Comment = require('./comment');
 const Image = require('./schemas/image');
 const slugify = require('slug');
 const shortid = require('shortid');
@@ -23,6 +24,7 @@ const questSchema = new mongoose.Schema({
         type: [{type: ObjectId, ref: 'User'}],
         default: []
     },
+    comments: [{type: ObjectId, ref: 'Comment'}],
     tags: {
         type: [String],
         default: []
@@ -58,6 +60,28 @@ questSchema.statics.create = async function ({authorId, title = '', description 
     }
 
     return quest;
+};
+
+questSchema.methods.getComments = async function () {
+    // Fixme: какой-то костыль, но по непонятной причине populate('comments') не работает
+    return await Promise.all(
+        this.comments.map(async id => await Comment.findById(id))
+    );
+};
+
+questSchema.methods.addComment = async function (user, message) {
+    const comment = await Comment.create(user, message);
+    this.comments.push(comment);
+    await this.save();
+    return comment;
+};
+
+questSchema.methods.removeComment = async function (position) {
+    const removedCommentId = this.comments.splice(position, 1)[0];
+    const removedComment = await Comment.findById(removedCommentId);
+    await removedComment.remove();
+    await this.save();
+    return removedComment;
 };
 
 questSchema.statics.update = async function (slug, {title, description, city, tags}) {
