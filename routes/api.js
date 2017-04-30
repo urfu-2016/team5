@@ -26,11 +26,11 @@ router.route('/comments/:slug')
     .get(commentsController.getComments)
     .post(authController.authorizedOnly, commentsController.createComment);
 
-router.route('/comments/:slug/:position')
-    .get(commentsController.getCommentByPosition)
+router.route('/comments/:slug/:id')
+    .get(commentsController.getCommentById)
     .delete(authController.authorizedOnly, commentsController.removeComment);
 
-router.route('/comments/:slug/:position/like')
+router.route('/comments/:slug/:id/like')
     .post(authController.authorizedOnly, commentsController.likeComment);
 
 module.exports = router;

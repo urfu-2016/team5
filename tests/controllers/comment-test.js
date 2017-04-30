@@ -36,8 +36,8 @@ describe('controller:comment', () => {
         });
 
         it('should delete a comment', async () => {
-            await createComment('blah', quest.slug);
-            const res = await chaiRequest.delete(`/api/comments/${quest.slug}/0`);
+            const comment = (await createComment('blah', quest.slug)).body.data;
+            const res = await chaiRequest.delete(`/api/comments/${quest.slug}/${comment.id}`);
 
             res.status.should.equal(HttpStatus.OK);
         });
@@ -55,25 +55,25 @@ describe('controller:comment', () => {
         });
 
         it('should not delete a comment without auth', async () => {
-            await createComment('blah', quest.slug);
+            const comment = (await createComment('blah', quest.slug)).body.data;
             await chaiRequest.logout();
 
             try {
-                await chaiRequest.delete(`/api/comments/${quest.slug}/0`);
+                await chaiRequest.delete(`/api/comments/${quest.slug}/${comment.id}`);
             } catch (err) {
                 err.response.status.should.equal(HttpStatus.BAD_REQUEST);
             }
         });
 
         it('should not delete a comment by not author', async () => {
-            await createComment('blah', quest.slug);
+            const comment = (await createComment('blah', quest.slug)).body.data;
             await chaiRequest.logout();
 
             const user = {username: 'hacker', password: '$o_S+r0n9_Pa$$woгd'};
             await chaiRequest.createUserAndSignIn(user);
 
             try {
-                await chaiRequest.delete(`/api/comments/${quest.slug}/0`);
+                await chaiRequest.delete(`/api/comments/${quest.slug}/${comment.id}`);
             } catch (err) {
                 err.response.status.should.equal(HttpStatus.BAD_REQUEST);
                 err.response.text.should.equal(constants.auth.permissionDenied);
@@ -83,10 +83,10 @@ describe('controller:comment', () => {
         });
     });
 
-    it('should GET a comment by the given position', async () => {
+    it('should GET a comment by id', async () => {
         const message = 'blah';
-        await createComment(message, quest.slug);
-        const res = await chaiRequest.get(`/api/comments/${quest.slug}/0`);
+        const comment = (await createComment(message, quest.slug)).body.data;
+        const res = await chaiRequest.get(`/api/comments/${quest.slug}/${comment.id}`);
 
         res.status.should.equal(HttpStatus.OK);
         res.body.data.message.should.equal(message);
@@ -104,17 +104,17 @@ describe('controller:comment', () => {
     });
 
     it('should be liked by user', async () => {
-        await createComment('Blah', quest.slug);
-        await chaiRequest.post(`/api/comments/${quest.slug}/0/like`);
-        const res = await chaiRequest.get(`/api/comments/${quest.slug}/0`);
+        const comment = (await createComment('Blah', quest.slug)).body.data;
+        await chaiRequest.post(`/api/comments/${quest.slug}/${comment.id}/like`);
+        const res = await chaiRequest.get(`/api/comments/${quest.slug}/${comment.id}`);
         res.body.data.likesCount.should.equal(1);
     });
 
     it('shouldn\'t be liked by user twice', async () => {
-        await createComment('Blah', quest.slug);
-        await chaiRequest.post(`/api/comments/${quest.slug}/0/like`);
-        await chaiRequest.post(`/api/comments/${quest.slug}/0/like`);
-        const res = await chaiRequest.get(`/api/comments/${quest.slug}/0`);
+        const comment = (await createComment('Blah', quest.slug)).body.data;
+        await chaiRequest.post(`/api/comments/${quest.slug}/${comment.id}/like`);
+        await chaiRequest.post(`/api/comments/${quest.slug}/${comment.id}/like`);
+        const res = await chaiRequest.get(`/api/comments/${quest.slug}/${comment.id}`);
         res.body.data.likesCount.should.equal(0);
     });
 });
