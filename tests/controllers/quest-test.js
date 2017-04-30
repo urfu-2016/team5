@@ -6,22 +6,11 @@ const dbClearer = require('../../scripts/clear-db');
 const slugify = require('slug');
 const questsMocks = require('../mocks/quests');
 const userMocks = require('../mocks/users');
-const User = require('../../models/user');
 const createQuestWithAuthor = require('../../scripts/generate-db-data').createQuestWithAuthor;
 const chaiRequest = require('../commonTestLogic/chaiRequest')(server);
 const constants = require('../../constants/controllers');
 
 const questData = questsMocks.regularQuest;
-
-async function createUserAndSignIn(user) {
-    await User.create(user);
-
-    return await chaiRequest.signInUser(user);
-}
-
-async function logout() {
-    return await chaiRequest.post('/logout');
-}
 
 async function createQuest() {
     return await chaiRequest.post('/api/quests', questData);
@@ -33,10 +22,10 @@ describe('controller:quest', () => {
     after(() => dbClearer.removeAll());
 
     describe('required auth', () => {
-        beforeEach(() => createUserAndSignIn(userMocks.userWithCorrectPassword));
+        beforeEach(() => chaiRequest.createUserAndSignIn(userMocks.userWithCorrectPassword));
 
         describe('success with auth', () => {
-            afterEach(() => logout());
+            afterEach(() => chaiRequest.logout());
 
             it('should create the quest', async () => {
                 const res = await createQuest();
@@ -44,6 +33,7 @@ describe('controller:quest', () => {
                 res.status.should.equal(HttpStatus.CREATED);
                 res.body.data.title.should.equal(questData.title);
                 res.body.data.slug.should.equal(slugify(questData.title));
+                res.body.data.isMyQuest.should.equal(true);
             });
 
             it('should PUT a quest', async () => {
@@ -59,6 +49,7 @@ describe('controller:quest', () => {
                 res.status.should.equal(HttpStatus.OK);
                 res.body.data.title.should.equal(updateData.title);
                 res.body.data.description.should.equal(updateData.description);
+                res.body.data.isMyQuest.should.equal(true);
             });
 
             it('should delete a quest', async () => {
@@ -72,7 +63,7 @@ describe('controller:quest', () => {
 
         describe('fails without auth', () => {
             it('should not create the quest without auth', async () => {
-                logout();
+                await chaiRequest.logout();
 
                 try {
                     await createQuest();
@@ -89,7 +80,7 @@ describe('controller:quest', () => {
                 };
 
                 await createQuest();
-                await logout();
+                await chaiRequest.logout();
 
                 try {
                     await chaiRequest.put(`/api/quests/${slug}`, updateData);
@@ -101,7 +92,7 @@ describe('controller:quest', () => {
             it('should not delete a quest without auth', async () => {
                 const slug = slugify(questData.title);
                 await createQuest();
-                await logout();
+                await chaiRequest.logout();
 
                 try {
                     await chaiRequest.delete(`/api/quests/${slug}`);
@@ -120,6 +111,7 @@ describe('controller:quest', () => {
 
             res.status.should.equal(HttpStatus.OK);
             res.body.data.should.length.of.at(2);
+            res.body.data[0].isMyQuest.should.equal(false);
         });
 
         it('should GET a quest by the given slug', async () => {
@@ -129,6 +121,7 @@ describe('controller:quest', () => {
 
             res.status.should.equal(HttpStatus.OK);
             res.body.data.slug.should.equal(slug);
+            res.body.data.isMyQuest.should.equal(false);
         });
 
         it('should not found nonexistent quest', async () => {

@@ -1,10 +1,10 @@
 'use strict';
 
 const httpStatus = require('http-status-codes');
-const passport = require('../../libs/passport');
-const User = require('../../models/user');
-const constants = require('../../constants/constants');
-const BadRequestError = require('../../libs/customErrors/errors').BadRequestError;
+const BadRequestError = require('../libs/customErrors/errors').BadRequestError;
+const passport = require('../libs/passport');
+const User = require('../models/user');
+const constants = require('../constants/constants');
 
 module.exports = {
     signIn(req, res, next) {

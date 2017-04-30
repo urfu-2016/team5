@@ -2,9 +2,10 @@
 
 const express = require('express');
 const router = new express.Router();
-const usersController = require('../controllers/api/users');
-const questsController = require('../controllers/api/quests');
-const authController = require('../controllers/api/auth');
+const usersController = require('../controllers/users');
+const questsController = require('../controllers/quests');
+const commentsController = require('../controllers/comments');
+const authController = require('../controllers/auth');
 
 router.route('/users')
     .get(usersController.getUsers);
@@ -20,5 +21,16 @@ router.route('/quests/:slug')
     .get(questsController.getQuestBySlug)
     .put(authController.authorizedOnly, questsController.updateQuest)
     .delete(authController.authorizedOnly, questsController.removeQuest);
+
+router.route('/comments/:slug')
+    .get(commentsController.getComments)
+    .post(authController.authorizedOnly, commentsController.createComment);
+
+router.route('/comments/:slug/:position')
+    .get(commentsController.getCommentByPosition)
+    .delete(authController.authorizedOnly, commentsController.removeComment);
+
+router.route('/comments/:slug/:position/like')
+    .post(authController.authorizedOnly, commentsController.likeComment);
 
 module.exports = router;
