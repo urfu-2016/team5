@@ -20,13 +20,13 @@ export default class CommentContainer extends React.Component {
         this.setState({
             deleted: true
         });
+        this.props.onDelete();
     }
 
     render() {
         if (this.state.deleted) {
             return null;
         }
-
         return (
             <CommentWithSending
                 data={this.props.id} {...this.props}

@@ -26,13 +26,15 @@ class CommentsPoster {
         return error;
     }
 
-    request(url, options, handles) {
+    request(url, options, handles, parser) {
+        parser = parser || (res => res);
+
         fetch(url, options)
             .then(this.checkStatus,
                 error => {
                     throw this.getCustomError(error.message, true);
                 })
-            .then(res => res.json())
+            .then(parser)
             .then(handles.handleSuccessfulSend)
             .catch(handles.handleFailedSend);
     }
@@ -42,7 +44,9 @@ class CommentsPoster {
             {
                 method: 'GET',
                 credentials: 'include'
-            }, handles);
+            },
+            handles,
+            res => res.json());
     }
 
     getComments(handles) {
@@ -50,7 +54,9 @@ class CommentsPoster {
             {
                 method: 'GET',
                 credentials: 'include'
-            }, handles);
+            },
+            handles,
+            res => res.json());
     }
 
     sendComment(handles, text) {

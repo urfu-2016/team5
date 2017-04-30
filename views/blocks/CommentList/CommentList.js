@@ -18,13 +18,12 @@ export default class CommentList extends React.Component {
     }
 
     render() {
-        const {comments, isAuth} = this.props;
-
+        const {comments, isAuth, commentsLength, updateCommentsLength} = this.props;
         return (
             <div className={commentList()}>
-                {comments.length > 0 ? (
+                {commentsLength > 0 ? (
                     comments.map(comment =>
-                        <CommentContainer {...comment} isAuth={isAuth} key={comment.id} />
+                        <CommentContainer {...comment} isAuth={isAuth} key={comment.id} onDelete={updateCommentsLength}/>
                     )
                 ) : (
                     <div className={commentList('message')}>
