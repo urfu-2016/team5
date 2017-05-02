@@ -4,6 +4,7 @@ const httpStatus = require('http-status-codes');
 const BadRequestError = require('../libs/customErrors/errors').BadRequestError;
 const passport = require('../libs/passport');
 const User = require('../models/user');
+const emailClient = require('./email-client');
 const constants = require('../constants/constants');
 
 module.exports = {
@@ -36,7 +37,9 @@ module.exports = {
         };
 
         try {
-            await User.create(userData);
+            const user = await User.create(userData);
+            emailClient.sendRegistrationMail(user.email);
+
             res
                 .status(httpStatus.CREATED)
                 .send(constants.controllers.auth.signedUpPattern(req.body.username));

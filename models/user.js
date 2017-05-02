@@ -8,6 +8,8 @@ const constants = require('../constants/constants');
 const userSchema = new mongoose.Schema({
     firstname: String,
     surname: String,
+    registrationDate: {type: Date, default: Date.now},
+    emailVerified: {type: Boolean, default: false},
     username: {
         type: String,
         lowercase: true,
