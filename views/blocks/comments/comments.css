@@ -4,12 +4,8 @@
     text-align: center;
 }
 
+.comments__list,
 .comments__form
-{
-    padding: 0;
-}
-
-.comments__list
 {
     padding: 0;
 }

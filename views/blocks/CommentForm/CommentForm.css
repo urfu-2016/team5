@@ -60,9 +60,9 @@
 {
     background: #ff8f00;
     border-radius: 3px;
-    border: 0;
+    border: none;
     padding: 8px 55px;
-    outline: 0;
+    outline: none;
     font-size: 15px;
     color: #fff;
 }

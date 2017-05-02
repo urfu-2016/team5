@@ -18,7 +18,7 @@ router.route('/:slug').get(function (req, res) {
             const renderData = {
                 title: questData.title,
                 quest: questData,
-                isAuth: req.user ? 1 : 0, // TODO: Убрать эти заглушки
+                isAuth: req.user ? 1 : 0,
                 isCreator: false  // TODO: Убрать эти заглушкиs
             };
 

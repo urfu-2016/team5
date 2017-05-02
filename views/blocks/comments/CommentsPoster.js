@@ -46,7 +46,8 @@ class CommentsPoster {
                 credentials: 'include'
             },
             handles,
-            res => res.json());
+            res => res.json()
+        );
     }
 
     getComments(handles) {
@@ -56,7 +57,8 @@ class CommentsPoster {
                 credentials: 'include'
             },
             handles,
-            res => res.json());
+            res => res.json()
+        );
     }
 
     sendComment(handles, text) {
@@ -68,7 +70,9 @@ class CommentsPoster {
                     'Content-Type': 'application/json'
                 },
                 credentials: 'include'
-            }, handles);
+            },
+            handles
+        );
     }
 
     removeComment(handles, id) {
@@ -84,7 +88,9 @@ class CommentsPoster {
             {
                 method: 'POST',
                 credentials: 'include'
-            }, handles);
+            },
+            handles
+        );
     }
 }
 

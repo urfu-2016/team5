@@ -24,9 +24,7 @@ export default class CommentFormContainer extends React.Component {
     }
 
     handleTextChange(text) {
-        this.setState({
-            text: text
-        });
+        this.setState({text});
     }
 
     handleSuccesfulEnd() {

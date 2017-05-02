@@ -19,11 +19,9 @@ export default class CommentListContainer extends React.Component {
     }
 
     updateCommentsLength() {
-        this.setState(prevState => {
-            return {
-                commentsLength: prevState.commentsLength - 1
-            };
-        });
+        this.setState(prevState => ({
+            commentsLength: prevState.commentsLength - 1
+        }));
     }
 
     handleCommentsChange({data}) {

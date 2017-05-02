@@ -6,9 +6,9 @@
 .button_icon
 {
     background: #fff;
-    border: 0;
+    border: none;
     cursor: pointer;
-    outline: 0;
+    outline: none;
     padding: 0;
     user-select: none;
 }

@@ -19,14 +19,10 @@ export default class LikesContainer extends React.Component {
     }
 
     handleLikesChange() {
-        this.setState(prevState => {
-            const dl = prevState.liked ? -1 : 1;
-
-            return {
-                likesCount: prevState.likesCount + dl,
-                liked: !prevState.liked
-            };
-        });
+        this.setState(prevState => ({
+            likesCount: prevState.likesCount + (prevState.liked ? -1 : 1),
+            liked: !prevState.liked
+        }));
     }
 
     handleFailedSend() {

@@ -25,7 +25,7 @@ export default class CommentForm extends React.Component {
 
     render() {
         const {sending, noConnection, showError, text, rows} = this.props;
-        const readyToSend = text.length !== 0 && !sending;
+        const readyToSend = text && !sending;
 
         return (
             <div className={commentForm()}>
