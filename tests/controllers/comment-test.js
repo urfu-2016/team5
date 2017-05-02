@@ -46,7 +46,6 @@ describe('controller:comment', () => {
     describe('fails without auth', () => {
         it('should not create the comment without auth', async () => {
             await chaiRequest.logout();
-
             try {
                 await createComment('blah', quest.slug);
             } catch (err) {
@@ -68,8 +67,10 @@ describe('controller:comment', () => {
         it('should not delete a comment by not author', async () => {
             const comment = (await createComment('blah', quest.slug)).body.data;
             await chaiRequest.logout();
-
-            const user = {username: 'hacker', password: '$o_S+r0n9_Pa$$woгd'};
+            const user = {
+                username: 'hacker', password: '$o_S+r0n9_Pa$$woгd',
+                email: 'some@mail.ru', login: 'hacker'
+            };
             await chaiRequest.createUserAndSignIn(user);
 
             try {
@@ -78,8 +79,6 @@ describe('controller:comment', () => {
                 err.response.status.should.equal(HttpStatus.BAD_REQUEST);
                 err.response.text.should.equal(constants.auth.permissionDenied);
             }
-
-            await chaiRequest.logout();
         });
     });
 

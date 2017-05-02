@@ -1,8 +1,11 @@
 'use strict';
 
+const username = 'user';
 const userWithCorrectPassword = {
-    username: 'user',
-    password: 'password'
+    username: username,
+    email: 'veryveryverylowchancethatitexists@mail.ru',
+    password: 'password',
+    login: username
 };
 
 module.exports = {

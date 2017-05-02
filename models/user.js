@@ -16,6 +16,13 @@ const userSchema = new mongoose.Schema({
         required: true
     },
 
+    email: {
+        type: String,
+        lowercase: true,
+        unique: true,
+        required: true
+    },
+
     password: {
         type: String,
         required: true
@@ -35,43 +42,52 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-userSchema.statics.create = async function ({username, password}) {
+userSchema.statics.create = async function ({username, email, password}) {
     if (!password) {
         throw new Error(constants.models.user.passwordRequiredMessage);
+    }
+
+    if (!constants.models.user.emailRegEx.test(email)) {
+        throw new Error(constants.models.user.incorrectEmail);
     }
 
     try {
         const user = new this({
             username,
+            email,
             password: await bcrypt.hash(password, constants.models.user.saltRounds)
         });
 
         return await user.save();
     } catch (err) {
         if (err.code === constants.mongoose.mongoDuplicateErrorCode) {
-            err.message = constants.models.user.alreadyExistsPattern(username);
+            if (err.errmsg.includes('email')) {
+                err.message = constants.models.user.alreadyExistsPattern(email);
+            } else if (err.errmsg.includes('username')) {
+                err.message = constants.models.user.alreadyExistsPattern(username);
+            }
+        } else if (err.name === constants.mongoose.validationErrorName) {
+            err.message = constants.models.user.emptySignUpField;
         }
 
         throw err;
     }
 };
 
-userSchema.statics.verifyPassword = async function (account) {
-    const user = await this.findOne({username: account.username});
-
-    return user ? bcrypt.compare(account.password, user.password) : false;
-};
-
-userSchema.statics.changePassword = async function (account, newPassword) {
-    const user = await this.getAccountOnCorrectPassword(account);
+userSchema.statics.changePassword = async function (userData, newPassword) {
+    const user = await this.getUserOnCorrectPassword(userData);
     user.password = await bcrypt.hash(newPassword, constants.models.user.saltRounds);
 
     return user.save();
 };
 
-userSchema.statics.getAccountOnCorrectPassword = async function (account) {
-    if (await this.verifyPassword(account)) {
-        return await this.findOne({username: account.username});
+userSchema.statics.getUserOnCorrectPassword = async function (userData) {
+    const user = await this.findOne(
+        userData.email ? {email: userData.email} : {username: userData.username}
+    );
+
+    if (user && await bcrypt.compare(userData.password, user.password)) {
+        return user;
     }
 
     throw new Error(constants.models.user.wrongPasswordOrNameMessage);

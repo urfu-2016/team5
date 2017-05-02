@@ -32,15 +32,49 @@ describe('controller:auth', () => {
                 err.response.text.should.be.equal(constants.models.user.alreadyExistsPattern(username));
             }
         });
+
+        it('should fail sign up without username', async () => {
+            const userWithoutUsername = {email: '123aasdasd@mail.ru', password: '1'};
+
+            try {
+                await chaiRequest.post('/signup', userWithoutUsername);
+            } catch (err) {
+                err.response.text.should.equal(constants.models.user.emptySignUpField);
+            }
+        });
+
+        it('should fail sign up without email', async () => {
+            const userWithoutEmail = {username: '1', password: '1'};
+
+            try {
+                await chaiRequest.post('/signup', userWithoutEmail);
+            } catch (err) {
+                err.response.text.should.equal(constants.models.user.incorrectEmail);
+            }
+        });
     });
 
     describe('signin', () => {
-        it('should sign in with correct password', async () => {
-            await chaiRequest.post('/signup', mocks.userWithCorrectPassword);
-            const res = await chaiRequest.post('/signin', mocks.userWithCorrectPassword);
+        it('should sign in by username with correct password', async () => {
+            const userData = mocks.userWithCorrectPassword;
+            await chaiRequest.post('/signup', userData);
+            const res = await chaiRequest.post('/signin', {
+                login: userData.username,
+                password: userData.password
+            });
 
-            const username = mocks.userWithCorrectPassword.username;
-            res.body.message.should.equal(constants.controllers.auth.signedInPattern(username));
+            res.body.message.should.equal(constants.controllers.auth.signedInPattern(userData.username));
+        });
+
+        it('should sign in by email with correct password', async () => {
+            const userData = mocks.userWithCorrectPassword;
+            await chaiRequest.post('/signup', userData);
+            const res = await chaiRequest.post('/signin', {
+                login: userData.email,
+                password: userData.password
+            });
+
+            res.body.message.should.equal(constants.controllers.auth.signedInPattern(userData.username));
         });
 
         it('should fails sign in with wrong password', async () => {
