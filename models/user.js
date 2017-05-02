@@ -47,8 +47,7 @@ userSchema.statics.create = async function ({username, email, password}) {
         throw new Error(constants.models.user.passwordRequiredMessage);
     }
 
-    // TODO: добавить нормальную проверку
-    if (email && !email.includes('@')) {
+    if (!constants.models.user.emailRegEx.test(email)) {
         throw new Error(constants.models.user.incorrectEmail);
     }
 
@@ -75,19 +74,19 @@ userSchema.statics.create = async function ({username, email, password}) {
     }
 };
 
-userSchema.statics.changePassword = async function (account, newPassword) {
-    const user = await this.getUserOnCorrectPassword(account);
+userSchema.statics.changePassword = async function (userData, newPassword) {
+    const user = await this.getUserOnCorrectPassword(userData);
     user.password = await bcrypt.hash(newPassword, constants.models.user.saltRounds);
 
     return user.save();
 };
 
-userSchema.statics.getUserOnCorrectPassword = async function (account) {
+userSchema.statics.getUserOnCorrectPassword = async function (userData) {
     const user = await this.findOne(
-        account.email ? {email: account.email} : {username: account.username}
+        userData.email ? {email: userData.email} : {username: userData.username}
     );
 
-    if (user && await bcrypt.compare(account.password, user.password)) {
+    if (user && await bcrypt.compare(userData.password, user.password)) {
         return user;
     }
 

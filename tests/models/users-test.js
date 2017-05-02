@@ -38,8 +38,9 @@ describe('models:user', () => {
     });
 
     it('should not create account without username', async () => {
+        const userWithoutEmail = Object.assign({}, usersMocks.userWithCorrectPassword, {username: undefined});
         try {
-            await User.create({password: usersMocks.userWithCorrectPassword.password});
+            await User.create(userWithoutEmail);
         } catch (err) {
             err.name.should.be.equal(constants.mongoose.validationErrorName);
         }

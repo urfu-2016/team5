@@ -12,7 +12,7 @@ describe('models:Comments', () => {
     const message = 'Some comment to that quest';
 
     beforeEach(async () => {
-        dbClearer.removeAll();
+        await dbClearer.removeAll();
         const userData = usersMocks.userWithCorrectPassword;
         user = await User.create(userData);
     });

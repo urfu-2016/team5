@@ -33,19 +33,24 @@ describe('controller:auth', () => {
             }
         });
 
-        it('should fail sign up without username or email', async () => {
-            const userWithoutUsername = {email: 'mail@mail.ru', password: '1'};
+        it('should fail sign up without username', async () => {
+            const userWithoutUsername = {email: '123aasdasd@mail.ru', password: '1'};
+
+            try {
+                await chaiRequest.post('/signup', userWithoutUsername);
+            } catch (err) {
+                err.response.text.should.equal(constants.models.user.emptySignUpField);
+            }
+        });
+
+        it('should fail sign up without email', async () => {
             const userWithoutEmail = {username: '1', password: '1'};
 
-            const promises = [userWithoutUsername, userWithoutEmail].map(async function (userData) {
-                try {
-                    await chaiRequest.post('/signup', userData);
-                } catch (err) {
-                    err.response.text.should.equal(constants.models.user.emptySignUpField);
-                }
-            });
-
-            await Promise.all(promises);
+            try {
+                await chaiRequest.post('/signup', userWithoutEmail);
+            } catch (err) {
+                err.response.text.should.equal(constants.models.user.incorrectEmail);
+            }
         });
     });
 

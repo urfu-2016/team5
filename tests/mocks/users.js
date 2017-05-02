@@ -3,7 +3,7 @@
 const username = 'user';
 const userWithCorrectPassword = {
     username: username,
-    email: 'somemail@mail.ru',
+    email: 'veryveryverylowchancethatitexists@mail.ru',
     password: 'password',
     login: username
 };

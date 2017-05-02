@@ -7,6 +7,7 @@ module.exports = {
         passwordRequiredMessage: 'Введите пароль.',
         alreadyExistsPattern: username => `${username} уже зарегистрирован`,
         incorrectEmail: 'Некорректный email',
+        emailRegEx: /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,4}/im,
         emptySignUpField: 'Для регистрации необходимо ввести email, username, password',
         saltRounds: 10
     },

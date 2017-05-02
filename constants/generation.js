@@ -19,6 +19,6 @@ module.exports = {
         surnamePrefix: 'Фамилия',
         usernamePrefix: 'user_',
         password: 'password',
-        email: 'somemail@mail.ru'
+        email: 'veryveryverylowchancethatitexists@mail.ru'
     }
 };
