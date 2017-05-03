@@ -62,6 +62,9 @@
                         <li class="tabs__item">
                             <a class="tabs__link active" href="#panel12" role="tab">Sign up</a>
                         </li>
+                        <li class="tabs__item">
+                            <a class="tabs__link" href="#panel13" role="tab">Forgot password</a>
+                        </li>
                     </ul>
 
                     <!-- Tab panes -->
@@ -118,6 +121,21 @@
                         </div>
                         <!--/.Panel 2-->
 
+                        <!--Panel 3-->
+                        <div class="tab-content__panel" id="panel13" role="tabpanel">
+                            <form role="form" class="form-horizontal" method="POST" action="/pass_reset">
+
+                                <div class="input-group">
+                                    <i class="fa fa-envelope"></i>
+                                    <input name="email" type="text" id="form1" class="input-group__input" placeholder="Your email">
+                                </div>
+
+                                <div class="tab-content__footer">
+                                    <button type="submit" class="btn btn_primary">Send mail</button>
+                                </div>
+                            </form>
+                        </div>
+                        <!--/.Panel 3-->
                     </div>
                     <div id="OR">OR</div>
                 </div>

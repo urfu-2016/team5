@@ -13,5 +13,8 @@ module.exports = {
     },
     comment: {
         maxLength: 300
+    },
+    query: {
+        delimiter: '___'
     }
 };

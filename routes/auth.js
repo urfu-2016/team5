@@ -14,4 +14,17 @@ router.route('/signin')
 router.route('/logout')
     .post(authController.authorizedOnly, authController.logout);
 
+router
+    .route('/reg_verification/:query')
+    .get(authController.verifyUserEmail);
+
+router
+    .route('/pass_reset')
+    .post(authController.resetPasswordRequest);
+
+router
+    .route('/pass_reset/:query')
+    .get((req, res) => res.render('resetPass/reset-pass', {query: req.params.query}))
+    .post(authController.resetPassword);
+
 module.exports = router;

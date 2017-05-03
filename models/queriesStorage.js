@@ -2,62 +2,71 @@
 
 const mongoose = require('../libs/mongoose-connection');
 const crypto = require('../libs/crypto');
+const constants = require('../constants/constants');
 
 const expiresTime = '24h';
-const DELIMITER = '___';
 
 const QueryData = new mongoose.Schema({
-    email: {
-        type: String,
-        required: true
+    createdAt: {
+        type: Date,
+        default: Date.now,
+        expires: expiresTime
     },
-    createdAt: {type: Date, default: Date.now, expires: expiresTime},
+
     salt: {
         type: String,
         required: true
     }
 });
 
-const QueriesDataModel = mongoose.model('QueriesData', QueryData);
+const QueriesDataSchema = new mongoose.Schema({
+    passwordReset: {type: QueryData},
+    emailVerification: {type: QueryData},
+    email: {
+        type: String,
+        required: true,
+        lowercase: true,
+        unique: true,
+        index: true
+    }
+});
 
-async function updateQuery(email) {
-    let queryData = await QueriesDataModel.findOne({email});
+QueriesDataSchema.statics.updateQuery = async function (email, queryType) {
+    let queriesData = await this.findOne({email});
     const createdAt = new Date();
     const salt = await crypto.genHexSalt();
     const hash = await crypto.hash(createdAt.toString(), salt);
 
-    if (queryData) {
-        queryData.createdAt = createdAt;
-        queryData.salt = salt;
-
-        await queryData.save();
+    if (queriesData) {
+        queriesData[queryType] = {createdAt, salt};
+        await queriesData.save();
     } else {
-        await QueriesDataModel.create({
-            email: email,
-            createdAt: createdAt,
-            salt: salt
-        });
+        const queryData = {createdAt, salt};
+        await this.create({email, [queryType]: queryData});
     }
 
-    return `${email}${DELIMITER}${hash}`;
-}
+    return `${email}${constants.models.query.delimiter}${hash}`;
+};
 
-async function verifyQuery(query) {
-    const queryParts = query.split(DELIMITER);
-    const email = queryParts[0];
-    const hash = queryParts[1];
-    const queryData = await QueriesDataModel.findOne({email});
-
-    if (!queryData) {
+QueriesDataSchema.statics.verifyQuery = async function (query, queryType) {
+    const [email, hash] = query.split(constants.models.query.delimiter);
+    const queriesData = await this.findOne({email});
+    if (!queriesData) {
         return false;
     }
 
-    return await crypto.compare(queryData.createdAt.toString(), hash, queryData.salt);
-}
+    const result = await crypto.compare(
+        queriesData[queryType].createdAt.toString(),
+        hash,
+        queriesData[queryType].salt
+    );
 
-module.exports = {
-    updateQuery,
-    verifyQuery,
-    DELIMITER,
-    remove: params => QueriesDataModel.remove(params)
+    if (result) {
+        queriesData[queryType] = undefined;
+        await queriesData.save();
+    }
+
+    return result;
 };
+
+module.exports = mongoose.model('QueriesData', QueriesDataSchema);

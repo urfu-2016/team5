@@ -28,7 +28,8 @@ module.exports = {
     },
 
     index: {
-        title: 'Список квестов'
+        title: 'Список квестов',
+        pageNotExistsMessage: 'Такой страницы не существует'
     },
 
     auth: {

@@ -83,6 +83,15 @@ userSchema.statics.changePassword = async function (userData, newPassword) {
     return user.save();
 };
 
+userSchema.statics.resetPassword = async function (userData, newPassword) {
+    const user = await this.findOne(
+        userData.email ? {email: userData.email} : {username: userData.username}
+    );
+    user.password = await bcrypt.hash(newPassword, constants.models.user.saltRounds);
+
+    return user.save();
+};
+
 userSchema.statics.getUserOnCorrectPassword = async function (userData) {
     const user = await this.findOne(
         userData.email ? {email: userData.email} : {username: userData.username}

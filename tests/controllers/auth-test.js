@@ -63,7 +63,7 @@ describe('controller:auth', () => {
                 password: userData.password
             });
 
-            res.body.message.should.equal(constants.controllers.auth.signedInPattern(userData.username));
+            res.status.should.equal(httpStatus.OK);
         });
 
         it('should sign in by email with correct password', async () => {
@@ -74,7 +74,7 @@ describe('controller:auth', () => {
                 password: userData.password
             });
 
-            res.body.message.should.equal(constants.controllers.auth.signedInPattern(userData.username));
+            res.status.should.equal(httpStatus.OK);
         });
 
         it('should fails sign in with wrong password', async () => {

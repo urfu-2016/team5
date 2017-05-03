@@ -1,31 +1,29 @@
 'use strict';
 
 const httpStatus = require('http-status-codes');
-const BadRequestError = require('../libs/customErrors/errors').BadRequestError;
+const errors = require('../libs/customErrors/errors');
 const passport = require('../libs/passport');
 const User = require('../models/user');
-const emailClient = require('./email-client');
+const emailClient = require('../libs/email-client');
 const constants = require('../constants/constants');
+const QueriesStorage = require('../models/queriesStorage');
 
 module.exports = {
     signIn(req, res, next) {
         passport.authenticate('local', (err, user) => {
             if (!user) {
-                return next(new BadRequestError(constants.models.user.wrongPasswordOrNameMessage));
+                return next(new errors.BadRequestError(constants.models.user.wrongPasswordOrNameMessage));
             }
 
             if (req.user) {
-                return next(new BadRequestError(constants.controllers.auth.alreadyAuthenticated));
+                return next(new errors.BadRequestError(constants.controllers.auth.alreadyAuthenticated));
             }
 
             if (err) {
-                return next(new BadRequestError(err.message));
+                return next(new errors.BadRequestError(err.message));
             }
 
-            return req.logIn(user, () => res
-                .status(httpStatus.OK)
-                .send({message: constants.controllers.auth.signedInPattern(user.username)})
-            );
+            return req.logIn(user, () => res.redirect(req.headers.referer || '/'));
         })(req, res, next);
     },
 
@@ -44,8 +42,37 @@ module.exports = {
                 .status(httpStatus.CREATED)
                 .send(constants.controllers.auth.signedUpPattern(req.body.username));
         } catch (err) {
-            next(new BadRequestError(err.message));
+            next(new errors.BadRequestError(err.message));
         }
+    },
+
+    async resetPasswordRequest(req, res, next) {
+        const email = req.body.email;
+        const user = await User.findOne({email});
+        if (user) {
+            emailClient.sendPasswordResetMail(email);
+            res
+                .status(httpStatus.OK)
+                .send(`На почту с адресом ${email} было отправлено письмо для сброса пароля`);
+        } else {
+            next(new errors.NotFoundError(constants.controllers.user.userNotFoundErrorMessage));
+        }
+    },
+
+    async resetPassword(req, res, next) {
+        handleMailLinkRequest(req, 'passwordReset', next, async email => {
+            await User.resetPassword({email}, req.body.newPassword);
+            res.status(httpStatus.OK).send('Пароль был изменен');
+        });
+    },
+
+    async verifyUserEmail(req, res, next) {
+        handleMailLinkRequest(req, 'emailVerification', next, async email => {
+            const user = await User.findOne({email});
+            user.emailVerified = true;
+            await user.save();
+            res.status(httpStatus.OK).send(`${req.email} подтвержден`);
+        });
     },
 
     authorizedOnly(req, res, next) {
@@ -64,3 +91,14 @@ module.exports = {
         res.redirect('/');
     }
 };
+
+async function handleMailLinkRequest(req, requestType, next, onSuccessCallback) {
+    const query = req.params.query;
+    const email = query.split(constants.models.query.delimiter)[0];
+
+    if (await QueriesStorage.verifyQuery(query, requestType)) {
+        onSuccessCallback(email);
+    } else {
+        next(new errors.NotFoundError(constants.controllers.index.pageNotExistsMessage));
+    }
+}
