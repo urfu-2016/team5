@@ -49,6 +49,7 @@ module.exports = {
     async resetPasswordRequest(req, res, next) {
         const email = req.body.email;
         const user = await User.findOne({email});
+
         if (user) {
             emailClient.sendPasswordResetMail(email);
             res
@@ -60,19 +61,31 @@ module.exports = {
     },
 
     async resetPassword(req, res, next) {
-        handleMailLinkRequest(req, 'passwordReset', next, async email => {
+        const query = req.params.query;
+        const email = query.split(constants.models.query.delimiter)[0];
+
+        if (await QueriesStorage.verifyPasswordResetQuery(query)) {
             await User.resetPassword({email}, req.body.newPassword);
+
             res.status(httpStatus.OK).send('Пароль был изменен');
-        });
+        } else {
+            next(new errors.NotFoundError(constants.controllers.index.pageNotExistsMessage));
+        }
     },
 
     async verifyUserEmail(req, res, next) {
-        handleMailLinkRequest(req, 'emailVerification', next, async email => {
+        const query = req.params.query;
+        const email = query.split(constants.models.query.delimiter)[0];
+
+        if (await QueriesStorage.verifyEmailVerificationQuery(query)) {
             const user = await User.findOne({email});
             user.emailVerified = true;
             await user.save();
-            res.status(httpStatus.OK).send(`${req.email} подтвержден`);
-        });
+
+            res.status(httpStatus.OK).send(`${email} подтвержден`);
+        } else {
+            next(new errors.NotFoundError(constants.controllers.index.pageNotExistsMessage));
+        }
     },
 
     authorizedOnly(req, res, next) {
@@ -85,20 +98,18 @@ module.exports = {
         }
     },
 
+    async getResetPassPage(req, res, next) {
+        const query = req.params.query;
+        if (await QueriesStorage.verifyPasswordResetQuery(query)) {
+            res.render('resetPass/reset-pass', {query});
+        } else {
+            next(new errors.NotFoundError(constants.controllers.index.pageNotExistsMessage));
+        }
+    },
+
     logout(req, res) {
         req.session.destroy();
         req.logout();
         res.redirect('/');
     }
 };
-
-async function handleMailLinkRequest(req, requestType, next, onSuccessCallback) {
-    const query = req.params.query;
-    const email = query.split(constants.models.query.delimiter)[0];
-
-    if (await QueriesStorage.verifyQuery(query, requestType)) {
-        onSuccessCallback(email);
-    } else {
-        next(new errors.NotFoundError(constants.controllers.index.pageNotExistsMessage));
-    }
-}

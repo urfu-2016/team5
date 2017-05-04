@@ -24,7 +24,7 @@ router
 
 router
     .route('/pass_reset/:query')
-    .get((req, res) => res.render('resetPass/reset-pass', {query: req.params.query}))
+    .get(authController.getResetPassPage)
     .post(authController.resetPassword);
 
 module.exports = router;

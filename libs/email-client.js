@@ -2,6 +2,8 @@
 
 const email = require('emailjs/email');
 const config = require('config');
+const fs = require('fs');
+const handlebars = require('handlebars');
 const queriesStorage = require('../models/queriesStorage');
 const server = email.server.connect({
     user: config.appEmailLogin,
@@ -11,6 +13,9 @@ const server = email.server.connect({
     port: 465
 });
 
+const pattern = fs.readFileSync('./views/blocks/email/email-content.hbs', 'utf8');
+const template = handlebars.compile(pattern);
+
 function emailSendCallback(err) {
     if (err) {
         console.log(err);
@@ -18,34 +23,45 @@ function emailSendCallback(err) {
 }
 
 async function sendRegistrationMail(email) {
-    const query = await queriesStorage.updateQuery(email, 'emailVerification');
+    const query = await queriesStorage.updateEmailVerificationQuery(email);
     const link = `${config.appUrl}/reg_verification/${query}`;
 
     server.send(getRegistrationMail(link, email), emailSendCallback);
 }
 
 async function sendPasswordResetMail(email) {
-    const query = await queriesStorage.updateQuery(email, 'passwordReset');
+    const query = await queriesStorage.updatePasswordResetQuery(email);
     const link = `${config.appUrl}/pass_reset/${query}`;
 
     server.send(getPasswordResetMail(link, email), emailSendCallback);
 }
 
 function getRegistrationMail(link, toEmail) {
-    return {
-        text: `Подтвердите вашу регистрацию. Для этого перейдите по следующей ссылке: ${link}`,
-        from: 'Team5Quest <team5quest@gmail.com>',
-        to: `<${toEmail}>`,
-        subject: 'Подтверждение регистрации'
-    };
+    const html = template({
+        text: 'Для подтверждения регистрации',
+        link: link
+    });
+
+    return getMail(toEmail, 'Подтверждение регистрации', html);
 }
 
 function getPasswordResetMail(link, toEmail) {
+    const html = template({
+        text: 'Для смены пароля',
+        link: link
+    });
+
+    return getMail(toEmail, 'Смена пароля', html);
+}
+
+function getMail(toEmail, subject, html) {
     return {
-        text: `Для смены пароля перейдите по следующей ссылке: ${link}`,
         from: 'Team5Quest <team5quest@gmail.com>',
         to: `<${toEmail}>`,
-        subject: 'Смена пароля'
+        subject,
+        attachment: [
+            {data: html, alternative: true}
+        ]
     };
 }
 

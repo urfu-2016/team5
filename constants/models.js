@@ -16,5 +16,9 @@ module.exports = {
     },
     query: {
         delimiter: '___'
+    },
+
+    email: {
+        fromTitle: 'Team5Quest <team5quest@gmail.com>'
     }
 };
