@@ -6,6 +6,7 @@ const Quest = require('../models/quest');
 
 router.get('/', function (req, res) {
     const renderData = {
+        isAuth: req.user ? 1 : 0,
         activePage: '/quests'
     };
 

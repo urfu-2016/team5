@@ -116,9 +116,7 @@ module.exports = {
         const quests = await Quest.getAll();
         const renderData = {
             title: constants.quest.title,
-            user: {
-                avatar: 'http://www.lovemarks.com/wp-content/uploads/profile-avatars/default-avatar-knives-ninja.png'
-            },
+            isAuth: req.user ? 1 : 0,
             quests: quests.map(quest => getQuestObject(quest, req)),
             activePage: '/'
         };
