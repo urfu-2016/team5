@@ -17,13 +17,6 @@
                         <a href="/" class="navbar__link">Home</a>
                     </li>
                     <li class="navbar__item
-                    {{#equal activePage '/news'}}
-                        active
-                    {{/equal}}
-                    ">
-                        <a class="navbar__link">News</a>
-                    </li>
-                    <li class="navbar__item
                     {{#equal activePage '/quests'}}
                         active
                     {{/equal}}
@@ -35,7 +28,7 @@
                     {{#if isAuth }}
                     <li class="navbar__item">
                         <form action="/logout" method="post">
-                            <button type="submit" class="navbar__link">Logout</button>
+                            <button type="submit" class="navbar__button">Logout</button>
                         </form>
                     </li>
                     {{ else }}
