@@ -1,0 +1,20 @@
+.block
+{
+    padding: 10px 5%;
+    font-size: 20px;
+    margin: 10px 5px;
+    border-radius: 3px;
+}
+
+.block_gray
+{
+    border: 1px solid #b2b2b2;
+    box-shadow: 0 0 10px #b2b2b2;
+}
+
+.block_light-yellow
+{
+    border: 1px solid #ffd700;
+    box-shadow: 0 0 10px #ffd700;
+    background: rgba(255, 248, 110, 0.11);
+}

@@ -1,0 +1,90 @@
+.comment-form
+{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 5%;
+}
+
+.comment-form__message
+{
+    display: none;
+    position: absolute;
+    padding: 12px;
+    font-size: 15px;
+    border-radius: 3px;
+    align-self: center;
+    text-align: center;
+    width: 75%;
+    top: 35px;
+}
+
+.comment-form__message_visibale
+{
+    display: block;
+    color: #f50000;
+    background: rgba(255, 0, 0, 0.31);
+    box-shadow: 0 0 9px;
+    border: 1px solid #f50000;
+}
+
+.comment-form__input-group
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.comment-form__text-field
+{
+    font-size: 16px;
+    width: 100%;
+    height: 95px;
+    resize: none;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+.comment-form__text-field:focus
+{
+    border: 1px solid #ff8f00;
+}
+
+.comment-form__text-field:disabled
+{
+    cursor: progress;
+    opacity: 0.4;
+}
+
+.comment-form__button
+{
+    background: #ff8f00;
+    border-radius: 3px;
+    border: none;
+    padding: 8px 55px;
+    outline: none;
+    font-size: 15px;
+    color: #fff;
+}
+
+.comment-form__button_readyToSend
+{
+    box-shadow: 0 0 5px #aaa;
+}
+
+.comment-form__button_readyToSend:hover
+{
+    cursor: pointer;
+    box-shadow: 0 0 5px #ff8f00;
+}
+
+.comment-form__button:disabled
+{
+    background: rgb(255, 204, 138);
+    cursor: default;
+}
+
+.comment-form__button_sending
+{
+    cursor: progress;
+}

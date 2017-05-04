@@ -1,0 +1,9 @@
+.comment-list
+{
+    padding: 10px 2%;
+}
+
+.comment-list__message
+{
+    padding: 20px;
+}

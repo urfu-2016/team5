@@ -1,5 +1,11 @@
-.comment__text
+.comments__message
 {
-    padding-left: 5%;
+    padding: 20px;
+    text-align: center;
 }
 
+.comments__list,
+.comments__form
+{
+    padding: 0;
+}
