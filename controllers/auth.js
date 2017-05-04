@@ -100,7 +100,7 @@ module.exports = {
 
     async getResetPassPage(req, res, next) {
         const query = req.params.query;
-        if (await QueriesStorage.verifyPasswordResetQuery(query)) {
+        if (await QueriesStorage.checkPasswordResetQuery(query)) {
             res.render('resetPass/reset-pass', {query});
         } else {
             next(new errors.NotFoundError(constants.controllers.index.pageNotExistsMessage));
