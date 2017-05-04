@@ -5,7 +5,7 @@
                 <span class="navbar__toggler_icon"></span>
             </button>
             <a class="navbar__brand" href="#">
-                Photoquest
+                PHOTOQUEST
             </a>
             <div class="navbar__navigation-list collapse" id="navigation-list" aria-expanded="false">
                 <ul class="navbar__categories left">
@@ -17,13 +17,6 @@
                         <a href="/" class="navbar__link">Home</a>
                     </li>
                     <li class="navbar__item
-                    {{#equal activePage '/news'}}
-                        active
-                    {{/equal}}
-                    ">
-                        <a class="navbar__link">News</a>
-                    </li>
-                    <li class="navbar__item
                     {{#equal activePage '/quests'}}
                         active
                     {{/equal}}
@@ -31,23 +24,12 @@
                         <a href="/quests" class="navbar__link">All quests</a>
                     </li>
                 </ul>
-                <form class="">
-                    <input class="navbar__input" type="text" placeholder="Search">
-                </form>
                 <ul class="navbar__categories">
-                    {{#if user }}
+                    {{#if isAuth }}
                     <li class="navbar__item">
-                        <a class="navbar__link">1 <span class="fa fa-envelope"></span></a>
-                    </li>
-                    <li class="navbar__item avatar">
-                        <a class="navbar__link dropdown-toggle" href="#">
-                            <img width="35px" src="{{user.avatar}}" class="avatar__image">
-                        </a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-menu__item" href="#">My profile</a>
-                            <a class="dropdown-menu__item" href="#">My quests</a>
-                            <a class="dropdown-menu__item" href="#">Quit</a>
-                        </div>
+                        <form action="/logout" method="post">
+                            <button type="submit" class="navbar__button">Logout</button>
+                        </form>
                     </li>
                     {{ else }}
                     <li class="navbar__item">
