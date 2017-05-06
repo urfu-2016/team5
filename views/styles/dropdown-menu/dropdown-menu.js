@@ -8,7 +8,7 @@ $('.dropdown-toggle').on('click', function () {
 });
 
 window.onclick = function (event) {
-    if (!event.target.matches('.avatar__image')) {
+    if (!event.target.matches('.avatar__image') && !event.target.matches('.avatar__arrow')) {
         var dropdowns = document.getElementsByClassName('dropdown-toggle');
         for (var i = 0; i < dropdowns.length; i++) {
             var openDropdown = dropdowns[i];

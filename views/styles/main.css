@@ -95,3 +95,29 @@ h6
 {
     float: left;
 }
+
+div#OR
+{
+    height: 30px;
+    width: 30px;
+    border: 1px solid #c2c2c2;
+    border-radius: 50%;
+    font-weight: bold;
+    line-height: 28px;
+    text-align: center;
+    font-size: 12px;
+    position: absolute;
+    right: -16px;
+    top: 40%;
+    z-index: 1;
+    background: #dfdfdf;
+}
+
+@media (max-width: 768px)
+{
+    div#OR
+    {
+        top: 96%;
+        right: 50%;
+    }
+}

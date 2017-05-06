@@ -16,6 +16,7 @@
     text-decoration: none;
     outline: none;
     display: block;
+    white-space: nowrap;
 }
 
 .tabs__link:hover:not(.active)
