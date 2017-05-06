@@ -1,6 +1,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const User = require('../../models/user');
+const fs = require('fs');
 
 chai.should();
 chai.use(chaiHttp);
@@ -16,6 +17,24 @@ module.exports = function (server) {
         put: (url, data) => agent.put(url).send(data),
 
         delete: url => agent.delete(url),
+
+        sendFormData(url, data, file) {
+            return agent.post(url)
+                .set('content-type', 'multipart/form-data')
+                .field('title', data.title)
+                .field('description', data.description)
+                .field('location', data.location)
+                .attach('image', fs.readFileSync(file), file);
+        },
+
+        putFormData(url, data, file) {
+            return agent.put(url)
+                .set('content-type', 'multipart/form-data')
+                .field('title', data.title)
+                .field('description', data.description)
+                .field('location', data.location)
+                .attach('image', fs.readFileSync(file), file);
+        },
 
         signInUser: user => agent.post('/signin').send(user),
 

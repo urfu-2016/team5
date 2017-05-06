@@ -2,29 +2,29 @@
 
 const express = require('express');
 const router = new express.Router();
-
 const authController = require('../controllers/auth');
+const getAction = require('../libs/getAction');
 
 router.route('/signup')
-    .post(authController.signUp);
+    .post(getAction(authController, 'signUp'));
 
 router.route('/signin')
-    .post(authController.signIn);
+    .post(getAction(authController, 'signIn'));
 
 router.route('/logout')
-    .post(authController.authorizedOnly, authController.logout);
+    .post(getAction(authController, 'authorizedOnly'), getAction(authController, 'logout'));
 
 router
     .route('/register-verification/:email/:queryHash')
-    .get(authController.verifyUserEmail);
+    .get(getAction(authController, 'verifyUserEmail'));
 
 router
     .route('/password-reset')
-    .post(authController.resetPasswordRequest);
+    .post(getAction(authController, 'resetPasswordRequest'));
 
 router
     .route('/password-reset/:email/:queryHash')
-    .get(authController.getResetPassPage)
-    .post(authController.resetPassword);
+    .get(getAction(authController, 'getResetPassPage'))
+    .post(getAction(authController, 'resetPassword'));
 
 module.exports = router;

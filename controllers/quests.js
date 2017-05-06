@@ -5,12 +5,14 @@ const Quest = require('../models/quest');
 const constants = require('../constants/controllers');
 const searchConstants = require('../constants/controllers').questSearch;
 const QueryBuilder = require('../libs/queryBuilder');
-const errors = require('../libs/customErrors/errors');
+const {NotFoundError, BadRequestError} = require('../libs/customErrors/errors');
 const moment = require('moment');
 moment.locale(constants.momentLanguage);
 
-function getQuestObject(quest, req) {
+async function getQuestObject(req, quest) {
+    const stages = await quest.getStages();
     const questObj = quest.toObject();
+    questObj.images = stages;
     questObj.isMyQuest = quest.isMyQuest(req.user);
     questObj.dateOfCreation = moment(quest.dateOfCreation).format(constants.dateFormat);
     delete questObj.author.password;
@@ -35,28 +37,27 @@ function comparePopularity(firstQuest, secondQuest) {
 }
 
 module.exports = {
-    async createQuest(req, res, next) {
+    async createQuest(req, res) {
         const questData = {
             title: req.body.title,
             description: req.body.description,
             authorId: req.user.id,
             city: req.body.city,
-            tags: req.body.tags
+            tags: req.body.tags,
+            stages: []
         };
-
         try {
             let quest = await Quest.create(questData);
-            quest = getQuestObject(quest, req);
+            quest = await getQuestObject(req, quest);
 
             res.status(httpStatus.CREATED).send({data: quest});
         } catch (err) {
-            next(new errors.BadRequestError(err.message));
+            throw new BadRequestError(err.message);
         }
     },
 
-    async updateQuest(req, res, next) {
+    async updateQuest(req, res) {
         const questData = {
-            slug: req.body.slug,
             title: req.body.title,
             description: req.body.description,
             city: req.body.city,
@@ -65,35 +66,36 @@ module.exports = {
 
         try {
             let quest = await Quest.update(req.params.slug, questData);
-            quest = getQuestObject(quest, req);
+            quest = await getQuestObject(req, quest);
 
             res.status(httpStatus.OK).send({data: quest});
         } catch (err) {
-            next(new errors.BadRequestError(err.message));
+            throw new BadRequestError(err.message);
         }
     },
 
     async getQuests(req, res) {
         let quests = await Quest.getAll();
-        quests = quests.map(quest => getQuestObject(quest, req));
+        quests = await Promise.all(quests.map(quest => getQuestObject(req, quest)));
 
         res.status(httpStatus.OK).send({data: quests});
     },
 
-    async getQuestBySlug(req, res, next) {
+    async getQuestBySlug(req, res) {
         let quest = await Quest.getBySlug(req.params.slug);
         if (quest === null) {
-            return next(new errors.NotFoundError(constants.quest.questNotFoundErrorMessage));
+            throw new NotFoundError(constants.quest.questNotFoundErrorMessage);
         }
-        quest = getQuestObject(quest, req);
+        quest = await getQuestObject(req, quest);
 
         res.status(httpStatus.OK).send({data: quest});
     },
 
-    async removeQuest(req, res, next) {
-        const status = await Quest.removeBySlug(req.params.slug);
-        if (status.result.n === 0) {
-            return next(new errors.NotFoundError(constants.quest.questNotFoundErrorMessage));
+    async removeQuest(req, res) {
+        const quest = await Quest.removeBySlug(req.params.slug);
+
+        if (!quest) {
+            throw new NotFoundError(constants.quest.questNotFoundErrorMessage);
         }
 
         res.status(httpStatus.OK).send();
@@ -108,9 +110,10 @@ module.exports = {
             .build();
 
         const quests = await Quest.search(buildData);
-        const renderQuests = quests
-            .slice(firstCardNumber, lastCardNumber)
-            .map(quest => getQuestObject(quest, req));
+        let renderQuests = quests.slice(firstCardNumber, lastCardNumber);
+        renderQuests = await Promise.all(
+            renderQuests.map(quest => getQuestObject(req, quest))
+        );
 
         const renderData = {
             pageNumber: searchPageNumber,
@@ -124,31 +127,32 @@ module.exports = {
     },
 
     async renderAllQuests(req, res) {
-        const quests = await Quest.getAll();
+        let quests = await Quest.getAll();
+        quests = await Promise.all(
+            quests.map(quest => getQuestObject(req, quest))
+        );
+
         const renderData = {
             title: constants.quest.title,
             isAuth: req.user ? 1 : 0,
             quests: quests
                 .sort(compareDate)
-                .slice(0, 3)
-                .map(quest => getQuestObject(quest, req)),
+                .slice(0, 3),
             popularQuests: quests
                 .sort(comparePopularity)
-                .slice(0, 3)
-                .map(quest => getQuestObject(quest, req)),
+                .slice(0, 3),
             createdQuests: quests
-                .filter(quest => quest.isMyQuest(req.user))
-                .map(quest => getQuestObject(quest, req)),
+                .filter(quest => quest.isMyQuest),
             activePage: '/'
         };
 
         res.render('mainPage/mainPage', renderData);
     },
 
-    async likeQuest(req, res, next) {
+    async likeQuest(req, res) {
         const quest = await Quest.getBySlug(req.params.slug);
         if (!quest) {
-            return next(new errors.NotFoundError(constants.quest.questNotFoundErrorMessage));
+            throw new NotFoundError(constants.quest.questNotFoundErrorMessage);
         }
         await quest.like(req.user);
 

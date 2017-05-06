@@ -18,7 +18,7 @@ function getSearchParameters(state, newPageNumber) {
             field: state.searchByField
         },
         city: state.searchCity,
-        images: {
+        stages: {
             from: Number(state.imagesCountFrom),
             to: Number(state.imagesCountTo)
         },

@@ -27,7 +27,7 @@ module.exports = {
         })(req, res, next);
     },
 
-    async signUp(req, res, next) {
+    async signUp(req, res) {
         const userData = {
             username: req.body.username,
             email: req.body.email,
@@ -42,13 +42,13 @@ module.exports = {
 
             res.status(httpStatus.CREATED).send(signedUpMessage);
         } catch (err) {
-            next(new BadRequestError(err.message));
+            throw new BadRequestError(err.message);
         }
     },
 
-    async resetPasswordRequest(req, res, next) {
+    async resetPasswordRequest(req, res) {
         if (req.user) {
-            return next(new BadRequestError(constants.controllers.auth.alreadyAuthenticated));
+            throw new BadRequestError(constants.controllers.auth.alreadyAuthenticated);
         }
 
         const email = req.body.email;
@@ -56,26 +56,26 @@ module.exports = {
         if (!user) {
             const userNotFoundMessage = constants.controllers.user.userNotFoundErrorMessage;
 
-            return next(new NotFoundError(userNotFoundMessage));
+            throw new NotFoundError(userNotFoundMessage);
         }
 
         try {
             const queryHash = await QueriesStorage.updatePasswordResetQuery(email);
             await emailClient.sendPasswordResetMail(email, queryHash);
         } catch (err) {
-            return next(new BadRequestError(err.message));
+            throw new BadRequestError(err.message);
         }
 
         const emailSendMessage = `На почту с адресом ${email} было отправлено письмо для сброса пароля`;
         res.status(httpStatus.OK).send(emailSendMessage);
     },
 
-    async resetPassword(req, res, next) {
+    async resetPassword(req, res) {
         const email = req.params.email;
         const queryHash = req.params.queryHash;
 
         if (!req.body.newPassword) {
-            return next(new BadRequestError(constants.controllers.auth.passwordResetInputRequired));
+            throw new BadRequestError(constants.controllers.auth.passwordResetInputRequired);
         }
 
         if (await QueriesStorage.verifyPasswordResetQuery(email, queryHash)) {
@@ -83,11 +83,11 @@ module.exports = {
 
             res.status(httpStatus.OK).send(constants.controllers.auth.passwordWasChanged);
         } else {
-            next(new NotFoundError(constants.controllers.index.pageNotExistsMessage));
+            throw new NotFoundError(constants.controllers.index.pageNotExistsMessage);
         }
     },
 
-    async verifyUserEmail(req, res, next) {
+    async verifyUserEmail(req, res) {
         const email = req.params.email;
         const queryHash = req.params.queryHash;
 
@@ -98,7 +98,7 @@ module.exports = {
 
             res.status(httpStatus.OK).send(`${email} подтвержден`);
         } else {
-            return next(new NotFoundError(constants.controllers.index.pageNotExistsMessage));
+            throw new NotFoundError(constants.controllers.index.pageNotExistsMessage);
         }
     },
 
@@ -110,12 +110,12 @@ module.exports = {
         }
     },
 
-    async getResetPassPage(req, res, next) {
+    async getResetPassPage(req, res) {
         const email = req.params.email;
         const queryHash = req.params.queryHash;
         const checkResult = await QueriesStorage.checkPasswordResetQuery(email, queryHash);
         if (!checkResult) {
-            return next(new NotFoundError(constants.controllers.index.pageNotExistsMessage));
+            throw new NotFoundError(constants.controllers.index.pageNotExistsMessage);
         }
 
         const encodedEmail = encodeURIComponent(email);

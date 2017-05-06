@@ -1,7 +1,7 @@
 const filters = [
     require('./filters/author'),
     require('./filters/text'),
-    require('./filters/images'),
+    require('./filters/stages'),
     require('./filters/likes'),
     require('./filters/default')
 ];

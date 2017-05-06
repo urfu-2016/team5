@@ -8,8 +8,8 @@ const questMocks = require('../mocks/quests');
 const chaiRequest = require('../commonTestLogic/chaiRequest')(server);
 const constants = require('../../constants/controllers');
 
-async function createComment(text, questSlug) {
-    return await chaiRequest.post(`/api/comments/${questSlug}`, {text});
+function createComment(text, questSlug) {
+    return chaiRequest.post(`/api/comments/${questSlug}`, {text});
 }
 
 describe('controller:comment', () => {

@@ -2,6 +2,7 @@
 
 const User = require('../models/user');
 const Quest = require('../models/quest');
+const Stage = require('../models/stage');
 const constants = require('../constants/generation');
 const shortid = require('shortid');
 
@@ -11,21 +12,24 @@ function createAll(model, allData) {
     );
 }
 
-function generateImages({questId, imagesCount = 10}) {
-    const images = [];
+async function generateStages({questId, imagesCount = 10}) {
+    const stages = [];
     const {dummyUrl, imageSize, backgroundColor, foregroundColor} = constants.image;
+    const location = 'default';
 
     for (let i = 0; i < imagesCount; i++) {
         let query = `${imageSize}/${backgroundColor}/${foregroundColor}`;
-        let imageData = {
+        let stageData = {
             title: `title ${i}`,
-            src: `${dummyUrl}/${query}&text=quest+${questId}+${i}`
+            src: `${dummyUrl}/${query}&text=quest+${questId}+${i}`,
+            location
         };
+        let stage = await Stage.create(stageData);
 
-        images.push(imageData);
+        stages.push(stage._id);
     }
 
-    return images;
+    return stages;
 }
 
 module.exports.generateQuests = async ({questsCount = 10}) => {
@@ -41,9 +45,9 @@ module.exports.generateQuests = async ({questsCount = 10}) => {
             title: `${constants.quest.titlePrefix} ${i}`,
             description: `${constants.quest.descriptionPrefix} ${i}`,
             authorId: user._id,
-            images: generateImages({questId: i}),
             slug: `${i}`,
-            city: constants.quest.city
+            city: constants.quest.city,
+            stages: await generateStages({questId: i})
         };
 
         quests.push(questData);
@@ -103,6 +107,12 @@ module.exports.createQuestWithAuthor = async (data, user) => {
         email,
         password: constants.user.password
     });
+    const stagesIds = [];
+
+    if (data.stageData) {
+        const stage = await Stage.create(data.stageData);
+        stagesIds.push(stage._id);
+    }
 
     return await Quest.create({
         authorId: author._id,
@@ -110,6 +120,6 @@ module.exports.createQuestWithAuthor = async (data, user) => {
         description: data.description || '',
         city: data.city || '',
         tags: data.tags || '',
-        images: data.images || []
+        stages: stagesIds || []
     });
 };

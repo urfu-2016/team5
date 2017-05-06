@@ -27,6 +27,14 @@ module.exports = {
         notFoundMessage: 'Комментария с таким id не существует'
     },
 
+    stage: {
+        notFoundMessage: 'Этапа с таким id не существует'
+    },
+
+    file: {
+        notFoundMessage: 'Необходима картинка'
+    },
+
     index: {
         title: 'Список квестов',
         pageNotExistsMessage: 'Такой страницы не существует'

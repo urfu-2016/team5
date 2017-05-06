@@ -23,7 +23,7 @@ async function getCommentObject(comment, currentUser) {
 }
 
 module.exports = {
-    async createComment(req, res, next) {
+    async createComment(req, res) {
         try {
             const quest = await Quest.getBySlug(req.params.slug);
             let comment = await quest.addComment(req.user, req.body.text);
@@ -31,28 +31,28 @@ module.exports = {
 
             res.status(httpStatus.CREATED).send({data: comment});
         } catch (err) {
-            next(new errors.BadRequestError(err.message));
+            throw new errors.BadRequestError(err.message);
         }
     },
 
-    async getComments(req, res, next) {
+    async getComments(req, res) {
         const quest = await Quest.getBySlug(req.params.slug);
         if (quest === null) {
-            return next(new errors.NotFoundError(constants.quest.questNotFoundErrorMessage));
+            throw new errors.NotFoundError(constants.quest.questNotFoundErrorMessage);
         }
         let comments = await quest.getComments();
         comments = await Promise.all(
-            comments.map(quest => getCommentObject(quest, req.user))
+            comments.map(comment => getCommentObject(comment, req.user))
         );
 
         res.status(httpStatus.OK).send({data: comments});
     },
 
-    async getCommentById(req, res, next) {
+    async getCommentById(req, res) {
         const quest = await Quest.getBySlug(req.params.slug);
         const commentId = quest.comments.find(comment => comment === req.params.id);
         if (!commentId) {
-            return next(new errors.NotFoundError(constants.quest.questNotFoundErrorMessage));
+            throw new errors.NotFoundError(constants.quest.questNotFoundErrorMessage);
         }
         const comment = await Comment.findOne({shortid: commentId});
         const data = await getCommentObject(comment, req.user);
@@ -60,26 +60,26 @@ module.exports = {
         res.status(httpStatus.OK).send({data});
     },
 
-    async removeComment(req, res, next) {
+    async removeComment(req, res) {
         const quest = await Quest.getBySlug(req.params.slug);
         const commentId = quest.comments.find(comment => comment === req.params.id);
         if (!commentId) {
-            return next(new errors.NotFoundError(constants.comment.notFoundMessage));
+            throw new errors.NotFoundError(constants.comment.notFoundMessage);
         }
         const comment = await Comment.findOne({shortid: commentId});
         if (!(await comment.createdBy(req.user.username))) {
-            return next(new errors.BadRequestError(constants.auth.permissionDenied));
+            throw new errors.BadRequestError(constants.auth.permissionDenied);
         }
         await quest.removeComment(commentId);
 
         res.status(httpStatus.OK).send();
     },
 
-    async likeComment(req, res, next) {
+    async likeComment(req, res) {
         const quest = await Quest.getBySlug(req.params.slug);
         const commentId = quest.comments.find(comment => comment === req.params.id);
         if (!commentId) {
-            return next(new errors.NotFoundError(constants.comment.notFoundMessage));
+            throw new errors.NotFoundError(constants.comment.notFoundMessage);
         }
         const comment = await Comment.findOne({shortid: commentId});
         await comment.like(req.user);
