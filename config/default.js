@@ -6,6 +6,5 @@ module.exports = {
         secret: 'Секретный секрет',
         resave: false,
         saveUninitialized: false
-    }),
-    currentDir: `${__dirname}/../`
+    })
 };
