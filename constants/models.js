@@ -11,9 +11,11 @@ module.exports = {
         emptySignUpField: 'Для регистрации необходимо ввести email, username, password',
         saltRounds: 10
     },
+
     comment: {
         maxLength: 300
     },
+
     query: {
         delimiter: '___'
     },

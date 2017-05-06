@@ -6,9 +6,9 @@ const fs = require('fs');
 const handlebars = require('handlebars');
 const queriesStorage = require('../models/queriesStorage');
 const server = email.server.connect({
-    user: config.appEmailLogin,
-    password: config.appEmailPass,
-    host: config.appEmailHost,
+    user: config.email.login,
+    password: config.email.pass,
+    host: config.email.host,
     ssl: true,
     port: 465
 });
