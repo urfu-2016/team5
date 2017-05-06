@@ -24,15 +24,24 @@
                         <a href="/quests" class="navbar__link">All quests</a>
                     </li>
                 </ul>
+                <form class="">
+                    <input class="input-group__input input_light" type="text" placeholder="Search">
+                </form>
                 <ul class="navbar__categories">
                     {{#if isAuth }}
-                    <li class="navbar__item">
-                        <form action="/logout" method="post">
-                            <button type="submit" class="navbar__button">Logout</button>
-                        </form>
-                    </li>
-                    <li class="navbar__item">
-                        <a class="navbar__link" href="/quests/create">Create quest</a>
+                    <li class="navbar__item avatar">
+                        <a class="navbar__link dropdown-toggle" href="#" id="navbarDropdownMenuLink">
+                            <img src="https://cdn1.iconfinder.com/data/icons/ninja-things-1/720/ninja-background-512.png" class="avatar__image">
+                            <img src="img/head_arrow.png" class="avatar__arrow">
+                        </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-menu__item" href="#">My profile</a>
+                            <a class="dropdown-menu__item" href="#">My quests</a>
+                            <a class="dropdown-menu__item" href="/quests/create">Create quest</a>
+                            <form action="/logout" method="post">
+                                <a class="dropdown-menu__item" href="#">Logout</a>
+                            </form>
+                        </div>
                     </li>
                     {{ else }}
                     <li class="navbar__item">
@@ -44,92 +53,93 @@
         </div>
     </nav>
 
-    {{#unless user }}
+    {{#unless isAuth }}
     <!-- Autorize modal -->
-    <div class="modal" id="signForm">
-        <div class="modal__dialog">
-            <div class="modal__header">
-                <h4 class="modal__title">Login/Registration</h4>
-                <button type="button" class="modal__close">×</button>
-            </div>
-            <div class="modal__body">
-                <div class="modal__data">
-                    <!-- Nav tabs -->
-                    <ul class="tabs" role="tablist">
-                        <li class="tabs__item">
-                            <a class="tabs__link" href="#panel11" role="tab">Sign in</a>
-                        </li>
-                        <li class="tabs__item">
-                            <a class="tabs__link active" href="#panel12" role="tab">Sign up</a>
-                        </li>
-                    </ul>
+        <div class="modal" id="signForm">
+            <div class="modal__dialog">
+                <div class="modal__header">
+                    <h4 class="modal__title">Login/Registration</h4>
+                    <button type="button" class="modal__close">×</button>
+                </div>
+                <div class="modal__body">
+                    <div class="modal__data">
+                        <!-- Nav tabs -->
+                        <ul class="tabs" role="tablist">
+                            <li class="tabs__item">
+                                <a class="tabs__link" href="#panel11" role="tab">Sign in</a>
+                            </li>
+                            <li class="tabs__item">
+                                <a class="tabs__link active" href="#panel12" role="tab">Sign up</a>
+                            </li>
+                        </ul>
 
-                    <!-- Tab panes -->
-                    <div class="tab-content">
+                        <!-- Tab panes -->
+                        <div class="tab-content">
 
-                        <!--Panel 1-->
-                        <div class="tab-content__panel" id="panel11" role="tabpanel">
-                            <form role="form" class="form-horizontal" method="POST" action="/signin">
+                            <!--Panel 1-->
+                            <div class="tab-content__panel" id="panel11" role="tabpanel">
+                                <form role="form" class="form-horizontal" method="POST" action="/signin">
 
-                                <div class="input-group">
-                                    <i class="fa fa-envelope"></i>
-                                    <input name="login" type="text" id="form1" class="input-group__input" placeholder="Your email">
-                                </div>
+                                    <div class="input-group">
+                                        <i class="fa fa-envelope"></i>
+                                        <input name="login" type="text" id="form1" class="input-group__input" placeholder="Your email">
+                                    </div>
 
-                                <div class="input-group">
-                                    <i class="fa fa-lock"></i>
-                                    <input name="password" type="password" id="form2" class="input-group__input" placeholder="Your password">
-                                </div>
+                                    <div class="input-group">
+                                        <i class="fa fa-lock"></i>
+                                        <input name="password" type="password" id="form2" class="input-group__input" placeholder="Your password">
+                                    </div>
 
-                                <div class="tab-content__footer">
-                                    <button type="submit" class="btn btn_primary">Login</button>
-                                    <a href="javascript:;">Forgot your password?</a>
-                                </div>
-                            </form>
+                                    <div class="tab-content__footer">
+                                        <button type="submit" class="btn btn_primary">Login</button>
+                                        <a href="javascript:;">Forgot your password?</a>
+                                    </div>
+                                </form>
+                            </div>
+                            <!--/.Panel 1-->
+
+                            <!--Panel 2-->
+                            <div class="tab-content__panel active" id="panel12" role="tabpanel">
+                                <form role="form" class="form-horizontal" method="POST" action="/signup">
+
+                                    <div class="input-group">
+                                        <i class="fa fa-user"></i>
+                                        <input name="username" type="text" id="form3" class="input-group__input" placeholder="Your name">
+                                    </div>
+
+                                    <div class="input-group">
+                                        <i class="fa fa-envelope"></i>
+                                        <input name="email" type="text" id="form4" class="input-group__input" placeholder="Your email">
+                                    </div>
+
+                                    <div class="input-group">
+                                        <i class="fa fa-lock"></i>
+                                        <input name="password" type="password" id="form5" class="input-group__input" placeholder="Your password">
+                                    </div>
+
+                                    <div class="tab-content__footer">
+                                        <button type="submit" class="btn btn_primary">
+                                            Register</button>
+                                        <button type="button" class="btn btn_default">
+                                            Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <!--/.Panel 2-->
+
                         </div>
-                        <!--/.Panel 1-->
-
-                        <!--Panel 2-->
-                        <div class="tab-content__panel active" id="panel12" role="tabpanel">
-                            <form role="form" class="form-horizontal" method="POST" action="/signup">
-
-                                <div class="input-group">
-                                    <i class="fa fa-user"></i>
-                                    <input name="username" type="text" id="form3" class="input-group__input" placeholder="Your name">
-                                </div>
-
-                                <div class="input-group">
-                                    <i class="fa fa-envelope"></i>
-                                    <input name="email" type="text" id="form4" class="input-group__input" placeholder="Your email">
-                                </div>
-
-                                <div class="input-group">
-                                    <i class="fa fa-lock"></i>
-                                    <input name="password" type="password" id="form5" class="input-group__input" placeholder="Your password">
-                                </div>
-
-                                <div class="tab-content__footer">
-                                    <button type="submit" class="btn btn_primary">
-                                        Register</button>
-                                    <button type="button" class="btn btn_default">
-                                        Cancel</button>
-                                </div>
-                            </form>
-                        </div>
-                        <!--/.Panel 2-->
-
+                        <div id="OR">OR</div>
                     </div>
-                    <div id="OR">OR</div>
-                </div>
-                <div class="modal__info">
-                    <h3>Sign in with</h3>
-                    <button type="button" class="btn btn_vk"><span class="fa fa-vk"></span> Vkontakte</button>
-                    <button type="button" class="btn btn_gplus"><span class="fa fa-google-plus"></span> Google +</button>
+                    <div class="modal__info">
+                        <h3>Sign in with</h3>
+                        <button type="button" class="btn btn_vk"><span class="fa fa-vk"></span> Vkontakte</button>
+                        <button type="button" class="btn btn_gplus"><span class="fa fa-google-plus"></span> Google +</button>
+                    </div>
                 </div>
             </div>
+            <div class="modal__backdrop"></div>
         </div>
-        <div class="modal__backdrop"></div>
-    </div>
+
     {{/unless}}
     {{#if isAuth }}
         <div class="modal" id="createQuest">

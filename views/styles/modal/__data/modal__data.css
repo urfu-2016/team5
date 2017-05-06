@@ -1,16 +1,17 @@
 .modal__data
 {
-    border-right: 1px dotted #c2c2c2;
     position: relative;
-    width: 100%;
-    padding-left: 15px;
+    flex: 0 0 66.666667%;
+    max-width: 66.666667%;
+    border-right: 1px dotted #c2c2c2;
 }
 
-@media (min-width: 768px)
+@media (max-width: 768px)
 {
     .modal__data
     {
-        flex: 0 0 66.666667%;
-        max-width: 66.666667%;
+        max-width: 100%;
+        border-bottom: 1px dotted #c2c2c2;
+        border-right: none;
     }
 }

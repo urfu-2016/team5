@@ -15,6 +15,7 @@
     padding: 10px;
     text-decoration: none;
     outline: none;
+    white-space: nowrap;
 }
 
 .tabs__link:hover:not(.active)
