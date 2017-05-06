@@ -23,7 +23,7 @@
 
 .easy-autocomplete-container ul
 {
-    background: none repeat scroll 0 0 #ffffff;
+    background: none repeat scroll 0 0 #fff;
     border-top: 1px dotted #ccc;
     display: none;
     margin-top: 0;
@@ -44,8 +44,8 @@
     font-size: 14px;
     font-weight: normal;
     padding: 8px 12px;
-
 }
+
 .easy-autocomplete-container ul li:last-child
 {
     border-radius: 0 0 2px 2px;
