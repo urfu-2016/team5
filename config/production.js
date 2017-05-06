@@ -8,7 +8,7 @@ const session = require('../libs/express-session');
 module.exports = {
     port: 80,
     mode: 'production',
-    staticPath: '//team5.surge.sh',
+    staticPath: '//team5.surge.sh/',
     mongoUri: `mongodb://${login}:${password}@${uri}`,
     session: () => session({
         secret: process.env.secret,
