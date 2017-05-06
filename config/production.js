@@ -14,5 +14,6 @@ module.exports = {
         secret: process.env.secret,
         resave: false,
         saveUninitialized: false
-    })
+    }),
+    currentDir: '/home/travis/build/urfu-2016/team5/'
 };

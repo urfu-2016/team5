@@ -2,9 +2,10 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const path = require('path');
 const webpack = require('webpack');
 const config = require('config');
+console.log(config.currentDir);
 
 module.exports = {
-    context: path.join(__dirname, '/views'),
+    context: path.join(config.currentDir, '/views'),
     entry: {
         header: './blocks/header/header',
         mainPage: './pages/mainPage/mainPage',
@@ -13,7 +14,7 @@ module.exports = {
         createQuest: './pages/createQuest/createQuest'
     },
     output: {
-        path: path.join(__dirname, '/public'),
+        path: path.join(config.currentDir, '/public'),
         publicPath: '/',
         filename: 'js/[name].js'
     },
