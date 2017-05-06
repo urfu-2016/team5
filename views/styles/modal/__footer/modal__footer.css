@@ -1,0 +1,22 @@
+.modal__footer
+{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.modal__footer a
+{
+    display: block;
+    text-decoration: none;
+    color: rgba(2, 117, 216, 1);
+    padding-top: 12px;
+    font-size: 0.8rem;
+    vertical-align: bottom;
+}
+
+.modal__footer a:hover
+{
+    text-decoration: none;
+    color: rgb(2, 81, 161);
+}

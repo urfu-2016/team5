@@ -1,0 +1,11 @@
+.input_light
+{
+    color: #fff;
+    border-bottom: 1px solid #fff;
+}
+
+.input_light::-webkit-input-placeholder
+{
+    color: #fff;
+    opacity: 0.6;
+}

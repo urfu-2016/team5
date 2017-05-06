@@ -13,6 +13,14 @@ router.get('/', function (req, res) {
     res.render('questsAll/quests-all', renderData);
 });
 
+router.get('/create', function (req, res) {
+    const renderData = {
+        activePage: '/quests/create'
+    };
+
+    res.render('createQuest/createQuest', renderData);
+});
+
 router.route('/:slug').get(function (req, res) {
     Quest.getBySlug(req.params.slug).then(questData => {
         if (questData) {

@@ -9,7 +9,8 @@ module.exports = {
         header: './blocks/header/header',
         mainPage: './pages/mainPage/mainPage',
         questsAll: './pages/questsAll/questsAll',
-        questId: './pages/questsId/quest'
+        questId: './pages/questsId/quest',
+        createQuest: './pages/createQuest/createQuest'
     },
     output: {
         path: path.join(__dirname, '/public'),

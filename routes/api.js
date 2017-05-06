@@ -2,10 +2,12 @@
 
 const express = require('express');
 const router = new express.Router();
+
 const usersController = require('../controllers/users');
 const questsController = require('../controllers/quests');
 const commentsController = require('../controllers/comments');
 const authController = require('../controllers/auth');
+const autocompleteController = require('../controllers/autocomplete');
 
 router.route('/users')
     .get(usersController.getUsers);
@@ -32,5 +34,9 @@ router.route('/comments/:slug/:id')
 
 router.route('/comments/:slug/:id/like')
     .post(authController.authorizedOnly, commentsController.likeComment);
+
+router.route('/autocomplete')
+    .get(autocompleteController.getCities)
+    .post(autocompleteController.getCities);
 
 module.exports = router;
