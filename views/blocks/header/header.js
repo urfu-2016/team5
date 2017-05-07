@@ -6,7 +6,6 @@ require('../../styles/modal/modal');
 require('../../styles/navbar/navbar');
 require('../../styles/tab-content/tab-content');
 require('../../styles/tabs/tabs');
-require('../../styles/image-preview/image-preview');
 require('../../styles/avatar/avatar');
 
 const search = document.getElementById('search');

@@ -7,39 +7,34 @@
         <div class="container">
             <h2>Create quest</h2>
             <hr class="extra-margins">
-            <form method="post" action="/api/quests">
-                <div class="input-group">
-                    <label for="title">Title</label>
-                    <input name="title" type="text" id="title" class="input-group__input input_dark">
-                </div>
+            <div class="input-group">
+                <label for="title">Title</label>
+                <input name="title" type="text" id="title" class="input-group__input input_dark" required>
+            </div>
 
-                <div class="input-group">
-                    <label for="city">City</label>
-                    <input name="city" type="text" id="city" class="input-group__input input_dark input-autocomplete">
-                </div>
+            <div class="input-group">
+                <label for="city">City</label>
+                <input name="city" type="text" id="city" class="input-group__input input_dark input-autocomplete" required>
+            </div>
 
-                <div class="input-group">
-                    <label for="description">Description</label>
-                    <textarea name="description" id="description" class="input-group__textarea"></textarea>
-                </div>
+            <div class="input-group">
+                <label for="description">Description</label>
+                <textarea name="description" id="description" class="input-group__textarea" required></textarea>
+            </div>
 
-                <div class="image-preview">
-                    <div class="image-preview___preview">
-                        <input id="img1" class="image-preview__input" type="file">
-                        <label for="img1"><img class="image-preview__img" src="img/add_photo.png" alt="add photo"></label>
-                    </div>
-                    <div class="image-preview___preview">
-                        <input id="img2" class="image-preview__input" type="file">
-                        <label for="img2"><img class="image-preview__img" src="img/add_photo.png" alt="add photo"></label>
-                    </div>
-                    <div class="image-preview___preview">
-                        <input id="img3" class="image-preview__input" type="file">
-                        <label for="img3"><img class="image-preview__img" src="img/add_photo.png" alt="add photo"></label>
-                    </div>
-                </div>
+            <h5>Add stages</h5>
+            <ul class="tabs image-preview" role="tablist">
+                <li class="tabs__item image-preview___preview">
+                    <input class="image-preview__input" id="img1" type="file" multiple accept="image/png,image/jpeg">
+                    <label for="img1"><img class="image-preview__img" src="img/add_photo.png" alt="add photo"></label>
+                </li>
+            </ul>
 
-                <button type="submit" class="btn btn_primary float_right">Submit</button>
-            </form>
+            <div class="tab-content quests-content">
+
+            </div>
+
+            <button role="createquest" class="btn btn_primary float_right btn_disabled">Submit</button>
         </div>
     {{/content}}
 

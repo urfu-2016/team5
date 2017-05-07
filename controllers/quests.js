@@ -124,7 +124,7 @@ module.exports = {
     },
 
     async renderAllQuests(req, res) {
-        const quests = await Quest.getAll();
+        // Const quests = await Quest.getAll();
         const renderData = {
             title: constants.quest.title,
             isAuth: req.user ? 1 : 0,

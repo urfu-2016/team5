@@ -2,14 +2,10 @@
 {
     margin: 5px;
     vertical-align: middle;
+    position: relative;
 }
 
-.image-preview___preview input
+.image-preview__input
 {
     display: none;
-}
-
-.image-preview___preview img
-{
-    width: 82px;
 }
