@@ -15,3 +15,4 @@ search.addEventListener('submit', function (event) {
     const searchString = document.getElementById('searchString').value;
     window.location.href = '/quests?type=string&string=' + searchString;
 });
+

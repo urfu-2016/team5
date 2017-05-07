@@ -23,7 +23,7 @@
                 <ul class="navbar__categories">
                     {{#if isAuth }}
                     <li class="navbar__item avatar">
-                        <a class="navbar__link dropdown-toggle" href="#" id="navbarDropdownMenuLink">
+                        <a class="navbar__link dropdown-toggle" id="navbarDropdownMenuLink">
                             <img src="https://cdn1.iconfinder.com/data/icons/ninja-things-1/720/ninja-background-512.png" class="avatar__image">
                             <img src="head_arrow.png" class="avatar__arrow">
                         </a>
@@ -32,7 +32,7 @@
                             <a class="dropdown-menu__item" href="#">My quests</a>
                             <a class="dropdown-menu__item" href="/quests/create">Create quest</a>
                             <form action="/logout" method="post">
-                                <a class="dropdown-menu__item" href="#">Logout</a>
+                                <button type="submit" class="dropdown-menu__item">Logout</button>
                             </form>
                         </div>
                     </li>
@@ -48,7 +48,6 @@
 
     {{#unless isAuth }}
     <!-- Autorize modal -->
-<<<<<<< HEAD
     <div class="modal" id="signForm">
         <div class="modal__dialog">
             <div class="modal__header">
@@ -140,87 +139,6 @@
                             </form>
                         </div>
                         <!--/.Panel 3-->
-=======
-        <div class="modal" id="signForm">
-            <div class="modal__dialog">
-                <div class="modal__header">
-                    <h4 class="modal__title">Login/Registration</h4>
-                    <button type="button" class="modal__close">×</button>
-                </div>
-                <div class="modal__body">
-                    <div class="modal__data">
-                        <!-- Nav tabs -->
-                        <ul class="tabs" role="tablist">
-                            <li class="tabs__item">
-                                <a class="tabs__link" href="#panel11" role="tab">Sign in</a>
-                            </li>
-                            <li class="tabs__item">
-                                <a class="tabs__link active" href="#panel12" role="tab">Sign up</a>
-                            </li>
-                        </ul>
-
-                        <!-- Tab panes -->
-                        <div class="tab-content">
-
-                            <!--Panel 1-->
-                            <div class="tab-content__panel" id="panel11" role="tabpanel">
-                                <form role="form" class="form-horizontal" method="POST" action="/signin">
-
-                                    <div class="input-group">
-                                        <i class="fa fa-envelope"></i>
-                                        <input name="login" type="text" id="form1" class="input-group__input" placeholder="Your email">
-                                    </div>
-
-                                    <div class="input-group">
-                                        <i class="fa fa-lock"></i>
-                                        <input name="password" type="password" id="form2" class="input-group__input" placeholder="Your password">
-                                    </div>
-
-                                    <div class="tab-content__footer">
-                                        <button type="submit" class="btn btn_primary">Login</button>
-                                        <a href="javascript:;">Forgot your password?</a>
-                                    </div>
-                                </form>
-                            </div>
-                            <!--/.Panel 1-->
-
-                            <!--Panel 2-->
-                            <div class="tab-content__panel active" id="panel12" role="tabpanel">
-                                <form role="form" class="form-horizontal" method="POST" action="/signup">
-
-                                    <div class="input-group">
-                                        <i class="fa fa-user"></i>
-                                        <input name="username" type="text" id="form3" class="input-group__input" placeholder="Your name">
-                                    </div>
-
-                                    <div class="input-group">
-                                        <i class="fa fa-envelope"></i>
-                                        <input name="email" type="text" id="form4" class="input-group__input" placeholder="Your email">
-                                    </div>
-
-                                    <div class="input-group">
-                                        <i class="fa fa-lock"></i>
-                                        <input name="password" type="password" id="form5" class="input-group__input" placeholder="Your password">
-                                    </div>
-
-                                    <div class="tab-content__footer">
-                                        <button type="submit" class="btn btn_primary">
-                                            Register</button>
-                                        <button type="button" class="btn btn_default">
-                                            Cancel</button>
-                                    </div>
-                                </form>
-                            </div>
-                            <!--/.Panel 2-->
-
-                        </div>
-                        <div id="OR">OR</div>
-                    </div>
-                    <div class="modal__info">
-                        <h3>Sign in with</h3>
-                        <button type="button" class="btn btn_vk"><span class="fa fa-vk"></span> Vkontakte</button>
-                        <button type="button" class="btn btn_gplus"><span class="fa fa-google-plus"></span> Google +</button>
->>>>>>> Поправил окно авторизации, вернул шапку обратно
                     </div>
                 </div>
             </div>
@@ -228,53 +146,4 @@
         </div>
 
     {{/unless}}
-    {{#if isAuth }}
-        <div class="modal" id="createQuest">
-            <div class="modal__dialog">
-                <form method="post" action="/quests">
-                    <div class="modal__header">
-                        <h4 class="modal__title">Создать квест</h4>
-                        <button type="button" class="modal__close">×</button>
-                    </div>
-                    <div class="modal__body">
-                        <div class="input-group">
-                            <label for="title">Заголовок</label>
-                            <input name="title" type="text" id="title" class="input-group__input input_dark">
-                        </div>
-
-                        <div class="input-group">
-                            <label for="city">Город</label>
-                            <input name="city" type="text" id="city" class="input-group__input input_dark">
-                        </div>
-
-                        <div class="input-group">
-                            <label for="description">Описание</label>
-                            <textarea name="description" id="description" class="input-group__textarea"></textarea>
-                        </div>
-
-                        <div class="image-preview">
-                            <div class="image-preview___preview">
-                                <input id="img1" class="image-preview__input" type="file">
-                                <label for="img1"><img class="image-preview__img" src="img/add_photo.png" alt="add photo"></label>
-                            </div>
-                            <div class="image-preview___preview">
-                                <input id="img2" class="image-preview__input" type="file">
-                                <label for="img2"><img class="image-preview__img" src="img/add_photo.png" alt="add photo"></label>
-                            </div>
-                            <div class="image-preview___preview">
-                                <input id="img3" class="image-preview__input" type="file">
-                                <label for="img3"><img class="image-preview__img" src="img/add_photo.png" alt="add photo"></label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal__footer">
-                        <button type="submit" class="btn btn_primary">Submit</button>
-                        <a href="/createquest">Go to the full form</a>
-                    </div>
-                </form>
-                <!--/.Content-->
-            </div>
-            <div class="modal__backdrop"></div>
-        </div>
-    {{/if}}
 </header>
