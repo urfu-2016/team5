@@ -4,6 +4,7 @@ require('./image-preview.css');
 require('./__preview/image-preview___preview.css');
 require('./__action/image-preview__action');
 require('./__img/image-preview__img.css');
+require('./add_photo.png');
 
 var input = document.getElementsByClassName('image-preview__input')[0];
 var questContent = document.getElementsByClassName('quests-content')[0];

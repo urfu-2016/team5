@@ -7,6 +7,7 @@ require('../../styles/navbar/navbar');
 require('../../styles/tab-content/tab-content');
 require('../../styles/tabs/tabs');
 require('../../styles/avatar/avatar');
+require('./head_arrow.png');
 
 const search = document.getElementById('search');
 search.addEventListener('submit', function (event) {
