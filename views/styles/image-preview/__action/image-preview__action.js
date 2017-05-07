@@ -1,7 +1,7 @@
 /* global $:true */
 
 require('./image-preview__action.css');
-require('./actions.svg');
+// require('./actions.svg');
 
 $('.image-preview').on('click', '.action_rotate', function () {
     var img = $(this).parent().find('.image-preview__img');

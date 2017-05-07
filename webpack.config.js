@@ -31,13 +31,6 @@ module.exports = {
                     presets: ['es2015', 'react'],
                     plugins: ['transform-runtime']
                 }
-            },
-            {
-                test: /\.(jpe?g|png|gif|svg)$/i,
-                loaders: [
-                    'file-loader?hash=sha512&digest=hex&name=[name].[ext]',
-                    'image-webpack-loader?bypassOnDebug&optimizationLevel=7&interlaced=false'
-                ]
             }
         ]
     },
