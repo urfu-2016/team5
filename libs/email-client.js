@@ -4,14 +4,7 @@ const email = require('emailjs/email');
 const config = require('config');
 const fs = require('fs');
 const handlebars = require('handlebars');
-const queriesStorage = require('../models/queriesStorage');
-const server = email.server.connect({
-    user: config.email.login,
-    password: config.email.pass,
-    host: config.email.host,
-    ssl: true,
-    port: 465
-});
+const server = email.server.connect(config.email);
 
 const pattern = fs.readFileSync('./views/blocks/email/email-content.hbs', 'utf8');
 const template = handlebars.compile(pattern);
@@ -22,40 +15,38 @@ function emailSendCallback(err) {
     }
 }
 
-async function sendRegistrationMail(email) {
-    const query = await queriesStorage.updateEmailVerificationQuery(email);
-    const link = `${config.appUrl}/reg_verification/${query}`;
-
-    server.send(getRegistrationMail(link, email), emailSendCallback);
-}
-
-async function sendPasswordResetMail(email) {
-    const query = await queriesStorage.updatePasswordResetQuery(email);
-    const link = `${config.appUrl}/pass_reset/${query}`;
-
-    server.send(getPasswordResetMail(link, email), emailSendCallback);
-}
-
-function getRegistrationMail(link, toEmail) {
-    const html = template({
-        text: 'Для подтверждения регистрации',
+function sendRegistrationMail(email, queryHash) {
+    const escapedEmail = encodeURIComponent(email);
+    const link = `${config.appUrl}/reg_verification/${escapedEmail}/${queryHash}`;
+    const textParts = {
+        actionDescription: 'Для подтверждения регистрации',
         link: link
-    });
+    };
 
-    return getMail(toEmail, 'Подтверждение регистрации', html);
+    const mail = getMail(email, 'Подтверждение регистрации', textParts);
+
+    server.send(mail, emailSendCallback);
 }
 
-function getPasswordResetMail(link, toEmail) {
-    const html = template({
-        text: 'Для смены пароля',
+function sendPasswordResetMail(email, queryHash) {
+    const escapedEmail = encodeURIComponent(email);
+    const link = `${config.appUrl}/pass_reset/${escapedEmail}/${queryHash}`;
+    const textParts = {
+        actionDescription: 'Для смены пароля',
         link: link
-    });
+    };
 
-    return getMail(toEmail, 'Смена пароля', html);
+    const mail = getMail(email, 'Смена пароля', textParts);
+
+    server.send(mail, emailSendCallback);
 }
 
-function getMail(toEmail, subject, html) {
+function getMail(toEmail, subject, textParts) {
+    const html = template(textParts);
+    const plainText = `${textParts.actionDescription} нажмите сюда: ${textParts.link}`;
+
     return {
+        text: plainText,
         from: 'Team5Quest <team5quest@gmail.com>',
         to: `<${toEmail}>`,
         subject,

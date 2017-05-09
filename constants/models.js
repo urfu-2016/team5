@@ -16,10 +16,6 @@ module.exports = {
         maxLength: 300
     },
 
-    query: {
-        delimiter: '___'
-    },
-
     email: {
         fromTitle: 'Team5Quest <team5quest@gmail.com>'
     }

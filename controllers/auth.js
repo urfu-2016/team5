@@ -36,7 +36,8 @@ module.exports = {
 
         try {
             const user = await User.create(userData);
-            emailClient.sendRegistrationMail(user.email);
+            const queryHash = await QueriesStorage.updateEmailVerificationQuery(user.email);
+            await emailClient.sendRegistrationMail(user.email, queryHash);
 
             res
                 .status(httpStatus.CREATED)
@@ -49,22 +50,27 @@ module.exports = {
     async resetPasswordRequest(req, res, next) {
         const email = req.body.email;
         const user = await User.findOne({email});
-
-        if (user) {
-            emailClient.sendPasswordResetMail(email);
-            res
-                .status(httpStatus.OK)
-                .send(`На почту с адресом ${email} было отправлено письмо для сброса пароля`);
-        } else {
-            next(new errors.NotFoundError(constants.controllers.user.userNotFoundErrorMessage));
+        if (!user) {
+            return next(new errors.NotFoundError(constants.controllers.user.userNotFoundErrorMessage));
         }
+
+        try {
+            const queryHash = await QueriesStorage.updatePasswordResetQuery(email);
+            await emailClient.sendPasswordResetMail(email, queryHash);
+        } catch (err) {
+            next(new errors.BadRequestError(err.message));
+        }
+
+        res
+            .status(httpStatus.OK)
+            .send(`На почту с адресом ${email} было отправлено письмо для сброса пароля`);
     },
 
     async resetPassword(req, res, next) {
-        const query = req.params.query;
-        const email = query.split(constants.models.query.delimiter)[0];
+        const email = req.params.email;
+        const queryHash = req.params.queryHash;
 
-        if (await QueriesStorage.verifyPasswordResetQuery(query)) {
+        if (await QueriesStorage.verifyPasswordResetQuery(email, queryHash)) {
             await User.resetPassword({email}, req.body.newPassword);
 
             res.status(httpStatus.OK).send('Пароль был изменен');
@@ -74,13 +80,13 @@ module.exports = {
     },
 
     async verifyUserEmail(req, res, next) {
-        const query = req.params.query;
-        const email = query.split(constants.models.query.delimiter)[0];
+        const email = req.params.email;
+        const queryHash = req.params.queryHash;
 
-        if (await QueriesStorage.verifyEmailVerificationQuery(query)) {
-            const user = await User.findOne({email});
-            user.emailVerified = true;
-            await user.save();
+        if (await QueriesStorage.verifyEmailVerificationQuery(email, queryHash)) {
+            await User.updateOne(
+                {email}, {emailVerified: true}, {overwrite: true}
+            );
 
             res.status(httpStatus.OK).send(`${email} подтвержден`);
         } else {
@@ -99,12 +105,16 @@ module.exports = {
     },
 
     async getResetPassPage(req, res, next) {
-        const query = req.params.query;
-        if (await QueriesStorage.checkPasswordResetQuery(query)) {
-            res.render('resetPass/reset-pass', {query});
-        } else {
-            next(new errors.NotFoundError(constants.controllers.index.pageNotExistsMessage));
+        const email = req.params.email;
+        const queryHash = req.params.queryHash;
+        const checkResult = await QueriesStorage.checkPasswordResetQuery(email, queryHash);
+        if (!checkResult) {
+            return next(new errors.NotFoundError(constants.controllers.index.pageNotExistsMessage));
         }
+
+        const encodedEmail = encodeURIComponent(email);
+        const query = `${encodedEmail}/${queryHash}`;
+        res.render('resetPass/reset-pass', {query});
     },
 
     logout(req, res) {

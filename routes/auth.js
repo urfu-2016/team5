@@ -15,7 +15,7 @@ router.route('/logout')
     .post(authController.authorizedOnly, authController.logout);
 
 router
-    .route('/reg_verification/:query')
+    .route('/reg_verification/:email/:queryHash')
     .get(authController.verifyUserEmail);
 
 router
@@ -23,7 +23,7 @@ router
     .post(authController.resetPasswordRequest);
 
 router
-    .route('/pass_reset/:query')
+    .route('/pass_reset/:email/:queryHash')
     .get(authController.getResetPassPage)
     .post(authController.resetPassword);
 

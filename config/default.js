@@ -4,10 +4,13 @@ require('dotenv').config();
 module.exports = {
     staticPath: '',
     email: {
-        login: process.env.APP_EMAIL_LOGIN,
-        pass: process.env.APP_EMAIL_PASS,
-        host: process.env.APP_EMAIL_HOST
+        user: process.env.APP_EMAIL_LOGIN,
+        password: process.env.APP_EMAIL_PASS,
+        host: process.env.APP_EMAIL_HOST,
+        ssl: true,
+        port: 465
     },
+
     session: () => session({
         secret: 'Секретный секрет',
         resave: false,
