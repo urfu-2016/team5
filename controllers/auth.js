@@ -42,8 +42,8 @@ module.exports = {
             const user = await User.create(userData);
             const queryHash = await QueriesStorage.updateEmailConfirmationQuery(user.email);
             await emailClient.sendRegistrationMail(user.email, queryHash);
-
             const signedUpMessage = constants.controllers.auth.signedUpPattern(req.body.username);
+
             res.status(httpStatus.CREATED).send(signedUpMessage);
         } catch (err) {
             next(new BadRequestError(err.message));
@@ -51,6 +51,10 @@ module.exports = {
     },
 
     async resetPasswordRequest(req, res, next) {
+        if (req.user) {
+            return next(new BadRequestError(constants.controllers.auth.alreadyAuthenticated));
+        }
+
         const email = req.body.email;
         const user = await User.findOne({email});
         if (!user) {
