@@ -1,9 +1,10 @@
 'use strict';
 
 const httpStatus = require('http-status-codes');
-const errors = require('../libs/customErrors/errors');
+const {BadRequestError, NotFoundError} = require('../libs/customErrors/errors');
 const passport = require('../libs/passport');
 const User = require('../models/user');
+const config = require('config');
 const emailClient = require('../libs/email-client');
 const constants = require('../constants/constants');
 const QueriesStorage = require('../models/queriesStorage');
@@ -12,18 +13,21 @@ module.exports = {
     signIn(req, res, next) {
         passport.authenticate('local', (err, user) => {
             if (!user) {
-                return next(new errors.BadRequestError(constants.models.user.wrongPasswordOrNameMessage));
+                return next(new BadRequestError(constants.models.user.wrongPasswordOrNameMessage));
             }
 
             if (req.user) {
-                return next(new errors.BadRequestError(constants.controllers.auth.alreadyAuthenticated));
+                return next(new BadRequestError(constants.controllers.auth.alreadyAuthenticated));
             }
 
             if (err) {
-                return next(new errors.BadRequestError(err.message));
+                return next(new BadRequestError(err.message));
             }
 
-            return req.logIn(user, () => res.redirect(req.headers.referer || '/'));
+            const referer = req.headers.referer;
+            const redirectLink = referer.startsWith(config.appUrl) ? referer : '/';
+
+            return req.logIn(user, () => res.redirect(redirectLink));
         })(req, res, next);
     },
 
@@ -36,14 +40,13 @@ module.exports = {
 
         try {
             const user = await User.create(userData);
-            const queryHash = await QueriesStorage.updateEmailVerificationQuery(user.email);
+            const queryHash = await QueriesStorage.updateEmailConfirmationQuery(user.email);
             await emailClient.sendRegistrationMail(user.email, queryHash);
 
-            res
-                .status(httpStatus.CREATED)
-                .send(constants.controllers.auth.signedUpPattern(req.body.username));
+            const signedUpMessage = constants.controllers.auth.signedUpPattern(req.body.username);
+            res.status(httpStatus.CREATED).send(signedUpMessage);
         } catch (err) {
-            next(new errors.BadRequestError(err.message));
+            next(new BadRequestError(err.message));
         }
     },
 
@@ -51,19 +54,20 @@ module.exports = {
         const email = req.body.email;
         const user = await User.findOne({email});
         if (!user) {
-            return next(new errors.NotFoundError(constants.controllers.user.userNotFoundErrorMessage));
+            const userNotFoundMessage = constants.controllers.user.userNotFoundErrorMessage;
+
+            return next(new NotFoundError(userNotFoundMessage));
         }
 
         try {
             const queryHash = await QueriesStorage.updatePasswordResetQuery(email);
             await emailClient.sendPasswordResetMail(email, queryHash);
         } catch (err) {
-            next(new errors.BadRequestError(err.message));
+            next(new BadRequestError(err.message));
         }
 
-        res
-            .status(httpStatus.OK)
-            .send(`На почту с адресом ${email} было отправлено письмо для сброса пароля`);
+        const emailSendMessage = `На почту с адресом ${email} было отправлено письмо для сброса пароля`;
+        res.status(httpStatus.OK).send(emailSendMessage);
     },
 
     async resetPassword(req, res, next) {
@@ -75,7 +79,7 @@ module.exports = {
 
             res.status(httpStatus.OK).send('Пароль был изменен');
         } else {
-            next(new errors.NotFoundError(constants.controllers.index.pageNotExistsMessage));
+            next(new NotFoundError(constants.controllers.index.pageNotExistsMessage));
         }
     },
 
@@ -83,14 +87,14 @@ module.exports = {
         const email = req.params.email;
         const queryHash = req.params.queryHash;
 
-        if (await QueriesStorage.verifyEmailVerificationQuery(email, queryHash)) {
+        if (await QueriesStorage.verifyEmailConfirmationQuery(email, queryHash)) {
             await User.updateOne(
-                {email}, {emailVerified: true}, {overwrite: true}
+                {email}, {emailVerified: true}
             );
 
             res.status(httpStatus.OK).send(`${email} подтвержден`);
         } else {
-            next(new errors.NotFoundError(constants.controllers.index.pageNotExistsMessage));
+            next(new NotFoundError(constants.controllers.index.pageNotExistsMessage));
         }
     },
 
@@ -98,9 +102,7 @@ module.exports = {
         if (req.user) {
             next();
         } else {
-            res
-                .status(httpStatus.BAD_REQUEST)
-                .send(constants.controllers.auth.authorizationRequired);
+            res.status(httpStatus.BAD_REQUEST).send(constants.controllers.auth.authorizationRequired);
         }
     },
 
@@ -109,12 +111,11 @@ module.exports = {
         const queryHash = req.params.queryHash;
         const checkResult = await QueriesStorage.checkPasswordResetQuery(email, queryHash);
         if (!checkResult) {
-            return next(new errors.NotFoundError(constants.controllers.index.pageNotExistsMessage));
+            return next(new NotFoundError(constants.controllers.index.pageNotExistsMessage));
         }
 
         const encodedEmail = encodeURIComponent(email);
-        const query = `${encodedEmail}/${queryHash}`;
-        res.render('resetPass/reset-pass', {query});
+        res.render('resetPass/reset-pass', {email: encodedEmail, queryHash});
     },
 
     logout(req, res) {

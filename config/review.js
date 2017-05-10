@@ -7,6 +7,5 @@ const uri = 'ds161400.mlab.com:61400/quests-team5-pr';
 module.exports = {
     port: 80,
     mode: 'review',
-    mongoUri: `mongodb://${login}:${password}@${uri}`,
-    appUrl: `https://${process.env.HEROKU_APP_NAME}.herokuapp.com`
+    mongoUri: `mongodb://${login}:${password}@${uri}`
 };

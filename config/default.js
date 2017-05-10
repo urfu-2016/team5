@@ -3,6 +3,7 @@ require('dotenv').config();
 
 module.exports = {
     staticPath: '',
+    appUrl: `https://${process.env.HEROKU_APP_NAME}.herokuapp.com`,
     email: {
         user: process.env.APP_EMAIL_LOGIN,
         password: process.env.APP_EMAIL_PASS,

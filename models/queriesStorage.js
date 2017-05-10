@@ -5,7 +5,7 @@ const crypto = require('../libs/crypto');
 
 const expiresTime = '24h';
 
-const LinkData = new mongoose.Schema({
+const QueryData = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now,
@@ -19,8 +19,8 @@ const LinkData = new mongoose.Schema({
 });
 
 const QueriesDataSchema = new mongoose.Schema({
-    passwordReset: {type: LinkData},
-    emailVerification: {type: LinkData},
+    passwordReset: {type: QueryData},
+    emailConfirmation: {type: QueryData},
     email: {
         type: String,
         required: true,
@@ -32,11 +32,11 @@ const QueriesDataSchema = new mongoose.Schema({
 
 QueriesDataSchema.statics.updatePasswordResetQuery = email => updateQuery(email, 'passwordReset');
 
-QueriesDataSchema.statics.updateEmailVerificationQuery = email => updateQuery(email, 'emailVerification');
+QueriesDataSchema.statics.updateEmailConfirmationQuery = email => updateQuery(email, 'emailConfirmation');
 
 QueriesDataSchema.statics.verifyPasswordResetQuery = (email, queryHash) => verifyQuery(email, queryHash, 'passwordReset');
 
-QueriesDataSchema.statics.verifyEmailVerificationQuery = (email, queryHash) => verifyQuery(email, queryHash, 'emailVerification');
+QueriesDataSchema.statics.verifyEmailConfirmationQuery = (email, queryHash) => verifyQuery(email, queryHash, 'emailConfirmation');
 
 QueriesDataSchema.statics.checkPasswordResetQuery = async (email, queryHash) => {
     return (await checkQuery(email, queryHash, 'passwordReset')).compareResult;
