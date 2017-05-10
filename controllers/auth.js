@@ -25,7 +25,7 @@ module.exports = {
             }
 
             const referer = req.headers.referer;
-            const redirectLink = referer.startsWith(config.appUrl) ? referer : '/';
+            const redirectLink = referer !== undefined && referer.startsWith(config.appUrl) ? referer : '/';
 
             return req.logIn(user, () => res.redirect(redirectLink));
         })(req, res, next);

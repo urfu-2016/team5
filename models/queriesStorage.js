@@ -39,7 +39,7 @@ QueriesDataSchema.statics.verifyPasswordResetQuery = (email, queryHash) => verif
 QueriesDataSchema.statics.verifyEmailConfirmationQuery = (email, queryHash) => verifyQuery(email, queryHash, 'emailConfirmation');
 
 QueriesDataSchema.statics.checkPasswordResetQuery = async (email, queryHash) => {
-    return (await checkQuery(email, queryHash, 'passwordReset')).compareResult;
+    return (await isQueryExistsAndCorrect(email, queryHash, 'passwordReset')).compareResult;
 };
 
 const QueriesDataModel = mongoose.model('QueriesData', QueriesDataSchema);
@@ -59,8 +59,7 @@ async function updateQuery(email, queryType) {
 }
 
 async function verifyQuery(email, queryHash, queryType) {
-    const {compareResult, queriesData} = await checkQuery(email, queryHash, queryType);
-
+    const {compareResult, queriesData} = await isQueryExistsAndCorrect(email, queryHash, queryType);
     if (compareResult) {
         queriesData[queryType] = undefined;
         await queriesData.save();
@@ -69,7 +68,7 @@ async function verifyQuery(email, queryHash, queryType) {
     return compareResult;
 }
 
-async function checkQuery(email, queryHash, queryType) {
+async function isQueryExistsAndCorrect(email, queryHash, queryType) {
     const queriesData = await QueriesDataModel.findOne({email});
     if (!queriesData || !queriesData[queryType]) {
         return false;
