@@ -78,10 +78,14 @@ module.exports = {
         const email = req.params.email;
         const queryHash = req.params.queryHash;
 
+        if (!req.body.newPassword) {
+            return next(new BadRequestError(constants.controllers.auth.passwordResetInputRequired));
+        }
+
         if (await QueriesStorage.verifyPasswordResetQuery(email, queryHash)) {
             await User.resetPassword({email}, req.body.newPassword);
 
-            res.status(httpStatus.OK).send('Пароль был изменен');
+            res.status(httpStatus.OK).send(constants.controllers.auth.passwordWasChanged);
         } else {
             next(new NotFoundError(constants.controllers.index.pageNotExistsMessage));
         }

@@ -126,7 +126,7 @@ describe('controller:auth', () => {
         });
     });
 
-    describe('password reset', () => {
+    describe('password reset request', () => {
         const email = mocks.userWithCorrectPassword.email;
 
         it('should success on reset password request', async () => {
@@ -169,6 +169,67 @@ describe('controller:auth', () => {
             const secondQuery = await QueriesStorage.findOne({email});
 
             firstQuery.passwordReset.salt.should.not.equal(secondQuery.passwordReset.salt);
+        });
+    });
+
+    describe('password reset', () => {
+        it('reset password by correct query', async () => {
+            const email = mocks.userWithCorrectPassword.email;
+
+            await chaiRequest.post('/signup', mocks.userWithCorrectPassword);
+            const hash = await QueriesStorage.updatePasswordResetQuery(email);
+            const linkToPasswordReset = `/pass_reset/${email}/${hash}`;
+            const newPassword = 'new password';
+            const res = await chaiRequest.post(linkToPasswordReset, {newPassword});
+
+            res.status.should.equal(httpStatus.OK);
+            res.text.should.equal(constants.controllers.auth.passwordWasChanged);
+        });
+
+        it('should not reset password by incorrect query', async () => {
+            await chaiRequest.post('/signup', mocks.userWithCorrectPassword);
+
+            const email = mocks.userWithCorrectPassword.email;
+            const hash = '1' + await QueriesStorage.updatePasswordResetQuery(email);
+            const linkToPasswordReset = `/pass_reset/${email}/${hash}`;
+            const newPassword = 'new password';
+
+            try {
+                await chaiRequest.post(linkToPasswordReset, {newPassword});
+            } catch (err) {
+                err.response.status.should.equal(httpStatus.NOT_FOUND);
+                err.response.text.should.equal(constants.controllers.index.pageNotExistsMessage);
+            }
+        });
+
+        it('should not reset password if user not exists', async () => {
+            const email = mocks.userWithCorrectPassword.email;
+            const hash = '1';
+            const linkToPasswordReset = `/pass_reset/${email}/${hash}`;
+            const newPassword = 'new password';
+
+            try {
+                await chaiRequest.post(linkToPasswordReset, {newPassword});
+            } catch (err) {
+                err.response.status.should.equal(httpStatus.NOT_FOUND);
+                err.response.text.should.equal(constants.controllers.index.pageNotExistsMessage);
+            }
+        });
+
+        it('should not reset password if it is empty', async () => {
+            const email = mocks.userWithCorrectPassword.email;
+
+            await chaiRequest.post('/signup', mocks.userWithCorrectPassword);
+            const hash = await QueriesStorage.updatePasswordResetQuery(email);
+            const linkToPasswordReset = `/pass_reset/${email}/${hash}`;
+            const newPassword = '';
+
+            try {
+                await chaiRequest.post(linkToPasswordReset, {newPassword});
+            } catch (err) {
+                err.response.status.should.equal(httpStatus.BAD_REQUEST);
+                err.response.text.should.equal(constants.controllers.auth.passwordResetInputRequired);
+            }
         });
     });
 
