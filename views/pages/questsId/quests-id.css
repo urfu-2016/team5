@@ -6,37 +6,3 @@
     max-width: 1200px;
     margin: 0 auto;
 }
-
-.content__info
-{
-    flex: 9 1 500px;
-}
-
-.content__action
-{
-    display: flex;
-    flex-direction: row;
-    align-content: flex-start;
-    flex-wrap: wrap;
-}
-
-.row__item
-{
-    min-width: 100px;
-    flex-grow: 1;
-    margin: 5px;
-    font-size: 15px;
-}
-
-.content__msg
-{
-    text-align: center;
-    font-size: 17px;
-    flex: 0 0 calc(100% - 10px);
-    box-sizing: border-box;
-}
-
-.content__comments
-{
-    flex: 1 1 100%;
-}

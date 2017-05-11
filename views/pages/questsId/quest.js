@@ -1,15 +1,28 @@
-require('./quests-id.css');
+import './quests-id.css';
 import './../../styles/block/block.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Comments from '../../blocks/comments/comments';
-import CommentsPoster from '../../blocks/comments/CommentsPoster.js';
+import QuestContainer from '../../blocks/Quest/QuestContainer';
 
-const commentsRoot = document.getElementById('comments-root');
+import CommentsPoster from '../../blocks/comments/CommentsPoster';
+import PhotoSender from '../../blocks/QuestPhotos/PhotoSender';
+import QuestSender from '../../blocks/Quest/QuestSender';
 
-CommentsPoster.setSlug(commentsRoot.dataset.slug);
+const contentRoot = document.getElementById('content-root');
+const slug = contentRoot.dataset.slug;
+
+CommentsPoster.setSlug(slug);
+PhotoSender.setSlug(slug);
+QuestSender.setSlug(slug);
+
+const isAuth = Boolean(Number(contentRoot.dataset.isAuth));
+const isCreator = isAuth && Boolean(Number(contentRoot.dataset.isCreator));
+const isPlaying = isAuth && Boolean(Number(contentRoot.dataset.isPlaying));
+
+const user = {isAuth, isCreator, isPlaying};
 
 ReactDOM.render(
-    <Comments isAuth={Number(commentsRoot.dataset.isAuth)}/>,
-    document.getElementById('comments-root')
+    <QuestContainer user={user} />,
+    contentRoot
 );

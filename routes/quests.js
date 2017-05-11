@@ -26,10 +26,11 @@ router.route('/:slug').get(function (req, res) {
     Quest.getBySlug(req.params.slug).then(questData => {
         if (questData) {
             const renderData = {
-                title: questData.title,
-                quest: questData,
                 isAuth: req.user ? 1 : 0,
-                isCreator: questData.isMyQuest(req.user)
+                isCreator: questData.isMyQuest(req.user),
+                isPlaying: 0,
+                slug: questData.slug,
+                title: questData.title
             };
 
             res.render('questsId/quests-id', renderData);
@@ -37,6 +38,61 @@ router.route('/:slug').get(function (req, res) {
             res.render('notFound/notFound');
         }
     });
+});
+
+router.route('/:slug/info').get(function (req, res) {
+    Quest.getBySlug(req.params.slug).then(questData => {
+        if (questData) {
+            const renderData = {
+                quest: {
+                    title: questData.title,
+                    city: questData.city,
+                    description: questData.description,
+                    author: questData.author,
+                    createdAt: questData.dateOfCreation,
+                    tags: questData.tags,
+                    titleImage: questData.images[0]
+                }
+            };
+            res.send(JSON.stringify(renderData));
+        } else {
+            res.send(JSON.stringify({}));
+        }
+    });
+});
+
+router.route('/:slug/photos').get(function (req, res) {
+    if (req.user) {
+        Quest.getBySlug(req.params.slug).then(questData => {
+            if (questData) {
+                const photos = questData.images.map(image => ({
+                    src: image.src,
+                    answered: false,
+                    rightAnswered: false,
+                    id: 1
+                }));
+                res.send(JSON.stringify(photos));
+            } else {
+                res.sendStatus(404);
+            }
+        });
+    } else {
+        res.sendStatus(401);
+    }
+});
+
+router.route('/:slug/beginPlay').post(function (req, res) {
+    if (req.user) {
+        Quest.getBySlug(req.params.slug).then(questData => {
+            if (questData) {
+                res.sendStatus(200);
+            } else {
+                res.sendStatus(404);
+            }
+        });
+    } else {
+        res.sendStatus(401);
+    }
 });
 
 module.exports = router;
