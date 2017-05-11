@@ -116,4 +116,16 @@ describe('controller:comment', () => {
         const res = await chaiRequest.get(`/api/comments/${quest.slug}/${comment.id}`);
         res.body.data.likesCount.should.equal(0);
     });
+
+    it('should return comments for not authorized user', async () => {
+        // Из-за того, что у незалогиненного пользователя нет сессии,
+        // нельзя проверить, лайкал он коммент или нет. Бекенд падал
+        const comment = (await createComment('Blah', quest.slug)).body.data;
+        await chaiRequest.post(`/api/comments/${quest.slug}/${comment.id}/like`);
+        await chaiRequest.logout();
+
+        const res = await chaiRequest.get(`/api/comments/${quest.slug}`);
+        res.body.data.length.should.not.equal(0);
+        (res.body.data.liked === undefined).should.be.equal(true);
+    });
 });
