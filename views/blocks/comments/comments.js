@@ -2,6 +2,7 @@ import React from 'react';
 import CommentFormContainer from './../CommentForm/CommentFormContainer';
 import CommentListContainer from './../CommentList/CommentListContainer';
 import {CommentsStrings} from './../../constants/strings';
+import CommentsPoster from './CommentsPoster.js';
 import './comments.css';
 import b from 'b_';
 
@@ -9,7 +10,7 @@ const comments = b.lock('comments');
 
 function FormBlock(props) {
     if (props.isAuth) {
-        return <CommentFormContainer />;
+        return <CommentFormContainer getSendOptions={CommentsPoster.sendComment} />;
     }
 
     return (
@@ -27,7 +28,10 @@ export default class Comments extends React.Component {
                     <FormBlock isAuth={this.props.isAuth} />
                 </div>
                 <div className={[comments('list'), b('block', {gray: true})].join(' ')}>
-                    <CommentListContainer isAuth={this.props.isAuth}/>
+                    <CommentListContainer
+                        isAuth={this.props.isAuth}
+                        getSendOptions={CommentsPoster.getComments}
+                    />
                 </div>
             </div>
         );

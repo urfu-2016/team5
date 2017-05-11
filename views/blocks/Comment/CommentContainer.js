@@ -1,7 +1,7 @@
 import React from 'react';
 import sender from './../Sender/Sender';
-import CommentsPoster from './../comments/CommentsPoster.js';
 import Comment from './Comment';
+import CommentsPoster from './../comments/CommentsPoster.js';
 
 const CommentWithSending = sender(Comment);
 
@@ -14,6 +14,7 @@ export default class CommentContainer extends React.Component {
         };
 
         this.handleSuccesfulEnd = this.handleSuccesfulEnd.bind(this);
+        this.getSendOptions = this.getSendOptions.bind(this);
     }
 
     handleSuccesfulEnd() {
@@ -23,14 +24,18 @@ export default class CommentContainer extends React.Component {
         this.props.onDelete();
     }
 
+    getSendOptions() {
+        return CommentsPoster.removeComment(this.props.id);
+    }
+
     render() {
         if (this.state.deleted) {
             return null;
         }
+
         return (
-            <CommentWithSending
-                data={this.props.id} {...this.props}
-                handleAction={CommentsPoster.removeComment}
+            <CommentWithSending {...this.props}
+                getSendOptions={this.getSendOptions}
                 onSuccesfulEnd={this.handleSuccesfulEnd}>
             </CommentWithSending>
         );

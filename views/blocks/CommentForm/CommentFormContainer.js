@@ -3,7 +3,6 @@ import './CommentForm.css';
 import CommentForm from './CommentForm';
 import sender from './../Sender/Sender';
 import Emitter from './../Emitter.js';
-import CommentsPoster from './../comments/CommentsPoster.js';
 
 const CommentFormWithSending = sender(CommentForm);
 
@@ -21,6 +20,7 @@ export default class CommentFormContainer extends React.Component {
         this.handleSuccesfulEnd = this.handleSuccesfulEnd.bind(this);
         this.handleTextChange = this.handleTextChange.bind(this);
         this.handleFailedSend = this.handleFailedSend.bind(this);
+        this.getSendOptions = this.getSendOptions.bind(this);
     }
 
     handleTextChange(text) {
@@ -45,15 +45,18 @@ export default class CommentFormContainer extends React.Component {
         }.bind(this), 3000);
     }
 
+    getSendOptions() {
+        return this.props.getSendOptions(this.state.text);
+    }
+
     render() {
         return (
             <CommentFormWithSending
                 {...this.state}
-                data={this.state.text}
+                getSendOptions={this.getSendOptions}
                 onChangeText={this.handleTextChange}
-                handleAction={CommentsPoster.sendComment}
-                onSuccesfulEnd={this.handleSuccesfulEnd}
                 onFailedSend={this.handleFailedSend}
+                onSuccesfulEnd={this.handleSuccesfulEnd}
             />
         );
     }

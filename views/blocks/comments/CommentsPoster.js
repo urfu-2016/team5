@@ -2,7 +2,6 @@ class CommentsPoster {
     constructor() {
         this.sendComment = this.sendComment.bind(this);
         this.getComments = this.getComments.bind(this);
-        this.getComment = this.getComment.bind(this);
         this.removeComment = this.removeComment.bind(this);
         this.likeComment = this.likeComment.bind(this);
         this.setSlug = this.setSlug.bind(this);
@@ -12,85 +11,49 @@ class CommentsPoster {
         this.slug = slug;
     }
 
-    checkStatus(res) {
-        if (res.ok) {
-            return res;
-        }
-
-        throw this.getCustomError(res.statusText, false);
-    }
-
-    getCustomError(message, isNoConection) {
-        var error = new Error(message);
-        error.isNoConection = isNoConection;
-        return error;
-    }
-
-    request(url, options, handles, parser) {
-        parser = parser || (res => res);
-
-        fetch(url, options)
-            .then(this.checkStatus,
-                error => {
-                    throw this.getCustomError(error.message, true);
-                })
-            .then(parser)
-            .then(handles.handleSuccessfulSend)
-            .catch(handles.handleFailedSend);
-    }
-
-    getComment(handles, id) {
-        this.request(`../api/comments/${this.slug}/${id}`,
-            {
+    getComments() {
+        return {
+            url: `../api/comments/${this.slug}`,
+            options: {
                 method: 'GET',
                 credentials: 'include'
             },
-            handles,
-            res => res.json()
-        );
+            parser: res => res.json()
+        };
     }
 
-    getComments(handles) {
-        this.request(`../api/comments/${this.slug}`,
-            {
-                method: 'GET',
-                credentials: 'include'
-            },
-            handles,
-            res => res.json()
-        );
-    }
-
-    sendComment(handles, text) {
-        this.request(`../api/comments/${this.slug}`,
-            {
+    sendComment(text) {
+        return {
+            url: `../api/comments/${this.slug}`,
+            options: {
                 method: 'POST',
                 body: JSON.stringify({text}),
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 credentials: 'include'
-            },
-            handles
-        );
+            }
+        };
     }
 
-    removeComment(handles, id) {
-        this.request(`../api/comments/${this.slug}/${id}`,
-            {
+    removeComment(id) {
+        return {
+            url: `../api/comments/${this.slug}/${id}`,
+            options: {
                 method: 'DELETE',
                 credentials: 'include'
-            }, handles);
+            }
+        };
     }
 
-    likeComment(handles, id) {
-        this.request(`../api/comments/${this.slug}/${id}/like`,
-            {
+    likeComment(id) {
+        return {
+            url: `../api/comments/${this.slug}/${id}/like`,
+            options: {
                 method: 'POST',
                 credentials: 'include'
-            },
-            handles
-        );
+            }
+        };
     }
 }
 

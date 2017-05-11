@@ -1,6 +1,5 @@
 import React from 'react';
 import sender from './../Sender/Sender';
-import CommentsPoster from './../comments/CommentsPoster.js';
 import Likes from './Likes';
 
 const LikesWithSending = sender(Likes);
@@ -31,12 +30,11 @@ export default class LikesContainer extends React.Component {
 
     render() {
         return (
-            <LikesWithSending {...this.state}
-                data={this.props.id}
-                handleAction={CommentsPoster.likeComment}
+            <LikesWithSending
+                {...this.props} {...this.state}
                 onLike={this.handleLikesChange}
                 onFailedSend={this.handleFailedSend}
-                disabledLike={this.props.disabledLike}>
+            >
             </LikesWithSending>);
     }
 }

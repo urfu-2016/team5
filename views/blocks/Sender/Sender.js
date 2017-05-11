@@ -1,5 +1,6 @@
 import React from 'react';
 import states from './states';
+import request from './Request';
 
 export default function Sender(Component) {
     return class Sender extends React.Component {
@@ -20,12 +21,16 @@ export default function Sender(Component) {
                 this.props.onActon();
             }
 
-            this.props.handleAction(
+            const {url, options, parser} = this.props.getSendOptions();
+
+            request(
+                url,
+                options,
                 {
                     handleSuccessfulSend: this.handleSuccessfulSend,
                     handleFailedSend: this.handleFailedSend
                 },
-                this.props.data
+                parser
             );
         }
 
