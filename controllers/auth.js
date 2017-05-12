@@ -67,7 +67,7 @@ module.exports = {
             const queryHash = await QueriesStorage.updatePasswordResetQuery(email);
             await emailClient.sendPasswordResetMail(email, queryHash);
         } catch (err) {
-            next(new BadRequestError(err.message));
+            return next(new BadRequestError(err.message));
         }
 
         const emailSendMessage = `На почту с адресом ${email} было отправлено письмо для сброса пароля`;
@@ -102,7 +102,7 @@ module.exports = {
 
             res.status(httpStatus.OK).send(`${email} подтвержден`);
         } else {
-            next(new NotFoundError(constants.controllers.index.pageNotExistsMessage));
+            return next(new NotFoundError(constants.controllers.index.pageNotExistsMessage));
         }
     },
 

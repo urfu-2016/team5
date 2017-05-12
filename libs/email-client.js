@@ -17,7 +17,7 @@ function emailSendCallback(err) {
 
 function sendRegistrationMail(email, queryHash) {
     const escapedEmail = encodeURIComponent(email);
-    const link = `${config.appUrl}/reg_verification/${escapedEmail}/${queryHash}`;
+    const link = `${config.appUrl}/register-verification/${escapedEmail}/${queryHash}`;
     const textParts = {
         actionDescription: 'Для подтверждения регистрации',
         link: link
@@ -30,7 +30,7 @@ function sendRegistrationMail(email, queryHash) {
 
 function sendPasswordResetMail(email, queryHash) {
     const escapedEmail = encodeURIComponent(email);
-    const link = `${config.appUrl}/pass_reset/${escapedEmail}/${queryHash}`;
+    const link = `${config.appUrl}/password-reset/${escapedEmail}/${queryHash}`;
     const textParts = {
         actionDescription: 'Для смены пароля',
         link: link

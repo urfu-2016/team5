@@ -15,15 +15,15 @@ router.route('/logout')
     .post(authController.authorizedOnly, authController.logout);
 
 router
-    .route('/reg_verification/:email/:queryHash')
+    .route('/register-verification/:email/:queryHash')
     .get(authController.verifyUserEmail);
 
 router
-    .route('/pass_reset')
+    .route('/password-reset')
     .post(authController.resetPasswordRequest);
 
 router
-    .route('/pass_reset/:email/:queryHash')
+    .route('/password-reset/:email/:queryHash')
     .get(authController.getResetPassPage)
     .post(authController.resetPassword);
 
