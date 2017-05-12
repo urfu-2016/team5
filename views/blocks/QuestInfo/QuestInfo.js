@@ -1,15 +1,12 @@
 import React from 'react';
-import Comments from './../comments/comments';
-import Card from './../card/Card';
+import Card from '../card/Card';
 import QuestSender from '../Quest/QuestSender';
 import LikesContainer from './../Likes/LikesContainer';
+import Button from './../Button/Button';
+import './QuestInfo.css';
+import b from 'b_';
 
-function Button(props) {
-    return (
-        <button className={'btn btn_gray'} disabled={!props.isAuth}
-            onClick={props.handleClick}>{props.text}</button>
-    );
-}
+const questInfo = b.lock('quest-info');
 
 export default class QuestInfo extends React.Component {
     componentDidMount() {
@@ -23,26 +20,33 @@ export default class QuestInfo extends React.Component {
             return null;
         }
 
-        const {user, handleBeginPlay, handlePhotos} = this.props;
+        const {user, handleBeginPlay, handlePhotos, sending} = this.props;
 
         return (
             <div>
-                <div className={'block block_gray'}>
+                <div className={'quest-info block block_gray'}>
                     <Card isCreator={user.isCreator} quest={quest} />
-                    <LikesContainer
-                        getSendOptions={QuestSender.likeQuest}
-                        liked={quest.liked}
-                        likesCount={quest.likesCount}
-                        disabledLike={!user.isAuth}
-                    />
-                    {!user.isCreator &&
-                        <Button isAuth={user.isAuth}
-                            handleClick={user.isPlaying ? (handlePhotos) : (handleBeginPlay)}
-                            text={user.isPlaying ? ('Продолжить прохождение') : ('Пройти квест')}
-                        />
-                    }
+                    <div className={questInfo('controls')}>
+                        {!user.isCreator &&
+                            <div className={questInfo('button', {play: true})}>
+                                <Button disabled={!user.isAuth}
+                                    inProgress={sending}
+                                    onClick={user.isPlaying ? (handlePhotos) : (handleBeginPlay)}
+                                    text={user.isPlaying ? ('Продолжить прохождение') : ('Пройти квест')}
+                                />
+                            </div>
+                        }
+                        <div className={questInfo('button', {like: true})}>
+                            <LikesContainer
+                                getSendOptions={QuestSender.likeQuest}
+                                liked={quest.liked}
+                                likesCount={quest.likesCount}
+                                disabledLike={!user.isAuth}
+                            />
+                        </div>
+
+                    </div>
                 </div>
-                <Comments isAuth={user.isAuth} />
             </div>
         );
     }

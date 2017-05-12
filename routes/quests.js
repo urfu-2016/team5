@@ -51,7 +51,8 @@ router.route('/:slug/info').get(function (req, res) {
                     author: questData.author,
                     createdAt: questData.dateOfCreation,
                     tags: questData.tags,
-                    titleImage: questData.images[0]
+                    imagesCount: questData.images.length,
+                    likesCount: 0
                 }
             };
             res.send(JSON.stringify(renderData));

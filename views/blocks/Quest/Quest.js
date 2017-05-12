@@ -1,4 +1,5 @@
 import React from 'react';
+import Comments from './../comments/comments';
 import QuestInfoContainer from '../QuestInfo/QuestInfoContainer';
 import QuestPhotosContainer from '../QuestPhotos/QuestPhotosContainer';
 
@@ -22,17 +23,29 @@ export default class Quest extends React.Component {
     }
 
     render() {
-        const {mountQuestPhotos, mountQuestInfo, showQuestInfo, handleInfo, handlePhotos, user} = this.props;
+        const {
+            mountQuestPhotos,
+            mountQuestInfo,
+            showQuestInfo,
+            handlePhotos,
+            handleInfo,
+            sending,
+            user
+        } = this.props;
 
         return (
             <div>
                 {mountQuestInfo &&
-                    <QuestInfoContainer
-                        user={user}
-                        showQuestInfo={showQuestInfo}
-                        handleBeginPlay={this.handleBeginPlay}
-                        handlePhotos={handlePhotos}
-                    />
+                    <div>
+                        <QuestInfoContainer
+                            user={user}
+                            showQuestInfo={showQuestInfo}
+                            handleBeginPlay={this.handleBeginPlay}
+                            handlePhotos={handlePhotos}
+                            beginPlayRequest={sending}
+                        />
+                        <Comments isAuth={user.isAuth} showComments={showQuestInfo}/>
+                    </div>
                 }
                 {mountQuestPhotos &&
                     <QuestPhotosContainer

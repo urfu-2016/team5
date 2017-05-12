@@ -1,6 +1,11 @@
-.quest-card__group
+.quest-card
 {
-    display: flex;
+    margin-bottom: 15px;
+}
+
+.quest-card__creating
+{
+    font-size: 0.8rem;
 }
 
 .quest-card__change-quest
@@ -8,16 +13,7 @@
     font-size: 1.2rem;
 }
 
-.quest-card__info
-{
-    font-size: 0.8rem;
-}
-
-.quest-card__author
-{
-    white-space: nowrap;
-}
-
+.quest-card__author,
 .quest-card__date
 {
     white-space: nowrap;
@@ -25,36 +21,26 @@
 
 .quest-card__title
 {
-    margin: 5px 10px 5px 0;
+    margin: 1.5% 10px 5px 0;
     display: inline-block;
+}
+
+.quest-card__data
+{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.quest-card__additional-info
+{
+    font-size: 1rem;
+    flex: 200px 1 1;
+    padding: 0 10px;
 }
 
 .quest-card__description
 {
     font-size: 1rem;
-}
-
-.quest-card__titleImage
-{
-    max-width: 40%;
-    margin-right: 20px;
-}
-
-.quest-card__titleImage img
-{
-    max-width: 100%;
-}
-
-@media (max-width: 425px)
-{
-    .quest-card__group
-    {
-        flex-direction: column;
-    }
-
-    .quest-card__titleImage
-    {
-        margin: 0;
-        max-width: 100%;
-    }
+    flex: 450px 3 1;
+    padding: 0 20px;
 }

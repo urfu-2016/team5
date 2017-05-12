@@ -26,7 +26,7 @@ export default class Comment extends React.Component {
         const {author, date, message, liked, likesCount, isAuth, isAuthor = false, sending} = this.props;
 
         return (
-            <div className={comment()}>
+            <div className={comment({deleting: sending})}>
                 <div className={comment('author')}>
                     {author}
                 </div>

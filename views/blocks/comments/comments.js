@@ -22,14 +22,20 @@ function FormBlock(props) {
 
 export default class Comments extends React.Component {
     render() {
+        const {showComments, isAuth} = this.props;
+
+        if (!showComments) {
+            return null;
+        }
+
         return (
             <div className={comments()}>
                 <div className={[b('block', {gray: true}), comments('form')].join(' ')}>
-                    <FormBlock isAuth={this.props.isAuth} />
+                    <FormBlock isAuth={isAuth} />
                 </div>
                 <div className={[comments('list'), b('block', {gray: true})].join(' ')}>
                     <CommentListContainer
-                        isAuth={this.props.isAuth}
+                        isAuth={isAuth}
                         getSendOptions={CommentsPoster.getComments}
                     />
                 </div>
