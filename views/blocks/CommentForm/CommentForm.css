@@ -55,36 +55,3 @@
     cursor: progress;
     opacity: 0.4;
 }
-
-.comment-form__button
-{
-    background: #ff8f00;
-    border-radius: 3px;
-    border: none;
-    padding: 8px 55px;
-    outline: none;
-    font-size: 15px;
-    color: #fff;
-}
-
-.comment-form__button_readyToSend
-{
-    box-shadow: 0 0 5px #aaa;
-}
-
-.comment-form__button_readyToSend:hover
-{
-    cursor: pointer;
-    box-shadow: 0 0 5px #ff8f00;
-}
-
-.comment-form__button:disabled
-{
-    background: rgb(255, 204, 138);
-    cursor: default;
-}
-
-.comment-form__button_sending
-{
-    cursor: progress;
-}
