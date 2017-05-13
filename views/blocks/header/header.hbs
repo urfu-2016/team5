@@ -49,7 +49,6 @@
     <div class="modal" id="signForm">
         <div class="modal__dialog">
             <div class="modal__header">
-                <!--<h4 class="modal__title">Login/Registration</h4>-->
                 <button type="button" class="modal__close">×</button>
             </div>
             <div class="modal__body">
@@ -85,8 +84,9 @@
                                 </div>
 
                                 <div class="tab-content__footer">
-                                    <button type="submit" class="btn btn_primary">Login</button>
-                                    <a href="javascript:;">Forgot your password?</a>
+                                    <button type="submit" class="btn btn_primary">
+                                        Login
+                                    </button>
                                 </div>
                             </form>
                         </div>
@@ -113,9 +113,8 @@
 
                                 <div class="tab-content__footer">
                                     <button type="submit" class="btn btn_primary">
-                                        Register</button>
-                                    <button type="button" class="btn btn_default">
-                                        Cancel</button>
+                                        Register
+                                    </button>
                                 </div>
                             </form>
                         </div>
@@ -131,7 +130,9 @@
                                 </div>
 
                                 <div class="tab-content__footer">
-                                    <button type="submit" class="btn btn_primary">Send mail</button>
+                                    <button type="submit" class="btn btn_primary">
+                                        Send mail
+                                    </button>
                                 </div>
                             </form>
                         </div>
@@ -140,7 +141,7 @@
                 </div>
             </div>
         </div>
-        <!--<div class="modal__backdrop"></div>-->
+        <div class="modal__backdrop"></div>
     </div>
     {{/unless}}
     {{#if isAuth }}
