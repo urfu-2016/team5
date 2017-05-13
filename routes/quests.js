@@ -52,7 +52,8 @@ router.route('/:slug/info').get(function (req, res) {
                     createdAt: questData.dateOfCreation,
                     tags: questData.tags,
                     imagesCount: questData.images.length,
-                    likesCount: 0
+                    likesCount: questData.likesCount,
+                    liked: req.user ? questData.likedBy(req.user) : false
                 }
             };
             res.send(JSON.stringify(renderData));
