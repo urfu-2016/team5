@@ -28,12 +28,14 @@ module.exports = {
     },
 
     index: {
-        title: 'Список квестов'
+        title: 'Список квестов',
+        pageNotExistsMessage: 'Такой страницы не существует'
     },
 
     auth: {
         signedUpPattern: username => `${username} был зарегистрирован`,
-        signedInPattern: username => `${username}, поздравляем, вы аутентифицированы!`,
+        passwordWasChanged: 'Пароль был изменен',
+        passwordResetInputRequired: 'Необходимо ввести новый пароль',
         authorizationRequired: 'Необходима авторизация.',
         alreadyAuthenticated: 'Вы уже аутентифицированы.',
         permissionDenied: 'У вас не хватает прав'

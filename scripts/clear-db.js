@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const Quest = require('../models/quest');
 const Comment = require('../models/comment');
+const QueriesStorage = require('../models/queriesStorage');
 const mongoose = require('mongoose');
 
 module.exports = {
@@ -10,10 +11,13 @@ module.exports = {
 
     removeAllComments: () => Comment.remove({}),
 
+    removeAllQueries: () => QueriesStorage.remove({}),
+
     async removeAll() {
         await this.removeAllUsers();
         await this.removeAllQuests();
         await this.removeAllComments();
+        await this.removeAllQueries();
     },
 
     dropAll() {

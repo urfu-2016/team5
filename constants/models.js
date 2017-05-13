@@ -11,7 +11,12 @@ module.exports = {
         emptySignUpField: 'Для регистрации необходимо ввести email, username, password',
         saltRounds: 10
     },
+
     comment: {
         maxLength: 300
+    },
+
+    email: {
+        fromTitle: 'Team5Quest <team5quest@gmail.com>'
     }
 };
