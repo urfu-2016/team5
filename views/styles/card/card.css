@@ -19,8 +19,7 @@
 
 .col_4
 {
-    flex: 0 0 33.333333%;
-    max-width: 33.333333%;
+    max-width: 30%;
     box-sizing: border-box;
     padding-left: 15px;
     padding-right: 15px;
