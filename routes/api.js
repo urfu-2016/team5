@@ -24,6 +24,9 @@ router.route('/quests/:slug')
     .put(authController.authorizedOnly, questsController.updateQuest)
     .delete(authController.authorizedOnly, questsController.removeQuest);
 
+router.route('/quests/:slug/like')
+    .post(authController.authorizedOnly, questsController.likeQuest);
+
 router.route('/comments/:slug')
     .get(commentsController.getComments)
     .post(authController.authorizedOnly, commentsController.createComment);

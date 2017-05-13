@@ -21,8 +21,7 @@ const questSchema = new mongoose.Schema({
         required: true
     },
     likes: {
-        type: [{type: ObjectId, ref: 'User'}],
-        default: []
+        type: [{type: ObjectId, ref: 'User'}]
     },
     comments: [String],
     tags: {
@@ -128,5 +127,27 @@ questSchema.statics.search = async function (searchData) {
         .find(findObject)
         .populate('author');
 };
+
+questSchema.methods.like = async function (user) {
+    if (await this.likedBy(user.username)) {
+        const index = this.likes.indexOf(user.id);
+        this.likes.splice(index, 1);
+    } else {
+        this.likes.push(user.id);
+    }
+    await this.save();
+};
+
+questSchema.methods.likedBy = function (user) {
+    return user ? this.likes.some(x => x.equals(user.id)) : false;
+};
+
+questSchema.methods.isMyQuest = function (user) {
+    return user ? user._id.equals(this.author) : false;
+};
+
+questSchema.virtual('likesCount').get(function () {
+    return this.likes.length;
+});
 
 module.exports = mongoose.model('Quest', questSchema);
