@@ -7,6 +7,11 @@ const chaiRequest = require('../commonTestLogic/chaiRequest')(server);
 const constants = require('../../constants/constants');
 const QueriesStorage = require('../../models/queriesStorage');
 const mocks = require('../mocks/users');
+const sinon = require('sinon');
+
+const mock = sinon.mock(require('../../libs/email-client'));
+mock.expects('sendPasswordResetMail').atLeast(1);
+mock.expects('sendRegistrationMail').atLeast(1);
 
 describe('controller:auth', () => {
     beforeEach(() => dbClearer.removeAll());
