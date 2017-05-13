@@ -18,6 +18,7 @@ function getQuestObject(quest, req) {
     questObj.author = quest.author.username;
     questObj.liked = quest.likedBy(req.user);
     questObj.likesCount = quest.likesCount;
+    questObj.commentsCount = quest.comments.length;
 
     return questObj;
 }
