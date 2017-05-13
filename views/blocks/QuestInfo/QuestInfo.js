@@ -1,5 +1,5 @@
 import React from 'react';
-import Card from '../card/Card';
+import Card from '../card/card';
 import QuestSender from '../Quest/QuestSender';
 import LikesContainer from './../Likes/LikesContainer';
 import Button from './../Button/Button';
