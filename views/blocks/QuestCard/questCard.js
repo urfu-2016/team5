@@ -29,7 +29,7 @@ class Card extends React.Component {
                 </p>
                 <div className={`${questCard('statistics')} ${stat()}`}>
                     <span className={stat('count', {images: true})}>{card.images.length}</span>
-                    <span className={stat('count', {likes: true})}>{card.likes.length}</span>
+                    <span className={stat('count', {likes: true})}>{card.likesCount}</span>
                     <span className={stat('count', {comments: true})}>&#128173; {card.commentsCount}</span>
                 </div>
                 <a className={questCard('link', {yellow: true})} href={`/quests/${card.slug}`}>Посмотреть</a>
