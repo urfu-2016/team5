@@ -13,8 +13,8 @@ export default class SearchResult extends React.Component {
                 </div>
                 <SearchPaginationControl
                     onPageChange={onPageChange}
-                    currentPage={currentPage}
-                    pageCount={pageCount}
+                    currentPage={Number(currentPage)}
+                    pageCount={Number(pageCount)}
                 />
             </div>
         );

@@ -37,7 +37,8 @@ class Search extends React.Component {
             .then(function (response) {
                 return response.json();
             })
-            .then(this.handleResultChange);
+            .then(this.handleResultChange)
+            .catch(() => {});
     }
 
     handleResultChange(data) {
