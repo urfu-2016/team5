@@ -5,25 +5,25 @@
 
     {{#content "body"}}
         <div class="container">
-            <h2>Create quest</h2>
+            <h2>Создание квеста</h2>
             <hr class="extra-margins">
             <form id="mainForm" method="POST">
             <div class="input-group">
-                <label for="title">Title</label>
+                <label for="title">Название</label>
                 <input name="title" type="text" id="title" class="input-group__input input_dark" required>
             </div>
 
             <div class="input-group">
-                <label for="city">City</label>
+                <label for="city">Город</label>
                 <input name="city" type="text" id="city" class="input-group__input input_dark input-autocomplete" required>
             </div>
 
             <div class="input-group">
-                <label for="description">Description</label>
+                <label for="description">Описание</label>
                 <textarea name="description" id="description" class="input-group__textarea" required></textarea>
             </div>
             </form>
-            <h5>Add stages</h5>
+            <h5>Добавление этапов</h5>
             <button class="btn btn_primary add-quest__button">+</button>
             <ul class="tabs add-quest__tabs" role="tablist">
 
