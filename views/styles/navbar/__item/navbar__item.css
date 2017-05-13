@@ -18,13 +18,3 @@
 {
     background-color: rgba(255, 255, 255, 0.1);
 }
-
-.navbar__item.avatar
-{
-    padding: 0;
-}
-
-.navbar__item.avatar.active
-{
-    background-color: transparent !important;
-}

@@ -7,28 +7,14 @@
     left: 0;
     z-index: 1050;
     outline: 0;
-    display: none;
     opacity: 0;
-    transition: opacity 1s linear;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0s linear 0.3s;
 }
 
 .modal.show
 {
     opacity: 1;
-    display: block;
-}
-
-@keyframes fadeInDown
-{
-    from
-    {
-        opacity: 0;
-        transform: translate3d(0, -100%, 0);
-    }
-
-    to
-    {
-        opacity: 1;
-        transform: none;
-    }
+    visibility: visible;
+    transition-delay: 0s;
 }

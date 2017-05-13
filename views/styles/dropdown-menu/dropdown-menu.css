@@ -35,26 +35,6 @@
     color: #212121;
 }
 
-.avatar__image
-{
-    border-radius: 50%;
-}
-
-.navbar__item.avatar .dropdown-toggle img
-{
-    height: 35px;
-}
-
-.navbar__item.avatar .dropdown-toggle:after
-{
-    display: none;
-}
-
-.navbar__item.avatar .dropdown-toggle
-{
-    padding: 0;
-}
-
 .dropdown-menu.dropdown a:active,
 .dropdown-menu.dropdown a:focus,
 .dropdown-menu.dropdown a:hover
