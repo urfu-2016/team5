@@ -2,12 +2,13 @@
 {
     position: relative;
     width: auto;
-    margin: 10px;
     display: flex;
     z-index: 1010;
     flex-direction: column;
     background-color: #fff;
     background-clip: padding-box;
+    max-width: 500px;
+    margin: 30px auto;
     border: 1px solid rgba(0, 0, 0, 0.2);
     outline: 0;
 }
@@ -21,21 +22,4 @@
 .modal.show .modal__dialog
 {
     transform: translate(0, 0);
-}
-
-@media (min-width: 576px)
-{
-    .modal__dialog
-    {
-        max-width: 500px;
-        margin: 30px auto;
-    }
-}
-
-@media (min-width: 992px)
-{
-    .modal__dialog
-    {
-        max-width: 800px;
-    }
 }
