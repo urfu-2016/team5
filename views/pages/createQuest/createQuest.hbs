@@ -7,6 +7,7 @@
         <div class="container">
             <h2>Create quest</h2>
             <hr class="extra-margins">
+            <form id="mainForm" method="POST">
             <div class="input-group">
                 <label for="title">Title</label>
                 <input name="title" type="text" id="title" class="input-group__input input_dark" required>
@@ -21,20 +22,18 @@
                 <label for="description">Description</label>
                 <textarea name="description" id="description" class="input-group__textarea" required></textarea>
             </div>
-
+            </form>
             <h5>Add stages</h5>
-            <ul class="tabs image-preview" role="tablist">
-                <li class="tabs__item image-preview___preview">
-                    <input class="image-preview__input" id="img1" type="file" multiple accept="image/png,image/jpeg">
-                    <label for="img1"><img class="image-preview__img" src="add_photo.png" alt="add photo"></label>
-                </li>
+            <button class="btn btn_primary add-quest__button">+</button>
+            <ul class="tabs add-quest__tabs" role="tablist">
+
             </ul>
 
             <div class="tab-content quests-content">
 
             </div>
 
-            <button role="createquest" class="btn btn_primary float_right btn_disabled">Submit</button>
+            <button role="createquest" class="btn btn_primary btn_disabled">Создать</button>
         </div>
     {{/content}}
 

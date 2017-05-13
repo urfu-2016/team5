@@ -26,12 +26,12 @@ main
 
 .show
 {
-    display: block;
+    display: block !important;
 }
 
 .hide
 {
-    display: none;
+    display: none !important;
 }
 
 h1,
@@ -119,5 +119,18 @@ div#OR
     {
         top: 96%;
         right: 50%;
+    }
+}
+
+@media (min-width: 992px)
+{
+    .col-4
+    {
+        width: 33%;
+    }
+
+    .col-8
+    {
+        width: 66%;
     }
 }

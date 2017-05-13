@@ -3,6 +3,7 @@
 require('../../styles/container/container.css');
 require('../../styles/input-autocomplete/input-autocomplete');
 require('../../styles/image-preview/image-preview');
+require('../../styles/add-quest/add-quest');
 
 $('#title, #city, #description').on('blur', function () {
     if ($(this).val() === '') {
@@ -33,22 +34,80 @@ $('button[role="createquest"]').on('click', function () {
         return;
     }
 
-    var info = {};
+    var mainForm = $('#mainForm');
+    var stagesForms = $('.quests-content form');
 
-    info.title = $('#title').val();
-    info.city = $('#city').val();
-    info.description = $('#description').val();
-    info.stages = [];
+    sendForm(mainForm);
 
-    var stages = $('.quests-content').children();
-    var images = $('.image-preview').children().find('.image-preview__img');
-    for (var i = 0; i < stages.length; i++) {
-        info.stages[i] = {
-            title: $(stages[i]).find('.title').val(),
-            location: $(stages[i]).find('.location').val(),
-            description: $(stages[i]).find('.description').val(),
-            image: $(images[i]).attr('src')
-        };
+    function sendForm(form) {
+        var msg = $(form).serialize();
+        $.ajax({
+            type: 'POST',
+            url: '/api/quests',
+            data: msg,
+            success: function (data) {
+                var slug = data.slug;
+                $(stagesForms).each(function (idx, el) {
+                    sendStageForm(el, slug);
+                });
+
+                $('.container').html('Квест успешно создан =)');
+
+                setTimeout(function () {
+                    window.location.href = '/';
+                }, 2000);
+            },
+            error: function () {
+
+            }
+        });
     }
-    $.post('/api/quests', info);
+
+    function sendStageForm(form, slug) {
+        var msg = $(form).serialize();
+        $.ajax({
+            type: 'POST',
+            url: '/api/quests/' + slug + '/stages',
+            data: msg,
+            success: function () {
+
+            },
+            error: function () {
+
+            }
+        });
+    }
+});
+
+$('.quests-content').on('keyup', '.title', function () {
+    var panel = $(this).closest('.tab-content__panel');
+    var id = $(panel).attr('id');
+
+    var tab = $('.tabs').find('a[href="#' + id + '"]');
+    var val = $(this).val();
+    if (/^\s*$/.test(val)) {
+        $(tab).html('...');
+    } else {
+        $(tab).html(val);
+    }
+});
+
+$('.quests-content').on('click', '.add-quest_delete', function () {
+    var tabContent = $(this).parent();
+
+    var tabId = $(tabContent).attr('id');
+    var tab = $('.add-quest__tabs').find('a[href="#' + tabId + '"]').parent();
+
+    $(tab).remove();
+    $(tabContent).remove();
+
+    var newActiveTab = $('.add-quest__tabs').children();
+    if (newActiveTab.length > 0) {
+        $(newActiveTab[0]).find('.tabs__link').addClass('active');
+    }
+
+    var newActiveTabContent = $('.quests-content').children();
+    if (newActiveTabContent.length > 0) {
+        $(newActiveTabContent[0]).addClass('active');
+    }
 });
