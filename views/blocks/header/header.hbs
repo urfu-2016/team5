@@ -27,12 +27,12 @@
                 <ul class="navbar__categories">
                     {{#if isAuth }}
                     <li class="navbar__item">
+                        <a class="navbar__link" href="/quests/create">Create quest</a>
+                    </li>
+                    <li class="navbar__item">
                         <form action="/logout" method="post">
                             <button type="submit" class="navbar__button">Logout</button>
                         </form>
-                    </li>
-                    <li class="navbar__item">
-                        <a class="navbar__link" href="/quests/create">Create quest</a>
                     </li>
                     {{ else }}
                     <li class="navbar__item">
