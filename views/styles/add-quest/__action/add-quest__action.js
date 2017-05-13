@@ -1,7 +1,6 @@
 /* global $:true */
 
 require('./add-quest__action.css');
-// Require('./actions.svg');
 
 $('.quests-content').on('click', '.action_rotate', function () {
     var img = $(this).parent().find('img');

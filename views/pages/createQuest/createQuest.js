@@ -2,7 +2,6 @@
 
 require('../../styles/container/container.css');
 require('../../styles/input-autocomplete/input-autocomplete');
-require('../../styles/image-preview/image-preview');
 require('../../styles/add-quest/add-quest');
 
 $('#title, #city, #description').on('blur', function () {
