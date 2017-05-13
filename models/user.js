@@ -8,6 +8,8 @@ const constants = require('../constants/constants');
 const userSchema = new mongoose.Schema({
     firstname: String,
     surname: String,
+    registrationDate: {type: Date, default: Date.now},
+    emailVerified: {type: Boolean, default: false},
     username: {
         type: String,
         lowercase: true,
@@ -76,6 +78,15 @@ userSchema.statics.create = async function ({username, email, password}) {
 
 userSchema.statics.changePassword = async function (userData, newPassword) {
     const user = await this.getUserOnCorrectPassword(userData);
+    user.password = await bcrypt.hash(newPassword, constants.models.user.saltRounds);
+
+    return user.save();
+};
+
+userSchema.statics.resetPassword = async function (userData, newPassword) {
+    const user = await this.findOne(
+        userData.email ? {email: userData.email} : {username: userData.username}
+    );
     user.password = await bcrypt.hash(newPassword, constants.models.user.saltRounds);
 
     return user.save();

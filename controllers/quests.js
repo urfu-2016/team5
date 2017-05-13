@@ -9,19 +9,18 @@ const errors = require('../libs/customErrors/errors');
 const moment = require('moment');
 moment.locale(constants.momentLanguage);
 
-function isMyQuest(quest, user) {
-    return user ? (user._id.equals(quest.author)) : false;
-}
-
 function getQuestObject(quest, req) {
-    quest = quest.toObject();
-    quest.isMyQuest = isMyQuest(quest, req.user);
-    quest.dateOfCreation = moment(quest.dateOfCreation).format(constants.dateFormat);
-    quest.commentsCount = quest.comments.length;
-    delete quest.author.password;
-    quest.author = quest.author.username;
+    const questObj = quest.toObject();
+    questObj.isMyQuest = quest.isMyQuest(req.user);
+    questObj.dateOfCreation = moment(quest.dateOfCreation).format(constants.dateFormat);
+    delete questObj.author.password;
+    delete questObj.likes;
+    questObj.author = quest.author.username;
+    questObj.liked = quest.likedBy(req.user);
+    questObj.likesCount = quest.likesCount;
+    questObj.commentsCount = quest.comments.length;
 
-    return quest;
+    return questObj;
 }
 
 module.exports = {
@@ -123,5 +122,15 @@ module.exports = {
         };
 
         res.render('mainPage/mainPage', renderData);
+    },
+
+    async likeQuest(req, res, next) {
+        const quest = await Quest.getBySlug(req.params.slug);
+        if (!quest) {
+            return next(new errors.NotFoundError(constants.quest.questNotFoundErrorMessage));
+        }
+        await quest.like(req.user);
+
+        res.status(httpStatus.OK).send();
     }
 };
