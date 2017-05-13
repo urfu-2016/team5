@@ -23,7 +23,7 @@ class QuestSender {
 
     likeQuest() {
         return {
-            url: `./${this.slug}/like`,
+            url: `../api/quests/${this.slug}/like`,
             options: {
                 method: 'POST',
                 credentials: 'include'
