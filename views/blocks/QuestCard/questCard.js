@@ -19,8 +19,8 @@ export default class Card extends React.Component {
                 <div className="card__data">
                     <ul>
                         <li className="float_left"><i className="fa fa-clock-o"></i>{card.dateOfCreation}</li>
-                        <li className="float_right"><a href="#"><i className="fa fa-comments-o"></i>{card.commentsCount}</a></li>
-                        <li className="float_right"><a href="#"><i className="fa fa-heart like"></i>{card.likesCount}</a></li>
+                        <li className="float_right"><i className="fa fa-comments-o"></i>{card.commentsCount}</li>
+                        <li className="float_right"><i className="fa fa-heart like"></i>{card.likesCount}</li>
                     </ul>
                 </div>
             </div>
