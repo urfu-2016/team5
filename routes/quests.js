@@ -8,7 +8,7 @@ router.get('/', function (req, res) {
     const renderData = {
         isAuth: req.user ? 1 : 0,
         activePage: '/quests',
-        title: 'All quests'
+        title: 'Все квесты'
     };
 
     res.render('questsAll/quests-all', renderData);
