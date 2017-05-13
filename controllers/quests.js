@@ -17,6 +17,7 @@ function getQuestObject(quest, req) {
     quest = quest.toObject();
     quest.isMyQuest = isMyQuest(quest, req.user);
     quest.dateOfCreation = moment(quest.dateOfCreation).format(constants.dateFormat);
+    quest.commentsCount = quest.comments.length;
     delete quest.author.password;
     quest.author = quest.author.username;
 

@@ -12,7 +12,7 @@ class Card extends React.Component {
         return (
             <article className={questCard()}>
                 <div className={`${questCard('title-image')} ${b('title-image')}`}>
-                    <img className={b('title-image', 'img')} src={card.images[0].src}></img>
+                    <img className={b('title-image', 'img')} src={card.images[0].src}/>
                     <div className={b('title-image', 'caption')}>
                         <h3 className={questCard('title')}>{card.title}</h3>
                     </div>
@@ -28,9 +28,9 @@ class Card extends React.Component {
                         <span key={tag} className={b('tag', 'link')}>{tag}</span>)}
                 </p>
                 <div className={`${questCard('statistics')} ${stat()}`}>
-                    <span className={stat('count', {images: true})}>{card.commentsCount} {card.images.length}</span>
+                    <span className={stat('count', {images: true})}>{card.images.length}</span>
                     <span className={stat('count', {likes: true})}>{card.likes.length}</span>
-                    <span className={stat('count', {comments: true})}>&#128173; 0</span>
+                    <span className={stat('count', {comments: true})}>&#128173; {card.commentsCount}</span>
                 </div>
                 <a className={questCard('link', {yellow: true})} href={`/quests/${card.slug}`}>Посмотреть</a>
             </article>
