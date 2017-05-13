@@ -1,41 +1,29 @@
 import React from 'react';
-import './questCard.css';
-import {QuestCardStrings} from './../../constants/strings';
-import b from 'b_';
-const questCard = b.with('mini-quest-card');
-const stat = b.with('statistics');
+require('../../styles/card/card');
 
-class Card extends React.Component {
+export default class Card extends React.Component {
     render() {
         const {card} = this.props;
 
         return (
-            <article className={questCard()}>
-                <div className={`${questCard('title-image')} ${b('title-image')}`}>
-                    <img className={b('title-image', 'img')} src={card.images[0].src}/>
-                    <div className={b('title-image', 'caption')}>
-                        <h3 className={questCard('title')}>{card.title}</h3>
-                    </div>
+            <div className="card">
+                <div className="card__image">
+                    <img src={card.images[0].src} className="img-fluid" alt=""></img>
+                    <a href={`/quests/${card.slug}`}>
+                        <div className="mask"></div>
+                    </a>
                 </div>
-                <p className={questCard('city')}>
-                    <span>{QuestCardStrings.city} {card.city}</span>
-                </p>
-                <p className={questCard('author')}>
-                    <span>{QuestCardStrings.author} {card.author}</span>
-                </p>
-                <p className={questCard('tags')}>
-                    {card.tags.map(tag =>
-                        <span key={tag} className={b('tag', 'link')}>{tag}</span>)}
-                </p>
-                <div className={`${questCard('statistics')} ${stat()}`}>
-                    <span className={stat('count', {images: true})}>{card.images.length}</span>
-                    <span className={stat('count', {likes: true})}>{card.likesCount}</span>
-                    <span className={stat('count', {comments: true})}>&#128173; {card.commentsCount}</span>
+                <div className="card__content">
+                    <h4 className="card__title">{card.title}</h4>
                 </div>
-                <a className={questCard('link', {yellow: true})} href={`/quests/${card.slug}`}>Посмотреть</a>
-            </article>
+                <div className="card__data">
+                    <ul>
+                        <li className="float_left"><i className="fa fa-clock-o"></i>{card.dateOfCreation}</li>
+                        <li className="float_right"><a href="#"><i className="fa fa-comments-o"></i>{card.commentsCount}</a></li>
+                        <li className="float_right"><a href="#"><i className="fa fa-heart like"></i>{card.likesCount}</a></li>
+                    </ul>
+                </div>
+            </div>
         );
     }
 }
-
-export default Card;
