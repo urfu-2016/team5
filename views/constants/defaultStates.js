@@ -7,7 +7,7 @@ module.exports = {
         reviewsCount: 0,
         searchCity: '',
         searchByField: '',
-        imagesCountFrom: 5,
+        imagesCountFrom: 1,
         imagesCountTo: 15,
         currentPage: 1,
         pageCount: 1
