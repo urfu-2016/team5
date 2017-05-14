@@ -1,6 +1,7 @@
 'use strict';
 
 const mongoose = require('../libs/mongoose-connection');
+const QuestStatus = require('./questStatus');
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const bcrypt = require('bcrypt');
 const constants = require('../constants/constants');
@@ -36,10 +37,7 @@ const userSchema = new mongoose.Schema({
     },
 
     quests: {
-        type: [{
-            questId: {type: ObjectId, ref: 'Quest'},
-            statuses: [Boolean]
-        }],
+        type: [String],
         default: []
     }
 });
@@ -126,6 +124,55 @@ userSchema.statics.getById = function (id) {
 
 userSchema.statics.removeByUsername = function (username) {
     return this.remove({username});
+};
+
+userSchema.methods.getQuestStatus = async function (slug) {
+    for (let questStatusId of this.quests) {
+        const questStatus = await QuestStatus.findOne({shortid: questStatusId});
+        if (questStatus.questSlug === slug) {
+            return questStatus;
+        }
+    }
+
+    return null;
+};
+
+userSchema.methods.getPhotoStatuses = async function (quest) {
+    const questStatus = await this.getQuestStatus(quest.slug);
+
+    return questStatus.statuses.map((status, index) => ({
+        src: quest.images[index].src,
+        status: status ? status === 'ok' : null
+    }));
+};
+
+userSchema.methods.startQuest = async function (quest) {
+    if ((await this.getQuestStatus(quest.slug)) !== null) {
+        return false;
+    }
+
+    const questStatus = new QuestStatus({
+        questSlug: quest.slug,
+        statuses: new Array(quest.images.length)
+    });
+    await questStatus.save();
+    this.quests.push(questStatus.shortid);
+    await this.save();
+
+    return true;
+};
+
+userSchema.methods.setStatus = async function (slug, position, status) {
+    const questStatus = await this.getQuestStatus(slug);
+    questStatus.statuses[position] = status;
+    return await questStatus.save();
+};
+
+userSchema.methods.getStatus = async function (slug, position) {
+    const questStatus = await this.getQuestStatus(slug);
+    const finished = questStatus.statuses.every(status => status === 'ok');
+    const status = questStatus.statuses[position] === 'ok';
+    return {status, finished};
 };
 
 module.exports = mongoose.model('User', userSchema);

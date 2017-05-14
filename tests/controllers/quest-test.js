@@ -11,9 +11,14 @@ const chaiRequest = require('../commonTestLogic/chaiRequest')(server);
 const constants = require('../../constants/controllers');
 
 const questData = questsMocks.regularQuest;
+const questDataWithImage = questsMocks.questWithImages;
 
 async function createQuest() {
     return await chaiRequest.post('/api/quests', questData);
+}
+
+async function createQuestWithImages() {
+    return await chaiRequest.post('/api/quests', questDataWithImage);
 }
 
 describe('controller:quest', () => {
@@ -99,6 +104,73 @@ describe('controller:quest', () => {
                 } catch (err) {
                     err.response.status.should.equal(HttpStatus.BAD_REQUEST);
                 }
+            });
+        });
+
+        describe('user', () => {
+            it('should can start unstarted quest', async () => {
+                const quest = (await createQuest()).body.data;
+                const res = await chaiRequest.post(`/api/quests/${quest.slug}/start`);
+
+                res.status.should.equal(HttpStatus.OK);
+            });
+
+            it('should can\t start already started quest', async () => {
+                const quest = (await createQuest()).body.data;
+                await chaiRequest.post(`/api/quests/${quest.slug}/start`);
+                try {
+                    await chaiRequest.post(`/api/quests/${quest.slug}/start`);
+                } catch (err) {
+                    err.status.should.equal(HttpStatus.BAD_REQUEST);
+                }
+            });
+
+            it('should get statuses of started quest', async () => {
+                const quest = (await createQuestWithImages()).body.data;
+                await chaiRequest.post(`/api/quests/${quest.slug}/start`);
+                const res = await chaiRequest.get(`/api/quests/${quest.slug}/photos`);
+                res.body.data.length.should.equal(quest.images.length);
+                (res.body.data[0].status === null).should.equal(true);
+                (res.body.data[1].status === null).should.equal(true);
+            });
+
+            it('should can checkin', async () => {
+                const quest = (await createQuestWithImages()).body.data;
+                await chaiRequest.post(`/api/quests/${quest.slug}/start`);
+                const res = await chaiRequest.post(`/api/quests/${quest.slug}/photos/0/check`, {
+                    lat: '1',
+                    lon: '1'
+                });
+                res.body.status.should.equal(true);
+                res.body.finished.should.equal(false);
+            });
+
+            it('should can\'t far checkin', async () => {
+                const quest = (await createQuestWithImages()).body.data;
+                await chaiRequest.post(`/api/quests/${quest.slug}/start`);
+                const res = await chaiRequest.post(`/api/quests/${quest.slug}/photos/0/check`, {
+                    lat: '101',
+                    lon: '101'
+                });
+                res.body.status.should.equal(false);
+                res.body.finished.should.equal(false);
+            });
+
+            it('should can finish the quest', async () => {
+                const quest = (await createQuestWithImages()).body.data;
+                await chaiRequest.post(`/api/quests/${quest.slug}/start`);
+                let res = await chaiRequest.post(`/api/quests/${quest.slug}/photos/0/check`, {
+                    lat: '1',
+                    lon: '1'
+                });
+
+                res.body.finished.should.equal(false);
+                res = await chaiRequest.get(`/api/quests/${quest.slug}/photos`);
+                res = await chaiRequest.post(`/api/quests/${quest.slug}/photos/1/check`, {
+                    lat: '1',
+                    lon: '1'
+                });
+                res.body.finished.should.equal(true);
             });
         });
     });

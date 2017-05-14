@@ -30,6 +30,15 @@ router.route('/quests/:slug')
 router.route('/quests/:slug/like')
     .post(getAction(authController, 'authorizedOnly'), getAction(questsController, 'likeQuest'));
 
+router.route('/quests/:slug/start')
+    .post(authController.authorizedOnly, questsController.startQuest);
+
+router.route('/quests/:slug/photos')
+    .get(authController.authorizedOnly, questsController.getPhotoStatuses);
+
+router.route('/quests/:slug/photos/:id/check')
+    .post(authController.authorizedOnly, questsController.checkPhoto);
+
 router.route('/comments/:slug')
     .get(getAction(commentsController, 'getComments'))
     .post(getAction(authController, 'authorizedOnly'), getAction(commentsController, 'createComment'));

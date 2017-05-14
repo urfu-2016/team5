@@ -38,13 +38,14 @@ function comparePopularity(firstQuest, secondQuest) {
 
 module.exports = {
     async createQuest(req, res) {
+        const stages = req.body.stages;
         const questData = {
             title: req.body.title,
             description: req.body.description,
             authorId: req.user.id,
             city: req.body.city,
             tags: req.body.tags,
-            stages: []
+            stages: stages ? stages : []
         };
         try {
             let quest = await Quest.create(questData);
@@ -157,5 +158,40 @@ module.exports = {
         await quest.like(req.user);
 
         res.status(httpStatus.OK).send();
+    },
+
+    async startQuest(req, res) {
+        const quest = await Quest.getBySlug(req.params.slug);
+        // if (!quest) {
+        //     return next(new errors.NotFoundError(constants.quest.questNotFoundErrorMessage));
+        // }
+        if (await req.user.startQuest(quest)) {
+            res.status(httpStatus.OK).send();
+        } else {
+            res.status(httpStatus.BAD_REQUEST).send();
+        }
+    },
+
+    async getPhotoStatuses(req, res) {
+        const quest = await Quest.getBySlug(req.params.slug);
+        // if (!quest) {
+        //     return next(new errors.NotFoundError(constants.quest.questNotFoundErrorMessage));
+        // }
+
+        res.send({
+            data: await req.user.getPhotoStatuses(quest)
+        });
+    },
+
+    async checkPhoto(req, res) {
+        const quest = await Quest.getBySlug(req.params.slug);
+        // if (!quest) {
+        //     return next(new errors.NotFoundError(constants.quest.questNotFoundErrorMessage));
+        // }
+
+        const location = req.body;
+        const position = parseInt(req.params.id, 10);
+        await quest.checkPhoto(req.user, position, location);
+        res.send(await req.user.getStatus(req.params.slug, position));
     }
 };

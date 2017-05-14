@@ -1,11 +1,13 @@
 'use strict';
 
 const constants = require('../constants/mongoose');
+const accuracy = require('../constants/models').quest.accuracy;
 const mongoose = require('../libs/mongoose-connection');
 const ObjectId = mongoose.Schema.ObjectId;
 const Comment = require('./comment');
 const Stage = require('./stage');
 const slugify = require('slug');
+const geolib = require('geolib');
 const shortid = require('shortid');
 
 const questSchema = new mongoose.Schema({
@@ -147,6 +149,18 @@ questSchema.methods.like = async function (user) {
         this.likes.push(user.id);
     }
     await this.save();
+};
+
+questSchema.methods.checkPhoto = async function (user, position, location) {
+    const latitude = this.images[position].location.lat;
+    const longitude = this.images[position].location.lon;
+    const distance = geolib.getDistance(
+        {latitude, longitude},
+        {latitude: location.lat, longitude: location.lon}
+    );
+
+    await user.setStatus(this.slug, position, distance < accuracy ? 'ok' : 'wrong');
+    return await user.getStatus(this.slug, position);
 };
 
 questSchema.methods.likedBy = function (user) {

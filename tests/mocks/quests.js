@@ -28,6 +28,31 @@ module.exports = {
         description: 'Описание'
     },
 
+    questWithImages: {
+        title: 'Заголовок',
+        description: 'Описание',
+        images: [
+            {
+                src: 'blah',
+                title: 'blah',
+                description: 'blah',
+                location: {
+                    lat: '1',
+                    lon: '1'
+                }
+            },
+            {
+                src: 'second blah',
+                title: 'one more blah',
+                description: 'blah',
+                location: {
+                    lat: '1',
+                    lon: '1'
+                }
+            }
+        ]
+    },
+
     requestBody: {
         search: {
             field: 'title',
