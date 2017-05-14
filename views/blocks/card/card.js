@@ -1,6 +1,7 @@
 import React from 'react';
 import './card.css';
 import b from 'b_';
+import '../../styles/card/__tags/card__tags.css';
 
 const card = b.lock('quest-card');
 
@@ -16,7 +17,10 @@ export default class Card extends React.Component {
                     <div>
                         <h3 className={card('title')}>{quest.title}</h3>
                         {isCreator &&
-                            <a className={card('change-quest')} href="/">Изменить</a>
+                            <span>
+                                <a className={card('link')} href={`./${quest.slug}/edit`}>Изменить</a>
+                                <a className={card('link')} ></a>
+                            </span>
                         }
                     </div>
                     <div className={card('creating')}>
@@ -28,24 +32,29 @@ export default class Card extends React.Component {
                     </div>
                 </div>
                 <div className={card('data')}>
-                        <p className={card('description')}>
-                            {quest.description}
-                        </p>
-                        <table className={card('additional-info')} cellSpacing={'10'}>
-                            <tr>
-                                <td>Город:</td>
-                                <td>{quest.city}</td>
-                            </tr>
-                            <tr>
-                                <td>Картинок:</td>
-                                <td>{quest.imagesCount}</td>
-                            </tr>
-                            <tr>
-                                <td>Протяженность:</td>
-                                 <td>{'56км'}</td>
-                            </tr>
-                        </table>
+                    <p className={card('description')}>
+                        {quest.description}
+                    </p>
+                    <table className={card('additional-info')} cellSpacing={'10'}>
+                        <tr>
+                            <td>Город:</td>
+                            <td>{quest.city}</td>
+                        </tr>
+                        <tr>
+                            <td>Картинок:</td>
+                            <td>{quest.imagesCount}</td>
+                        </tr>
+                        <tr>
+                            <td>Протяженность:</td>
+                             <td>{'56км'}</td>
+                        </tr>
+                    </table>
                 </div>
+                <ul className={[card('tags'), 'card__tags'].join(' ')}>
+                    {quest.tags.map(tag => (
+                        <a key={tag} href={`./?type=tag&tag=${tag}`} target="_blank">{tag}</a>
+                    ))}
+                </ul>
             </article>
         );
     }
