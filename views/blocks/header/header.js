@@ -6,7 +6,8 @@ require('../../styles/modal/modal');
 require('../../styles/navbar/navbar');
 require('../../styles/tab-content/tab-content');
 require('../../styles/tabs/tabs');
-require('../../styles/image-preview/image-preview');
+require('../../styles/avatar/avatar');
+require('./head_arrow.png');
 
 const search = document.getElementById('search');
 search.addEventListener('submit', function (event) {
@@ -14,3 +15,4 @@ search.addEventListener('submit', function (event) {
     const searchString = document.getElementById('searchString').value;
     window.location.href = '/quests?type=string&string=' + searchString;
 });
+

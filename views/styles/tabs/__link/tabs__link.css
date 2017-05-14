@@ -16,10 +16,25 @@
     text-decoration: none;
     outline: none;
     display: block;
+    white-space: nowrap;
 }
 
 .tabs__link:hover:not(.active)
 {
     background-color: rgba(158, 158, 158, 0.3);
     transition: all 0.4s;
+}
+
+.image-preview___preview .tabs__link.active
+{
+    background-color: #fff;
+    box-shadow: none;
+    opacity: 0.8;
+    border-bottom: 1px solid rgba(255, 186, 0, 0.75);
+}
+
+.image-preview___preview .tabs__link:hover:not(.active)
+{
+    background-color: #fff;
+    opacity: 0.8;
 }
