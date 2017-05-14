@@ -94,4 +94,19 @@ router.route('/:slug/photos').get(function (req, res) {
     }
 });
 
+router.route('/:slug/beginPlay').post(function (req, res) {
+    if (req.user) {
+        Quest.getBySlug(req.params.slug).then(questData => {
+            if (questData) {
+                Quest.addPlayingUser(req.params.slug);
+                res.sendStatus(200);
+            } else {
+                res.sendStatus(404);
+            }
+        });
+    } else {
+        res.sendStatus(401);
+    }
+});
+
 module.exports = router;
