@@ -44,6 +44,7 @@
     "express-simple-cdn": "^1.0.1",
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.11.1",
+    "geolib": "^2.0.22",
     "global": "^4.3.1",
     "handlebars": "^4.0.8",
     "handlebars-helper-equal": "^1.0.0",
