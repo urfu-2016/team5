@@ -154,14 +154,14 @@ userSchema.methods.startQuest = async function (quest) {
 };
 
 userSchema.methods.setStatus = async function (slug, position, status) {
-    const questStatus = await this.getQuestStatus(slug);
+    const questStatus = this.getQuestStatus(slug);
     questStatus.stagesStatuses[position] = status;
     this.markModified('quests');
     return await this.save();
 };
 
 userSchema.methods.getStatus = async function (slug, position) {
-    const questStatus = await this.getQuestStatus(slug);
+    const questStatus = this.getQuestStatus(slug);
     const finished = questStatus.stagesStatuses.every(status => status === 'ok');
     const status = questStatus.stagesStatuses[position] === 'ok';
     return {status, finished};

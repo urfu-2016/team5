@@ -33,6 +33,9 @@ router.route('/quests/:slug/like')
 router.route('/quests/:slug/start')
     .post(authController.authorizedOnly, questsController.startQuest);
 
+router.route('/quests/:slug/info')
+    .get(questsController.getInfo);
+
 router.route('/quests/:slug/photos')
     .get(authController.authorizedOnly, questsController.getPhotoStatuses);
 

@@ -197,5 +197,27 @@ module.exports = {
 
         user = await User.findById(req.user.id);
         res.send(await user.getStatus(req.params.slug, position));
+    },
+
+    async getInfo(req, res) {
+        const quest = await Quest.getBySlug(req.params.slug);
+
+        if (!quest) {
+            throw new NotFoundError(constants.quest.questNotFoundErrorMessage);
+        }
+
+        res.send({
+            quest: {
+                title: quest.title,
+                city: quest.city,
+                description: quest.description,
+                author: quest.author,
+                createdAt: quest.dateOfCreation,
+                tags: quest.tags,
+                imagesCount: quest.stages.length,
+                likesCount: quest.likesCount,
+                liked: quest.likedBy(req.user)
+            }
+        });
     }
 };
