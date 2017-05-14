@@ -1,5 +1,6 @@
 .searchbar__input-group
 {
+    width: calc(66.66% - 10px);
     display: flex;
     flex-direction: row;
     border: 1px solid #aaa;
