@@ -4,7 +4,6 @@ const httpStatus = require('http-status-codes');
 const {BadRequestError, NotFoundError} = require('../libs/customErrors/errors');
 const passport = require('../libs/passport');
 const User = require('../models/user');
-const config = require('config');
 const emailClient = require('../libs/email-client');
 const constants = require('../constants/constants');
 const QueriesStorage = require('../models/queriesStorage');
@@ -24,10 +23,7 @@ module.exports = {
                 return next(new BadRequestError(err.message));
             }
 
-            const referer = req.headers.referer;
-            const redirectLink = referer !== undefined && referer.startsWith(config.appUrl) ? referer : '/';
-
-            return req.logIn(user, () => res.redirect(redirectLink));
+            return req.logIn(user, () => res.status(httpStatus.OK).send());
         })(req, res, next);
     },
 

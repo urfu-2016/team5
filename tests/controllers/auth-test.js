@@ -13,6 +13,8 @@ const mock = sinon.mock(require('../../libs/email-client'));
 mock.expects('sendPasswordResetMail').atLeast(1);
 mock.expects('sendRegistrationMail').atLeast(1);
 
+// TODO: Проверка, что после использования ссылки, повторно нельзя (что она удаляется)
+
 describe('controller:auth', () => {
     beforeEach(() => dbClearer.removeAll());
 

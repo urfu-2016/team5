@@ -68,12 +68,16 @@
                         </li>
                     </ul>
 
+                    <div class="form-validation">
+                        <p class="form-message"></p>
+                    </div>
+
                     <!-- Tab panes -->
                     <div class="tab-content">
 
                         <!--Panel 1-->
                         <div class="tab-content__panel" id="panel11" role="tabpanel">
-                            <form role="form" class="form-horizontal" method="POST" action="/signin">
+                            <form role="form" class="form-horizontal auth-form" method="POST" action="/signin">
 
                                 <div class="input-group">
                                     <i class="fa fa-envelope"></i>
@@ -96,7 +100,7 @@
 
                         <!--Panel 2-->
                         <div class="tab-content__panel active" id="panel12" role="tabpanel">
-                            <form role="form" class="form-horizontal" method="POST" action="/signup">
+                            <form role="form" class="form-horizontal auth-form" method="POST" action="/signup">
 
                                 <div class="input-group">
                                     <i class="fa fa-user"></i>
@@ -124,7 +128,7 @@
 
                         <!--Panel 3-->
                         <div class="tab-content__panel" id="panel13" role="tabpanel">
-                            <form role="form" class="form-horizontal" method="POST" action="/password-reset">
+                            <form role="form" class="form-horizontal auth-form" method="POST" action="/password-reset">
 
                                 <div class="input-group">
                                     <i class="fa fa-envelope"></i>
