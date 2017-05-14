@@ -34,7 +34,10 @@ const questSchema = new mongoose.Schema({
         index: {unique: true},
         required: true
     },
-    userCount: Number
+    userCount: {
+        type: Number,
+        default: 0
+    }
 });
 
 questSchema.statics.create = async function ({authorId, title = '', description = '', city = '', tags = [], stages = [], likes = []}) {
@@ -219,6 +222,9 @@ questSchema.methods.getStageByShortId = async function (id) {
     }
 };
 
-// AddPlayingUser
+questSchema.statics.addPlayingUser = async function (slug) {
+    let quest = await this.findOne({slug});
+    quest.userCount++;
+};
 
 module.exports = mongoose.model('Quest', questSchema);
