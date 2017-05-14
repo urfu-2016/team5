@@ -3,6 +3,7 @@
 require('../../styles/container/container.css');
 require('../../styles/input-autocomplete/input-autocomplete');
 require('../../styles/add-quest/add-quest');
+require('../../styles/tags/tags');
 
 $('#title, #city, #description').on('blur', function () {
     if ($(this).val() === '') {
@@ -35,11 +36,22 @@ $('button[role="createquest"]').on('click', function () {
 
     var mainForm = $('#mainForm');
     var stagesForms = $('.quests-content form');
+    var tags = [];
+
+    $('.tag').each(function (idx, el) {
+        var tag = $(el).text().trim();
+        tags.push(tag);
+    });
 
     sendForm(mainForm);
 
     function sendForm(form) {
-        var msg = $(form).serialize();
+        var msg = {};
+        msg.title = $('#title').val();
+        msg.description = $('#description').val();
+        msg.city = $('#city').val();
+        msg.tags = tags;
+
         $.ajax({
             type: 'POST',
             url: '/api/quests',
