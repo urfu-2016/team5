@@ -24,7 +24,10 @@ const stageSchema = new mongoose.Schema({
     },
 
     location: {
-        type: String,
+        type: {
+            lat: String,
+            lon: String
+        },
         required: true
     },
 

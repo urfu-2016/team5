@@ -12,7 +12,7 @@ class QuestSender {
 
     getQuestInfo() {
         return {
-            url: `./${this.slug}/info`,
+            url: `../api/quests/${this.slug}/info`,
             options: {
                 method: 'GET',
                 credentials: 'include'
@@ -33,7 +33,7 @@ class QuestSender {
 
     beginPlay() {
         return {
-            url: `./${this.slug}/start`,
+            url: `../api/quests/${this.slug}/start`,
             options: {
                 method: 'POST',
                 headers: {

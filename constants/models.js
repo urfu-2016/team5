@@ -12,6 +12,10 @@ module.exports = {
         saltRounds: 10
     },
 
+    quest: {
+        accuracy: 100 // В метрах
+    },
+
     comment: {
         maxLength: 300
     },

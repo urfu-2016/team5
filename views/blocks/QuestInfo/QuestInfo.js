@@ -31,8 +31,8 @@ export default class QuestInfo extends React.Component {
                             <div className={questInfo('button', {play: true})}>
                                 <Button disabled={!user.isAuth}
                                     inProgress={sending}
-                                    onClick={user.isPlaying ? (handlePhotos) : (handleBeginPlay)}
-                                    text={user.isPlaying ? ('Продолжить прохождение') : ('Пройти квест')}
+                                    onClick={quest.isPlaying ? (handlePhotos) : (handleBeginPlay)}
+                                    text={quest.isPlaying ? ('Продолжить прохождение') : ('Пройти квест')}
                                 />
                             </div>
                         }

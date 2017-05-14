@@ -1,17 +1,19 @@
 'use strict';
 
 const constants = require('../constants/mongoose');
+const accuracy = require('../constants/models').quest.accuracy;
 const mongoose = require('../libs/mongoose-connection');
 const ObjectId = mongoose.Schema.ObjectId;
 const Comment = require('./comment');
 const Stage = require('./stage');
 const slugify = require('slug');
+const geolib = require('geolib');
 const shortid = require('shortid');
 
 const questSchema = new mongoose.Schema({
     title: {type: String, required: true},
     description: String,
-    stages: [{type: ObjectId, ref: 'Stage'}],
+    stages: [String],
     author: {
         type: ObjectId,
         ref: 'User',
@@ -40,8 +42,9 @@ questSchema.statics.create = async function ({authorId, title = '', description 
         description,
         slug: slugify(title),
         author: authorId,
-        city, tags, stages, likes
+        city, tags, likes
     });
+    await quest.addManyStages(stages);
 
     try {
         quest = await quest.save();
@@ -149,6 +152,20 @@ questSchema.methods.like = async function (user) {
     await this.save();
 };
 
+questSchema.methods.checkPhoto = async function (user, position, location) {
+    const id = this.stages[position];
+    const stage = await this.getStageByShortId(id);
+    const latitude = stage.location.lat;
+    const longitude = stage.location.lon;
+    const distance = geolib.getDistance(
+        {latitude, longitude},
+        {latitude: location.lat, longitude: location.lon}
+    );
+
+    await user.setStatus(this.slug, position, distance < accuracy ? 'ok' : 'wrong');
+    return await user.getStatus(this.slug, position);
+};
+
 questSchema.methods.likedBy = function (user) {
     return user ? this.likes.some(x => x.equals(user.id)) : false;
 };
@@ -163,10 +180,16 @@ questSchema.virtual('likesCount').get(function () {
 
 questSchema.methods.addStage = async function (stageData) {
     const stage = await Stage.create(stageData);
-    this.stages.push(stage._id);
+    this.stages.push(stage.shortid);
     await this.save();
 
     return stage;
+};
+
+questSchema.methods.addManyStages = async function (stages) {
+    for (let stage of stages) {
+        await this.addStage(stage);
+    }
 };
 
 questSchema.methods.removeStage = async function (stageId) {
@@ -183,11 +206,16 @@ questSchema.methods.removeStage = async function (stageId) {
 };
 
 questSchema.methods.getStages = async function () {
-    const quest = await this.model('Quest')
-        .findOne({slug: this.slug})
-        .populate('stages');
+    // Fixme: какой-то костыль, но по непонятной причине populate('stages') не работает
+    return await Promise.all(
+        this.stages.map(async id => await Stage.findOne({shortid: id}))
+    );
+};
 
-    return quest.stages;
+questSchema.methods.getStageByShortId = async function (id) {
+    if (this.stages.includes(id)) {
+        return await Stage.getByShortId(id);
+    }
 };
 
 module.exports = mongoose.model('Quest', questSchema);

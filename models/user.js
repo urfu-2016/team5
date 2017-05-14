@@ -35,13 +35,10 @@ const userSchema = new mongoose.Schema({
         default: []
     },
 
-    quests: {
-        type: [{
-            questId: {type: ObjectId, ref: 'Quest'},
-            statuses: [Boolean]
-        }],
-        default: []
-    }
+    quests: [{
+        slug: String,
+        stagesStatuses: [String]
+    }]
 });
 
 userSchema.statics.create = async function ({username, email, password}) {
@@ -126,6 +123,48 @@ userSchema.statics.getById = function (id) {
 
 userSchema.statics.removeByUsername = function (username) {
     return this.remove({username});
+};
+
+userSchema.methods.getQuestStatus = function (slug) {
+    return this.quests.find(quest => quest.slug === slug);
+};
+
+userSchema.methods.getPhotoStatuses = async function (quest) {
+    const questStatus = this.getQuestStatus(quest.slug);
+    const stages = await quest.getStages();
+
+    return questStatus.stagesStatuses.map((status, index) => ({
+        src: stages[index].src,
+        status: status === 'undef' ? null : status === 'ok'
+    }));
+};
+
+userSchema.methods.startQuest = async function (quest) {
+    if (this.getQuestStatus(quest.slug)) {
+        return false;
+    }
+
+    this.quests.push({
+        slug: quest.slug,
+        stagesStatuses: new Array(quest.stages.length).fill('undef')
+    });
+    await this.save();
+
+    return true;
+};
+
+userSchema.methods.setStatus = async function (slug, position, status) {
+    const questStatus = this.getQuestStatus(slug);
+    questStatus.stagesStatuses[position] = status;
+    this.markModified('quests');
+    return await this.save();
+};
+
+userSchema.methods.getStatus = async function (slug, position) {
+    const questStatus = this.getQuestStatus(slug);
+    const finished = questStatus.stagesStatuses.every(status => status === 'ok');
+    const status = questStatus.stagesStatuses[position] === 'ok';
+    return {status, finished};
 };
 
 module.exports = mongoose.model('User', userSchema);

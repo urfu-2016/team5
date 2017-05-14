@@ -2,6 +2,7 @@
 
 const httpStatus = require('http-status-codes');
 const Quest = require('../models/quest');
+const User = require('../models/user');
 const constants = require('../constants/controllers');
 const searchConstants = require('../constants/controllers').questSearch;
 const QueryBuilder = require('../libs/queryBuilder');
@@ -38,13 +39,14 @@ function comparePopularity(firstQuest, secondQuest) {
 
 module.exports = {
     async createQuest(req, res) {
+        const stages = req.body.stages;
         const questData = {
             title: req.body.title,
             description: req.body.description,
             authorId: req.user.id,
             city: req.body.city,
             tags: req.body.tags,
-            stages: []
+            stages: stages ? stages : []
         };
         try {
             let quest = await Quest.create(questData);
@@ -157,5 +159,65 @@ module.exports = {
         await quest.like(req.user);
 
         res.status(httpStatus.OK).send();
+    },
+
+    async startQuest(req, res) {
+        const quest = await Quest.getBySlug(req.params.slug);
+        if (!quest) {
+            throw new NotFoundError(constants.quest.questNotFoundErrorMessage);
+        }
+        if (await req.user.startQuest(quest)) {
+            res.status(httpStatus.OK).send();
+        } else {
+            res.status(httpStatus.BAD_REQUEST).send();
+        }
+    },
+
+    async getPhotoStatuses(req, res) {
+        const quest = await Quest.getBySlug(req.params.slug);
+        if (!quest) {
+            throw new NotFoundError(constants.quest.questNotFoundErrorMessage);
+        }
+
+        res.send({
+            data: await req.user.getPhotoStatuses(quest)
+        });
+    },
+
+    async checkPhoto(req, res) {
+        const quest = await Quest.getBySlug(req.params.slug);
+        if (!quest) {
+            throw new NotFoundError(constants.quest.questNotFoundErrorMessage);
+        }
+
+        const location = req.body;
+        const position = Number(req.params.id);
+        let user = await User.findById(req.user.id);
+        await quest.checkPhoto(user, position, location);
+
+        user = await User.findById(req.user.id);
+        res.send(await user.getStatus(req.params.slug, position));
+    },
+
+    async getInfo(req, res) {
+        const quest = await Quest.getBySlug(req.params.slug);
+
+        if (!quest) {
+            throw new NotFoundError(constants.quest.questNotFoundErrorMessage);
+        }
+
+        res.send({
+            quest: {
+                title: quest.title,
+                city: quest.city,
+                description: quest.description,
+                author: quest.author,
+                createdAt: quest.dateOfCreation,
+                tags: quest.tags,
+                imagesCount: quest.stages.length,
+                likesCount: quest.likesCount,
+                liked: quest.likedBy(req.user)
+            }
+        });
     }
 };

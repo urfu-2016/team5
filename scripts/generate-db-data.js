@@ -2,7 +2,6 @@
 
 const User = require('../models/user');
 const Quest = require('../models/quest');
-const Stage = require('../models/stage');
 const constants = require('../constants/generation');
 const shortid = require('shortid');
 
@@ -62,15 +61,8 @@ module.exports.createQuestWithAuthor = async (data, user) => {
         email,
         password: constants.user.password
     });
-    const stagesIds = [];
-    const likes = [];
 
-    if (data.stages) {
-        for (let stageData of data.stages) {
-            const stage = await Stage.create(stageData);
-            stagesIds.push(stage._id);
-        }
-    }
+    const likes = [];
 
     if (data.likesCount) {
         const users = await generateUsers(data.likesCount);
@@ -86,7 +78,7 @@ module.exports.createQuestWithAuthor = async (data, user) => {
         description: data.description || '',
         city: data.city || '',
         tags: data.tags || '',
-        stages: stagesIds || [],
+        stages: data.stages || [],
         likes: likes || []
     });
 };
