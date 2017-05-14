@@ -129,7 +129,7 @@ questSchema.statics.search = async function (searchData) {
 };
 
 questSchema.methods.like = async function (user) {
-    if (await this.likedBy(user.username)) {
+    if (await this.likedBy(user)) {
         const index = this.likes.indexOf(user.id);
         this.likes.splice(index, 1);
     } else {

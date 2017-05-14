@@ -1,0 +1,46 @@
+.quest-card
+{
+    margin-bottom: 15px;
+}
+
+.quest-card__creating
+{
+    font-size: 0.8rem;
+}
+
+.quest-card__change-quest
+{
+    font-size: 1.2rem;
+}
+
+.quest-card__author,
+.quest-card__date
+{
+    white-space: nowrap;
+}
+
+.quest-card__title
+{
+    margin: 1.5% 10px 5px 0;
+    display: inline-block;
+}
+
+.quest-card__data
+{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.quest-card__additional-info
+{
+    font-size: 1rem;
+    flex: 200px 1 1;
+    padding: 0 10px;
+}
+
+.quest-card__description
+{
+    font-size: 1rem;
+    flex: 450px 3 1;
+    padding: 0 20px;
+}

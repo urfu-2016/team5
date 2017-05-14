@@ -1,0 +1,30 @@
+.button
+{
+    background: #ff8f00;
+    border-radius: 3px;
+    border: none;
+    padding: 8px 20px;
+    outline: none;
+    font-size: 15px;
+    color: #fff;
+    box-shadow: 0 0 5px #aaa;
+    min-width: 190px;
+}
+
+.button:hover
+{
+    cursor: pointer;
+    box-shadow: 0 0 5px #ff8f00;
+}
+
+.button:disabled
+{
+    background: rgb(255, 204, 138);
+    cursor: default;
+    box-shadow: none;
+}
+
+.button_progress
+{
+    cursor: progress;
+}

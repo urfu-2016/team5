@@ -4,6 +4,7 @@ import b from 'b_';
 import './../Input.css';
 import {CommentFormStrings} from './../../constants/strings';
 import {CommentFormConstants} from './../../constants/constants';
+import Button from './../Button/Button';
 
 const commentForm = b.lock('comment-form');
 
@@ -44,11 +45,11 @@ export default class CommentForm extends React.Component {
                         value={text}
                         rows={rows}>
                     </textarea>
-                    <button type="submit"
+                    <Button type={'submit'}
                         disabled={!readyToSend}
-                        className={commentForm('button', {readyToSend, sending})}>
-                        {CommentFormStrings.sendComment}
-                    </button>
+                        inProgress={sending}
+                        text={CommentFormStrings.sendComment}
+                    />
                 </form>
                 <div className={commentForm('message', {visibale: showError})}>
                     {noConnection ? CommentFormStrings.noConnection : CommentFormStrings.dispatchFailed}
