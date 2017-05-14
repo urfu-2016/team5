@@ -1,7 +1,6 @@
 'use strict';
 
 const mongoose = require('../libs/mongoose-connection');
-const QuestStatus = require('./questStatus');
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const bcrypt = require('bcrypt');
 const constants = require('../constants/constants');
@@ -36,10 +35,10 @@ const userSchema = new mongoose.Schema({
         default: []
     },
 
-    quests: {
-        type: [String],
-        default: []
-    }
+    quests: [{
+        slug: String,
+        stagesStatuses: [String]
+    }]
 });
 
 userSchema.statics.create = async function ({username, email, password}) {
@@ -126,37 +125,29 @@ userSchema.statics.removeByUsername = function (username) {
     return this.remove({username});
 };
 
-userSchema.methods.getQuestStatus = async function (slug) {
-    for (let questStatusId of this.quests) {
-        const questStatus = await QuestStatus.findOne({shortid: questStatusId});
-        if (questStatus.questSlug === slug) {
-            return questStatus;
-        }
-    }
-
-    return null;
+userSchema.methods.getQuestStatus = function (slug) {
+    return this.quests.find(quest => quest.slug === slug);
 };
 
 userSchema.methods.getPhotoStatuses = async function (quest) {
-    const questStatus = await this.getQuestStatus(quest.slug);
+    const questStatus = this.getQuestStatus(quest.slug);
+    const stages = await quest.getStages();
 
-    return questStatus.statuses.map((status, index) => ({
-        src: quest.images[index].src,
-        status: status ? status === 'ok' : null
+    return questStatus.stagesStatuses.map((status, index) => ({
+        src: stages[index].src,
+        status: status === 'undef' ? null : status === 'ok'
     }));
 };
 
 userSchema.methods.startQuest = async function (quest) {
-    if ((await this.getQuestStatus(quest.slug)) !== null) {
+    if (this.getQuestStatus(quest.slug)) {
         return false;
     }
 
-    const questStatus = new QuestStatus({
-        questSlug: quest.slug,
-        statuses: new Array(quest.images.length)
+    this.quests.push({
+        slug: quest.slug,
+        stagesStatuses: new Array(quest.stages.length).fill('undef')
     });
-    await questStatus.save();
-    this.quests.push(questStatus.shortid);
     await this.save();
 
     return true;
@@ -164,14 +155,15 @@ userSchema.methods.startQuest = async function (quest) {
 
 userSchema.methods.setStatus = async function (slug, position, status) {
     const questStatus = await this.getQuestStatus(slug);
-    questStatus.statuses[position] = status;
-    return await questStatus.save();
+    questStatus.stagesStatuses[position] = status;
+    this.markModified('quests');
+    return await this.save();
 };
 
 userSchema.methods.getStatus = async function (slug, position) {
     const questStatus = await this.getQuestStatus(slug);
-    const finished = questStatus.statuses.every(status => status === 'ok');
-    const status = questStatus.statuses[position] === 'ok';
+    const finished = questStatus.stagesStatuses.every(status => status === 'ok');
+    const status = questStatus.stagesStatuses[position] === 'ok';
     return {status, finished};
 };
 

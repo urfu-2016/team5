@@ -13,7 +13,7 @@ const shortid = require('shortid');
 const questSchema = new mongoose.Schema({
     title: {type: String, required: true},
     description: String,
-    stages: [{type: ObjectId, ref: 'Stage'}],
+    stages: [String],
     author: {
         type: ObjectId,
         ref: 'User',
@@ -42,8 +42,9 @@ questSchema.statics.create = async function ({authorId, title = '', description 
         description,
         slug: slugify(title),
         author: authorId,
-        city, tags, stages, likes
+        city, tags, likes
     });
+    await quest.addManyStages(stages);
 
     try {
         quest = await quest.save();
@@ -152,8 +153,10 @@ questSchema.methods.like = async function (user) {
 };
 
 questSchema.methods.checkPhoto = async function (user, position, location) {
-    const latitude = this.images[position].location.lat;
-    const longitude = this.images[position].location.lon;
+    const id = this.stages[position];
+    const stage = await this.getStageByShortId(id);
+    const latitude = stage.location.lat;
+    const longitude = stage.location.lon;
     const distance = geolib.getDistance(
         {latitude, longitude},
         {latitude: location.lat, longitude: location.lon}
@@ -177,10 +180,16 @@ questSchema.virtual('likesCount').get(function () {
 
 questSchema.methods.addStage = async function (stageData) {
     const stage = await Stage.create(stageData);
-    this.stages.push(stage._id);
+    this.stages.push(stage.shortid);
     await this.save();
 
     return stage;
+};
+
+questSchema.methods.addManyStages = async function (stages) {
+    for (let stage of stages) {
+        await this.addStage(stage);
+    }
 };
 
 questSchema.methods.removeStage = async function (stageId) {
@@ -197,11 +206,16 @@ questSchema.methods.removeStage = async function (stageId) {
 };
 
 questSchema.methods.getStages = async function () {
-    const quest = await this.model('Quest')
-        .findOne({slug: this.slug})
-        .populate('stages');
+    // Fixme: какой-то костыль, но по непонятной причине populate('stages') не работает
+    return await Promise.all(
+        this.stages.map(async id => await Stage.findOne({shortid: id}))
+    );
+};
 
-    return quest.stages;
+questSchema.methods.getStageByShortId = async function (id) {
+    if (this.stages.includes(id)) {
+        return await Stage.getByShortId(id);
+    }
 };
 
 module.exports = mongoose.model('Quest', questSchema);

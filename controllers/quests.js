@@ -2,6 +2,7 @@
 
 const httpStatus = require('http-status-codes');
 const Quest = require('../models/quest');
+const User = require('../models/user');
 const constants = require('../constants/controllers');
 const searchConstants = require('../constants/controllers').questSearch;
 const QueryBuilder = require('../libs/queryBuilder');
@@ -162,9 +163,9 @@ module.exports = {
 
     async startQuest(req, res) {
         const quest = await Quest.getBySlug(req.params.slug);
-        // if (!quest) {
-        //     return next(new errors.NotFoundError(constants.quest.questNotFoundErrorMessage));
-        // }
+        if (!quest) {
+            throw new NotFoundError(constants.quest.questNotFoundErrorMessage);
+        }
         if (await req.user.startQuest(quest)) {
             res.status(httpStatus.OK).send();
         } else {
@@ -174,9 +175,9 @@ module.exports = {
 
     async getPhotoStatuses(req, res) {
         const quest = await Quest.getBySlug(req.params.slug);
-        // if (!quest) {
-        //     return next(new errors.NotFoundError(constants.quest.questNotFoundErrorMessage));
-        // }
+        if (!quest) {
+            throw new NotFoundError(constants.quest.questNotFoundErrorMessage);
+        }
 
         res.send({
             data: await req.user.getPhotoStatuses(quest)
@@ -185,13 +186,16 @@ module.exports = {
 
     async checkPhoto(req, res) {
         const quest = await Quest.getBySlug(req.params.slug);
-        // if (!quest) {
-        //     return next(new errors.NotFoundError(constants.quest.questNotFoundErrorMessage));
-        // }
+        if (!quest) {
+            throw new NotFoundError(constants.quest.questNotFoundErrorMessage);
+        }
 
         const location = req.body;
-        const position = parseInt(req.params.id, 10);
-        await quest.checkPhoto(req.user, position, location);
-        res.send(await req.user.getStatus(req.params.slug, position));
+        const position = Number(req.params.id);
+        let user = await User.findById(req.user.id);
+        await quest.checkPhoto(user, position, location);
+
+        user = await User.findById(req.user.id);
+        res.send(await user.getStatus(req.params.slug, position));
     }
 };

@@ -31,7 +31,7 @@ module.exports = {
     questWithImages: {
         title: 'Заголовок',
         description: 'Описание',
-        images: [
+        stages: [
             {
                 src: 'blah',
                 title: 'blah',
