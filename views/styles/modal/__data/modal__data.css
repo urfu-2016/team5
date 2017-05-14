@@ -6,15 +6,16 @@
 
 .modal__data .form-message
 {
-    color: #0f3;
     text-align: center;
 }
 
-
-@media (max-width: 768px)
+.modal__data .form-message .success
 {
-    .modal__data
-    {
-        flex: 0 0 66.666667%;
-    }
+    color: #0f3;
 }
+
+.modal__data .form-message .error
+{
+    color: #f33;
+}
+

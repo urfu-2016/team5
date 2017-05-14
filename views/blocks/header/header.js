@@ -19,10 +19,13 @@ search.addEventListener('submit', function (event) {
 });
 
 $('.auth-form').on('submit', function () {
-    $('.form-message').html('');
     const form = this;
     const msg = $(form).serialize();
-    $(form).find('.btn_primary').prop('disabled', true);
+    const formMessage = $('.form-message');
+    formMessage.html('');
+
+    const btnPrimary = $(form).find('.btn_primary');
+    btnPrimary.prop('disabled', true);
 
     $.ajax({
         type: 'POST',
@@ -33,18 +36,18 @@ $('.auth-form').on('submit', function () {
             if (form.action.endsWith('/signin')) {
                 window.location.reload();
             } else if (form.action.endsWith('/signup')) {
-                $('.form-message').html(res);
+                formMessage.html(res).addClass('success').removeClass('error');
                 $('.tabs__item:first-child .tabs__link').click();
             } else if (form.action.endsWith('/password-reset')) {
-                $('.form-message').html(res);
+                formMessage.html(res);
             }
 
-            $(form).find('.btn_primary').prop('disabled', false);
+            btnPrimary.prop('disabled', false);
         },
 
         error: function (res) {
-            $('.form-message').html(res.responseText).css('color', '#f33');
-            $(form).find('.btn_primary').prop('disabled', false);
+            formMessage.html(res.responseText).addClass('error').removeClass('success');
+            btnPrimary.prop('disabled', false);
         }
     });
 
