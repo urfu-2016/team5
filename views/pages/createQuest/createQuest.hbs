@@ -1,38 +1,49 @@
 {{#extend "template"}}
     {{#content "head" mode="append"}}
-        <link rel="stylesheet" href="{{CDN 'css/createQuest.css'}}">
+        <link rel="stylesheet" href="{{CDN '/css/createQuest.css'}}">
     {{/content}}
 
     {{#content "body"}}
         <div class="container">
             {{#if isAuth}}
-            <h2>Создание квеста</h2>
+            <h2>{{action}}</h2>
             <hr class="extra-margins">
             <form id="mainForm" method="POST">
             <div class="input-group">
                 <label for="title">Название</label>
-                <input name="title" type="text" id="title" class="input-group__input input_dark" required>
+                <input name="title" type="text" id="title" class="input-group__input input_dark" required
+                       value="{{quest.title}}">
             </div>
 
             <div class="input-group">
                 <label for="city">Город</label>
-                <input name="city" type="text" id="city" class="input-group__input input_dark input-autocomplete" required>
+                <input name="city" type="text" id="city" class="input-group__input input_dark input-autocomplete" required
+                    value="{{quest.city}}">
             </div>
 
             <div class="input-group">
                 <label for="tags">Теги</label>
                 <div class="tags">
+                    {{#each quest.tags}}
+                        <div class="tag">{{this}} <span class="close fa fa-times"></span></div>
+                    {{/each}}
                     <input name="tags" type="text" id="tags" class="">
                 </div>
             </div>
 
             <div class="input-group">
                 <label for="description">Описание</label>
-                <textarea name="description" id="description" class="input-group__textarea" required></textarea>
+                <textarea name="description" id="description" class="input-group__textarea" required>{{quest.description}}</textarea>
             </div>
+
+                <input type="hidden" name="slug" id="slug" value="{{quest.slug}}">
             </form>
             <h5>Добавление этапов</h5>
-            <button class="btn btn_primary add-quest__button">+</button>
+            {{#equal quest.userCount 0}}
+                <button class="btn btn_primary add-quest__button">+</button>
+            {{else}}
+                <button class="btn btn_primary btn_disabled">+</button>
+            {{/equal}}
             <ul class="tabs add-quest__tabs" role="tablist">
 
             </ul>
@@ -41,15 +52,15 @@
 
             </div>
 
-            <button role="createquest" class="btn btn_primary btn_disabled">Создать</button>
+            <button role="{{submitButton.role}}" class="btn btn_primary btn_disabled">{{submitButton.text}}</button>
             {{else}}
-            <h4 class="center">Для создания квеста необходимо авторизоваться</h4>
+            <h4 class="center">Необходимо авторизоваться</h4>
             {{/if}}
         </div>
     {{/content}}
 
     {{#content "scripts"}}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/easy-autocomplete/1.3.5/jquery.easy-autocomplete.min.js"></script>
-        <script src="{{CDN 'js/createQuest.js'}}"></script>
+        <script src="{{CDN '/js/createQuest.js'}}"></script>
     {{/content}}
 {{/extend}}

@@ -26,7 +26,7 @@ function generateId() {
 
 function createTab(id) {
     return '<li class="tabs__item">\n' +
-        '<a class="tabs__link active" href="#' + id + '" role="tab">...</a>\n' +
+        '<a class="tabs__link active" href="#' + id + '" role="tab">Без названия</a>\n' +
     '</li>';
 }
 

@@ -4,7 +4,9 @@
     cursor: default;
 }
 
-.btn_disabled:focus
+.btn_disabled:focus,
+.btn_disabled:hover
 {
     box-shadow: none;
+    opacity: 1;
 }
