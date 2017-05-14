@@ -1,0 +1,116 @@
+{
+  "data": [
+    {
+      "title": "Miami beach",
+      "description": "Go hard play hard",
+      "city": "Miami",
+      "tags": ["miami", "beach", "summer"],
+      "stages": [
+        {
+          "src": "http://cdn-image.travelandleisure.com/sites/default/files/styles/1600x1000/public/1446151328/miami-header-dg1015.jpg?itok=eIwFd7q_",
+          "title": "Miami beach",
+          "location": "123"
+        }
+      ],
+      "likesCount": 5
+    },
+    {
+      "title": "Las Vegas",
+      "description": "All that was in vegas, remains in Vegas",
+      "city": "Las Vegas",
+      "tags": ["las", "vegas", "fun", "so", "fun"],
+      "stages": [
+        {
+          "src": "http://www.wantseeproject.com/wp-content/uploads/2016/05/las-vegas-strip.jpg",
+          "title": "Las Vegas",
+          "location": "123"
+        }
+      ],
+      "likesCount": 6
+    },
+    {
+      "title": "Washington",
+      "description": "Become president of this country",
+      "city": "Washington",
+      "tags": ["president", "usa", "politics"],
+      "stages": [
+        {
+          "src": "https://static1.squarespace.com/static/53dbe339e4b0c5353844bc99/t/58176703c534a576aa3d9d46/1477928713235/",
+          "title": "Washington",
+          "location": "123"
+        }
+      ],
+      "likesCount": 7
+    },
+    {
+      "title": "Hackaton in Yandex",
+      "description": "Хакатон в яндексе - это просто как ездить на велосипеде, который горит, и ты горишь, и все горит, и ты в аду.",
+      "city": "Екатеринбург",
+      "tags": ["усталость", "красные глаза"],
+      "stages": [
+        {
+          "src": "https://datasciencebe.files.wordpress.com/2015/02/keep-calm-and-hackathon-9.png",
+          "title": "Хакатон",
+          "location": "123"
+        }
+      ],
+      "likesCount": 20
+    },
+    {
+      "title": "Поликлиника",
+      "description": "Простоять очередь в поликлиннике - тот еще квест",
+      "city": "Екатеринбург",
+      "tags": ["бабушка", "ооочередь"],
+      "stages": [
+        {
+          "src": "http://otziv.rasurgut.ru/uploads/posts/2011-08/1314518025_poliklinika-yunost.jpg",
+          "title": "Поликлиника",
+          "location": "123"
+        }
+      ],
+      "likesCount": 30
+    },
+    {
+      "title": "Поиски второго носка",
+      "description": "Попробуй собрать все пары",
+      "city": "Екатеринбург",
+      "tags": ["носок", "носок"],
+      "stages": [
+        {
+          "src": "http://socks-case.ru/img/news/noski-bambuk-100_1.jpg",
+          "title": "Носки",
+          "location": "123"
+        }
+      ],
+      "likesCount": 10
+    },
+    {
+      "title": "Успей до дедлайна",
+      "description": "Ничего не готово к хакатону!",
+      "city": "Екатеринбург",
+      "tags": ["team5", "photo quest"],
+      "stages": [
+        {
+          "src": "http://risovach.ru/upload/2016/03/mem/winter_107726358_orig_.jpg",
+          "title": "Deadline",
+          "location": "123"
+        }
+      ],
+      "likesCount": 31
+    },
+    {
+      "title": "Почини этот сайтик",
+      "description": "Это реально сложно",
+      "city": "Екатеринбург",
+      "tags": ["team5", "photo quest"],
+      "stages": [
+        {
+          "src": "http://risovach.ru/upload/2015/01/mem/vse-ochen-ploho_73054723_orig_.png",
+          "title": "Сайтик",
+          "location": "123"
+        }
+      ],
+      "likesCount": 15
+    }
+  ]
+}

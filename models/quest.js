@@ -34,13 +34,13 @@ const questSchema = new mongoose.Schema({
     }
 });
 
-questSchema.statics.create = async function ({authorId, title = '', description = '', city = '', tags = [], stages = []}) {
+questSchema.statics.create = async function ({authorId, title = '', description = '', city = '', tags = [], stages = [], likes = []}) {
     let quest = new this({
         title,
         description,
         slug: slugify(title),
         author: authorId,
-        city, tags, stages
+        city, tags, stages, likes
     });
 
     try {
