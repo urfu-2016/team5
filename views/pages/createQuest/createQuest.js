@@ -56,7 +56,7 @@ $('button[role="editQuest"]').on('click', function () {
             $('.container').html('Квест успешно изменен =)');
 
             setTimeout(function () {
-                window.location.href = '/quests/create';
+                window.location.href = '/quests/' + msg.slug;
             }, 2000);
         },
         error: function () {
@@ -104,7 +104,7 @@ $('button[role="createQuest"]').on('click', function () {
                 $('.container').html('Квест успешно создан =)');
 
                 setTimeout(function () {
-                    window.location.href = '/';
+                    window.location.href = '/quests/' + slug;
                 }, 2000);
             },
             error: function () {
