@@ -13,8 +13,6 @@ const mock = sinon.mock(require('../../libs/email-client'));
 mock.expects('sendPasswordResetMail').atLeast(1);
 mock.expects('sendRegistrationMail').atLeast(1);
 
-// TODO: Проверка, что после использования ссылки, повторно нельзя (что она удаляется)
-
 describe('controller:auth', () => {
     beforeEach(() => dbClearer.removeAll());
 
@@ -23,10 +21,8 @@ describe('controller:auth', () => {
     describe('signup', () => {
         it('should sign up new user', async () => {
             const res = await chaiRequest.post('/signup', mocks.userWithCorrectPassword);
-            const username = mocks.userWithCorrectPassword.username;
 
-            res.status.should.be.equal(httpStatus.CREATED);
-            res.text.should.be.equal(constants.controllers.auth.signedUpPattern(username));
+            res.status.should.be.equal(httpStatus.OK);
         });
 
         it('should create email confirmation query on success sign up', async () => {
@@ -77,12 +73,20 @@ describe('controller:auth', () => {
                 err.response.text.should.equal(constants.models.user.incorrectEmail);
             }
         });
+
+        it('should sign in after sign up', async () => {
+            await chaiRequest.post('/signup', mocks.userWithCorrectPassword);
+
+            const res = await chaiRequest.post('/logout');
+            res.status.should.equal(httpStatus.OK);
+        });
     });
 
     describe('signin', () => {
         it('should sign in by username with correct password', async () => {
             const userData = mocks.userWithCorrectPassword;
             await chaiRequest.post('/signup', userData);
+            await chaiRequest.post('/logout');
             const res = await chaiRequest.post('/signin', {
                 login: userData.username,
                 password: userData.password
@@ -94,6 +98,7 @@ describe('controller:auth', () => {
         it('should sign in by email with correct password', async () => {
             const userData = mocks.userWithCorrectPassword;
             await chaiRequest.post('/signup', userData);
+            await chaiRequest.post('/logout');
             const res = await chaiRequest.post('/signin', {
                 login: userData.email,
                 password: userData.password
@@ -114,6 +119,7 @@ describe('controller:auth', () => {
 
         it('should fails sign in if already signed in', async () => {
             await chaiRequest.post('/signup', mocks.userWithCorrectPassword);
+            await chaiRequest.post('/logout');
             await chaiRequest.post('/signin', mocks.userWithCorrectPassword);
             try {
                 await chaiRequest.post('/signin', mocks.userWithCorrectPassword);
@@ -138,6 +144,7 @@ describe('controller:auth', () => {
 
         it('should success on reset password request', async () => {
             await chaiRequest.post('/signup', mocks.userWithCorrectPassword);
+            await chaiRequest.post('/logout');
             const emailSendMessage = `На почту с адресом ${email} было отправлено письмо для сброса пароля`;
             const res = await chaiRequest.post('/password-reset', {email});
 
@@ -168,6 +175,7 @@ describe('controller:auth', () => {
 
         it('should refresh reset password query data', async () => {
             await chaiRequest.post('/signup', mocks.userWithCorrectPassword);
+            await chaiRequest.post('/logout');
 
             await chaiRequest.post('/password-reset', {email});
             const firstQuery = await QueriesStorage.findOne({email});
@@ -190,7 +198,6 @@ describe('controller:auth', () => {
             const res = await chaiRequest.post(linkToPasswordReset, {newPassword});
 
             res.status.should.equal(httpStatus.OK);
-            res.text.should.equal(constants.controllers.auth.passwordWasChanged);
         });
 
         it('should not reset password by incorrect query', async () => {
@@ -238,13 +245,32 @@ describe('controller:auth', () => {
                 err.response.text.should.equal(constants.controllers.auth.passwordResetInputRequired);
             }
         });
+
+        it('should not reset password on old link after refresh', async () => {
+            const email = mocks.userWithCorrectPassword.email;
+            await chaiRequest.post('/signup', mocks.userWithCorrectPassword);
+            const newPassword = '123';
+            const hash1 = await QueriesStorage.updatePasswordResetQuery(email);
+            const linkToPasswordReset1 = `/password-reset/${email}/${hash1}`;
+
+            const hash2 = await QueriesStorage.updatePasswordResetQuery(email);
+            const linkToPasswordReset2 = `/password-reset/${email}/${hash2}`;
+
+            try {
+                await chaiRequest.post(linkToPasswordReset1, {newPassword});
+            } catch (err) {
+                err.response.status.should.equal(httpStatus.NOT_FOUND);
+            }
+
+            const res = await chaiRequest.post(linkToPasswordReset2, {newPassword});
+            res.status.should.equal(httpStatus.OK);
+        });
     });
 
     describe('logout', () => {
         beforeEach(() => chaiRequest.post('/signup').send(mocks.userWithCorrectPassword));
 
         it('should end session after logout', async () => {
-            await chaiRequest.post('/signin').send(mocks.userWithCorrectPassword);
             const res = await chaiRequest.post('/logout');
 
             Object.hasOwnProperty.call(res.headers, 'set-cookies').should.equal(false);

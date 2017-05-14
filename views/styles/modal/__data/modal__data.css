@@ -9,12 +9,12 @@
     text-align: center;
 }
 
-.modal__data .form-message .success
+.modal__data .form-message.success
 {
     color: #0f3;
 }
 
-.modal__data .form-message .error
+.modal__data .form-message.error
 {
     color: #f33;
 }

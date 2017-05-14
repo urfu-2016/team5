@@ -19,16 +19,17 @@ search.addEventListener('submit', function (event) {
 });
 
 function success(form, $formMessage, $btnPrimary, res) {
-    if (form.action.endsWith('/signin')) {
+    if (form.action.endsWith('/signin') || form.action.endsWith('/signup')) {
         window.location.reload();
-    } else if (form.action.endsWith('/signup')) {
-        $formMessage.html(res).addClass('success').removeClass('error');
-        $('.tabs__item:first-child .tabs__link').click();
     } else if (form.action.endsWith('/password-reset')) {
-        $formMessage.html(res);
+        $formMessage.html(res).addClass('success').removeClass('error');
     }
 
     $btnPrimary.prop('disabled', false);
 }
+
+$('.tabs__link').on('click', function () {
+    $('.form-message').html('');
+});
 
 formValidation(success, '.auth-form');

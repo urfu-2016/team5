@@ -7,7 +7,8 @@ function success(form, $formMessage, $btnPrimary, res) {
         $formMessage.html(res);
     }
 
+    $(form).remove();
     $btnPrimary.prop('disabled', false);
 }
 
-formValidation(success, '.reset-form');
+formValidation(success, '.reset-pass-form');

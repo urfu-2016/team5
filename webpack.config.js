@@ -11,7 +11,8 @@ module.exports = {
         questsAll: './pages/questsAll/questsAll',
         questId: './pages/questsId/quest',
         createQuest: './pages/createQuest/createQuest',
-        resetPass: './pages/resetPass/resetPass'
+        resetPass: './pages/resetPass/resetPass',
+        infoPage: './pages/infoPage/infoPage'
     },
     output: {
         path: path.join(__dirname, '/public'),

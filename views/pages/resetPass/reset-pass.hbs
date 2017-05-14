@@ -2,13 +2,14 @@
     {{#content "head" mode="append"}}
         <link rel="stylesheet" href="{{CDN '/css/resetPass.css'}}">
     {{/content}}
+
     {{#content "body"}}
 
         <div class="reset-pass">
             <div class="form-validation">
                 <p class="form-message"></p>
             </div>
-            <form class="form-horizontal reset-form" method="POST" action="/password-reset/{{email}}/{{queryHash}}">
+            <form class="form-horizontal reset-pass-form" method="POST" action="/password-reset/{{email}}/{{queryHash}}">
                 <div class="input-group">
                     <i class="fa fa-lock"></i>
                     <input
