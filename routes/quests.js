@@ -52,7 +52,7 @@ router.route('/:slug/info').get(function (req, res) {
                     author: questData.author,
                     createdAt: questData.dateOfCreation,
                     tags: questData.tags,
-                    imagesCount: questData.images.length,
+                    imagesCount: questData.stages.length,
                     likesCount: questData.likesCount,
                     liked: req.user ? questData.likedBy(req.user) : false
                 }
