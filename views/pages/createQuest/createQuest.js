@@ -53,14 +53,14 @@ $('button[role="editQuest"]').on('click', function () {
         url: '/api/quests/' + msg.slug + '/edit', // SLUG
         data: msg,
         success: function ({data}) {
-            $('.container').html('Квест успешно изменен =)');
+            $('.container').html('Квест успешно изменен');
 
             setTimeout(function () {
                 window.location.href = '/quests/' + data.slug;
             }, 2000);
         },
         error: function () {
-            $('.container').html('При изменении квеста произошла ошибка, попробуйте еще раз =(');
+            $('.container').html('При изменении квеста произошла ошибка, попробуйте еще раз');
 
             setTimeout(function () {
                 window.location.reload();
@@ -100,14 +100,14 @@ $('button[role="createQuest"]').on('click', function () {
                     sendStageForm(el, data.slug);
                 });
 
-                $('.container').html('Квест успешно создан =)');
+                $('.container').html('Квест успешно создан');
 
                 setTimeout(function () {
                     window.location.href = '/quests/' + data.slug;
                 }, 2000);
             },
             error: function () {
-                $('.container').html('При создании квеста произошла ошибка, попробуйте еще раз =(');
+                $('.container').html('При создании квеста произошла ошибка, попробуйте еще раз');
 
                 setTimeout(function () {
                     window.location.reload();
