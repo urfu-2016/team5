@@ -33,7 +33,7 @@ class QuestSender {
 
     beginPlay() {
         return {
-            url: `./${this.slug}/beginPlay`,
+            url: `./${this.slug}/start`,
             options: {
                 method: 'POST',
                 headers: {
