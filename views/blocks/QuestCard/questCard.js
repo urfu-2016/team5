@@ -15,6 +15,11 @@ export default class Card extends React.Component {
                 </div>
                 <div className="card__content">
                     <h4 className="card__title">{card.title}</h4>
+                    <ul className="card__tags">
+                        {card.tags.map(tag => (
+                            <a key={tag} href={`/quests?type=tag&tag=${tag}`}>{tag}</a>
+                        ))}
+                    </ul>
                 </div>
                 <div className="card__data">
                     <ul>

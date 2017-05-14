@@ -1,0 +1,19 @@
+.card__tags
+{
+    padding: 0;
+    display: flex;
+    width: 100%;
+    overflow: hidden;
+}
+
+.card__tags > a
+{
+    cursor: pointer;
+    padding: 0.2em 0.5em;
+    margin: 0 0.5em 0.5em 0;
+    white-space: nowrap;
+    background-color: #f1f8ff;
+    border-radius: 3px;
+    color: #0366d6;
+    text-decoration: none;
+}

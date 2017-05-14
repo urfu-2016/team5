@@ -7,6 +7,28 @@ import constants from './../../constants/defaultStates';
 
 const Searcher = require('./Searcher.js');
 
+function getParameterByName(name) {
+    const url = window.location.href;
+    name = name.replace(/[[]]/g, '\\$&');
+    const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
+    const results = regex.exec(url);
+    if (!results || !results[2]) {
+        return null;
+    }
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+
+function modifySearchState(state) {
+    const searchType = getParameterByName('type');
+
+    if (searchType === 'tag') {
+        state.searchByField = 'tags';
+        state.searchString = getParameterByName('tag');
+    } else if (searchType === 'string') {
+        state.searchString = getParameterByName('string');
+    }
+}
+
 class Search extends React.Component {
     constructor(props) {
         super(props);
@@ -16,7 +38,13 @@ class Search extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.search = this.search.bind(this);
 
-        this.state = constants.defaultState;
+        let state = constants.defaultState;
+
+        if (getParameterByName('type')) {
+            modifySearchState(state);
+        }
+
+        this.state = state;
     }
 
     componentDidMount() {

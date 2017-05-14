@@ -15,7 +15,12 @@
         <!--Title-->
         <h4 class="card__title">{{title}}</h4>
         <!--Text-->
-        <p class="card__text">{{description}}</p>
+        <!-- <p class="card__text">{{description}}</p> -->
+        <ul class="card__tags">
+            {{#each tags}}
+                <a href="/quests?type=tag&tag={{this}}">{{this}}</a>
+            {{/each}}
+        </ul>
     </div>
     <!--/.Card content-->
 
