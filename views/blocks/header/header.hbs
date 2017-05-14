@@ -4,39 +4,35 @@
             <button class="navbar__toggler" type="button" data-toggle="collapse" data-target="#navigation-list" aria-controls="navigation-list" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar__toggler_icon"></span>
             </button>
-            <a class="navbar__brand" href="#">
+            <a class="navbar__brand" href="/">
                 PHOTOQUEST
             </a>
             <div class="navbar__navigation-list collapse" id="navigation-list" aria-expanded="false">
                 <ul class="navbar__categories left">
                     <li class="navbar__item
-                    {{#equal activePage '/'}}
-                        active
-                    {{/equal}}
-                    ">
-                        <a href="/" class="navbar__link">Home</a>
-                    </li>
-                    <li class="navbar__item
-                    {{#equal activePage '/quests'}}
-                        active
-                    {{/equal}}
-                    ">
-                        <a href="/quests" class="navbar__link">All quests</a>
+                     {{#equal activePage '/quests'}}
+                         active
+                     {{/equal}}
+                     ">
+                        <a href="/quests" class="navbar__link">Все квесты</a>
                     </li>
                 </ul>
+                <form id="search">
+                    <input id="searchString" class="input-group__input input_light" type="text" placeholder="Поиск">
+                </form>
                 <ul class="navbar__categories">
                     {{#if isAuth }}
                     <li class="navbar__item">
-                        <a class="navbar__link" href="/quests/create">Create quest</a>
+                        <a class="navbar__link" href="/quests/create">Создать квест</a>
                     </li>
                     <li class="navbar__item">
                         <form action="/logout" method="post">
-                            <button type="submit" class="navbar__button">Logout</button>
+                            <button type="submit" class="navbar__button">Выйти</button>
                         </form>
                     </li>
                     {{ else }}
                     <li class="navbar__item">
-                        <a class="navbar__link" data-toggle="modal" data-target="#signForm">Sign in / Sign up</a>
+                        <a class="navbar__link" data-toggle="modal" data-target="#signForm">Войти</a>
                     </li>
                     {{/if}}
                 </ul>
@@ -56,13 +52,13 @@
                     <!-- Nav tabs -->
                     <ul class="tabs" role="tablist">
                         <li class="tabs__item">
-                            <a class="tabs__link" href="#panel11" role="tab">Sign in</a>
+                            <a class="tabs__link" href="#panel11" role="tab">Войти</a>
                         </li>
                         <li class="tabs__item">
-                            <a class="tabs__link active" href="#panel12" role="tab">Sign up</a>
+                            <a class="tabs__link active" href="#panel12" role="tab">Регистрация</a>
                         </li>
                         <li class="tabs__item">
-                            <a class="tabs__link" href="#panel13" role="tab">Forgot password</a>
+                            <a class="tabs__link" href="#panel13" role="tab">Забыли пароль?</a>
                         </li>
                     </ul>
 
@@ -75,17 +71,17 @@
 
                                 <div class="input-group">
                                     <i class="fa fa-envelope"></i>
-                                    <input name="login" type="text" id="form1" class="input-group__input" placeholder="Your email">
+                                    <input name="login" type="text" id="form1" class="input-group__input" placeholder="Ваш email">
                                 </div>
 
                                 <div class="input-group">
                                     <i class="fa fa-lock"></i>
-                                    <input name="password" type="password" id="form2" class="input-group__input" placeholder="Your password">
+                                    <input name="password" type="password" id="form2" class="input-group__input" placeholder="Ваш пароль">
                                 </div>
 
                                 <div class="tab-content__footer">
                                     <button type="submit" class="btn btn_primary">
-                                        Login
+                                        Войти
                                     </button>
                                 </div>
                             </form>
@@ -98,22 +94,22 @@
 
                                 <div class="input-group">
                                     <i class="fa fa-user"></i>
-                                    <input name="username" type="text" id="form3" class="input-group__input" placeholder="Your name">
+                                    <input name="username" type="text" id="form3" class="input-group__input" placeholder="Имя пользователя">
                                 </div>
 
                                 <div class="input-group">
                                     <i class="fa fa-envelope"></i>
-                                    <input name="email" type="text" id="form4" class="input-group__input" placeholder="Your email">
+                                    <input name="email" type="text" id="form4" class="input-group__input" placeholder="Ваш email">
                                 </div>
 
                                 <div class="input-group">
                                     <i class="fa fa-lock"></i>
-                                    <input name="password" type="password" id="form5" class="input-group__input" placeholder="Your password">
+                                    <input name="password" type="password" id="form5" class="input-group__input" placeholder="Ваш пароль">
                                 </div>
 
                                 <div class="tab-content__footer">
                                     <button type="submit" class="btn btn_primary">
-                                        Register
+                                        Зарегестрироваться
                                     </button>
                                 </div>
                             </form>
@@ -126,12 +122,12 @@
 
                                 <div class="input-group">
                                     <i class="fa fa-envelope"></i>
-                                    <input name="email" type="text" id="form1" class="input-group__input" placeholder="Your email">
+                                    <input name="email" type="text" id="form1" class="input-group__input" placeholder="Ваш email">
                                 </div>
 
                                 <div class="tab-content__footer">
                                     <button type="submit" class="btn btn_primary">
-                                        Send mail
+                                        Подтвердить
                                     </button>
                                 </div>
                             </form>
@@ -149,22 +145,22 @@
             <div class="modal__dialog">
                 <form method="post" action="/quests">
                     <div class="modal__header">
-                        <h4 class="modal__title">Create quest</h4>
+                        <h4 class="modal__title">Создать квест</h4>
                         <button type="button" class="modal__close">×</button>
                     </div>
                     <div class="modal__body">
                         <div class="input-group">
-                            <label for="title">Title</label>
+                            <label for="title">Заголовок</label>
                             <input name="title" type="text" id="title" class="input-group__input input_dark">
                         </div>
 
                         <div class="input-group">
-                            <label for="city">City</label>
+                            <label for="city">Город</label>
                             <input name="city" type="text" id="city" class="input-group__input input_dark">
                         </div>
 
                         <div class="input-group">
-                            <label for="description">Description</label>
+                            <label for="description">Описание</label>
                             <textarea name="description" id="description" class="input-group__textarea"></textarea>
                         </div>
 

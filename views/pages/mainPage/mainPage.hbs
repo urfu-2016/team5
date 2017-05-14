@@ -7,13 +7,41 @@
     {{#content "body"}}
 
         <div class="container">
-            <h2>Recent quests</h2>
+            {{#if isAuth}}
+                <h2>Созданные мной квесты</h2>
+                <hr class="extra-margins">
+                <div class="row">
+                    {{#if createdQuests.length}}
+                        {{#each quests}}
+                            <div class="col_4">
+                                {{> mainCard/card}}
+                            </div>
+                        {{/each}}
+                    {{else}}
+                        <div class="row">
+                            Вы еще не создали ни одного квеста
+                        </div>
+                    {{/if}}
+                </div>
+                <hr class="extra-margins">
+            {{/if}}
+            <h2>Новые квесты</h2>
             <hr class="extra-margins">
             <div class="row">
                 {{#each quests}}
                 <div class="col_4">
                     {{> mainCard/card}}
                 </div>
+                {{/each}}
+            </div>
+            <hr class="extra-margins">
+            <h2>Популярные квесты</h2>
+            <hr class="extra-margins">
+            <div class="row">
+                {{#each popularQuests}}
+                    <div class="col_4">
+                        {{> mainCard/card}}
+                    </div>
                 {{/each}}
             </div>
         </div>

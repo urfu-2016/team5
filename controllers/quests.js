@@ -23,6 +23,17 @@ function getQuestObject(quest, req) {
     return questObj;
 }
 
+function compareDate(firstQuest, secondQuest) {
+    const firstDate = moment(firstQuest.dateOfCreation);
+    const secondDate = moment(secondQuest.dateOfCreation);
+
+    return moment(firstDate).isBefore(secondDate);
+}
+
+function comparePopularity(firstQuest, secondQuest) {
+    return firstQuest.likesCount < secondQuest.likesCount;
+}
+
 module.exports = {
     async createQuest(req, res, next) {
         const questData = {
@@ -117,7 +128,17 @@ module.exports = {
         const renderData = {
             title: constants.quest.title,
             isAuth: req.user ? 1 : 0,
-            quests: quests.map(quest => getQuestObject(quest, req)),
+            quests: quests
+                .sort(compareDate)
+                .slice(0, 3)
+                .map(quest => getQuestObject(quest, req)),
+            popularQuests: quests
+                .sort(comparePopularity)
+                .slice(0, 3)
+                .map(quest => getQuestObject(quest, req)),
+            createdQuests: quests
+                .filter(quest => quest.isMyQuest(req.user))
+                .map(quest => getQuestObject(quest, req)),
             activePage: '/'
         };
 
