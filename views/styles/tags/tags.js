@@ -28,7 +28,8 @@ $('.tags').on('click', '.close', function () {
 });
 
 window.onclick = function (event) {
-    if (!event.target.matches('.tags') && !event.target.matches('.tag') && !event.target.matches('.tags input')) {
+    if (!event.target.matches('.tags') && !event.target.matches('.tag') &&
+        !event.target.matches('.tags input') && !event.target.matches('.close')) {
         $('.tags').removeClass('focus');
     }
     event.stopPropagation();
