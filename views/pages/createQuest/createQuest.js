@@ -52,11 +52,11 @@ $('button[role="editQuest"]').on('click', function () {
         type: 'POST',
         url: '/api/quests/' + msg.slug + '/edit', // SLUG
         data: msg,
-        success: function () {
+        success: function (data) {
             $('.container').html('Квест успешно изменен =)');
 
             setTimeout(function () {
-                window.location.href = '/quests/' + msg.slug;
+                window.location.href = '/quests/' + data.slug;
             }, 2000);
         },
         error: function () {
@@ -96,15 +96,14 @@ $('button[role="createQuest"]').on('click', function () {
             url: '/api/quests',
             data: msg,
             success: function (data) {
-                var slug = data.slug;
                 $(stagesForms).each(function (idx, el) {
-                    sendStageForm(el, slug);
+                    sendStageForm(el, data.slug);
                 });
 
                 $('.container').html('Квест успешно создан =)');
 
                 setTimeout(function () {
-                    window.location.href = '/quests/' + slug;
+                    window.location.href = '/quests/' + data.slug;
                 }, 2000);
             },
             error: function () {
