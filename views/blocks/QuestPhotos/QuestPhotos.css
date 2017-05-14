@@ -1,0 +1,14 @@
+.photos
+{
+    display: flex;
+    flex-direction: row;
+    padding: 0 3%;
+}
+
+@media (max-width: 940px)
+{
+    .photos
+    {
+        flex-direction: column;
+    }
+}
