@@ -4,6 +4,13 @@
     width: 100%;
 }
 
+.modal__data .form-message
+{
+    color: #0f3;
+    text-align: center;
+}
+
+
 @media (max-width: 768px)
 {
     .modal__data
