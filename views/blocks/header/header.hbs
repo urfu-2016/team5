@@ -8,7 +8,15 @@
                 PHOTOQUEST
             </a>
             <div class="navbar__navigation-list collapse" id="navigation-list" aria-expanded="false">
-                <ul class="navbar__categories left"></ul>
+                <ul class="navbar__categories left">
+                    <li class="navbar__item
+                     {{#equal activePage '/quests'}}
+                         active
+                     {{/equal}}
+                     ">
+                        <a href="/quests" class="navbar__link">Все квесты</a>
+                    </li>
+                </ul>
                 <form id="search">
                     <input id="searchString" class="input-group__input input_light" type="text" placeholder="Поиск">
                 </form>
