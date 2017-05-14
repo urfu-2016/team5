@@ -1,21 +1,32 @@
 import React from 'react';
 
 export default class Photo extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.sendGeolocaion = this.sendGeolocaion.bind(this);
+    }
+
+    sendGeolocaion() {
+        this.props.canSend(canSend => {
+            if (canSend) {
+                this.props.onAction();
+            }
+        });
+    }
+
     render() {
-        const {src, answered, rigthAnswered} = this.props;
+        const {src, status} = this.props;
 
         return (
             <div className={'block block_gray'}>
                 <div >
                     <img src={src}></img>
                 </div>
-                    {answered}
+                    {status}
                 <div>
                 </div>
-                <div>
-                    {rigthAnswered}
-                </div>
-                <button onClick={this.props.onAction}>Отметиться</button>
+                <button onClick={this.sendGeolocaion}>Отметиться</button>
             </div>
         );
     }

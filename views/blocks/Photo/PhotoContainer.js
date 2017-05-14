@@ -1,6 +1,7 @@
 import React from 'react';
 import Photo from './Photo';
 import sender from './../Sender/Sender';
+import {getGeolocation} from './PhotoGeolocation';
 import PhotoSender from '../QuestPhotos/PhotoSender.js';
 
 const PhotoWithSending = sender(Photo);
@@ -10,15 +11,31 @@ export default class PhotoContainer extends React.Component {
         super(props);
 
         this.getSendOptions = this.getSendOptions.bind(this);
+        this.handleAnswered = this.handleAnswered.bind(this);
+        this.canSend = this.canSend.bind(this);
+    }
+
+    canSend(callback) {
+        getGeolocation((error, position) => {
+            if (error) {
+                this.props.onGeolocationError(error);
+                callback(false);
+            }
+
+            this.position = {
+                lat: position.coords.latitude,
+                lon: position.coords.longitude
+            };
+            callback(true);
+        });
     }
 
     getSendOptions() {
-        var position = {
-            x: 0,
-            y: 4
-        };
+        return PhotoSender.sendPosition(this.props.slug, this.position);
+    }
 
-        return PhotoSender.sendPosition(this.props.id, position);
+    handleAnswered(data) {
+        this.props.handleAnswered(this.props.slug, data);
     }
 
     render() {
@@ -26,7 +43,8 @@ export default class PhotoContainer extends React.Component {
             <PhotoWithSending
                 {...this.props}
                 getSendOptions={this.getSendOptions}
-                onSuccesfulEnd={this.props.handleAnswered}
+                onSuccesfulEnd={this.handleAnswered}
+                canSend={this.canSend}
             />
         );
     }

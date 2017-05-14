@@ -11,7 +11,7 @@ class PhotoSender {
 
     getPhotos() {
         return {
-            url: `./${this.slug}/photos`,
+            url: `../api/quests/${this.slug}/photos`,
             options: {
                 method: 'GET',
                 credentials: 'include'
@@ -22,7 +22,7 @@ class PhotoSender {
 
     sendPosition(id, position) {
         return {
-            url: `./${this.slug}/${id}`,
+            url: `../api/quests/${this.slug}/${id}/check`,
             options: {
                 method: 'POST',
                 body: JSON.stringify(position),

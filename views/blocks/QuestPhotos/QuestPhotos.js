@@ -16,18 +16,24 @@ export default class QuestPhotos extends React.Component {
             return null;
         }
 
-        const {handleAnswered, handleInfo} = this.props;
+        const {handleAnswered, handleInfo, handleGeolocationError, geolocationError} = this.props;
 
         return (
             <div className={questPhotos()}>
                 <div>
                     <button onClick={handleInfo}>Описание квеста</button>
                 </div>
+                {geolocationError &&
+                    <div>
+                        {geolocationError.message}
+                    </div>
+                }
                 <div>
                     {photos.map(photo =>
                         <PhotoContainer
-                            key={photo.id} {...photo}
+                            key={photo.slug} {...photo}
                             handleAnswered={handleAnswered}
+                            onGeolocationError={handleGeolocationError}
                         />
                     )}
                 </div>

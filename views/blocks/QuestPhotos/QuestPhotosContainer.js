@@ -10,16 +10,24 @@ export default class QuestPhotosContainer extends React.Component {
         super(props);
 
         this.state = {
-            photos: []
+            photos: [],
+            geolocationError: null
         };
 
         this.handlePhotosChange = this.handlePhotosChange.bind(this);
+        this.handleGeolocationError = this.handleGeolocationError.bind(this);
         this.handleAnswered = this.handleAnswered.bind(this);
     }
 
     handlePhotosChange(data) {
         this.setState({
             photos: data
+        });
+    }
+
+    handleGeolocationError(error) {
+        this.setState({
+            geolocationError: error
         });
     }
 
@@ -44,6 +52,7 @@ export default class QuestPhotosContainer extends React.Component {
                 onSuccesfulEnd={this.handlePhotosChange}
                 showQuestPhoto={showQuestPhoto}
                 handleAnswered={this.handleAnswered}
+                handleGeolocationError={this.handleGeolocationError}
             />
         );
     }
