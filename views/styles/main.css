@@ -122,6 +122,12 @@ div#OR
     }
 }
 
+.col-4,
+.col-8
+{
+    width: 100%;
+}
+
 @media (min-width: 992px)
 {
     .col-4
