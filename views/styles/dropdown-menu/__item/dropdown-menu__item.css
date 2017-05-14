@@ -19,6 +19,7 @@
     margin-left: 0;
     font-weight: 400;
     white-space: nowrap;
+    cursor: pointer;
 }
 
 .dropdown-menu__item:focus,

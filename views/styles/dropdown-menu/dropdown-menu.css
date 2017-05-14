@@ -28,36 +28,25 @@
     position: absolute !important;
 }
 
-.navbar .dropdown-menu a
+.dropdown-menu form button
+{
+    width: 100%;
+}
+
+.navbar .dropdown-menu a,
+.navbar .dropdown-menu button
 {
     font-size: 0.9375rem;
     font-weight: 300;
     color: #212121;
 }
 
-.avatar__image
-{
-    border-radius: 50%;
-}
-
-.navbar__item.avatar .dropdown-toggle img
-{
-    height: 35px;
-}
-
-.navbar__item.avatar .dropdown-toggle:after
-{
-    display: none;
-}
-
-.navbar__item.avatar .dropdown-toggle
-{
-    padding: 0;
-}
-
 .dropdown-menu.dropdown a:active,
 .dropdown-menu.dropdown a:focus,
-.dropdown-menu.dropdown a:hover
+.dropdown-menu.dropdown a:hover,
+.dropdown-menu.dropdown button:active,
+.dropdown-menu.dropdown button:focus,
+.dropdown-menu.dropdown button:hover
 {
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
     color: #fff;

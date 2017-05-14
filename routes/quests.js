@@ -16,7 +16,8 @@ router.get('/', function (req, res) {
 
 router.get('/create', function (req, res) {
     const renderData = {
-        activePage: '/quests/create'
+        activePage: '/quests/create',
+        isAuth: req.user ? 1 : 0
     };
 
     res.render('createQuest/createQuest', renderData);

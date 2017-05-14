@@ -18,6 +18,11 @@ main
     height: 0;
 }
 
+.center
+{
+    text-align: center;
+}
+
 .fa
 {
     display: inline-block;
@@ -26,12 +31,12 @@ main
 
 .show
 {
-    display: block;
+    display: block !important;
 }
 
 .hide
 {
-    display: none;
+    display: none !important;
 }
 
 h1,
@@ -94,4 +99,49 @@ h6
 .float_left
 {
     float: left;
+}
+
+div#OR
+{
+    height: 30px;
+    width: 30px;
+    border: 1px solid #c2c2c2;
+    border-radius: 50%;
+    font-weight: bold;
+    line-height: 28px;
+    text-align: center;
+    font-size: 12px;
+    position: absolute;
+    right: -16px;
+    top: 40%;
+    z-index: 1;
+    background: #dfdfdf;
+}
+
+@media (max-width: 768px)
+{
+    div#OR
+    {
+        top: 96%;
+        right: 50%;
+    }
+}
+
+.col-4,
+.col-8
+{
+    width: 100%;
+}
+
+@media (min-width: 992px)
+{
+    .col-4
+    {
+        width: 33%;
+    }
+
+    .col-8
+    {
+        width: 66%;
+    }
 }

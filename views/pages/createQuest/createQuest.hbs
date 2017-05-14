@@ -5,41 +5,46 @@
 
     {{#content "body"}}
         <div class="container">
-            <h2>Create quest</h2>
+            {{#if isAuth}}
+            <h2>Создание квеста</h2>
             <hr class="extra-margins">
-            <form method="post" action="/api/quests">
-                <div class="input-group">
-                    <label for="title">Title</label>
-                    <input name="title" type="text" id="title" class="input-group__input input_dark">
-                </div>
+            <form id="mainForm" method="POST">
+            <div class="input-group">
+                <label for="title">Название</label>
+                <input name="title" type="text" id="title" class="input-group__input input_dark" required>
+            </div>
 
-                <div class="input-group">
-                    <label for="city">City</label>
-                    <input name="city" type="text" id="city" class="input-group__input input_dark input-autocomplete">
-                </div>
+            <div class="input-group">
+                <label for="city">Город</label>
+                <input name="city" type="text" id="city" class="input-group__input input_dark input-autocomplete" required>
+            </div>
 
-                <div class="input-group">
-                    <label for="description">Description</label>
-                    <textarea name="description" id="description" class="input-group__textarea"></textarea>
+            <div class="input-group">
+                <label for="tags">Теги</label>
+                <div class="tags">
+                    <input name="tags" type="text" id="tags" class="">
                 </div>
+            </div>
 
-                <div class="image-preview">
-                    <div class="image-preview___preview">
-                        <input id="img1" class="image-preview__input" type="file">
-                        <label for="img1"><img class="image-preview__img" src="img/add_photo.png" alt="add photo"></label>
-                    </div>
-                    <div class="image-preview___preview">
-                        <input id="img2" class="image-preview__input" type="file">
-                        <label for="img2"><img class="image-preview__img" src="img/add_photo.png" alt="add photo"></label>
-                    </div>
-                    <div class="image-preview___preview">
-                        <input id="img3" class="image-preview__input" type="file">
-                        <label for="img3"><img class="image-preview__img" src="img/add_photo.png" alt="add photo"></label>
-                    </div>
-                </div>
-
-                <button type="submit" class="btn btn_primary float_right">Submit</button>
+            <div class="input-group">
+                <label for="description">Описание</label>
+                <textarea name="description" id="description" class="input-group__textarea" required></textarea>
+            </div>
             </form>
+            <h5>Добавление этапов</h5>
+            <button class="btn btn_primary add-quest__button">+</button>
+            <ul class="tabs add-quest__tabs" role="tablist">
+
+            </ul>
+
+            <div class="tab-content quests-content">
+
+            </div>
+
+            <button role="createquest" class="btn btn_primary btn_disabled">Создать</button>
+            {{else}}
+            <h4 class="center">Для создания квеста необходимо авторизоваться</h4>
+            {{/if}}
         </div>
     {{/content}}
 

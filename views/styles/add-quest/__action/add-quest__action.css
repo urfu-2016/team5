@@ -1,0 +1,60 @@
+.add-quest__action
+{
+    position: absolute;
+    background: url("actions.svg") no-repeat #fff;
+    width: 17px;
+    height: 17px;
+    top: 4px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    z-index: 100;
+}
+
+.action_rotate
+{
+    background-position: 0 0;
+    left: 4px;
+}
+
+.action_rotate:hover
+{
+    background-position: 0 -17px;
+    left: 4px;
+}
+
+.action_delete
+{
+    background-position: -17px 0;
+    right: 4px;
+}
+
+.action_delete:hover
+{
+    background-position: -17px -17px;
+    right: 4px;
+}
+
+.rotate0deg
+{
+    transform: rotate(0deg);
+    transition: transform 0.5s;
+}
+
+.rotate90deg
+{
+    transform: rotate(90deg);
+    transition: transform 0.5s;
+}
+
+.rotate180deg
+{
+    transform: rotate(180deg);
+    transition: transform 0.5s;
+}
+
+.rotate270deg
+{
+    transform: rotate(270deg);
+    transition: transform 0.5s;
+}

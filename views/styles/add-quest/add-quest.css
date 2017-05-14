@@ -1,0 +1,44 @@
+.add-quest
+{
+    height: 300px;
+    position: relative;
+}
+
+.add-quest__preview
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.add-quest__footer
+{
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.add-quest__info
+{
+    position: absolute;
+    top: 40%;
+    width: 50%;
+    opacity: 0.8;
+    text-align: center;
+}
+
+.add-quest__image
+{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.add-quest__image img
+{
+    width: 100%;
+}

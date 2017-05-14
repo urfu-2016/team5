@@ -1,0 +1,10 @@
+.btn_disabled
+{
+    background: #ddd;
+    cursor: default;
+}
+
+.btn_disabled:focus
+{
+    box-shadow: none;
+}
