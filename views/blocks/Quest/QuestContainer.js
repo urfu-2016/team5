@@ -25,13 +25,13 @@ export default class QuestContainer extends React.Component {
 
     handleBeginPlay() {
         this.setState(prevState => {
-            const user = Object.assign(prevState.user);
+            const user = Object.assign({}, prevState.user);
             user.isPlaying = true;
 
             return {
                 showQuestInfo: false,
                 mountQuestPhotos: true,
-                user: user
+                user
             };
         });
     }
