@@ -7,6 +7,24 @@
     {{#content "body"}}
 
         <div class="container">
+            {{#if isAuth}}
+                <h2>Созданные мной квесты</h2>
+                <hr class="extra-margins">
+                <div class="row">
+                    {{#if createdQuests.length}}
+                        {{#each quests}}
+                            <div class="col_4">
+                                {{> mainCard/card}}
+                            </div>
+                        {{/each}}
+                    {{else}}
+                        <div class="row">
+                            Вы еще не создали ни одного квеста
+                        </div>
+                    {{/if}}
+                </div>
+                <hr class="extra-margins">
+            {{/if}}
             <h2>Новые квесты</h2>
             <hr class="extra-margins">
             <div class="row">
