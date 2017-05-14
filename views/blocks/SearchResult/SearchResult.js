@@ -8,7 +8,7 @@ export default class SearchResult extends React.Component {
         const {onPageChange, currentPage, pageCount, children} = this.props;
         return (
             <div>
-                <div className={`quests ${b('search', 'result')}`} >
+                <div className={`quests-r ${b('search', 'result')}`} >
                     {children}
                 </div>
                 <SearchPaginationControl
