@@ -1,16 +1,16 @@
 module.exports = {
-    canApply: key => (key === 'images'),
+    canApply: key => (key === 'stages'),
 
     getFilter(data) {
         return Promise.resolve([
             {
                 fields: ['$where'],
-                values: `this.images.length >= ${data.from}`
+                values: `this.stages.length >= ${data.from}`
             },
 
             {
                 fields: ['$where'],
-                values: `this.images.length <= ${data.to}`
+                values: `this.stages.length <= ${data.to}`
             }
         ]);
     }

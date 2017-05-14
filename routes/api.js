@@ -8,38 +8,52 @@ const questsController = require('../controllers/quests');
 const commentsController = require('../controllers/comments');
 const authController = require('../controllers/auth');
 const autocompleteController = require('../controllers/autocomplete');
+const stagesController = require('../controllers/stages');
+const upload = require('../libs/multer').upload;
+const getAction = require('../libs/getAction');
 
 router.route('/users')
-    .get(usersController.getUsers);
+    .get(getAction(usersController, 'getUsers'));
 
 router.route('/users/:username')
-    .get(usersController.getUserByUsername);
+    .get(getAction(usersController, 'getUserByUsername'));
 
 router.route('/quests')
-    .get(questsController.getQuests)
-    .post(authController.authorizedOnly, questsController.createQuest);
+    .get(getAction(questsController, 'getQuests'))
+    .post(getAction(authController, 'authorizedOnly'), getAction(questsController, 'createQuest'));
 
 router.route('/quests/:slug')
-    .get(questsController.getQuestBySlug)
-    .put(authController.authorizedOnly, questsController.updateQuest)
-    .delete(authController.authorizedOnly, questsController.removeQuest);
+    .get(getAction(questsController, 'getQuestBySlug'))
+    .put(getAction(authController, 'authorizedOnly'), getAction(questsController, 'updateQuest'))
+    .delete(getAction(authController, 'authorizedOnly'), getAction(questsController, 'removeQuest'));
 
 router.route('/quests/:slug/like')
-    .post(authController.authorizedOnly, questsController.likeQuest);
+    .post(getAction(authController, 'authorizedOnly'), getAction(questsController, 'likeQuest'));
 
 router.route('/comments/:slug')
-    .get(commentsController.getComments)
-    .post(authController.authorizedOnly, commentsController.createComment);
+    .get(getAction(commentsController, 'getComments'))
+    .post(getAction(authController, 'authorizedOnly'), getAction(commentsController, 'createComment'));
 
 router.route('/comments/:slug/:id')
-    .get(commentsController.getCommentById)
-    .delete(authController.authorizedOnly, commentsController.removeComment);
+    .get(getAction(commentsController, 'getCommentById'))
+    .delete(getAction(authController, 'authorizedOnly'), getAction(commentsController, 'removeComment'));
 
 router.route('/comments/:slug/:id/like')
-    .post(authController.authorizedOnly, commentsController.likeComment);
+    .post(getAction(authController, 'authorizedOnly'), getAction(commentsController, 'likeComment'));
 
 router.route('/autocomplete')
-    .get(autocompleteController.getCities)
-    .post(autocompleteController.getCities);
+    .get(getAction(autocompleteController, 'getCities'))
+    .post(getAction(autocompleteController, 'getCities'));
+
+router.route('/quests/:slug/stages')
+    .post(getAction(authController, 'authorizedOnly'), upload.single('image'), getAction(stagesController, 'add'))
+    .get(getAction(stagesController, 'getAllByQuest'));
+
+router.route('/quests/:slug/stages/:stageId')
+    .put(getAction(authController, 'authorizedOnly'), upload.single('image'), getAction(stagesController, 'update'))
+    .delete(getAction(authController, 'authorizedOnly'), getAction(stagesController, 'remove'));
+
+router.route('/stages/:stageId')
+    .get(getAction(stagesController, 'getById'));
 
 module.exports = router;

@@ -13,11 +13,12 @@
     "lint": "npm run lint:style && npm run lint:js",
     "lint:style": "stylelint --ignore-path .gitignore *.css **/*.css",
     "lint:js": "eslint --ignore-path .gitignore .",
-    "test": "mocha --recursive ./tests",
+    "test": "cross-env NODE_ENV=tests mocha --recursive ./tests --timeout 15000",
     "generate": "node ./scripts/generate-db-data-console.js",
     "build": "webpack",
     "prepush": "npm run lint && npm run test",
-    "precommit": "npm run lint"
+    "precommit": "npm run lint",
+    "eslint-fix": "eslint --fix ."
   },
   "dependencies": {
     "b_": "^1.3.3",
@@ -28,6 +29,7 @@
     "babel-preset-react": "^6.23.0",
     "bcrypt": "^1.0.2",
     "body-parser": "~1.16.0",
+    "cloudinary": "^1.9.0",
     "command-line-args": "^4.0.2",
     "config": "^1.25.1",
     "connect-mongo": "^1.3.2",
@@ -52,10 +54,12 @@
     "moment": "^2.18.1",
     "mongoose": "^4.8.6",
     "morgan": "~1.7.0",
+    "multer": "^1.3.0",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "pbkdf2": "^3.0.9",
     "query-string": "^4.3.2",
+    "react-dropzone": "^3.13.1",
     "serve-favicon": "~2.3.2",
     "shortid": "^2.2.8",
     "slug": "^0.9.1",
@@ -67,12 +71,13 @@
     "chai-http": "^3.0.0",
     "eslint": "^3.17.1",
     "eslint-config-xo": "^0.17.0",
-    "eslint-plugin-react": "^6.10.3",
+    "eslint-plugin-react": "^7.0.1",
     "husky": "^0.13.2",
     "mocha": "^3.2.0",
     "sinon": "^2.2.0",
     "stylefmt": "^5.2.0",
     "stylelint": "^7.9.0",
+    "nock": "^9.0.13",
     "stylelint-config-standard": "^16.0.0"
   }
 }

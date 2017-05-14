@@ -157,7 +157,7 @@ describe('models:Quest', () => {
         const quests = await searchQuests(requestBody);
 
         quests.length.should.equal(1);
-        quests[0].images.length.should.equal(0);
+        quests[0].stages.length.should.equal(0);
     });
 
     it('should get quests by likes count', async () => {

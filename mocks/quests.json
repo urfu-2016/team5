@@ -5,36 +5,30 @@
       "description": "Go hard play hard",
       "city": "Miami",
       "tags": ["miami", "beach", "summer"],
-      "images": [
-        {
+      "stageData": {
           "src": "http://cdn-image.travelandleisure.com/sites/default/files/styles/1600x1000/public/1446151328/miami-header-dg1015.jpg?itok=eIwFd7q_",
           "title": "Miami beach"
-        }
-      ]
+      }
     },
     {
       "title": "Las Vegas",
       "description": "All that was in vegas, remains in Vegas",
       "city": "Las Vegas",
       "tags": ["las", "vegas", "fun", "so", "fun"],
-      "images": [
-        {
+      "stageData": {
           "src": "http://www.wantseeproject.com/wp-content/uploads/2016/05/las-vegas-strip.jpg",
           "title": "Las Vegas"
-        }
-      ]
+      }
     },
     {
       "title": "Washington",
       "description": "Become president of this country",
       "city": "Washington",
       "tags": ["president", "usa", "politics"],
-      "images": [
-        {
+      "stageData": {
           "src": "https://static1.squarespace.com/static/53dbe339e4b0c5353844bc99/t/58176703c534a576aa3d9d46/1477928713235/",
           "title": "Washington"
-        }
-      ]
+      }
     }
   ]
 }

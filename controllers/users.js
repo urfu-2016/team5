@@ -11,10 +11,10 @@ module.exports = {
         res.status(httpStatus.OK).send({data: users});
     },
 
-    async getUserByUsername(req, res, next) {
+    async getUserByUsername(req, res) {
         const user = await User.getByUsername(req.params.username);
         if (user === null) {
-            return next(new errors.NotFoundError(constants.userNotFoundErrorMessage));
+            throw new errors.NotFoundError(constants.userNotFoundErrorMessage);
         }
 
         res.status(httpStatus.OK).send({data: user});

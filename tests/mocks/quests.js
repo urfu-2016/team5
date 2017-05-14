@@ -34,7 +34,7 @@ module.exports = {
             text: ''
         },
         likesCount: 0,
-        images: {
+        stages: {
             from: 0,
             to: 10
         }
