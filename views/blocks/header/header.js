@@ -21,11 +21,11 @@ search.addEventListener('submit', function (event) {
 $('.auth-form').on('submit', function () {
     const form = this;
     const msg = $(form).serialize();
-    const formMessage = $('.form-message');
-    formMessage.html('');
+    const $formMessage = $('.form-message');
+    $formMessage.html('');
 
-    const btnPrimary = $(form).find('.btn_primary');
-    btnPrimary.prop('disabled', true);
+    const $btnPrimary = $(form).find('.btn_primary');
+    $btnPrimary.prop('disabled', true);
 
     $.ajax({
         type: 'POST',
@@ -36,18 +36,18 @@ $('.auth-form').on('submit', function () {
             if (form.action.endsWith('/signin')) {
                 window.location.reload();
             } else if (form.action.endsWith('/signup')) {
-                formMessage.html(res).addClass('success').removeClass('error');
+                $formMessage.html(res).addClass('success').removeClass('error');
                 $('.tabs__item:first-child .tabs__link').click();
             } else if (form.action.endsWith('/password-reset')) {
-                formMessage.html(res);
+                $formMessage.html(res);
             }
 
-            btnPrimary.prop('disabled', false);
+            $btnPrimary.prop('disabled', false);
         },
 
         error: function (res) {
-            formMessage.html(res.responseText).addClass('error').removeClass('success');
-            btnPrimary.prop('disabled', false);
+            $formMessage.html(res.responseText).addClass('error').removeClass('success');
+            $btnPrimary.prop('disabled', false);
         }
     });
 
