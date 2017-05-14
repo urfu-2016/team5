@@ -9,6 +9,9 @@ $('.tags').on('click', function () {
 
 $('.tags input').on('keyup', function (e) {
     if (e.which === 13) {
+        if (/^\s*$/.test($(this).val())) {
+            return;
+        }
         var tag = createTag($(this).val());
         $(tag).insertBefore($('.tags input'));
 
