@@ -52,7 +52,7 @@ $('button[role="editQuest"]').on('click', function () {
         type: 'POST',
         url: '/api/quests/' + msg.slug + '/edit', // SLUG
         data: msg,
-        success: function (data) {
+        success: function ({data}) {
             $('.container').html('Квест успешно изменен =)');
 
             setTimeout(function () {
@@ -95,7 +95,7 @@ $('button[role="createQuest"]').on('click', function () {
             type: 'POST',
             url: '/api/quests',
             data: msg,
-            success: function (data) {
+            success: function ({data}) {
                 $(stagesForms).each(function (idx, el) {
                     sendStageForm(el, data.slug);
                 });
