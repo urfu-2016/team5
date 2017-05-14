@@ -34,7 +34,6 @@ $('button[role="createquest"]').on('click', function () {
         return;
     }
 
-    var mainForm = $('#mainForm');
     var stagesForms = $('.quests-content form');
     var tags = [];
 
@@ -43,9 +42,9 @@ $('button[role="createquest"]').on('click', function () {
         tags.push(tag);
     });
 
-    sendForm(mainForm);
+    sendForm();
 
-    function sendForm(form) {
+    function sendForm() {
         var msg = {};
         msg.title = $('#title').val();
         msg.description = $('#description').val();
