@@ -31,11 +31,11 @@ export default class PhotoContainer extends React.Component {
     }
 
     getSendOptions() {
-        return PhotoSender.sendPosition(this.props.slug, this.position);
+        return PhotoSender.sendPosition(this.props.id, this.position);
     }
 
     handleAnswered(data) {
-        this.props.handleAnswered(this.props.slug, data);
+        this.props.handleAnswered(this.props.id, data);
     }
 
     render() {

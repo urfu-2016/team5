@@ -4,10 +4,10 @@ export default class Photo extends React.Component {
     constructor(props) {
         super(props);
 
-        this.sendGeolocaion = this.sendGeolocaion.bind(this);
+        this.handleSendGeolocaion = this.handleSendGeolocaion.bind(this);
     }
 
-    sendGeolocaion() {
+    handleSendGeolocaion() {
         this.props.canSend(canSend => {
             if (canSend) {
                 this.props.onAction();
@@ -26,7 +26,7 @@ export default class Photo extends React.Component {
                     {status}
                 <div>
                 </div>
-                <button onClick={this.sendGeolocaion}>Отметиться</button>
+                <button onClick={this.handleSendGeolocaion}>Отметиться</button>
             </div>
         );
     }

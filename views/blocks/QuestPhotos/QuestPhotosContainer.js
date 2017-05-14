@@ -31,11 +31,11 @@ export default class QuestPhotosContainer extends React.Component {
         });
     }
 
-    handleAnswered({position, rightAnswered}) {
+    handleAnswered(position, data) {
         this.setState(prevState => {
-            const photos = Object.assign(prevState.photos);
-            photos[position].rightAnswered = rightAnswered;
-            photos[position].answered = true;
+            const photos = prevState.photos.slice();
+            photos[position] = Object.assign({}, photos[position]);
+            photos[position].status = data.status;
 
             return {photos};
         });

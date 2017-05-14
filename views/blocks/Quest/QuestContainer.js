@@ -12,7 +12,7 @@ export default class QuestContainer extends React.Component {
         const {user} = this.props;
 
         this.state = {
-            user: user,
+            user,
             showQuestInfo: !user.isPlaying,
             mountQuestPhotos: user.isPlaying,
             mountQuestInfo: !user.isPlaying

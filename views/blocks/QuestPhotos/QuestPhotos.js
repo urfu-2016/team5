@@ -29,9 +29,9 @@ export default class QuestPhotos extends React.Component {
                     </div>
                 }
                 <div>
-                    {photos.map(photo =>
-                        <PhotoContainer
-                            key={photo.slug} {...photo}
+                    {photos.map((photo, index) =>
+                        <PhotoContainer id={index}
+                            key={photo.src} {...photo}
                             handleAnswered={handleAnswered}
                             onGeolocationError={handleGeolocationError}
                         />
