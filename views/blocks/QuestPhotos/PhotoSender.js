@@ -8,10 +8,10 @@ class PhotoSender {
     setSlug(slug) {
         this.slug = slug;
     }
-/* `../api/quests/${this.slug}/photos` */
+
     getPhotos() {
         return {
-            url: `./${this.slug}/photos`,
+            url: `../api/quests/${this.slug}/photos`,
             options: {
                 method: 'GET',
                 credentials: 'include'
