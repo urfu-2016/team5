@@ -5,6 +5,7 @@
 
     {{#content "body"}}
         <div class="container">
+            {{#if isAuth}}
             <h2>Создание квеста</h2>
             <hr class="extra-margins">
             <form id="mainForm" method="POST">
@@ -41,6 +42,9 @@
             </div>
 
             <button role="createquest" class="btn btn_primary btn_disabled">Создать</button>
+            {{else}}
+            <h4 class="center">Для создания квеста необходимо авторизоваться</h4>
+            {{/if}}
         </div>
     {{/content}}
 
