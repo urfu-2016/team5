@@ -112,11 +112,12 @@ questSchema.statics.removeBySlug = async function (slug) {
         await Promise.all(
             quest.stages.map(stageId => quest.removeStage(stageId))
         );
+        await quest.remove();
 
-        return quest.remove();
+        return true;
     }
 
-    return quest;
+    return false;
 };
 
 questSchema.statics.search = async function (searchData) {
