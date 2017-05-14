@@ -8,14 +8,12 @@
 
         <div class="container">
             {{#if isAuth}}
-                <h2>Созданные мной квесты</h2>
+                <h2 class="center">Созданные мной квесты</h2>
                 <hr class="extra-margins">
-                <div class="row">
+                <div class="quests">
                     {{#if createdQuests.length}}
                         {{#each quests}}
-                            <div class="col_4">
-                                {{> mainCard/card}}
-                            </div>
+                            {{> mainCard/card}}
                         {{/each}}
                     {{else}}
                         <div class="row">
@@ -23,25 +21,19 @@
                         </div>
                     {{/if}}
                 </div>
-                <hr class="extra-margins">
             {{/if}}
-            <h2>Новые квесты</h2>
+            <h2 class="center">Новые квесты</h2>
             <hr class="extra-margins">
-            <div class="row">
+            <div class="quests">
                 {{#each quests}}
-                <div class="col_4">
                     {{> mainCard/card}}
-                </div>
                 {{/each}}
             </div>
+            <h2 class="center">Популярные квесты</h2>
             <hr class="extra-margins">
-            <h2>Популярные квесты</h2>
-            <hr class="extra-margins">
-            <div class="row">
+            <div class="quests">
                 {{#each popularQuests}}
-                    <div class="col_4">
-                        {{> mainCard/card}}
-                    </div>
+                    {{> mainCard/card}}
                 {{/each}}
             </div>
         </div>
