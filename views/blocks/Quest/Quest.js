@@ -18,7 +18,7 @@ export default class Quest extends React.Component {
         if (existNav()) {
             this.props.onAction();
         } else {
-            // alert('К сожалению, в вашем браузере не подреживается навигация');
+            // Alert('К сожалению, в вашем браузере не подреживается навигация');
         }
     }
 
