@@ -1,34 +1,13 @@
-/* global $:true */
-
 require('./reset-pass.css');
 
-$('.reset-form').on('submit', function () {
-    const form = this;
-    const msg = $(form).serialize();
-    const $formMessage = $('.form-message');
-    $formMessage.html('');
+const formValidation = require('../../../libs/clientScripts/form-validation');
 
-    const $btnPrimary = $(form).find('.btn_primary');
-    $btnPrimary.prop('disabled', true);
+function success(form, $formMessage, $btnPrimary, res) {
+    if (form.action.includes('/password-reset')) {
+        $formMessage.html(res);
+    }
 
-    $.ajax({
-        type: 'POST',
-        url: form.action,
-        data: msg,
+    $btnPrimary.prop('disabled', false);
+}
 
-        success: function (res) {
-            if (form.action.includes('/password-reset')) {
-                $formMessage.html(res);
-            }
-
-            $btnPrimary.prop('disabled', false);
-        },
-
-        error: function (res) {
-            $formMessage.html(res.responseText).addClass('error').removeClass('success');
-            $btnPrimary.prop('disabled', false);
-        }
-    });
-
-    return false;
-});
+formValidation(success, '.reset-form');
