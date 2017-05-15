@@ -158,7 +158,7 @@ questSchema.methods.like = async function (user) {
 
 questSchema.methods.checkPhoto = async function (user, position, location) {
     const id = this.stages[position];
-    const stage = await this.getStageByShortId(id);
+    const stage = await Stage.findById(id);
     const latitude = stage.location.lat;
     const longitude = stage.location.lon;
     const distance = geolib.getDistance(
@@ -184,7 +184,7 @@ questSchema.virtual('likesCount').get(function () {
 
 questSchema.methods.addStage = async function (stageData) {
     const stage = await Stage.create(stageData);
-    this.stages.push(stage.shortid);
+    this.stages.push(stage._id);
     await this.save();
 
     return stage;
@@ -198,21 +198,23 @@ questSchema.methods.addManyStages = async function (stages) {
 
 questSchema.methods.removeStage = async function (stageId) {
     const stage = await Stage.getByShortId(stageId);
-
     const removedStageIndex = this.stages.findIndex(id => stage._id.equals(id));
+
     if (removedStageIndex !== -1) {
         await stage.remove();
         this.stages.splice(removedStageIndex, 1);
         await this.save();
 
-        return stage;
+        return true;
     }
+
+    return false;
 };
 
 questSchema.methods.getStages = async function () {
-    // Fixme: какой-то костыль, но по непонятной причине populate('stages') не работает
+    // Fixme: какой-то костыль, но по непонятной причине populate('stages') не работает7
     return await Promise.all(
-        this.stages.map(async id => await Stage.findOne({shortid: id}))
+        this.stages.map(id => Stage.findById(id))
     );
 };
 

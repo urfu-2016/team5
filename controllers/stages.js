@@ -96,15 +96,16 @@ module.exports = {
     async remove(req, res) {
         const quest = await Quest.getBySlug(req.params.slug);
         const stageId = req.params.stageId;
+        const cloudinaryId = await Stage.getByShortId(stageId);
         const stage = await quest.removeStage(stageId);
 
         if (!stage) {
             throw new NotFoundError(constants.stage.notFoundMessage);
         }
 
-        cloudinary.remove(stage.cloudinaryId);
+        cloudinary.remove(cloudinaryId);
 
-        res.status(httpStatus.OK).send({data: stage});
+        res.status(httpStatus.OK).send();
     },
 
     async getById(req, res) {

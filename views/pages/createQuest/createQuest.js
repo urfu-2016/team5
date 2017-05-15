@@ -104,7 +104,7 @@ $('button[role="createQuest"]').on('click', function () {
                 $('.container').html('Квест успешно создан');
 
                 setTimeout(function () {
-                    window.location.href = '/quests/' + data.slug;
+                    window.location.href = '/quests/' + slug;
                 }, 2000);
             },
             error: function () {
@@ -132,7 +132,6 @@ $('button[role="createQuest"]').on('click', function () {
         $.ajax({
             type: 'POST',
             url: '/api/quests/' + slug + '/stages',
-            cache: false,
             contentType: false,
             processData: false,
             data: formData
