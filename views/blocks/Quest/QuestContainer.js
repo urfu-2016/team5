@@ -4,23 +4,34 @@ import Quest from './Quest';
 import QuestSender from './QuestSender';
 
 const QuestWithSending = sender(Quest);
+const mess = 'К сожалению, в вашем браузере не подреживается навигация';
 
 export default class QuestContainer extends React.Component {
     constructor(props) {
         super(props);
 
-        const {user} = this.props;
+        const {user, existGeolocation} = this.props;
 
         this.state = {
             user,
             showQuestInfo: !user.isPlaying,
             mountQuestPhotos: user.isPlaying,
-            mountQuestInfo: !user.isPlaying
+            mountQuestInfo: !user.isPlaying,
+            errorMessage: existGeolocation ? null : mess
         };
 
-        this.handleBeginPlay = this.handleBeginPlay.bind(this);
-        this.handleNext = this.handleNext.bind(this);
         this.handleShowQuestInfo = this.handleShowQuestInfo.bind(this);
+        this.handleBeginPlay = this.handleBeginPlay.bind(this);
+        this.handleShowError = this.handleShowError.bind(this);
+        this.handleNext = this.handleNext.bind(this);
+    }
+
+    handleShowError(errorMessage) {
+        this.setState({errorMessage});
+
+        setTimeout(function () {
+            this.setState({errorMessage: ''});
+        }.bind(this), 2000);
     }
 
     handleBeginPlay() {
@@ -54,10 +65,12 @@ export default class QuestContainer extends React.Component {
         return (
             <QuestWithSending
                 {...this.state}
+                existGeolocation={this.props.existGeolocation}
                 getSendOptions={QuestSender.beginPlay}
                 onSuccesfulEnd={this.handleBeginPlay}
-                handlePhotos={this.handleNext}
                 handleInfo={this.handleShowQuestInfo}
+                handleShowError={this.handleShowError}
+                handlePhotos={this.handleNext}
             />
         );
     }

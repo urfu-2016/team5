@@ -10,6 +10,7 @@ export default class PhotoContainer extends React.Component {
     constructor(props) {
         super(props);
 
+        this.handleFailedSend = this.handleFailedSend.bind(this);
         this.getSendOptions = this.getSendOptions.bind(this);
         this.handleAnswered = this.handleAnswered.bind(this);
         this.canSend = this.canSend.bind(this);
@@ -17,8 +18,20 @@ export default class PhotoContainer extends React.Component {
 
     canSend(callback) {
         getGeolocation((error, position) => {
+            var message;
             if (error) {
-                this.props.onGeolocationError(error);
+                switch (error.code) {
+                    case 1:
+                        message = 'wert';
+                        break;
+                    case 2:
+                        message = 'qjasfhafhlawert';
+                        break;
+                    default:
+                        message = 'dfdf';
+                }
+
+                this.props.onShowError(message);
                 return callback(false);
             }
 
@@ -28,6 +41,10 @@ export default class PhotoContainer extends React.Component {
             };
             callback(true);
         });
+    }
+
+    handleFailedSend(isNoConnection) {
+        this.props.onShowError(isNoConnection ? 'sfdsf' : 'dfdfsdsdf');
     }
 
     getSendOptions() {
@@ -44,6 +61,7 @@ export default class PhotoContainer extends React.Component {
                 {...this.props}
                 getSendOptions={this.getSendOptions}
                 onSuccesfulEnd={this.handleAnswered}
+                handleFailedSend={this.handleFailedSend}
                 canSend={this.canSend}
             />
         );

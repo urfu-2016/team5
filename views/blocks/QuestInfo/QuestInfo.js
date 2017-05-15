@@ -20,7 +20,7 @@ export default class QuestInfo extends React.Component {
             return null;
         }
 
-        const {user, handleBeginPlay, handlePhotos, sending} = this.props;
+        const {user, handleBeginPlay, handlePhotos, sending, existGeolocation} = this.props;
 
         return (
             <div>
@@ -29,7 +29,7 @@ export default class QuestInfo extends React.Component {
                     <div className={questInfo('controls')}>
                         {!user.isCreator &&
                             <div className={questInfo('button', {play: true})}>
-                                <Button disabled={!user.isAuth}
+                                <Button disabled={!user.isAuth && !existGeolocation}
                                     inProgress={sending}
                                     onClick={user.isPlaying ? (handlePhotos) : (handleBeginPlay)}
                                     text={user.isPlaying ? ('Продолжить прохождение') : ('Пройти квест')}
