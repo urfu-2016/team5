@@ -144,7 +144,7 @@ module.exports = {
                 .sort(comparePopularity)
                 .slice(0, 3),
             createdQuests: quests
-                .filter(quest => quest.isMyQuest(req.user)),
+                .filter(quest => quest.isMyQuest),
             activePage: '/'
         };
 
