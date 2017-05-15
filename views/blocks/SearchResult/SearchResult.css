@@ -6,3 +6,9 @@
     flex-wrap: wrap;
     margin: 10px 0;
 }
+
+.quests-r:after
+{
+    content: "";
+    flex: auto;
+}
