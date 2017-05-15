@@ -1,5 +1,6 @@
 import React from 'react';
 import b from 'b_';
+import './QuestPhotos.css';
 import PhotoContainer from './../Photo/PhotoContainer';
 
 const questPhotos = b.lock('quest-photos');
@@ -28,7 +29,7 @@ export default class QuestPhotos extends React.Component {
                         {geolocationError.message}
                     </div>
                 }
-                <div>
+                <div className="photos">
                     {photos.map((photo, index) =>
                         <PhotoContainer id={index}
                             key={photo.src} {...photo}

@@ -1,0 +1,74 @@
+.photo
+{
+    position: relative;
+    max-width: 50%;
+    margin: 2%;
+    box-shadow: -14px 0 12px -10px #2d2d2d, 14px 0 12px -10px #2d2d2d;
+}
+
+.photo > img
+{
+    width: 100%;
+}
+
+.control
+{
+    position: absolute;
+    font-size: 3rem;
+    padding: 0 10px;
+    background: rgba(0, 0, 0, 0.72);
+    border-radius: 30px;
+}
+
+.control > i
+{
+    margin: 0;
+}
+
+.photo__button
+{
+    bottom: 2%;
+    right: 2%;
+    border: none;
+    outline: none;
+    color: #ff9800;
+    cursor: pointer;
+}
+
+.photo__checker
+{
+    top: 2%;
+    left: 2%;
+}
+
+.photo__checker:disabled
+{
+    cursor: default;
+}
+
+.photo__checker > .fa-times
+{
+    color: #f00;
+}
+
+.photo__checker > .fa-check
+{
+    color: #09c900;
+}
+
+@media (max-width: 940px)
+{
+    .photo
+    {
+        max-width: 100%;
+        box-shadow: -7px 0 12px -5px #2d2d2d, 7px 0 12px -5px #2d2d2d;
+    }
+}
+
+@media (max-width: 425px)
+{
+    .control
+    {
+        font-size: 2rem;
+    }
+}
