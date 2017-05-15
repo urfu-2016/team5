@@ -45,7 +45,7 @@ module.exports = {
             description: req.body.description,
             authorId: req.user.id,
             city: req.body.city,
-            tags: req.body.tags,
+            tags: req.body['tags[]'],
             stages: stages ? stages : []
         };
         try {
@@ -63,7 +63,7 @@ module.exports = {
             title: req.body.title,
             description: req.body.description,
             city: req.body.city,
-            tags: req.body.tags
+            tags: req.body['tags[]']
         };
 
         try {
