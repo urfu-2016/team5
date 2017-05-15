@@ -42,24 +42,4 @@ router.route('/:slug').get(async function (req, res) {
     }
 });
 
-router.route('/:slug/photos').get(function (req, res) {
-    if (req.user) {
-        Quest.getBySlug(req.params.slug).then(questData => {
-            if (questData) {
-                const photos = questData.images.map(image => ({
-                    src: image.src,
-                    answered: false,
-                    rightAnswered: false,
-                    id: 1
-                }));
-                res.send(JSON.stringify(photos));
-            } else {
-                res.sendStatus(404);
-            }
-        });
-    } else {
-        res.sendStatus(401);
-    }
-});
-
 module.exports = router;

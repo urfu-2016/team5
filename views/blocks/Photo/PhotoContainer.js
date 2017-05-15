@@ -19,7 +19,7 @@ export default class PhotoContainer extends React.Component {
         getGeolocation((error, position) => {
             if (error) {
                 this.props.onGeolocationError(error);
-                callback(false);
+                return callback(false);
             }
 
             this.position = {

@@ -19,7 +19,7 @@ export default class QuestPhotosContainer extends React.Component {
         this.handleAnswered = this.handleAnswered.bind(this);
     }
 
-    handlePhotosChange(data) {
+    handlePhotosChange({data}) {
         this.setState({
             photos: data
         });
