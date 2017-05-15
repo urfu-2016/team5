@@ -43,6 +43,9 @@ router.route('/quests/:slug/photos')
 router.route('/quests/:slug/photos/:id/check')
     .post(authController.authorizedOnly, questsController.checkPhoto);
 
+router.route('/quests/:slug/edit')
+    .post(authController.authorizedOnly, questsController.updateQuest);
+
 router.route('/comments/:slug')
     .get(getAction(commentsController, 'getComments'))
     .post(getAction(authController, 'authorizedOnly'), getAction(commentsController, 'createComment'));

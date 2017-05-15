@@ -23,13 +23,53 @@ $('#title, #city, #description').on('blur', function () {
     });
 
     if (empty) {
-        $('button[role="createquest"]').addClass('btn_disabled');
+        $('button[role="createQuest"], button[role="editQuest"]').addClass('btn_disabled');
     } else {
-        $('button[role="createquest"]').removeClass('btn_disabled');
+        $('button[role="createQuest"], button[role="editQuest"]').removeClass('btn_disabled');
     }
 });
 
-$('button[role="createquest"]').on('click', function () {
+$('button[role="editQuest"]').on('click', function () {
+    if ($(this).hasClass('btn_disabled')) {
+        return;
+    }
+
+    var tags = [];
+
+    $('.tag').each(function (idx, el) {
+        var tag = $(el).text().trim();
+        tags.push(tag);
+    });
+
+    var msg = {};
+    msg.title = $('#title').val();
+    msg.description = $('#description').val();
+    msg.city = $('#city').val();
+    msg.slug = $('#slug').val();
+    msg.tags = tags;
+
+    $.ajax({
+        type: 'POST',
+        url: '/api/quests/' + msg.slug + '/edit', // SLUG
+        data: msg,
+        success: function ({data}) {
+            $('.container').html('Квест успешно изменен');
+
+            setTimeout(function () {
+                window.location.href = '/quests/' + data.slug;
+            }, 2000);
+        },
+        error: function () {
+            $('.container').html('При изменении квеста произошла ошибка, попробуйте еще раз');
+
+            setTimeout(function () {
+                window.location.reload();
+            }, 2000);
+        }
+    });
+});
+
+$('button[role="createQuest"]').on('click', function () {
     if ($(this).hasClass('btn_disabled')) {
         return;
     }
@@ -55,20 +95,23 @@ $('button[role="createquest"]').on('click', function () {
             type: 'POST',
             url: '/api/quests',
             data: msg,
-            success: function (data) {
-                var slug = data.slug;
+            success: function ({data}) {
                 $(stagesForms).each(function (idx, el) {
-                    sendStageForm(el, slug);
+                    sendStageForm(el, data.slug);
                 });
 
-                $('.container').html('Квест успешно создан =)');
+                $('.container').html('Квест успешно создан');
 
                 setTimeout(function () {
-                    window.location.href = '/';
+                    window.location.href = '/quests/' + data.slug;
                 }, 2000);
             },
             error: function () {
+                $('.container').html('При создании квеста произошла ошибка, попробуйте еще раз');
 
+                setTimeout(function () {
+                    window.location.reload();
+                }, 2000);
             }
         });
     }
@@ -96,7 +139,7 @@ $('.quests-content').on('keyup', '.title', function () {
     var tab = $('.tabs').find('a[href="#' + id + '"]');
     var val = $(this).val();
     if (/^\s*$/.test(val)) {
-        $(tab).html('...');
+        $(tab).html('Без названия');
     } else {
         $(tab).html(val);
     }

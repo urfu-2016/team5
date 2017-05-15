@@ -33,6 +33,10 @@ const questSchema = new mongoose.Schema({
         type: String,
         index: {unique: true},
         required: true
+    },
+    userCount: {
+        type: Number,
+        default: 0
     }
 });
 
@@ -216,6 +220,12 @@ questSchema.methods.getStageByShortId = async function (id) {
     if (this.stages.includes(id)) {
         return await Stage.getByShortId(id);
     }
+};
+
+questSchema.statics.addPlayingUser = async function (slug) {
+    let quest = await this.findOne({slug});
+    quest.userCount++;
+    quest.save();
 };
 
 module.exports = mongoose.model('Quest', questSchema);

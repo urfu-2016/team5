@@ -7,7 +7,7 @@ const dbClearer = require('../../scripts/clear-db');
 const userMocks = require('../mocks/users');
 const questMocks = require('../mocks/quests');
 const stageMocks = require('../mocks/stage');
-// const Quest = require('../../models/quest');
+// Const Quest = require('../../models/quest');
 const chaiRequest = require('../commonTestLogic/chaiRequest')(server);
 const nock = require('nock');
 const config = require('config');
@@ -88,7 +88,7 @@ describe('controller:stage', () => {
             newUploadNock.done();
         });
 
-        // it('should delete a stage', async () => {
+        // It('should delete a stage', async () => {
         //     const uploadNock = mockUpload({public_id: 'testId', url: 'testUrl'});
         //     const deleteNock = mockDelete();
         //     const image = (await addStage(quest.slug, stageMocks.stage)).body.data;

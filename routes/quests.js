@@ -17,6 +17,14 @@ router.get('/', function (req, res) {
 router.get('/create', function (req, res) {
     const renderData = {
         activePage: '/quests/create',
+        action: 'Создание квеста',
+        submitButton: {
+            text: 'Создать',
+            role: 'createQuest'
+        },
+        quest: {
+            userCount: 0 // Костыль
+        },
         isAuth: req.user ? 1 : 0
     };
 
@@ -39,6 +47,65 @@ router.route('/:slug').get(async function (req, res) {
         res.render('questsId/quests-id', renderData);
     } else {
         res.render('notFound/notFound');
+    }
+});
+
+router.route('/:slug/edit').get(function (req, res) {
+    Quest.getBySlug(req.params.slug).then(questData => {
+        const isCreator = questData.isMyQuest(req.user);
+        // Добавить isCreator в условие
+        if (questData) {
+            const renderData = {
+                title: questData.title,
+                quest: questData,
+                submitButton: {
+                    text: 'Изменить',
+                    role: 'editQuest'
+                },
+                action: 'Редактирование квеста',
+                isAuth: req.user ? 1 : 0,
+                isCreator: isCreator
+            };
+
+            res.render('createQuest/createQuest', renderData);
+        } else {
+            res.render('notFound/notFound');
+        }
+    });
+});
+
+router.route('/:slug/photos').get(function (req, res) {
+    if (req.user) {
+        Quest.getBySlug(req.params.slug).then(questData => {
+            if (questData) {
+                const photos = questData.images.map(image => ({
+                    src: image.src,
+                    answered: false,
+                    rightAnswered: false,
+                    id: 1
+                }));
+                res.send(JSON.stringify(photos));
+            } else {
+                res.sendStatus(404);
+            }
+        });
+    } else {
+        res.sendStatus(401);
+    }
+});
+
+router.route('/:slug/beginPlay').post(function (req, res) {
+    if (req.user) {
+        Quest.getBySlug(req.params.slug).then(questData => {
+            if (questData) {
+                Quest.addPlayingUser(req.params.slug);
+                res.sendStatus(200);
+            } else {
+                res.sendStatus(404);
+            }
+        });
+    } else {
+        res.sendStatus(401);
     }
 });
 
