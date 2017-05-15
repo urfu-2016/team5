@@ -95,9 +95,10 @@ $('button[role="createQuest"]').on('click', function () {
             type: 'POST',
             url: '/api/quests',
             data: msg,
-            success: function ({data}) {
+            success: function (res) {
+                var slug = res.data.slug;
                 $(stagesForms).each(function (idx, el) {
-                    sendStageForm(el, data.slug);
+                    sendStageForm(el, slug);
                 });
 
                 $('.container').html('Квест успешно создан');
@@ -117,17 +118,24 @@ $('button[role="createQuest"]').on('click', function () {
     }
 
     function sendStageForm(form, slug) {
-        var msg = $(form).serialize();
+        var file = $(form).find('.add-quest__input[name="image"]')[0];
+        var title = $(form).find('.title');
+        var description = $(form).find('.description');
+        var location = $(form).find('.location');
+
+        var formData = new FormData();
+        formData.append('image', file.files[0]);
+        formData.append('title', title.val());
+        formData.append('description', description.val());
+        formData.append('location', location.val());
+
         $.ajax({
             type: 'POST',
             url: '/api/quests/' + slug + '/stages',
-            data: msg,
-            success: function () {
-
-            },
-            error: function () {
-
-            }
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: formData
         });
     }
 });

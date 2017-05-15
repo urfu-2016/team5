@@ -18,7 +18,7 @@ async function getQuestObject(req, quest) {
     questObj.dateOfCreation = moment(quest.dateOfCreation).format(constants.dateFormat);
     delete questObj.author.password;
     delete questObj.likes;
-    questObj.author = quest.author.username;
+    questObj.author = (await quest.getAuthor()).username;
     questObj.liked = quest.likedBy(req.user);
     questObj.likesCount = quest.likesCount;
     questObj.commentsCount = quest.comments.length;
@@ -26,6 +26,7 @@ async function getQuestObject(req, quest) {
     return questObj;
 }
 
+// Баг. Приходят уже строки.
 function compareDate(firstQuest, secondQuest) {
     const firstDate = moment(firstQuest.dateOfCreation);
     const secondDate = moment(secondQuest.dateOfCreation);

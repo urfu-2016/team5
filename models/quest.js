@@ -228,4 +228,12 @@ questSchema.statics.addPlayingUser = async function (slug) {
     quest.save();
 };
 
+questSchema.methods.getAuthor = async function () {
+    const quest = await this.model('Quest')
+        .findOne({slug: this.slug})
+        .populate('author');
+
+    return quest.author;
+};
+
 module.exports = mongoose.model('Quest', questSchema);

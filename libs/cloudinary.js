@@ -2,6 +2,8 @@
 
 const cloudinary = require('cloudinary');
 const config = require('config');
+const Datauri = require('datauri');
+
 cloudinary.config({
     cloud_name: config.cloudinary.name,
     api_key: config.cloudinary.apiKey,
@@ -10,7 +12,10 @@ cloudinary.config({
 
 module.exports = {
     upload(file) {
-        return cloudinary.uploader.upload(file.path);
+        const dataUri = new Datauri();
+        dataUri.format(file.originalname, file.buffer);
+
+        return cloudinary.uploader.upload(dataUri.content);
     },
 
     remove(id) {
