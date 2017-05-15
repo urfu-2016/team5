@@ -35,15 +35,13 @@ export default class Photo extends React.Component {
                 <div className={['control', photo('checker')].join(' ')}>
                     <Status status={status} />
                 </div>
-                {status === null &&
-                    <button
-                        className={['control', photo('button')].join(' ')}
-                        disabled={sending}
-                        onClick={this.handleClick}
-                    >
-                        <i className="fa fa-crosshairs" aria-hidden="true"></i>
-                    </button>
-                }
+                <button
+                    className={['control', photo('button')].join(' ')}
+                    disabled={sending}
+                    onClick={this.handleClick}
+                >
+                    <i className="fa fa-crosshairs" aria-hidden="true"></i>
+                </button>
                 <img src={src}></img>
             </div>
         );
