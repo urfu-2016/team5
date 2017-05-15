@@ -225,6 +225,7 @@ questSchema.methods.getStageByShortId = async function (id) {
 questSchema.statics.addPlayingUser = async function (slug) {
     let quest = await this.findOne({slug});
     quest.userCount++;
+    quest.save();
 };
 
 module.exports = mongoose.model('Quest', questSchema);
