@@ -53,7 +53,7 @@ userSchema.statics.create = async function ({username, email, password}) {
     try {
         const user = new this({
             username,
-            email,
+            email: email.toLowerCase(),
             password: await bcrypt.hash(password, constants.models.user.saltRounds)
         });
 

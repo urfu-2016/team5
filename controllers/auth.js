@@ -51,7 +51,7 @@ module.exports = {
             throw new BadRequestError(constants.controllers.auth.alreadyAuthenticated);
         }
 
-        const email = req.body.email;
+        const email = req.body.email.toLowerCase();
         const user = await User.findOne({email});
         if (!user) {
             const userNotFoundMessage = constants.controllers.user.userNotFoundErrorMessage;
@@ -71,7 +71,7 @@ module.exports = {
     },
 
     async resetPassword(req, res) {
-        const email = req.params.email;
+        const email = req.params.email.toLowerCase();
         const queryHash = req.params.queryHash;
 
         if (!req.body.newPassword) {
@@ -88,7 +88,7 @@ module.exports = {
     },
 
     async verifyUserEmail(req, res) {
-        const email = req.params.email;
+        const email = req.params.email.toLowerCase();
         const queryHash = req.params.queryHash;
 
         if (await QueriesStorage.verifyEmailConfirmationQuery(email, queryHash)) {
