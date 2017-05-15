@@ -9,6 +9,7 @@ const commentsController = require('../controllers/comments');
 const authController = require('../controllers/auth');
 const autocompleteController = require('../controllers/autocomplete');
 const stagesController = require('../controllers/stages');
+const clientErrorHandler = require('./clientErrorHandler');
 const upload = require('../libs/multer').upload;
 const getAction = require('../libs/getAction');
 
@@ -23,12 +24,12 @@ router.route('/quests')
     .post(getAction(authController, 'authorizedOnly'), getAction(questsController, 'createQuest'));
 
 router.route('/quests/:slug')
-    .get(getAction(questsController, 'getQuestBySlug'))
-    .put(getAction(authController, 'authorizedOnly'), getAction(questsController, 'updateQuest'))
-    .delete(getAction(authController, 'authorizedOnly'), getAction(questsController, 'removeQuest'));
+    .get(getAction(questsController, 'getQuestBySlug'), clientErrorHandler)
+    .put(getAction(authController, 'authorizedOnly'), getAction(questsController, 'updateQuest'), clientErrorHandler)
+    .delete(getAction(authController, 'authorizedOnly'), getAction(questsController, 'removeQuest'), clientErrorHandler);
 
 router.route('/quests/:slug/like')
-    .post(getAction(authController, 'authorizedOnly'), getAction(questsController, 'likeQuest'));
+    .post(getAction(authController, 'authorizedOnly'), getAction(questsController, 'likeQuest'), clientErrorHandler);
 
 router.route('/quests/:slug/start')
     .post(authController.authorizedOnly, questsController.startQuest);
@@ -48,10 +49,10 @@ router.route('/comments/:slug')
 
 router.route('/comments/:slug/:id')
     .get(getAction(commentsController, 'getCommentById'))
-    .delete(getAction(authController, 'authorizedOnly'), getAction(commentsController, 'removeComment'));
+    .delete(getAction(authController, 'authorizedOnly'), getAction(commentsController, 'removeComment'), clientErrorHandler);
 
 router.route('/comments/:slug/:id/like')
-    .post(getAction(authController, 'authorizedOnly'), getAction(commentsController, 'likeComment'));
+    .post(getAction(authController, 'authorizedOnly'), getAction(commentsController, 'likeComment'), clientErrorHandler);
 
 router.route('/autocomplete')
     .get(getAction(autocompleteController, 'getCities'))

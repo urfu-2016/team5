@@ -4,17 +4,35 @@
     width: 100%;
 }
 
-.modal__data .form-message
+input:invalid:focus
+{
+    background-color: #f44;
+}
+
+input:valid:focus
+{
+    background-color: #4f4;
+}
+
+:focus::-webkit-input-placeholder
+{
+    color: #000;
+}
+
+.auth-form-message,
+.reset-pass-form-message
 {
     text-align: center;
 }
 
-.modal__data .form-message .success
+.auth-form-message.success,
+.reset-pass-form-message.success
 {
     color: #0f3;
 }
 
-.modal__data .form-message .error
+.auth-form-message.error,
+.reset-pass-form-message.error
 {
     color: #f33;
 }

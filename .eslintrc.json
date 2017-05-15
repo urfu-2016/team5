@@ -8,7 +8,8 @@
   "env": {
     "node": true,
     "mocha": true,
-    "browser": true
+    "browser": true,
+    "jquery": true
   },
   "extends": ["xo", "plugin:react/recommended"],
   "rules": {
