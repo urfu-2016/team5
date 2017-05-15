@@ -20,16 +20,21 @@ search.addEventListener('submit', function (event) {
 
 function success(form, $formMessage, $btnPrimary, res) {
     if (form.action.endsWith('/signin') || form.action.endsWith('/signup')) {
-        window.location.reload();
+        if (window.location.href.includes('/password-reset') || window.location.href.includes('/register-verification')) {
+            window.location.href = '/';
+        } else {
+            window.location.reload();
+        }
     } else if (form.action.endsWith('/password-reset')) {
         $formMessage.html(res).addClass('success').removeClass('error');
+        $(form).remove();
     }
 
     $btnPrimary.prop('disabled', false);
 }
 
 $('.tabs__link').on('click', function () {
-    $('.form-message').html('');
+    $('.auth-form-message').html('');
 });
 
 formValidation(success, '.auth-form');

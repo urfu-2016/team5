@@ -1,7 +1,6 @@
 'use strict';
 
 const hbs = require('hbs');
-// Const handlebars = require('handlebars');
 const express = require('express');
 const path = require('path');
 const config = require('config');
@@ -10,6 +9,8 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const layouts = require('handlebars-layouts');
+const {NotFoundError} = require('./libs/customErrors/errors');
+const constants = require('./constants/constants');
 const cdn = require('express-simple-cdn');
 
 const index = require('./routes/index');
@@ -53,6 +54,10 @@ app.use('/', auth);
 app.use('/api', api);
 app.use('/quests', quests);
 
+app.use('*', function (req, res, next) {
+    next(new NotFoundError(constants.controllers.index.pageNotExistsMessage));
+});
+
 // Error handler
 app.use(function (err, req, res, next) {
     /* eslint no-unused-vars: "off" */
@@ -63,7 +68,7 @@ app.use(function (err, req, res, next) {
 
     // Render the error page
     res.status(err.status || 500);
-    res.send(err.message);
+    res.render('infoPage/infoPage', {infoMessage: err.message, isAuth: req.user});
 });
 
 module.exports = app;

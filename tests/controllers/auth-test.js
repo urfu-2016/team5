@@ -192,6 +192,7 @@ describe('controller:auth', () => {
             const email = mocks.userWithCorrectPassword.email;
 
             await chaiRequest.post('/signup', mocks.userWithCorrectPassword);
+            await chaiRequest.post('/logout');
             const hash = await QueriesStorage.updatePasswordResetQuery(email);
             const linkToPasswordReset = `/password-reset/${email}/${hash}`;
             const newPassword = 'new password';
@@ -202,6 +203,7 @@ describe('controller:auth', () => {
 
         it('should not reset password by incorrect query', async () => {
             await chaiRequest.post('/signup', mocks.userWithCorrectPassword);
+            await chaiRequest.post('/logout');
 
             const email = mocks.userWithCorrectPassword.email;
             const hash = '1' + await QueriesStorage.updatePasswordResetQuery(email);
@@ -212,7 +214,6 @@ describe('controller:auth', () => {
                 await chaiRequest.post(linkToPasswordReset, {newPassword});
             } catch (err) {
                 err.response.status.should.equal(httpStatus.NOT_FOUND);
-                err.response.text.should.equal(constants.controllers.index.pageNotExistsMessage);
             }
         });
 
@@ -226,7 +227,6 @@ describe('controller:auth', () => {
                 await chaiRequest.post(linkToPasswordReset, {newPassword});
             } catch (err) {
                 err.response.status.should.equal(httpStatus.NOT_FOUND);
-                err.response.text.should.equal(constants.controllers.index.pageNotExistsMessage);
             }
         });
 
@@ -234,6 +234,7 @@ describe('controller:auth', () => {
             const email = mocks.userWithCorrectPassword.email;
 
             await chaiRequest.post('/signup', mocks.userWithCorrectPassword);
+            await chaiRequest.post('/logout');
             const hash = await QueriesStorage.updatePasswordResetQuery(email);
             const linkToPasswordReset = `/password-reset/${email}/${hash}`;
             const newPassword = '';
@@ -242,13 +243,13 @@ describe('controller:auth', () => {
                 await chaiRequest.post(linkToPasswordReset, {newPassword});
             } catch (err) {
                 err.response.status.should.equal(httpStatus.BAD_REQUEST);
-                err.response.text.should.equal(constants.controllers.auth.passwordResetInputRequired);
             }
         });
 
         it('should not reset password on old link after refresh', async () => {
             const email = mocks.userWithCorrectPassword.email;
             await chaiRequest.post('/signup', mocks.userWithCorrectPassword);
+            await chaiRequest.post('/logout');
             const newPassword = '123';
             const hash1 = await QueriesStorage.updatePasswordResetQuery(email);
             const linkToPasswordReset1 = `/password-reset/${email}/${hash1}`;

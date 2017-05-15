@@ -78,9 +78,7 @@ module.exports = {
         }
 
         if (req.user) {
-            res.render('infoPage/infoPage', {infoMessage: constants.controllers.auth.alreadyAuthenticated});
-
-            return;
+            throw new BadRequestError(constants.controllers.auth.alreadyAuthenticated);
         }
 
         if (await QueriesStorage.verifyPasswordResetQuery(email, queryHash)) {
@@ -89,8 +87,7 @@ module.exports = {
             const infoMessage = constants.controllers.auth.passwordWasChanged;
             res.status(httpStatus.OK).send(infoMessage);
         } else {
-            res.render('infoPage/infoPage', {infoMessage: constants.controllers.index.pageNotExistsMessage});
-            // throw new NotFoundError(constants.controllers.index.pageNotExistsMessage);
+            throw new NotFoundError(constants.controllers.index.pageNotExistsMessage);
         }
     },
 
@@ -103,9 +100,9 @@ module.exports = {
                 {email}, {emailVerified: true}
             );
 
-            res.render('infoPage/infoPage', {infoMessage: `${email} подтвержден`});
+            res.render('infoPage/infoPage', {infoMessage: `${email} подтвержден`, isAuth: req.user});
         } else {
-            res.render('infoPage/infoPage', {infoMessage: constants.controllers.index.pageNotExistsMessage});
+            throw new BadRequestError(constants.controllers.index.pageNotExistsMessage);
         }
     },
 
@@ -113,8 +110,7 @@ module.exports = {
         if (req.user) {
             next();
         } else {
-            res.render('infoPage/infoPage', {infoMessage: constants.controllers.auth.authorizationRequired});
-            // throw new BadRequestError(constants.controllers.auth.authorizationRequired);
+            throw new BadRequestError(constants.controllers.auth.authorizationRequired);
         }
     },
 
@@ -123,16 +119,7 @@ module.exports = {
         const queryHash = req.params.queryHash;
         const checkResult = await QueriesStorage.checkPasswordResetQuery(email, queryHash);
         if (!checkResult) {
-            res.render(
-                'infoPage/infoPage',
-                {
-                    infoMessage: constants.controllers.index.pageNotExistsMessage,
-                    isAuth: req.user
-                }
-            );
-
-            return;
-            // throw new NotFoundError(constants.controllers.index.pageNotExistsMessage);
+            throw new NotFoundError(constants.controllers.index.pageNotExistsMessage);
         }
 
         const encodedEmail = encodeURIComponent(email);
