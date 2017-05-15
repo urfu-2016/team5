@@ -17,10 +17,7 @@ export default class Card extends React.Component {
                     <div>
                         <h3 className={card('title')}>{quest.title}</h3>
                         {isCreator &&
-                            <span>
-                                <a className={card('link')} href={`./${quest.slug}/edit`}>Изменить</a>
-                                <a className={card('link')} ></a>
-                            </span>
+                            <a className={card('link')} href={`./${quest.slug}/edit`}>Изменить</a>
                         }
                     </div>
                     <div className={card('creating')}>
