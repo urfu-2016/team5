@@ -21,7 +21,7 @@
 
 .pagination__item_active
 {
-    cursor: context-menu;
+    cursor: default;
 }
 
 .pagination__item_active,
