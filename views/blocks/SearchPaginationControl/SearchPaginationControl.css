@@ -17,6 +17,7 @@
     border-radius: 3px;
     cursor: pointer;
     background: #fff;
+    font-size: 0.8rem;
 }
 
 .pagination__item_active

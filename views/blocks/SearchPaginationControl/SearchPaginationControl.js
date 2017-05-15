@@ -17,11 +17,16 @@ export default class SearchPaginationControl extends React.Component {
     }
 
     render() {
-        var {currentPage, pageCount} = this.props;
-        var isLastPage = currentPage === pageCount;
-        var isFirstPage = currentPage === 1;
+        const {currentPage, pageCount} = this.props;
 
-        var pagination = (
+        if (pageCount < 2) {
+            return null;
+        }
+
+        const isLastPage = currentPage === pageCount;
+        const isFirstPage = currentPage === 1;
+
+        return (
             <div className={b('pagination')} onClick={this.handlePage}>
                 {(pageCount > 3 && currentPage > 2) &&
                     <button className={b('pagination', 'item', {type: 'start'})}
@@ -42,7 +47,5 @@ export default class SearchPaginationControl extends React.Component {
                     </button> }
             </div>
         );
-
-        return pageCount > 1 ? pagination : <div></div>;
     }
 }
