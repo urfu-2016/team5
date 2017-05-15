@@ -91,7 +91,9 @@ userSchema.statics.resetPassword = async function (userData, newPassword) {
 
 userSchema.statics.getUserOnCorrectPassword = async function (userData) {
     const user = await this.findOne(
-        userData.email ? {email: userData.email} : {username: userData.username}
+        userData.email ?
+            {email: userData.email.toLowerCase()} :
+            {username: userData.username.toLowerCase()}
     );
 
     if (user && await bcrypt.compare(userData.password, user.password)) {
