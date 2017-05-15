@@ -4,21 +4,6 @@
     width: 100%;
 }
 
-input:invalid:focus
-{
-    background-color: #f44;
-}
-
-input:valid:focus
-{
-    background-color: #4f4;
-}
-
-:focus::-webkit-input-placeholder
-{
-    color: #000;
-}
-
 .auth-form-message,
 .reset-pass-form-message
 {
