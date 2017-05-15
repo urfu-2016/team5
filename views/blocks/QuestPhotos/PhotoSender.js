@@ -22,7 +22,7 @@ class PhotoSender {
 
     sendPosition(id, position) {
         return {
-            url: `../api/quests/${this.slug}/${id}/check`,
+            url: `../api/quests/${this.slug}/photos/${id}/check`,
             options: {
                 method: 'POST',
                 body: JSON.stringify(position),
