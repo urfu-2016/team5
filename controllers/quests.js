@@ -216,7 +216,8 @@ module.exports = {
                 tags: quest.tags,
                 imagesCount: quest.stages.length,
                 likesCount: quest.likesCount,
-                liked: quest.likedBy(req.user)
+                liked: quest.likedBy(req.user),
+                slug: quest.slug
             }
         });
     }

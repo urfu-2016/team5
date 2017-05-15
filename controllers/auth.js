@@ -28,7 +28,7 @@ module.exports = {
         })(req, res, next);
     },
 
-    async signUp(req, res) {
+    async signUp(req, res, next) {
         const userData = {
             username: req.body.username,
             email: req.body.email,
@@ -39,9 +39,9 @@ module.exports = {
             const user = await User.create(userData);
             const queryHash = await QueriesStorage.updateEmailConfirmationQuery(user.email);
             await emailClient.sendRegistrationMail(user.email, queryHash);
-            const signedUpMessage = constants.controllers.auth.signedUpPattern(req.body.username);
+            req.body.login = req.body.username;
 
-            res.status(httpStatus.CREATED).send(signedUpMessage);
+            this.signIn(req, res, next);
         } catch (err) {
             throw new BadRequestError(err.message);
         }
@@ -55,9 +55,7 @@ module.exports = {
         const email = req.body.email.toLowerCase();
         const user = await User.findOne({email});
         if (!user) {
-            const userNotFoundMessage = constants.controllers.user.userNotFoundErrorMessage;
-
-            throw new NotFoundError(userNotFoundMessage);
+            throw new NotFoundError(constants.controllers.user.userNotFoundErrorMessage);
         }
 
         try {
@@ -67,8 +65,8 @@ module.exports = {
             throw new BadRequestError(err.message);
         }
 
-        const emailSendMessage = `На почту с адресом ${email} было отправлено письмо для сброса пароля`;
-        res.status(httpStatus.OK).send(emailSendMessage);
+        const infoMessage = `На почту с адресом ${email} было отправлено письмо для сброса пароля`;
+        res.status(httpStatus.OK).send(infoMessage);
     },
 
     async resetPassword(req, res) {
@@ -79,10 +77,15 @@ module.exports = {
             throw new BadRequestError(constants.controllers.auth.passwordResetInputRequired);
         }
 
+        if (req.user) {
+            throw new BadRequestError(constants.controllers.auth.alreadyAuthenticated);
+        }
+
         if (await QueriesStorage.verifyPasswordResetQuery(email, queryHash)) {
             await User.resetPassword({email}, req.body.newPassword);
 
-            res.status(httpStatus.OK).send(constants.controllers.auth.passwordWasChanged);
+            const infoMessage = constants.controllers.auth.passwordWasChanged;
+            res.status(httpStatus.OK).send(infoMessage);
         } else {
             throw new NotFoundError(constants.controllers.index.pageNotExistsMessage);
         }
@@ -97,9 +100,9 @@ module.exports = {
                 {email}, {emailVerified: true}
             );
 
-            res.status(httpStatus.OK).send(`${email} подтвержден`);
+            res.render('infoPage/infoPage', {infoMessage: `${email} подтвержден`, isAuth: req.user});
         } else {
-            throw new NotFoundError(constants.controllers.index.pageNotExistsMessage);
+            throw new BadRequestError(constants.controllers.index.pageNotExistsMessage);
         }
     },
 
@@ -107,7 +110,7 @@ module.exports = {
         if (req.user) {
             next();
         } else {
-            res.status(httpStatus.BAD_REQUEST).send(constants.controllers.auth.authorizationRequired);
+            throw new BadRequestError(constants.controllers.auth.authorizationRequired);
         }
     },
 
@@ -120,7 +123,7 @@ module.exports = {
         }
 
         const encodedEmail = encodeURIComponent(email);
-        res.render('resetPass/reset-pass', {email: encodedEmail, queryHash});
+        res.render('resetPass/reset-pass', {email: encodedEmail, queryHash, isAuth: req.user});
     },
 
     logout(req, res) {

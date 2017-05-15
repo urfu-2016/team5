@@ -8,9 +8,11 @@
     font-size: 0.8rem;
 }
 
-.quest-card__change-quest
+.quest-card__link
 {
     font-size: 1.2rem;
+    color: #ddd;
+    text-decoration: none;
 }
 
 .quest-card__author,
@@ -31,6 +33,12 @@
     flex-wrap: wrap;
 }
 
+.quest-card__tags
+{
+    padding: 0 20px;
+    font-size: 1rem;
+}
+
 .quest-card__additional-info
 {
     font-size: 1rem;
@@ -40,7 +48,7 @@
 
 .quest-card__description
 {
-    font-size: 1rem;
     flex: 450px 3 1;
     padding: 0 20px;
+    font-size: 1rem;
 }

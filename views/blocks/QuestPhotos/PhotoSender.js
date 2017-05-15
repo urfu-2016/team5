@@ -30,7 +30,8 @@ class PhotoSender {
                     'Content-Type': 'application/json'
                 },
                 credentials: 'include'
-            }
+            },
+            parser: res => res.json()
         };
     }
 }
