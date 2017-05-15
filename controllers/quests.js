@@ -26,10 +26,9 @@ async function getQuestObject(req, quest) {
     return questObj;
 }
 
-// Баг. Приходят уже строки.
 function compareDate(firstQuest, secondQuest) {
-    const firstDate = moment(firstQuest.dateOfCreation);
-    const secondDate = moment(secondQuest.dateOfCreation);
+    const firstDate = moment(firstQuest);
+    const secondDate = moment(secondQuest);
 
     return moment(firstDate).isBefore(secondDate);
 }
