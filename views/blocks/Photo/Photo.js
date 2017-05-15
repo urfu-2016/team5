@@ -40,7 +40,7 @@ export default class Photo extends React.Component {
                     disabled={sending}
                     onClick={this.handleClick}
                 >
-                    <i className="fa fa-crosshairs" aria-hidden="true"></i>
+                    <i className={`fa fa-crosshairs ${sending ? 'fa-spin' : ''}`} aria-hidden="true"></i>
                 </button>
                 <img src={src}></img>
             </div>
