@@ -51,15 +51,15 @@ function createTabContent(id) {
         '<div class="col-8">' +
         '<div class="input-group">' +
         '<label>Название</label>' +
-        '<input type="text" class="input-group__input input_dark title" maxlength="30" required>' +
+        '<input name="title" type="text" class="input-group__input input_dark title" maxlength="30" required>' +
     '</div>' +
     '<div class="input-group">' +
         '<label>Месторасположение</label>' +
-        '<input type="text" class="input-group__input input_dark location" required>' +
+        '<input name="location" type="text" class="input-group__input input_dark location" required>' +
     '</div>' +
     '<div class="input-group">' +
         '<label>Описание</label>' +
-        '<textarea class="input-group__textarea description"></textarea>' +
+        '<textarea name="description" class="input-group__textarea description"></textarea>' +
         '</div>' +
         '</div>' +
         '</div>' +
