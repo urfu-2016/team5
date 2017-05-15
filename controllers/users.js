@@ -12,7 +12,7 @@ module.exports = {
     },
 
     async getUserByUsername(req, res) {
-        const user = await User.getByUsername(req.params.username);
+        const user = await User.getByUsername(req.params.username.toLowerCase());
         if (user === null) {
             throw new errors.NotFoundError(constants.userNotFoundErrorMessage);
         }
