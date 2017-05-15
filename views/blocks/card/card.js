@@ -52,7 +52,7 @@ export default class Card extends React.Component {
                 </div>
                 <ul className={[card('tags'), 'card__tags'].join(' ')}>
                     {quest.tags.map(tag => (
-                        <a key={tag} href={`./?type=tag&tag=${tag}`} target="_blank">{tag}</a>
+                        <a key={tag} href={`./?type=tag&tag=${tag}`}>{tag}</a>
                     ))}
                 </ul>
             </article>
