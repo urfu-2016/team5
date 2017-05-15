@@ -2,22 +2,22 @@ import React from 'react';
 import sender from './../Sender/Sender';
 import Quest from './Quest';
 import QuestSender from './QuestSender';
+import messageStrings from '../../constants/messages';
 
 const QuestWithSending = sender(Quest);
-const mess = 'К сожалению, в вашем браузере не подреживается навигация';
 
 export default class QuestContainer extends React.Component {
     constructor(props) {
         super(props);
 
         const {user, existGeolocation} = this.props;
-
+        const message = !existGeolocation && user.isPlaying ? messageStrings[1] : null;
         this.state = {
             user,
             showQuestInfo: !user.isPlaying,
             mountQuestPhotos: user.isPlaying,
             mountQuestInfo: !user.isPlaying,
-            errorMessage: existGeolocation ? null : mess
+            message
         };
 
         this.handleShowQuestInfo = this.handleShowQuestInfo.bind(this);
@@ -26,12 +26,12 @@ export default class QuestContainer extends React.Component {
         this.handleNext = this.handleNext.bind(this);
     }
 
-    handleShowError(errorMessage) {
-        this.setState({errorMessage});
+    handleShowError(messageCode) {
+        this.setState({message: messageStrings[messageCode]});
 
         setTimeout(function () {
-            this.setState({errorMessage: ''});
-        }.bind(this), 2000);
+            this.setState({message: ''});
+        }.bind(this), 3000);
     }
 
     handleBeginPlay() {

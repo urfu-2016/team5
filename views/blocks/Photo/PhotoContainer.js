@@ -18,20 +18,8 @@ export default class PhotoContainer extends React.Component {
 
     canSend(callback) {
         getGeolocation((error, position) => {
-            var message;
             if (error) {
-                switch (error.code) {
-                    case 1:
-                        message = 'wert';
-                        break;
-                    case 2:
-                        message = 'qjasfhafhlawert';
-                        break;
-                    default:
-                        message = 'dfdf';
-                }
-
-                this.props.onShowError(message);
+                this.props.onShowError(10 + error.code);
                 return callback(false);
             }
 
@@ -44,7 +32,7 @@ export default class PhotoContainer extends React.Component {
     }
 
     handleFailedSend(isNoConnection) {
-        this.props.onShowError(isNoConnection ? 'sfdsf' : 'dfdfsdsdf');
+        this.props.onShowError(20 + (isNoConnection ? 1 : 0));
     }
 
     getSendOptions() {
@@ -61,7 +49,7 @@ export default class PhotoContainer extends React.Component {
                 {...this.props}
                 getSendOptions={this.getSendOptions}
                 onSuccesfulEnd={this.handleAnswered}
-                handleFailedSend={this.handleFailedSend}
+                onFailedSend={this.handleFailedSend}
                 canSend={this.canSend}
             />
         );

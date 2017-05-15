@@ -5,6 +5,22 @@ import QuestPhotosContainer from '../QuestPhotos/QuestPhotosContainer';
 import './Quest.css';
 
 export default class Quest extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.handleBeginPlay = this.handleBeginPlay.bind(this);
+    }
+
+    handleBeginPlay() {
+        const {onAction, handleShowError, existGeolocation} = this.props;
+
+        if (existGeolocation) {
+            onAction();
+        } else {
+            handleShowError(1);
+        }
+    }
+
     render() {
         const {
             existGeolocation,
@@ -13,18 +29,18 @@ export default class Quest extends React.Component {
             mountQuestInfo,
             showQuestInfo,
             handlePhotos,
-            errorMessage,
             handleInfo,
             onAction,
+            message,
             sending,
             user
         } = this.props;
 
         return (
             <div>
-                {errorMessage &&
+                {message &&
                     <div className="message_error">
-                        {errorMessage}
+                        {message}
                     </div>
                 }
                 {mountQuestInfo &&
