@@ -22,6 +22,7 @@ module.exports = {
             if (err) {
                 return next(new BadRequestError(err.message));
             }
+            user.username = user.username.toLowerCase();
 
             return req.logIn(user, () => res.status(httpStatus.OK).send());
         })(req, res, next);
