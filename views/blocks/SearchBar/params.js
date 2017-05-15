@@ -5,7 +5,7 @@ function getParams(title, name, options) {
 module.exports = {
     params: {
         likesCount: getParams(
-            'Количество ♥',
+            'Количество лайков',
             'likesCount',
             {
                 'Выберите количество': 0,
