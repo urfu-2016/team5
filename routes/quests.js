@@ -35,11 +35,13 @@ router.route('/:slug').get(async function (req, res) {
     const quest = await Quest.getBySlug(req.params.slug);
 
     if (quest) {
-        const started = req.user && req.user.getQuestStatus(quest.slug) ? 1 : 0;
+        const started = req.user && req.user.getQuestStatus(quest.slug);
+        const finished = req.user && res.user.getPhotoStatuses(quest).every(x => x.status);
         const renderData = {
             isAuth: req.user ? 1 : 0,
-            isCreator: quest.isMyQuest(req.user),
-            isPlaying: started,
+            isCreator: quest.isMyQuest(req.user) ? 1 : 0,
+            isPlaying: started ? 1 : 0,
+            isFinished: finished ? 1 : 0,
             slug: quest.slug,
             title: quest.title
         };
@@ -64,7 +66,7 @@ router.route('/:slug/edit').get(function (req, res) {
                 },
                 action: 'Редактирование квеста',
                 isAuth: req.user ? 1 : 0,
-                isCreator: isCreator
+                isCreator: isCreator ? 1 : 0
             };
 
             res.render('createQuest/createQuest', renderData);
