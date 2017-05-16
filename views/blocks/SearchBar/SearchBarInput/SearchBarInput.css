@@ -55,7 +55,7 @@
     font-size: 18px;
 }
 
-@media (max-width: 993px)
+@media (max-width: 992px)
 {
     .searchbar__input-group
     {
