@@ -74,7 +74,7 @@ $('button[role="createQuest"]').on('click', function () {
         return;
     }
 
-    var stagesForms = $('.quests-content form');
+    var stagesForms = $('.quests-content .tab-content__panel');
     var tags = [];
 
     $('.tag').each(function (idx, el) {
@@ -97,6 +97,7 @@ $('button[role="createQuest"]').on('click', function () {
             data: msg,
             success: function (res) {
                 var slug = res.data.slug;
+
                 $(stagesForms).each(function (idx, el) {
                     sendStageForm(el, slug);
                 });
@@ -122,12 +123,15 @@ $('button[role="createQuest"]').on('click', function () {
         var title = $(form).find('.title');
         var description = $(form).find('.description');
         var location = $(form).find('.location');
+        var latitude = location.val().split(',')[0];
+        var longitude = location.val().split(',')[1];
 
         var formData = new FormData();
         formData.append('image', file.files[0]);
         formData.append('title', title.val());
         formData.append('description', description.val());
-        formData.append('location', location.val());
+        formData.append('lat', latitude);
+        formData.append('lon', longitude);
 
         $.ajax({
             type: 'POST',
