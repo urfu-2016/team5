@@ -46,7 +46,7 @@ export default class Card extends React.Component {
                 <div className={card('controls')}>
                     <ul className={[card('tags'), 'card__tags'].join(' ')}>
                         {quest.tags.map(tag => (
-                            <a key={tag} href={`./?type=tag&tag=${tag}`}>{tag}</a>
+                            <li key={tag}><a href={`./?type=tag&tag=${tag}`}>{tag}</a></li>
                         ))}
                     </ul>
                     <div className={card('button', {like: true})}>
