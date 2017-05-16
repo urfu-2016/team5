@@ -32,14 +32,13 @@ function createTab(id) {
 
 function createTabContent(id) {
     return '<div class="tab-content__panel active" id="' + id + '" role="tabpanel">' +
-        '<form enctype="multipart/form-data" id="' + id + id + '" method="POST">' +
         '<div class="row">' +
         '<div class="col-4 add-quest">' +
         '<div class="add-quest__preview">' +
         '<input name="image" type="file" accept="image/jpeg, image/png" class="add-quest__input">' +
         '<div class="add-quest__info">Перетащите сюда картинку или нажмите на кнопку</div>' +
     '<div class="add-quest__footer">' +
-        '<button class="btn add-quest__add-image">Добавить</button>' +
+        '<button type="button" class="btn add-quest__add-image">Добавить</button>' +
         '</div>' +
         '</div>' +
         '<div class="add-quest__image hide">' +
@@ -63,7 +62,6 @@ function createTabContent(id) {
         '</div>' +
         '</div>' +
         '</div>' +
-        '</form>' +
         '<button type="button" class="btn btn_primary float_right add-quest_delete">Удалить</button>' +
         '</div>';
 }
