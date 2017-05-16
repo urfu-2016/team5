@@ -45,6 +45,11 @@
                 <button class="btn btn_primary btn_disabled">+</button>
             {{/equal}}
             <ul class="tabs add-quest__tabs" role="tablist">
+
+                <li class="tabs__item">
+                    <a class="tabs__link active" href="#abra" role="tab">...</a>
+                </li>
+
                 {{#each quest.stages}}
                     <li class="tabs__item">
                         <a class="tabs__link active" href="#{{shortID}}" role="tab">{{title}}</a>
@@ -53,6 +58,46 @@
             </ul>
 
             <div class="tab-content quests-content">
+
+                <div class="tab-content__panel active" id="abra" role="tabpanel">
+                    <form enctype="multipart/form-data" id="" method="POST">
+                        <div class="row">
+                            <div class="col-4 add-quest">
+                                <div class="add-quest__preview hide">
+                                    <input name="image" type="file" accept="image/jpeg, image/png"
+                                           class="add-quest__input">
+                                    <div class="add-quest__info">Перетащите сюда картинку или нажмите на кнопку</div>
+                                    <div class="add-quest__footer">
+                                        <button class="btn add-quest__add-image">Добавить</button>
+                                    </div>
+                                </div>
+                                <div class="add-quest__image">
+                                    <span class="add-quest__action action_rotate"></span>
+                                    <span class="add-quest__action action_delete"></span>
+                                    <img class="rotate0deg"  src="" alt="">
+                                </div>
+                            </div>
+                            <div class="col-8">
+                                <div class="input-group">
+                                    <label>Название</label>
+                                    <input name="title" type="text" class="input-group__input input_dark title"
+                                           maxlength="30" required value="">
+                                </div>
+                                <div class="input-group">
+                                    <label>Месторасположение</label>
+                                    <input name="location" type="text" class="input-group__input input_dark location"
+                                           required value="">
+                                </div>
+                                <div class="input-group">
+                                    <label>Описание</label>
+                                    <textarea name="description" class="input-group__textarea description"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <button type="button" class="btn btn_primary float_right add-quest_delete">Удалить</button>
+                </div>
+
                 {{#each quest.stages}}
                     <div class="tab-content__panel active" id="{{shortId}}" role="tabpanel">
                         <form enctype="multipart/form-data" id="{{shortId}}{{shortId}}" method="POST">
