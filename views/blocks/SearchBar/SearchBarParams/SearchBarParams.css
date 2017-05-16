@@ -52,7 +52,6 @@
 
 .searchbar__params-group > .param-item
 {
-    height: 40px;
     margin: 10px;
     flex: 0 0 calc(33.33% - 30px);
     display: flex;
