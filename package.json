@@ -67,7 +67,8 @@
     "shortid": "^2.2.8",
     "slug": "^0.9.1",
     "style-loader": "^0.16.0",
-    "webpack": "^2.3.2"
+    "webpack": "^2.3.2",
+    "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
     "chai": "^3.5.0",
