@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
-// const clearDb = require('./clear-db');
+const clearDb = require('./clear-db');
 const generateDb = require('./generate-db-data');
 const mongoose = require('../libs/mongoose-connection');
 
@@ -13,7 +13,7 @@ const consoleArgs = require('command-line-args')([
 const questsJson = fs.readFileSync(consoleArgs['quests-file']);
 
 async function main() {
-    // await clearDb.dropAll();
+    await clearDb.dropAll();
 
     await generateDb.createQuestsFromJson(questsJson);
     await mongoose.connection.close();
