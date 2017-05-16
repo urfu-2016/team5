@@ -3,13 +3,14 @@
 const httpStatus = require('http-status-codes');
 const Quest = require('../models/quest');
 const Stage = require('../models/stage');
+const config = require('config');
 const constants = require('../constants/controllers');
 const {NotFoundError, BadRequestError} = require('../libs/customErrors/errors');
 const cloudinary = require('../libs/cloudinary');
 
 function getStageData(req, cloudinaryFile) {
     return {
-        src: cloudinaryFile.url,
+        src: config.mode === 'production' ? cloudinaryFile.secure_url : cloudinaryFile.url,
         cloudinaryId: cloudinaryFile.public_id,
         title: req.body.title,
         description: req.body.description || '',
