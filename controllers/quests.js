@@ -18,7 +18,7 @@ async function getQuestObject(req, quest) {
     questObj.dateOfCreation = moment(quest.dateOfCreation).format(constants.dateFormat);
     delete questObj.author.password;
     delete questObj.likes;
-    questObj.author = quest.author.username;
+    questObj.author = (await quest.getAuthor()).username;
     questObj.liked = quest.likedBy(req.user);
     questObj.likesCount = quest.likesCount;
     questObj.commentsCount = quest.comments.length;
@@ -211,7 +211,7 @@ module.exports = {
                 title: quest.title,
                 city: quest.city,
                 description: quest.description,
-                author: quest.author,
+                author: (await quest.getAuthor()).username,
                 createdAt: quest.dateOfCreation,
                 tags: quest.tags,
                 imagesCount: quest.stages.length,

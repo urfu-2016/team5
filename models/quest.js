@@ -112,6 +112,17 @@ questSchema.statics.getBySlug = function (slug) {
     return this.findOne({slug});
 };
 
+questSchema.methods.getAuthor = async function () {
+    const quest = await this.model('Quest')
+        .findOne({slug: this.slug})
+        .populate({
+            path: 'author',
+            select: '-_id -password'
+        });
+
+    return quest.author;
+};
+
 questSchema.statics.removeBySlug = async function (slug) {
     const quest = await this.getBySlug(slug);
 
