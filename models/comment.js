@@ -54,6 +54,17 @@ commentSchema.methods.createdBy = async function (username) {
     return this.author.equals(user._id);
 };
 
+commentSchema.methods.getAuthor = async function () {
+    const comment = await this.model('Comment')
+        .findOne({shortid: this.shortid})
+        .populate({
+            path: 'author',
+            select: '-_id -password'
+        });
+
+    return comment.author;
+};
+
 commentSchema.virtual('likesCount').get(function () {
     return this.likes.length;
 });
