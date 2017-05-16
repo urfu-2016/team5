@@ -7,7 +7,7 @@ export default class SearchResult extends React.Component {
     render() {
         const {onPageChange, currentPage, pageCount, children} = this.props;
         return (
-            <div>
+            <div className="container-r">
                 <div className={`quests-r ${b('search', 'result')}`} >
                     {children}
                 </div>
