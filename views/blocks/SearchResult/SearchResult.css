@@ -8,12 +8,6 @@
     margin: auto;
 }
 
-.quests-r:after
-{
-    content: "";
-    flex: auto;
-}
-
 @media (max-width: 686px)
 {
     .quests-r:after
