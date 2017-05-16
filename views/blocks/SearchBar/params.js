@@ -1,5 +1,17 @@
+const cities = require('../../../controllers/cities.json');
+
 function getParams(title, name, options) {
     return {title, name, options};
+}
+
+function makeCitiesObject() {
+    const citiesObj = {};
+    citiesObj['Выберите город'] = '';
+    for (let city of cities) {
+        citiesObj[city.City] = city.City;
+    }
+
+    return citiesObj;
 }
 
 module.exports = {
@@ -27,12 +39,7 @@ module.exports = {
         searchCity: getParams(
             'Город',
             'searchCity',
-            {
-                'Выберите город': '',
-                Екатеринбург: 'Екатеринбург',
-                'Каменск-Уральский': 'Каменск-Уральский',
-                Ивдель: 'Ивдель'
-            }
+            makeCitiesObject()
         ),
         searchByField: getParams(
             'Искать только в поле:',
