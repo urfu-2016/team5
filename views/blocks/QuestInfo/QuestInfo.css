@@ -1,19 +1,6 @@
-.quest-info__controls
+.quest-info__button_play
 {
     display: flex;
     padding: 10px 0;
-}
-
-.quest-info__button_play
-{
-    flex: 450px 3 1;
-    text-align: center;
-}
-
-.quest-info__button_like
-{
-    flex: 200px 1 1;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
+    justify-content: center;
 }

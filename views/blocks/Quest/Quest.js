@@ -2,6 +2,10 @@ import React from 'react';
 import Comments from './../comments/comments';
 import QuestInfoContainer from '../QuestInfo/QuestInfoContainer';
 import QuestPhotosContainer from '../QuestPhotos/QuestPhotosContainer';
+import b from 'b_';
+import './Quest.css';
+
+const quest = b.lock('quest');
 
 function existNav() {
     return navigator.geolocation !== undefined;
@@ -34,9 +38,9 @@ export default class Quest extends React.Component {
         } = this.props;
 
         return (
-            <div>
+            <div className={quest()}>
                 {mountQuestInfo &&
-                    <div>
+                    <div className={quest('quest-info')}>
                         <QuestInfoContainer
                             user={user}
                             showQuestInfo={showQuestInfo}
@@ -48,10 +52,12 @@ export default class Quest extends React.Component {
                     </div>
                 }
                 {mountQuestPhotos &&
-                    <QuestPhotosContainer
-                        showQuestPhoto={!showQuestInfo}
-                        handleInfo={handleInfo}
-                    />
+                    <div className={quest('quest-photos')}>
+                        <QuestPhotosContainer
+                            showQuestPhoto={!showQuestInfo}
+                            handleInfo={handleInfo}
+                        />
+                    </div>
                 }
             </div>
         );
