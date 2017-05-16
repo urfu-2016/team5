@@ -1,3 +1,5 @@
+import 'whatwg-fetch';
+
 function getCustomError(message, isNoConection) {
     var error = new Error(message);
     error.isNoConection = isNoConection;
