@@ -55,7 +55,9 @@ router.route('/:slug').get(async function (req, res) {
 
 router.route('/:slug/edit').get(function (req, res) {
     Quest.getBySlug(req.params.slug).then(questData => {
-        const isCreator = questData.isMyQuest(req.user);
+        const isCreator = questData.isMyQuest(req.user) ? 1 : 0;
+        const stages = questData.stages.map(shortId => questData.getStageByShortId(shortId));
+        questData.stages = stages;
         // Добавить isCreator в условие
         if (questData) {
             const renderData = {
