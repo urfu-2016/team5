@@ -35,12 +35,13 @@ router.route('/:slug').get(async function (req, res) {
     const quest = await Quest.getBySlug(req.params.slug);
 
     if (quest) {
-        const started = req.user && req.user.getQuestStatus(quest.slug);
-        const finished = req.user && res.user.getPhotoStatuses(quest).every(x => x.status);
+        const status = req.user ? req.user.getQuestStatus(quest.slug) : undefined;
+        const started = status ? 1 : 0;
+        const finished = status.stagesStatuses.every(status => status === 'ok');
         const renderData = {
             isAuth: req.user ? 1 : 0,
             isCreator: quest.isMyQuest(req.user) ? 1 : 0,
-            isPlaying: started ? 1 : 0,
+            isPlaying: started,
             isFinished: finished ? 1 : 0,
             slug: quest.slug,
             title: quest.title
