@@ -7,10 +7,10 @@ const constants = require('../constants/controllers');
 const errors = require('../libs/customErrors/errors');
 
 async function getCommentObject(comment, currentUser) {
-    const author = (await comment.populate('author')).author;
+    const author = await comment.getAuthor();
     const username = currentUser ? currentUser.username : undefined;
     const liked = await comment.likedBy(username);
-    const isAuthor = currentUser && author.equals(currentUser._id);
+    const isAuthor = currentUser && author.username === currentUser.username;
 
     return {
         id: comment.shortid,
