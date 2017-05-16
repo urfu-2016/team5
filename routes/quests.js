@@ -37,7 +37,7 @@ router.route('/:slug').get(async function (req, res) {
     if (quest) {
         const status = req.user ? req.user.getQuestStatus(quest.slug) : undefined;
         const started = status ? 1 : 0;
-        const finished = status.stagesStatuses.every(status => status === 'ok');
+        const finished = status && status.stagesStatuses.every(status => status === 'ok');
         const renderData = {
             isAuth: req.user ? 1 : 0,
             isCreator: quest.isMyQuest(req.user) ? 1 : 0,
