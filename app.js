@@ -47,7 +47,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 app.use(passport.session());
 
-// force redirect to https in production
+// Force redirect to https in production
 app.get('*', function (req, res, next) {
     if (config.mode === 'production' && req.headers['x-forwarded-proto'] !== 'https') {
         res.redirect(`https://team5quests.herokuapp.com${req.url}`);

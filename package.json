@@ -59,6 +59,7 @@
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "pbkdf2": "^3.0.9",
+    "postcss-loader": "^2.0.5",
     "query-string": "^4.3.2",
     "react-dropzone": "^3.13.1",
     "serve-favicon": "~2.3.2",
@@ -75,10 +76,10 @@
     "eslint-plugin-react": "^7.0.1",
     "husky": "^0.13.2",
     "mocha": "^3.2.0",
+    "nock": "^9.0.13",
     "sinon": "^2.2.0",
     "stylefmt": "^5.2.0",
     "stylelint": "^7.9.0",
-    "nock": "^9.0.13",
     "stylelint-config-standard": "^16.0.0"
   }
 }
