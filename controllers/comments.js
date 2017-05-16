@@ -10,7 +10,7 @@ async function getCommentObject(comment, currentUser) {
     const author = await comment.getAuthor();
     const username = currentUser ? currentUser.username : undefined;
     const liked = await comment.likedBy(username);
-    const isAuthor = currentUser && author.username === currentUser.username;
+    const isAuthor = (currentUser && author.username === currentUser.username) ? 1 : 0;
 
     return {
         id: comment.shortid,
