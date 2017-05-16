@@ -37,7 +37,7 @@ const stageSchema = new mongoose.Schema({
     }
 });
 
-stageSchema.statics.create = async function ({src, title, location = '', description = '', cloudinaryId}) {
+stageSchema.statics.create = async function ({src, title, location, description = '', cloudinaryId}) {
     const stage = new this({src, title, location, description, cloudinaryId});
 
     return stage.save();
