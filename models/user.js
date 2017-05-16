@@ -146,6 +146,9 @@ userSchema.methods.startQuest = async function (quest) {
         return false;
     }
 
+    quest.userCount++;
+    quest.save();
+
     this.quests.push({
         slug: quest.slug,
         stagesStatuses: new Array(quest.stages.length).fill('undef')
