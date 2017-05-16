@@ -23,17 +23,4 @@ $('.quests-content').on('click', '.action_rotate', function () {
 $('.quests-content').on('click', '.action_delete', function () {
     $(this).closest('.add-quest').find('.add-quest__preview').removeClass('hide');
     $(this).parent().addClass('hide');
-    /*
-    Var tablink = $(this).parent().find('.tabs__link');
-    if ($(tablink).hasClass('active') && $('.image-preview').children().length > 1) {
-        var firstTab = $('.image-preview').children()[0];
-        $(firstTab).find('.tabs__link').addClass('active');
-
-        var firstContent = $('.quests-content').children()[0];
-        $(firstContent).addClass('active');
-    }
-
-    var id = $(tablink).attr('href');
-    $(id).remove();
-    $(this).parent().remove(); */
 });
