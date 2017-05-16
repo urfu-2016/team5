@@ -17,7 +17,7 @@ export default class QuestPhotos extends React.Component {
             return null;
         }
 
-        const {handleAnswered, handleInfo, existGeolocation, handleShowError} = this.props;
+        const {userIsCreator, handleAnswered, handleInfo, existGeolocation, handleShowError} = this.props;
 
         return (
             <div className={questPhotos()}>
@@ -27,6 +27,7 @@ export default class QuestPhotos extends React.Component {
                 <div className={questPhotos('photos')}>
                     {photos.map((photo, index) =>
                         <PhotoContainer id={index}
+                            userIsCreator={userIsCreator}
                             key={photo.src} {...photo}
                             handleAnswered={handleAnswered}
                             existGeolocation={existGeolocation}

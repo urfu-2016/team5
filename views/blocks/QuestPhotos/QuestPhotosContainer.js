@@ -31,6 +31,10 @@ export default class QuestPhotosContainer extends React.Component {
 
             return {photos};
         });
+
+        if (data.finised) {
+            this.props.handleFinished();
+        }
     }
 
     render() {

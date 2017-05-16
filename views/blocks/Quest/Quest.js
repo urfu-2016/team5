@@ -30,6 +30,7 @@ export default class Quest extends React.Component {
             existGeolocation,
             mountQuestPhotos,
             handleShowError,
+            handleFinished,
             mountQuestInfo,
             showQuestInfo,
             handlePhotos,
@@ -63,10 +64,12 @@ export default class Quest extends React.Component {
                 {mountQuestPhotos &&
                     <div className={quest('quest-photos')}>
                         <QuestPhotosContainer
+                            userIsCreator={user.isCreator}
                             existGeolocation={existGeolocation}
                             showQuestPhoto={!showQuestInfo}
                             handleInfo={handleInfo}
                             handleShowError={handleShowError}
+                            handleFinished={handleFinished}
                         />
                     </div>
                 }
