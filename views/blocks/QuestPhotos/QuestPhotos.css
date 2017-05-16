@@ -1,4 +1,9 @@
-.photos
+.quest-photos__button
+{
+    padding: 0 5%;
+}
+
+.quest-photos__photos
 {
     display: flex;
     flex-direction: row;
@@ -8,7 +13,7 @@
 
 @media (max-width: 940px)
 {
-    .photos
+    .quest-photos__photos
     {
         flex-direction: column;
     }

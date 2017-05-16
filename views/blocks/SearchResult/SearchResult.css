@@ -1,14 +1,23 @@
 .quests-r
 {
+    width: 100%;
+    padding: 0;
     display: flex;
-    flex-direction: row;
     justify-content: space-around;
     flex-wrap: wrap;
-    margin: 10px 0;
+    margin: auto;
 }
 
 .quests-r:after
 {
     content: "";
     flex: auto;
+}
+
+@media (max-width: 686px)
+{
+    .quests-r:after
+    {
+        content: none;
+    }
 }

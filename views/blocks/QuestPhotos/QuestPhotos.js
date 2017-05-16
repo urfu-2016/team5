@@ -21,10 +21,10 @@ export default class QuestPhotos extends React.Component {
 
         return (
             <div className={questPhotos()}>
-                <div>
-                    <button onClick={handleInfo}>Описание квеста</button>
+                <div className={questPhotos('button')}>
+                    <button className="button" onClick={handleInfo}>Описание квеста</button>
                 </div>
-                <div className="photos">
+                <div className={questPhotos('photos')}>
                     {photos.map((photo, index) =>
                         <PhotoContainer id={index}
                             key={photo.src} {...photo}
