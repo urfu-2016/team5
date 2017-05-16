@@ -2,6 +2,7 @@ import React from 'react';
 import sender from './../Sender/Sender';
 import Quest from './Quest';
 import QuestSender from './QuestSender';
+import messageStrings from '../../constants/messages';
 
 const QuestWithSending = sender(Quest);
 
@@ -9,18 +10,28 @@ export default class QuestContainer extends React.Component {
     constructor(props) {
         super(props);
 
-        const {user} = this.props;
-
+        const {user, existGeolocation} = this.props;
+        const message = !existGeolocation && user.isPlaying ? messageStrings[1] : null;
         this.state = {
             user,
             showQuestInfo: !user.isPlaying,
             mountQuestPhotos: user.isPlaying,
-            mountQuestInfo: !user.isPlaying
+            mountQuestInfo: !user.isPlaying,
+            message
         };
 
-        this.handleBeginPlay = this.handleBeginPlay.bind(this);
-        this.handleNext = this.handleNext.bind(this);
         this.handleShowQuestInfo = this.handleShowQuestInfo.bind(this);
+        this.handleBeginPlay = this.handleBeginPlay.bind(this);
+        this.handleShowError = this.handleShowError.bind(this);
+        this.handleNext = this.handleNext.bind(this);
+    }
+
+    handleShowError(messageCode) {
+        this.setState({message: messageStrings[messageCode]});
+
+        setTimeout(function () {
+            this.setState({message: ''});
+        }.bind(this), 3000);
     }
 
     handleBeginPlay() {
@@ -54,10 +65,12 @@ export default class QuestContainer extends React.Component {
         return (
             <QuestWithSending
                 {...this.state}
+                existGeolocation={this.props.existGeolocation}
                 getSendOptions={QuestSender.beginPlay}
                 onSuccesfulEnd={this.handleBeginPlay}
-                handlePhotos={this.handleNext}
                 handleInfo={this.handleShowQuestInfo}
+                handleShowError={this.handleShowError}
+                handlePhotos={this.handleNext}
             />
         );
     }

@@ -22,7 +22,9 @@ const isPlaying = isAuth && Boolean(Number(contentRoot.dataset.isPlaying));
 
 const user = {isAuth, isCreator, isPlaying};
 
+const existGeolocation = navigator.geolocation !== undefined;
+
 ReactDOM.render(
-    <QuestContainer user={user} />,
+    <QuestContainer user={user} existGeolocation={existGeolocation}/>,
     contentRoot
 );

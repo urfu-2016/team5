@@ -28,7 +28,7 @@ export default class Photo extends React.Component {
     }
 
     render() {
-        const {src, status, sending} = this.props;
+        const {src, status, sending, existGeolocation} = this.props;
 
         return (
             <div className={photo()}>
@@ -37,7 +37,7 @@ export default class Photo extends React.Component {
                 </div>
                 <button
                     className={['control', photo('button')].join(' ')}
-                    disabled={sending}
+                    disabled={!existGeolocation || sending}
                     onClick={this.handleClick}
                 >
                     <i className={`fa fa-crosshairs ${sending ? 'fa-spin' : ''}`} aria-hidden="true"></i>

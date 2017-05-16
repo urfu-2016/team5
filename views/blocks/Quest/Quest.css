@@ -1,3 +1,21 @@
+.message_error
+{
+    position: fixed;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.9);
+    max-width: 1200px;
+    top: 65px;
+    text-align: center;
+    width: 55%;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    box-shadow: 0 0 11px #aaa;
+    font-size: 1.3rem;
+    border-radius: 3px;
+    color: #ff7a00;
+}
+
 .quest__quest-info
 {
     max-width: 1000px;
