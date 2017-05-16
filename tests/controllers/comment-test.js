@@ -32,7 +32,7 @@ describe('controller:comment', () => {
             const res = await createComment(message, quest.slug);
             res.status.should.equal(HttpStatus.CREATED);
             res.body.data.message.should.equal(message);
-            res.body.data.isAuthor.should.equal(true);
+            res.body.data.isAuthor.should.equal(1);
         });
 
         it('should delete a comment', async () => {
