@@ -58,11 +58,19 @@
       "tags": ["усталость", "красные глаза"],
       "stages": [
         {
+          "src": "http://www.decormag.ru/gallery/normal/yandex-5.jpg",
+          "title": "Хакатон",
+          "location": {
+            "lat": "56.8191401",
+            "lon": "60.5611657"
+          }
+        },
+        {
           "src": "https://datasciencebe.files.wordpress.com/2015/02/keep-calm-and-hackathon-9.png",
           "title": "Хакатон",
           "location": {
-            "lat": "123",
-            "lon": "123"
+            "lat": "10.8191401",
+            "lon": "20.5611657"
           }
         }
       ],
@@ -131,6 +139,31 @@
           "location":  {
             "lat": "123",
             "lon": "123"
+          }
+        }
+      ],
+      "likesCount": 15
+    },
+    {
+      "title": "Тестовый квест",
+      "description": "Проверка чекинов",
+      "city": "Екатеринбург",
+      "tags": ["team5", "photo quest"],
+      "stages": [
+        {
+          "src": "http://risovach.ru/upload/2015/01/mem/vse-ochen-ploho_73054723_orig_.png",
+          "title": "Должно быть правильно",
+          "location":  {
+            "lat": "56.80047",
+            "lon": "60.5826965"
+          }
+        },
+        {
+          "src": "http://risovach.ru/upload/2016/03/mem/winter_107726358_orig_.jpg",
+          "title": "Должно быть неправильно",
+          "location":  {
+            "lat": "156.795987",
+            "lon": "160.583845"
           }
         }
       ],

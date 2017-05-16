@@ -174,7 +174,8 @@ questSchema.methods.checkPhoto = async function (user, position, location) {
     const longitude = stage.location.lon;
     const distance = geolib.getDistance(
         {latitude, longitude},
-        {latitude: location.lat, longitude: location.lon}
+        {latitude: location.lat, longitude: location.lon},
+        10
     );
 
     await user.setStatus(this.slug, position, distance < accuracy ? 'ok' : 'wrong');

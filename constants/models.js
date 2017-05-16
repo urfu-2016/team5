@@ -13,7 +13,7 @@ module.exports = {
     },
 
     quest: {
-        accuracy: 100 // В метрах
+        accuracy: 500 // В метрах
     },
 
     comment: {
