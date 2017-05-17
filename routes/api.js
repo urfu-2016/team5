@@ -11,6 +11,7 @@ const autocompleteController = require('../controllers/autocomplete');
 const stagesController = require('../controllers/stages');
 const clientErrorHandler = require('./clientErrorHandler');
 const upload = require('../libs/multer').upload;
+const multipart = require('connect-multiparty');
 const getAction = require('../libs/getAction');
 
 router.route('/users')
@@ -62,11 +63,11 @@ router.route('/autocomplete')
     .post(getAction(autocompleteController, 'getCities'));
 
 router.route('/quests/:slug/stages')
-    .post(getAction(authController, 'authorizedOnly'), upload.single('image'), getAction(stagesController, 'add'))
+    .post(getAction(authController, 'authorizedOnly'), multipart(), getAction(stagesController, 'add'))
     .get(getAction(stagesController, 'getAllByQuest'));
 
 router.route('/quests/:slug/stages/:stageId')
-    .put(getAction(authController, 'authorizedOnly'), upload.single('image'), getAction(stagesController, 'update'))
+    .put(getAction(authController, 'authorizedOnly'), upload.single('image'), multipart(), getAction(stagesController, 'update'))
     .delete(getAction(authController, 'authorizedOnly'), getAction(stagesController, 'remove'));
 
 router.route('/stages/:stageId')

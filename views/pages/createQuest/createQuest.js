@@ -126,18 +126,19 @@ $('button[role="createQuest"]').on('click', function () {
         var latitude = location.val().split(',')[0];
         var longitude = location.val().split(',')[1];
 
-        var formData = {};
-        formData.image = file.files[0];
-        formData.title = title.val();
-        formData.description = description.val();
-        formData.lat = latitude;
-        formData.lon = longitude;
+        var formData = new FormData();
+        formData.append('image', file.files[0]);
+        formData.append('title', title.val());
+        formData.append('description', description.val());
+        formData.append('lat', latitude);
+        formData.append('lon', longitude);
 
         $.ajax({
             type: 'POST',
             url: '/api/quests/' + slug + '/stages',
-            contentType: 'application/json',
-            data: JSON.stringify(formData)
+            contentType: false,
+            processData: false,
+            data: formData
         });
     }
 });
