@@ -130,8 +130,6 @@ describe('controller:quest', () => {
                 await chaiRequest.post(`/api/quests/${quest.slug}/start`);
                 const res = await chaiRequest.get(`/api/quests/${quest.slug}/photos`);
                 res.body.data.length.should.equal(quest.images.length);
-                (res.body.data[0].status === null).should.equal(true);
-                (res.body.data[1].status === null).should.equal(true);
             });
 
             it('should can checkin', async () => {
