@@ -7,7 +7,7 @@ function getParams(title, name, options) {
 function makeCitiesObject() {
     const citiesObj = {};
     citiesObj['Выберите город'] = '';
-    for (let quest of quests) {
+    for (let quest of quests.data) {
         citiesObj[quest.city] = quest.city;
     }
 
