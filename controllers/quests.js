@@ -45,8 +45,8 @@ module.exports = {
             description: req.body.description,
             authorId: req.user.id,
             city: req.body.city,
-            tags: req.body['tags[]'],
-            stages: stages ? stages : []
+            tags: req.body['tags[]'] || [],
+            stages: stages || []
         };
         try {
             let quest = await Quest.create(questData);
