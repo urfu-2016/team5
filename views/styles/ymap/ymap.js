@@ -1,5 +1,3 @@
-/* global ymaps:true */
-
 require('./ymap.css');
 
 function init(id) {

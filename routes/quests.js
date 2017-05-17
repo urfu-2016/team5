@@ -53,28 +53,30 @@ router.route('/:slug').get(async function (req, res) {
     }
 });
 
-router.route('/:slug/edit').get(function (req, res) {
-    Quest.getBySlug(req.params.slug).then(questData => {
-        const isCreator = questData.isMyQuest(req.user);
-        // Добавить isCreator в условие
-        if (questData) {
-            const renderData = {
-                title: questData.title,
-                quest: questData,
-                submitButton: {
-                    text: 'Изменить',
-                    role: 'editQuest'
-                },
-                action: 'Редактирование квеста',
-                isAuth: req.user ? 1 : 0,
-                isCreator: isCreator ? 1 : 0
-            };
+router.route('/:slug/edit').get(async function (req, res) {
+    const questData = await Quest.getBySlug(req.params.slug);
 
-            res.render('createQuest/createQuest', renderData);
-        } else {
-            res.render('notFound/notFound');
-        }
-    });
+    if (questData) {
+        const isCreator = questData.isMyQuest(req.user);
+        const stages = await questData.getStages();
+
+        const renderData = {
+            title: questData.title,
+            quest: questData,
+            stages: stages,
+            submitButton: {
+                text: 'Изменить',
+                role: 'editQuest'
+            },
+            action: 'Редактирование квеста',
+            isAuth: req.user ? 1 : 0,
+            isCreator: isCreator ? 1 : 0
+        };
+
+        res.render('createQuest/createQuest', renderData);
+    } else {
+        res.render('notFound/notFound');
+    }
 });
 
 router.route('/:slug/photos').get(function (req, res) {

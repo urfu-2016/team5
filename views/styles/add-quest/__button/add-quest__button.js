@@ -1,7 +1,11 @@
 /* global $:true */
 /* global ymaps:true */
 
-var init = require('../../ymap/ymap');
+$('.map-group').each((idx, el) => {
+    var id = $(el).find('.ymap').attr('id');
+    var coords = $(el).find('.location').val();
+    ymaps.ready(init.bind(this, id.slice(3, id.length), coords));
+});
 
 $('main').on('click', '.add-quest__button', function () {
     $('.add-quest__tabs').find('.tabs__link.active').removeClass('active');
@@ -68,5 +72,55 @@ function createTabContent(id) {
         '</div>' +
         '<button type="button" class="btn btn_primary float_right add-quest_delete">Удалить</button>' +
         '</div>';
+}
+
+function init(id) {
+    var yekatCoords = [56.837527, 60.605943];
+    var placemark;
+    var map = new ymaps.Map('map' + id, {
+        center: yekatCoords,
+        zoom: 12
+    });
+    map.events.add('click', function (e) {
+        var coords = e.get('coords');
+
+        addPlalcemark(coords);
+    });
+
+    function addPlalcemark(coords) {
+        if (placemark) {
+            placemark.geometry.setCoordinates(coords);
+        } else {
+            placemark = createPlacemark(coords);
+            map.geoObjects.add(placemark);
+            placemark.events.add('dragend', function () {
+                getAddress(placemark.geometry.getCoordinates());
+            });
+        }
+        getAddress(coords);
+        document.getElementById('coords' + id).value = coords;
+    }
+
+    function createPlacemark(coords) {
+        return new ymaps.Placemark(coords, {
+            iconCaption: 'поиск...'
+        });
+    }
+
+    function getAddress(coords) {
+        placemark.properties.set('iconCaption', 'поиск...');
+        ymaps.geocode(coords).then(function (res) {
+            var firstGeoObject = res.geoObjects.get(0);
+
+            placemark.properties
+                .set({
+                    iconCaption: [
+                        firstGeoObject.getLocalities().length ? firstGeoObject.getLocalities() : firstGeoObject.getAdministrativeAreas(),
+                        firstGeoObject.getThoroughfare() || firstGeoObject.getPremise()
+                    ].filter(Boolean).join(', '),
+                    balloonContent: firstGeoObject.getAddressLine()
+                });
+        });
+    }
 }
 // '<input name="location" type="text" class="input-group__input input_dark location" required>' +
