@@ -3,6 +3,7 @@
 const mongoose = require('../libs/mongoose-connection');
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const bcrypt = require('bcrypt');
+const Quest = require('./quest');
 const constants = require('../constants/constants');
 
 const userSchema = new mongoose.Schema({
@@ -137,7 +138,9 @@ userSchema.methods.getPhotoStatuses = async function (quest) {
 
     return questStatus.stagesStatuses.map((status, index) => ({
         src: stages[index].src,
-        status: status === 'undef' ? null : status === 'ok'
+        status: status === 'undef' ? null : status === 'ok',
+        description: stages[index].description,
+        title: stages[index].title
     }));
 };
 
@@ -164,9 +167,15 @@ userSchema.methods.setStatus = async function (slug, position, status) {
 
 userSchema.methods.getStatus = async function (slug, position) {
     const questStatus = this.getQuestStatus(slug);
+    const quest = await Quest.getBySlug(slug);
+    const stages = await quest.getStages();
     const finished = questStatus.stagesStatuses.every(status => status === 'ok');
     const status = questStatus.stagesStatuses[position] === 'ok';
-    return {status, finished};
+    return {
+        status, finished,
+        title: stages[position].title,
+        description: stages[position].description
+    };
 };
 
 module.exports = mongoose.model('User', userSchema);
