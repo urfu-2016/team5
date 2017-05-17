@@ -180,7 +180,7 @@ module.exports = {
         if (!quest) {
             throw new NotFoundError(constants.quest.questNotFoundErrorMessage);
         }
-        
+
         if (quest.isMyQuest(req.user)) {
             res.send({
                 data: await quest.getStages()
