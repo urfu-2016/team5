@@ -168,6 +168,297 @@
         }
       ],
       "likesCount": 15
+    },
+    {
+      "title": "Изи квест",
+      "description": "Для вас будет очень просто его пройти, если вы находитесь в палладиуме",
+      "city": "Екатеринбург",
+      "tags": ["палладиум", "изи"],
+      "stages": [
+        {
+          "src": "http://red-group.ru/uploads/image/2b9534da0f35ec18cc5ba43ed7ec3d30.jpg",
+          "title": "Палладиум",
+          "location":  {
+            "lat": "56.80047",
+            "lon": "60.5826965"
+          }
+        },
+        {
+          "src": "http://red-group.ru/uploads/image/6fd574b538d44dce9e5adb320109852f.jpg",
+          "title": "Палладиум",
+          "location":  {
+            "lat": "56.80047",
+            "lon": "60.5826965"
+          }
+        },
+        {
+          "src": "http://ekb.startravel.ru/sites/default/files/7e077a7d300da2ccad9351b4f963d01f_0.jpg",
+          "title": "Палладиум",
+          "location":  {
+            "lat": "56.80047",
+            "lon": "60.5826965"
+          }
+        }
+      ],
+      "likesCount": 15
+    },
+    {
+      "title": "Шествие, матмех",
+      "description": "МИР! МАТ! МЕХ!",
+      "city": "Екатеринбург",
+      "tags": ["мир", "мат", "мех"],
+      "stages": [
+        {
+          "src": "https://urfu.ru/fileadmin/_processed_/e/a/csm_20170329_dmm_c07fbda157.png",
+          "title": "УрГУ",
+          "location":  {
+            "lat": "56.800731",
+            "lon": "60.582367"
+          }
+        },
+        {
+          "src": "https://i.ytimg.com/vi/At0kYPAOMpE/hqdefault.jpg",
+          "title": "Шествие",
+          "location":  {
+            "lat": "56.800731",
+            "lon": "60.582367"
+          }
+        }
+      ],
+      "likesCount": 15
+    },
+    {
+      "title": "Portal to Матмех",
+      "description": "Поступай на матмех! Тут весело, а еще тут есть теннисный стол",
+      "city": "Екатеринбург",
+      "tags": ["мат", "мех"],
+      "stages": [
+        {
+          "src": "http://cs5.pikabu.ru/post_img/2014/09/26/1/1411682999_841003814.png",
+          "title": "УрГУ",
+          "location":  {
+            "lat": "56.800731",
+            "lon": "60.582367"
+          }
+        }
+      ],
+      "likesCount": 15
+    },
+    {
+      "title": "Гуляем по матмеху. Часть 1",
+      "description": "Пройдись по матмеху и найди эти крутые штуки",
+      "city": "Екатеринбург",
+      "tags": ["мат", "мех"],
+      "stages": [
+        {
+          "src": "https://igx.4sqi.net/img/general/width960/ZWtSwC0MquGGjeDxPyo0HjuR9SlASSR3ZaeNmWTcMGk.jpg",
+          "title": "УрГУ",
+          "location":  {
+            "lat": "56.800731",
+            "lon": "60.582367"
+          }
+        },
+        {
+          "src": "https://igx.4sqi.net/img/general/width960/ZXlyDrmXZwWYpHUIh76xv1zMmLo5Thsc6FdeKK_2zp8.jpg",
+          "title": "УрГУ",
+          "location":  {
+            "lat": "56.800731",
+            "lon": "60.582367"
+          }
+        }
+      ],
+      "likesCount": 15
+    },
+    {
+      "title": "Гуляем по матмеху. Часть 2",
+      "description": "Пройдись по матмеху и найди эти крутые штуки",
+      "city": "Екатеринбург",
+      "tags": ["мат", "мех"],
+      "stages": [
+        {
+          "src": "https://igx.4sqi.net/img/general/width960/17235072_IInqD2Jv50FO2Zt3iAehy7w5JnLgobmBuH3Apj9fe0I.jpg",
+          "title": "УрГУ",
+          "location":  {
+            "lat": "56.800731",
+            "lon": "60.582367"
+          }
+        },
+        {
+          "src": "https://igx.4sqi.net/img/general/width960/D7FT0vi4NXQN-H2dzMmSECCXq6j1ifzPO3a4x9iyOHI.jpg",
+          "title": "УрГУ",
+          "location":  {
+            "lat": "56.800731",
+            "lon": "60.582367"
+          }
+        },
+        {
+          "src": "https://igx.4sqi.net/img/general/width960/170555329_VUa11YOvvcYZcBv_XlDfhKHFyCwjc0mHl5sPtBKeAcc.jpg",
+          "title": "УрГУ",
+          "location":  {
+            "lat": "56.800731",
+            "lon": "60.582367"
+          }
+        }
+      ],
+      "likesCount": 15
+    },
+    {
+      "title": "Гуляем по матмеху. Часть 3",
+      "description": "Пройдись по матмеху и найди эти крутые штуки",
+      "city": "Екатеринбург",
+      "tags": ["мат", "мех"],
+      "stages": [
+        {
+          "src": "https://igx.4sqi.net/img/general/width960/50328469_-pUwZmS5OZ0IEgqQYqeGwgPFzD5TOIlvrMuzZI5ppn8.jpg",
+          "title": "УрГУ",
+          "location":  {
+            "lat": "56.800731",
+            "lon": "60.582367"
+          }
+        },
+        {
+          "src": "https://igx.4sqi.net/img/general/width960/48543115_XQ6n2AUrbroW7TygMHt7jnHjbbkJschAAcNl8U8_UZM.jpg",
+          "title": "УрГУ",
+          "location":  {
+            "lat": "56.800731",
+            "lon": "60.582367"
+          }
+        }
+      ],
+      "likesCount": 15
+    },
+    {
+      "title": "Уральский Федеральный",
+      "description": "Разные корпуса. Находятся недалеко",
+      "city": "Екатеринбург",
+      "tags": ["урфу", "фу"],
+      "stages": [
+        {
+          "src": "http://www.web2win.ru/upload/image/Vidurfu.jpg",
+          "title": "УрФУ",
+          "location":  {
+            "lat": "56.800731",
+            "lon": "60.582367"
+          }
+        },
+        {
+          "src": "http://ic.pics.livejournal.com/zergulio/14338131/1132039/1132039_600.jpg",
+          "title": "УрГУ",
+          "location":  {
+            "lat": "56.800731",
+            "lon": "60.582367"
+          }
+        }
+      ],
+      "likesCount": 15
+    },
+    {
+      "title": "Екатеринбург. Часть 1",
+      "description": "Гуляем по Екатеринбургу",
+      "city": "Екатеринбург",
+      "tags": ["екб", "Екатеринбург"],
+      "stages": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/%D0%90%D0%B4%D0%BC%D0%B8%D0%BD%D0%B8%D1%81%D1%82%D1%80%D0%B0%D1%86%D0%B8%D1%8F_%D0%95%D0%BA%D0%B0%D1%82%D0%B5%D1%80%D0%B8%D0%BD%D0%B1%D1%83%D1%80%D0%B3%D0%B0.jpg/320px-%D0%90%D0%B4%D0%BC%D0%B8%D0%BD%D0%B8%D1%81%D1%82%D1%80%D0%B0%D1%86%D0%B8%D1%8F_%D0%95%D0%BA%D0%B0%D1%82%D0%B5%D1%80%D0%B8%D0%BD%D0%B1%D1%83%D1%80%D0%B3%D0%B0.jpg",
+          "title": "Администрация",
+          "location":  {
+            "lat": "56.800731",
+            "lon": "60.582367"
+          }
+        },
+        {
+          "src": "http://travelask.ru/system/images/files/000/092/155/original/5.4.jpg?1486426356",
+          "title": "Какое-то здание",
+          "location":  {
+            "lat": "56.800731",
+            "lon": "60.582367"
+          }
+        }
+      ],
+      "likesCount": 30
+    },
+    {
+      "title": "Екатеринбург. Часть 2",
+      "description": "Гуляем по Екатеринбургу",
+      "city": "Екатеринбург",
+      "tags": ["екб", "Екатеринбург"],
+      "stages": [
+        {
+          "src": "http://1-trk.ru/images/i/pereezd/ekaterinburg/ekaterinburg2.jpg",
+          "title": "Цирк",
+          "location":  {
+            "lat": "56.800731",
+            "lon": "60.582367"
+          }
+        },
+        {
+          "src": "https://www.personalguide.ru/upload/userfiles/images/1141_original.jpg",
+          "title": "Какое-то здание",
+          "location":  {
+            "lat": "56.800731",
+            "lon": "60.582367"
+          }
+        }
+      ],
+      "likesCount": 20
+    },
+    {
+      "title": "Екатеринбург. Часть 3",
+      "description": "Гуляем по Екатеринбургу",
+      "city": "Екатеринбург",
+      "tags": ["екб", "Екатеринбург"],
+      "stages": [
+        {
+          "src": "http://m.ngzt.ru/userfiles/picitem/img-20150520200714-324.jpg",
+          "title": "Фонтан",
+          "location":  {
+            "lat": "56.800731",
+            "lon": "60.582367"
+          }
+        },
+        {
+          "src": "http://regions.kidsreview.ru/sites/default/files/styles/oww/public/05/10/2012_-_1141/arlekino_detskiy_cirk.jpg",
+          "title": "Цирк",
+          "location":  {
+            "lat": "56.800731",
+            "lon": "60.582367"
+          }
+        }
+      ],
+      "likesCount": 10
+    },
+    {
+      "title": "Я устал придумывать квесты",
+      "description": "Вот вам посто набор картинок с котэ",
+      "city": "Екатеринбург",
+      "tags": ["картиночки", "я устал"],
+      "stages": [
+        {
+          "src": "https://a.d-cd.net/dedee9as-960.jpg",
+          "title": "Котэ",
+          "location":  {
+            "lat": "56.800731",
+            "lon": "60.582367"
+          }
+        },
+        {
+          "src": "http://i.imgur.com/o4wOKIP.jpg",
+          "title": "Фонтан",
+          "location":  {
+            "lat": "56.800731",
+            "lon": "60.582367"
+          }
+        },
+        {
+          "src": "http://uposter.ru/uploads/images/00/00/01/2015/03/22/11affd.jpg",
+          "title": "Котик",
+          "location":  {
+            "lat": "56.800731",
+            "lon": "60.582367"
+          }
+        }
+      ],
+      "likesCount": 10
     }
   ]
 }
