@@ -24,14 +24,13 @@ export default class QuestInfo extends React.Component {
         const {user, handleBeginPlay, handlePhotos, sending} = this.props;
 
         var text;
-        if (user.isPlaying) {
+        if (user.started && !user.finished) {
             text = continueString;
         } else {
-            text = (user.isCreator || user.isFinished) ? showImagesString : beginString;
+            text = (user.isCreator || user.finished) ? showImagesString : beginString;
         }
 
-        const notStarted = !user.isPlaying && !user.isFinished;
-        const handleClick = (!user.isCreator && notStarted) ? handleBeginPlay : handlePhotos;
+        const handleClick = (!user.isCreator && !user.started) ? handleBeginPlay : handlePhotos;
 
         return (
             <div className={'quest-info block block_gray'}>

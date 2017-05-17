@@ -18,14 +18,14 @@ QuestSender.setSlug(slug);
 
 const isAuth = Boolean(Number(contentRoot.dataset.isAuth));
 const isCreator = Boolean(Number(contentRoot.dataset.isCreator));
-const isPlaying = Boolean(Number(contentRoot.dataset.isPlaying));
-const isFinished = Boolean(Number(contentRoot.dataset.isFinished));
+const started = Boolean(Number(contentRoot.dataset.isPlaying));
+const finished = Boolean(Number(contentRoot.dataset.isFinished));
 
 const user = {
     isAuth,
     isCreator: isAuth && isCreator,
-    isPlaying: isAuth && isPlaying,
-    isFinished: isAuth && isFinished
+    started: isAuth && started,
+    finished: isAuth && finished
 };
 
 const existGeolocation = navigator.geolocation !== undefined;

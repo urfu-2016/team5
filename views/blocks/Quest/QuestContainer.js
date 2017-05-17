@@ -11,13 +11,12 @@ export default class QuestContainer extends React.Component {
         super(props);
 
         const {user, existGeolocation} = this.props;
-        const started = user.isPlaying && !user.isFinished;
-        const message = started && !existGeolocation ? messageStrings[1] : null;
+        const message = user.started && !existGeolocation ? messageStrings[1] : null;
         this.state = {
             user,
-            showQuestInfo: !user.isPlaying,
-            mountQuestPhotos: user.isPlaying,
-            mountQuestInfo: !user.isPlaying,
+            showQuestInfo: !user.started || user.finished,
+            mountQuestPhotos: user.started && !user.finished,
+            mountQuestInfo: !user.started || user.finished,
             message
         };
 
@@ -39,7 +38,7 @@ export default class QuestContainer extends React.Component {
     handleBeginPlay() {
         this.setState(prevState => {
             const user = Object.assign({}, prevState.user);
-            user.isPlaying = true;
+            user.started = true;
 
             return {
                 showQuestInfo: false,
@@ -52,7 +51,7 @@ export default class QuestContainer extends React.Component {
     handleFinished() {
         this.setState(prevState => {
             const user = Object.assign({}, prevState.user);
-            user.isFinished = true;
+            user.finished = true;
 
             return {user};
         });
