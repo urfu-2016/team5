@@ -11,7 +11,8 @@ export default class QuestContainer extends React.Component {
         super(props);
 
         const {user, existGeolocation} = this.props;
-        const message = user.started && !existGeolocation ? messageStrings[1] : null;
+        const started = user.isPlaying && !user.isFinished;
+        const message = started && !existGeolocation ? messageStrings[1] : null;
         this.state = {
             user,
             showQuestInfo: !user.isPlaying,

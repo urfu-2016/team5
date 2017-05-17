@@ -25,17 +25,7 @@ const user = {
     isAuth,
     isCreator: isAuth && isCreator,
     isPlaying: isAuth && isPlaying,
-    isFinished: isAuth && isFinished,
-
-    get notStarted() {
-        return !this.isPlaying && !this.isFinished;
-    },
-    get started() {
-        return this.isAuth && this.isPlaying && !this.isFinished;
-    },
-    get finished() {
-        return this.isAuth && !this.isPlaying && this.isFinished;
-    }
+    isFinished: isAuth && isFinished
 };
 
 const existGeolocation = navigator.geolocation !== undefined;

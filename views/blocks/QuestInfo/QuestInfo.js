@@ -30,7 +30,8 @@ export default class QuestInfo extends React.Component {
             text = (user.isCreator || user.isFinished) ? showImagesString : beginString;
         }
 
-        const handleClick = (!user.isCreator && user.notStarted) ? handleBeginPlay : handlePhotos;
+        const notStarted = !user.isPlaying && !user.isFinished;
+        const handleClick = (!user.isCreator && notStarted) ? handleBeginPlay : handlePhotos;
 
         return (
             <div className={'quest-info block block_gray'}>
