@@ -41,9 +41,9 @@ function mockDelete() {
 
 describe('controller:stage', () => {
     let quest;
-    this.skip();
 
     beforeEach(async () => {
+        this.skip();
         await dbClearer.removeAll();
         await chaiRequest.createUserAndSignIn(userMocks.userWithCorrectPassword);
         const questData = questMocks.regularQuest;
