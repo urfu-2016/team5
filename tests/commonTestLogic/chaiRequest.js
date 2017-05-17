@@ -20,6 +20,7 @@ module.exports = function (server) {
 
         sendFormData(url, data, file) {
             return agent.post(url)
+                .set('content-type', 'multipart/form-data')
                 .field('title', data.title)
                 .field('description', data.description)
                 .field('lat', data.lat)

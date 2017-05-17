@@ -136,7 +136,7 @@ $('button[role="createQuest"]').on('click', function () {
         $.ajax({
             type: 'POST',
             url: '/api/quests/' + slug + '/stages',
-            contentType: false,
+            contentType: 'multipart/form-data',
             processData: false,
             data: formData
         });
