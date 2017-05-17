@@ -180,10 +180,16 @@ module.exports = {
         if (!quest) {
             throw new NotFoundError(constants.quest.questNotFoundErrorMessage);
         }
-
-        res.send({
-            data: await req.user.getPhotoStatuses(quest)
-        });
+        
+        if (quest.isMyQuest(req.user)) {
+            res.send({
+                data: await quest.getStages()
+            });
+        } else {
+            res.send({
+                data: await req.user.getPhotoStatuses(quest)
+            });
+        }
     },
 
     async checkPhoto(req, res) {
