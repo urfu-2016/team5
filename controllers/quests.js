@@ -27,10 +27,10 @@ async function getQuestObject(req, quest) {
 }
 
 function compareDate(firstQuest, secondQuest) {
-    const firstDate = moment(firstQuest);
-    const secondDate = moment(secondQuest);
+    const firstDate = moment(firstQuest.dateOfCreation);
+    const secondDate = moment(secondQuest.dateOfCreation);
 
-    return moment(firstDate).isBefore(secondDate) ? -1 : 1;
+    return firstDate.isBefore(secondDate) ? -1 : 1;
 }
 
 function comparePopularity(firstQuest, secondQuest) {
@@ -130,6 +130,7 @@ module.exports = {
 
     async renderAllQuests(req, res) {
         let quests = await Quest.getAll();
+        quests = quests.sort(compareDate);
         quests = await Promise.all(
             quests.map(quest => getQuestObject(req, quest))
         );
@@ -138,7 +139,6 @@ module.exports = {
             title: constants.quest.title,
             isAuth: req.user ? 1 : 0,
             quests: quests
-                .sort(compareDate)
                 .reverse()
                 .slice(0, 3),
             popularQuests: quests
