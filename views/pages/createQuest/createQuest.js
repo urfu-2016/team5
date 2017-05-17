@@ -137,6 +137,7 @@ $('button[role="createQuest"]').on('click', function () {
             type: 'POST',
             url: '/api/quests/' + slug + '/stages',
             contentType: 'multipart/form-data',
+            processData: false,
             data: formData
         });
     }
