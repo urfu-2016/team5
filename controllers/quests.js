@@ -30,11 +30,11 @@ function compareDate(firstQuest, secondQuest) {
     const firstDate = moment(firstQuest);
     const secondDate = moment(secondQuest);
 
-    return moment(firstDate).isBefore(secondDate);
+    return moment(firstDate).isBefore(secondDate) ? -1 : 1;
 }
 
 function comparePopularity(firstQuest, secondQuest) {
-    return firstQuest.likesCount < secondQuest.likesCount;
+    return firstQuest.likesCount < secondQuest.likesCount ? -1 : 1;
 }
 
 module.exports = {
@@ -139,9 +139,11 @@ module.exports = {
             isAuth: req.user ? 1 : 0,
             quests: quests
                 .sort(compareDate)
+                .reverse()
                 .slice(0, 3),
             popularQuests: quests
                 .sort(comparePopularity)
+                .reverse()
                 .slice(0, 3),
             createdQuests: quests
                 .filter(quest => quest.isMyQuest),
