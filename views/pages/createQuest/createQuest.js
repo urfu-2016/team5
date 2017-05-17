@@ -5,7 +5,7 @@ require('../../styles/input-autocomplete/input-autocomplete');
 require('../../styles/add-quest/add-quest');
 require('../../styles/tags/tags');
 
-$('#title, #city, #description').on('blur', function () {
+$('#title, #city, #description, [name="image"], [name="title"], .location').on('blur', function () {
     if ($(this).val() === '') {
         $(this).addClass('input_error');
         $(this).attr('placeholder', 'Please enter ' + $(this).attr('id'));
@@ -98,15 +98,17 @@ $('button[role="createQuest"]').on('click', function () {
             success: function (res) {
                 var slug = res.data.slug;
 
+                var promises = [];
                 $(stagesForms).each(function (idx, el) {
-                    sendStageForm(el, slug);
+                    $('.container').html('Квест успешно создан');
+                    promises.push(sendStageForm(el, slug));
                 });
-
-                $('.container').html('Квест успешно создан');
-
-                setTimeout(function () {
-                    window.location.href = '/quests/' + slug;
-                }, 2000);
+                Promise.all(promises)
+                    .then(function () {
+                        setTimeout(function () {
+                            window.location.href = '/quests/' + slug;
+                        }, 1000);
+                    });
             },
             error: function () {
                 $('.container').html('При создании квеста произошла ошибка, попробуйте еще раз');
@@ -133,12 +135,16 @@ $('button[role="createQuest"]').on('click', function () {
         formData.append('lat', latitude);
         formData.append('lon', longitude);
 
-        $.ajax({
-            type: 'POST',
-            url: '/api/quests/' + slug + '/stages',
-            contentType: false,
-            processData: false,
-            data: formData
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                type: 'POST',
+                url: '/api/quests/' + slug + '/stages',
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: resolve,
+                error: reject
+            });
         });
     }
 });

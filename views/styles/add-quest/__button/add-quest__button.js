@@ -39,7 +39,7 @@ function createTabContent(id) {
         '<div class="row">' +
         '<div class="col-4 add-quest">' +
         '<div class="add-quest__preview">' +
-        '<input name="image" type="file" accept="image/jpeg, image/png" class="add-quest__input">' +
+        '<input name="image" type="file" accept="image/jpeg, image/png" class="add-quest__input" required>' +
         '<div class="add-quest__info">Перетащите сюда картинку или нажмите на кнопку</div>' +
     '<div class="add-quest__footer">' +
         '<button type="button" class="btn add-quest__add-image">Добавить</button>' +
@@ -57,7 +57,7 @@ function createTabContent(id) {
     '</div>' +
     '<div class="input-group map-group">' +
         '<label>Месторасположение</label>' +
-        '<input type="text" class="location" id="coords' + id + '" hidden>' +
+        '<input type="text" class="location" id="coords' + id + '" hidden required>' +
         '<div class="ymap" id="map' + id + '"></div>' +
     '</div>' +
     '<div class="input-group">' +
