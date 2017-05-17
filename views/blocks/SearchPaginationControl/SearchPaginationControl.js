@@ -1,7 +1,7 @@
 import React from 'react';
 import './SearchPaginationControl.css';
 import b from 'b_';
-import {SearchPaginationControlString} from './../../constants/strings';
+import {SearchPaginationControlStrings} from './../../constants/strings';
 
 export default class SearchPaginationControl extends React.Component {
     constructor(props) {
@@ -30,7 +30,7 @@ export default class SearchPaginationControl extends React.Component {
             <div className={b('pagination')} onClick={this.handlePage}>
                 {(pageCount > 3 && currentPage > 2) &&
                     <button className={b('pagination', 'item', {type: 'start'})}
-                        data-page={1}>{SearchPaginationControlString.start}
+                        data-page={1}>{SearchPaginationControlStrings.start}
                     </button>}
                 {(pageCount > 2 && isLastPage) &&
                     <button className={b('pagination', 'item')} data-page={currentPage - 2}>{currentPage - 2}</button>}
@@ -43,7 +43,7 @@ export default class SearchPaginationControl extends React.Component {
                     <button className= {b('pagination', 'item')} data-page={currentPage + 2}>{currentPage + 2}</button>}
                 {(pageCount > 3 && currentPage < pageCount - 1) &&
                     <button className= {b('pagination', 'item', {type: 'end'})}
-                        data-page={pageCount}>{SearchPaginationControlString.end}
+                        data-page={pageCount}>{SearchPaginationControlStrings.end}
                     </button> }
             </div>
         );

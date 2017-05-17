@@ -1,4 +1,4 @@
-const cities = require('../../../controllers/cities.json');
+const quests = require('../../../scripts/quests.json');
 
 function getParams(title, name, options) {
     return {title, name, options};
@@ -7,8 +7,8 @@ function getParams(title, name, options) {
 function makeCitiesObject() {
     const citiesObj = {};
     citiesObj['Выберите город'] = '';
-    for (let city of cities) {
-        citiesObj[city.City] = city.City;
+    for (let quest of quests) {
+        citiesObj[quest.city] = quest.city;
     }
 
     return citiesObj;
