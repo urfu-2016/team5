@@ -15,8 +15,8 @@ function getStageData(req, cloudinaryFile) {
         title: req.body.title,
         description: req.body.description || '',
         location: {
-            lat: req.body.location.lat,
-            lon: req.body.location.lon
+            lat: req.body.lat,
+            lon: req.body.lon
         }
     };
 }
@@ -73,8 +73,8 @@ module.exports = {
             title: req.body.title,
             description: req.body.description,
             location: {
-                lat: req.body.location.lat,
-                lon: req.body.location.lon
+                lat: req.body.lat,
+                lon: req.body.lon
             }
         };
 

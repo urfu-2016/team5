@@ -23,7 +23,8 @@ module.exports = function (server) {
                 .set('content-type', 'multipart/form-data')
                 .field('title', data.title)
                 .field('description', data.description)
-                .field('location', data.location)
+                .field('lat', data.lat)
+                .field('lon', data.lon)
                 .attach('image', fs.readFileSync(file), file);
         },
 
@@ -32,7 +33,8 @@ module.exports = function (server) {
                 .set('content-type', 'multipart/form-data')
                 .field('title', data.title)
                 .field('description', data.description)
-                .field('location', data.location)
+                .field('lat', data.lat)
+                .field('lon', data.lon)
                 .attach('image', fs.readFileSync(file), file);
         },
 

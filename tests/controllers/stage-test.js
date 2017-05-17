@@ -61,7 +61,7 @@ describe('controller:stage', () => {
 
             res.status.should.equal(HttpStatus.OK);
             res.body.data.src.length.should.not.equal(0);
-            res.body.data.location.should.equal(stageMocks.stage.location);
+            res.body.data.location.lat.should.equal(stageMocks.stage.lat);
             res.body.data.description.should.equal(stageMocks.stage.description);
             res.body.data.title.should.equal(stageMocks.stage.title);
             uploadNock.done();
@@ -80,7 +80,7 @@ describe('controller:stage', () => {
             res.status.should.equal(HttpStatus.OK);
             res.body.data.src.should.not.equal(image.src);
             res.body.data.shortid.should.equal(image.shortid);
-            res.body.data.location.should.equal(sendData.location);
+            res.body.data.location.lat.should.equal(sendData.lat);
             res.body.data.description.should.equal(sendData.description);
             res.body.data.title.should.equal(sendData.title);
             uploadNock.done();

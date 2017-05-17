@@ -1,6 +1,17 @@
 .ymap
 {
     border: 1px solid #111;
-    width: 400px;
+    width: 300px;
     height: 300px;
+    display: inline-block;
+    margin: 0 auto;
+}
+
+@media (max-width: 360px)
+{
+    .ymap
+    {
+        width: 200px;
+        height: 200px;
+    }
 }

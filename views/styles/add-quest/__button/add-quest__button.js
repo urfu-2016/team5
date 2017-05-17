@@ -46,7 +46,6 @@ function createTabContent(id) {
         '</div>' +
         '</div>' +
         '<div class="add-quest__image hide">' +
-        '<span class="add-quest__action action_rotate"></span>' +
         '<span class="add-quest__action action_delete"></span>' +
         '<img class="rotate0deg" src="" alt="">' +
         '</div>' +
@@ -56,7 +55,7 @@ function createTabContent(id) {
         '<label>Название</label>' +
         '<input name="title" type="text" class="input-group__input input_dark title" maxlength="30" required>' +
     '</div>' +
-    '<div class="input-group">' +
+    '<div class="input-group map-group">' +
         '<label>Месторасположение</label>' +
         '<input type="text" class="location" id="coords' + id + '" hidden>' +
         '<div class="ymap" id="map' + id + '"></div>' +
