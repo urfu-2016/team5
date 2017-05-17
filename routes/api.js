@@ -63,7 +63,7 @@ router.route('/autocomplete')
     .post(getAction(autocompleteController, 'getCities'));
 
 router.route('/quests/:slug/stages')
-    .post(getAction(authController, 'authorizedOnly'), multipart(), getAction(stagesController, 'add'))
+    .post(getAction(authController, 'authorizedOnly'), upload.single('image'), multipart(), getAction(stagesController, 'add'))
     .get(getAction(stagesController, 'getAllByQuest'));
 
 router.route('/quests/:slug/stages/:stageId')
