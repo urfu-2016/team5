@@ -14,7 +14,10 @@ function getStageData(req, cloudinaryFile) {
         cloudinaryId: cloudinaryFile.public_id,
         title: req.body.title,
         description: req.body.description || '',
-        location: req.body.location || ''
+        location: {
+            lat: req.body.lat,
+            lon: req.body.lon
+        }
     };
 }
 
@@ -69,7 +72,10 @@ module.exports = {
         const stageData = {
             title: req.body.title,
             description: req.body.description,
-            location: req.body.location
+            location: {
+                lat: req.body.lat,
+                lon: req.body.lon
+            }
         };
 
         if (!stage) {

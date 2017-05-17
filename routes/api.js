@@ -38,10 +38,10 @@ router.route('/quests/:slug/info')
     .get(questsController.getInfo);
 
 router.route('/quests/:slug/photos')
-    .get(authController.authorizedOnly, questsController.getPhotoStatuses);
+    .get(authController.authorizedOnly, getAction(questsController, 'getPhotoStatuses'));
 
 router.route('/quests/:slug/photos/:id/check')
-    .post(authController.authorizedOnly, questsController.checkPhoto);
+    .post(authController.authorizedOnly, getAction(questsController, 'checkPhoto'));
 
 router.route('/quests/:slug/edit')
     .post(authController.authorizedOnly, questsController.updateQuest);

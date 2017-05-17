@@ -1,4 +1,7 @@
 /* global $:true */
+/* global ymaps:true */
+
+var init = require('../../ymap/ymap');
 
 $('main').on('click', '.add-quest__button', function () {
     $('.add-quest__tabs').find('.tabs__link.active').removeClass('active');
@@ -10,6 +13,7 @@ $('main').on('click', '.add-quest__button', function () {
     $('.add-quest__tabs').append(tab);
 
     var tabContent = createTabContent(id);
+    ymaps.ready(init.bind(this, id));
     $('.quests-content').append(tabContent);
 });
 
@@ -42,7 +46,6 @@ function createTabContent(id) {
         '</div>' +
         '</div>' +
         '<div class="add-quest__image hide">' +
-        '<span class="add-quest__action action_rotate"></span>' +
         '<span class="add-quest__action action_delete"></span>' +
         '<img class="rotate0deg" src="" alt="">' +
         '</div>' +
@@ -52,9 +55,10 @@ function createTabContent(id) {
         '<label>Название</label>' +
         '<input name="title" type="text" class="input-group__input input_dark title" maxlength="30" required>' +
     '</div>' +
-    '<div class="input-group">' +
+    '<div class="input-group map-group">' +
         '<label>Месторасположение</label>' +
-        '<input name="location" type="text" class="input-group__input input_dark location" required>' +
+        '<input type="text" class="location" id="coords' + id + '" hidden>' +
+        '<div class="ymap" id="map' + id + '"></div>' +
     '</div>' +
     '<div class="input-group">' +
         '<label>Описание</label>' +
@@ -65,3 +69,4 @@ function createTabContent(id) {
         '<button type="button" class="btn btn_primary float_right add-quest_delete">Удалить</button>' +
         '</div>';
 }
+// '<input name="location" type="text" class="input-group__input input_dark location" required>' +
