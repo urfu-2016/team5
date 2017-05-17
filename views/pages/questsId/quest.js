@@ -17,10 +17,16 @@ PhotoSender.setSlug(slug);
 QuestSender.setSlug(slug);
 
 const isAuth = Boolean(Number(contentRoot.dataset.isAuth));
-const isCreator = isAuth && Boolean(Number(contentRoot.dataset.isCreator));
-const isPlaying = isAuth && Boolean(Number(contentRoot.dataset.isPlaying));
+const isCreator = Boolean(Number(contentRoot.dataset.isCreator));
+const started = Boolean(Number(contentRoot.dataset.isPlaying));
+const finished = Boolean(Number(contentRoot.dataset.isFinished));
 
-const user = {isAuth, isCreator, isPlaying};
+const user = {
+    isAuth,
+    isCreator: isAuth && isCreator,
+    started: isAuth && started,
+    finished: isAuth && finished
+};
 
 const existGeolocation = navigator.geolocation !== undefined;
 

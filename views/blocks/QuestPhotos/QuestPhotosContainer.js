@@ -28,9 +28,15 @@ export default class QuestPhotosContainer extends React.Component {
             const photos = prevState.photos.slice();
             photos[position] = Object.assign({}, photos[position]);
             photos[position].status = data.status;
+            photos[position].title = data.title;
+            photos[position].description = data.description;
 
             return {photos};
         });
+
+        if (data.finished) {
+            this.props.handleFinished();
+        }
     }
 
     render() {

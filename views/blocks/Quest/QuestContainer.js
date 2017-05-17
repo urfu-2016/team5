@@ -11,18 +11,19 @@ export default class QuestContainer extends React.Component {
         super(props);
 
         const {user, existGeolocation} = this.props;
-        const message = !existGeolocation && user.isPlaying ? messageStrings[1] : null;
+        const message = user.started && !existGeolocation ? messageStrings[1] : null;
         this.state = {
             user,
-            showQuestInfo: !user.isPlaying,
-            mountQuestPhotos: user.isPlaying,
-            mountQuestInfo: !user.isPlaying,
+            showQuestInfo: !user.started || user.finished,
+            mountQuestPhotos: user.started && !user.finished,
+            mountQuestInfo: !user.started || user.finished,
             message
         };
 
         this.handleShowQuestInfo = this.handleShowQuestInfo.bind(this);
         this.handleBeginPlay = this.handleBeginPlay.bind(this);
         this.handleShowError = this.handleShowError.bind(this);
+        this.handleFinished = this.handleFinished.bind(this);
         this.handleNext = this.handleNext.bind(this);
     }
 
@@ -37,13 +38,22 @@ export default class QuestContainer extends React.Component {
     handleBeginPlay() {
         this.setState(prevState => {
             const user = Object.assign({}, prevState.user);
-            user.isPlaying = true;
+            user.started = true;
 
             return {
                 showQuestInfo: false,
                 mountQuestPhotos: true,
                 user
             };
+        });
+    }
+
+    handleFinished() {
+        this.setState(prevState => {
+            const user = Object.assign({}, prevState.user);
+            user.finished = true;
+
+            return {user};
         });
     }
 
@@ -71,6 +81,7 @@ export default class QuestContainer extends React.Component {
                 handleInfo={this.handleShowQuestInfo}
                 handleShowError={this.handleShowError}
                 handlePhotos={this.handleNext}
+                handleFinished={this.handleFinished}
             />
         );
     }
