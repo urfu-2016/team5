@@ -7,6 +7,18 @@ const User = require('../models/user');
 const emailClient = require('../libs/email-client');
 const constants = require('../constants/constants');
 const QueriesStorage = require('../models/queriesStorage');
+const millisecondsMinute = 60000;
+
+async function checkLastRequestTime(email) {
+    const query = await QueriesStorage.findOne({email});
+    if (query.passwordReset) {
+        const lastUpdate = query.passwordReset.createdAt;
+        const timePast = Date.now() - lastUpdate;
+        if (timePast < millisecondsMinute) {
+            throw new BadRequestError('Прошло слишком мало времени с последнего запроса. Попробуйте через минуту.');
+        }
+    }
+}
 
 module.exports = {
     signIn(req, res, next) {
@@ -58,6 +70,7 @@ module.exports = {
             throw new NotFoundError(constants.controllers.user.userNotFoundErrorMessage);
         }
 
+        await checkLastRequestTime(email);
         try {
             const queryHash = await QueriesStorage.updatePasswordResetQuery(email);
             await emailClient.sendPasswordResetMail(email, queryHash);

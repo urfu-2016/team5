@@ -43,6 +43,11 @@
     width: 100%;
 }
 
+.add-quest__add-image
+{
+    color: #000 !important;
+}
+
 @media (max-width: 560px)
 {
     .map-group
