@@ -27,7 +27,10 @@ export default class SearchBarParams extends React.Component {
 
         const imagesCountValue = {
             from: params[imagesCount.name.from],
-            to: params[imagesCount.name.to]};
+            to: params[imagesCount.name.to],
+            max: 15,
+            min: 1
+        };
 
         return (
             <div className={b('container', {hidden: !this.props.showParams})}>

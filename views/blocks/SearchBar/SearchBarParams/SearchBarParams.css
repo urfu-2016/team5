@@ -59,11 +59,6 @@
     min-width: 250px;
 }
 
-.param-item input
-{
-    padding: 0;
-}
-
 .searchbar__params-group_hidden > .param-item
 {
     opacity: 0;
