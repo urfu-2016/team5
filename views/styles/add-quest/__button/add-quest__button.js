@@ -39,13 +39,14 @@ function createTab(id) {
 }
 
 function createTabContent(id) {
-    return '<div class="tab-content__panel active" id="' + id + '" role="tabpanel">' +
+    return (
+        '<div class="tab-content__panel active" id="' + id + '" role="tabpanel">' +
         '<div class="row">' +
         '<div class="col-4 add-quest">' +
         '<div class="add-quest__preview">' +
-        '<input name="image" type="file" accept="image/jpeg, image/png" class="add-quest__input" required>' +
+        '<input name="image" type="file" accept="image/jpeg, image/png" class="add-quest__input">' +
         '<div class="add-quest__info">Перетащите сюда картинку или нажмите на кнопку</div>' +
-    '<div class="add-quest__footer">' +
+        '<div class="add-quest__footer">' +
         '<button type="button" class="btn add-quest__add-image">Добавить</button>' +
         '</div>' +
         '</div>' +
@@ -58,20 +59,21 @@ function createTabContent(id) {
         '<div class="input-group">' +
         '<label>Название</label>' +
         '<input name="title" type="text" class="input-group__input input_dark title" maxlength="30" required>' +
-    '</div>' +
-    '<div class="input-group map-group">' +
+        '</div>' +
+        '<div class="input-group map-group">' +
         '<label>Месторасположение</label>' +
-        '<input type="text" class="location" id="coords' + id + '" hidden required>' +
+        '<input type="text" class="location" id="coords' + id + '" hidden>' +
         '<div class="ymap" id="map' + id + '"></div>' +
-    '</div>' +
-    '<div class="input-group">' +
+        '</div>' +
+        '<div class="input-group">' +
         '<label>Описание</label>' +
         '<textarea name="description" class="input-group__textarea description"></textarea>' +
         '</div>' +
         '</div>' +
         '</div>' +
         '<button type="button" class="btn btn_primary float_right add-quest_delete">Удалить</button>' +
-        '</div>';
+        '</div>'
+    );
 }
 
 function init(id, position) {

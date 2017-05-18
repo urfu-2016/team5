@@ -182,3 +182,85 @@ $('.quests-content').on('click', '.add-quest_delete', function () {
         $(newActiveTabContent[0]).addClass('active');
     }
 });
+
+// if ($.browser.safari) {
+//     $('button[role="createQuest"]').remove();
+//     $('#upload-image-input').css('display', 'inline');
+// }
+
+$('#upload-image-input').on('change', function () {
+    var stagesForms = $('.quests-content .tab-content__panel');
+    var tags = [];
+
+    $('.tag').each(function (idx, el) {
+        var tag = $(el).text().trim();
+        tags.push(tag);
+    });
+
+    sendForm();
+
+    function sendForm() {
+        var msg = {};
+        msg.title = $('#title').val();
+        msg.description = $('#description').val();
+        msg.city = $('#city').val();
+        msg.tags = tags;
+
+        $.ajax({
+            type: 'POST',
+            url: '/api/quests',
+            data: msg,
+            success: function (res) {
+                var slug = res.data.slug;
+
+                $(stagesForms).each(function (idx, el) {
+                    sendStageForm(el, slug);
+                });
+
+                $('.container').html('Квест успешно создан');
+
+                setTimeout(function () {
+                    window.location.href = '/quests/' + slug;
+                }, 2000);
+            },
+            error: function () {
+                $('.container').html('При создании квеста произошла ошибка, попробуйте еще раз');
+
+                setTimeout(function () {
+                    window.location.reload();
+                }, 2000);
+            }
+        });
+    }
+
+    function sendStageForm(form, slug) {
+        var image = $(form).find('#upload-image-input').files[0];
+        var reader = new FileReader();
+
+        reader.addEventListener('load', function () {
+            var file = reader.result;
+            var title = $(form).find('.title');
+            var description = $(form).find('.description');
+            var location = $(form).find('.location');
+            var latitude = location.val().split(',')[0];
+            var longitude = location.val().split(',')[1];
+
+            var formData = new FormData();
+            formData.append('image', file);
+            formData.append('title', title.val());
+            formData.append('description', description.val());
+            formData.append('lat', latitude);
+            formData.append('lon', longitude);
+
+            $.ajax({
+                type: 'POST',
+                url: '/api/quests/' + slug + '/stages',
+                contentType: false,
+                processData: false,
+                data: formData
+            });
+        });
+
+        reader.readAsBinaryString(image);
+    }
+});
