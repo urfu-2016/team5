@@ -109,6 +109,11 @@ $('button[role="createQuest"]').on('click', function () {
                         setTimeout(function () {
                             window.location.href = '/quests/' + slug;
                         }, 1000);
+                    })
+                    .catch(function () {
+                        setTimeout(function () {
+                            window.location.href = '/quests/' + slug;
+                        }, 1000);
                     });
             },
             error: function () {
