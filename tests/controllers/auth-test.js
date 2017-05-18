@@ -172,19 +172,6 @@ describe('controller:auth', () => {
                 err.response.text.should.equal(message);
             }
         });
-
-        it('should refresh reset password query data', async () => {
-            await chaiRequest.post('/signup', mocks.userWithCorrectPassword);
-            await chaiRequest.post('/logout');
-
-            await chaiRequest.post('/password-reset', {email});
-            const firstQuery = await QueriesStorage.findOne({email});
-
-            await chaiRequest.post('/password-reset', {email});
-            const secondQuery = await QueriesStorage.findOne({email});
-
-            firstQuery.passwordReset.salt.should.not.equal(secondQuery.passwordReset.salt);
-        });
     });
 
     describe('password reset', () => {
