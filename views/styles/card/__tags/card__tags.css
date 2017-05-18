@@ -6,6 +6,11 @@
     overflow: hidden;
 }
 
+.card__tags > li
+{
+    list-style: none;
+}
+
 .card__tags a
 {
     cursor: pointer;
