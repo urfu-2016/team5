@@ -34,12 +34,12 @@ function generateId() {
 
 function createTab(id) {
     return '<li class="tabs__item">\n' +
-        '<a class="tabs__link active" href="#' + id + '" role="tab">Без названия</a>\n' +
+        '<a class="tabs__link active" href="#' + $.parseHTML(id)[0].data + '" role="tab">Без названия</a>\n' +
     '</li>';
 }
 
 function createTabContent(id) {
-    return '<div class="tab-content__panel active" id="' + $.parseHTML(id)[0] + '" role="tabpanel">' +
+    return '<div class="tab-content__panel active" id="' + $.parseHTML(id)[0].data + '" role="tabpanel">' +
         '<div class="row">' +
         '<div class="col-4 add-quest">' +
         '<div class="add-quest__preview">' +
@@ -61,8 +61,8 @@ function createTabContent(id) {
     '</div>' +
     '<div class="input-group map-group">' +
         '<label>Месторасположение</label>' +
-        '<input type="text" class="location" id="coords' + $.parseHTML(id)[0] + '" hidden required>' +
-        '<div class="ymap" id="map' + $.parseHTML(id)[0] + '"></div>' +
+        '<input type="text" class="location" id="coords' + $.parseHTML(id)[0].data + '" hidden required>' +
+        '<div class="ymap" id="map' + $.parseHTML(id)[0].data + '"></div>' +
     '</div>' +
     '<div class="input-group">' +
         '<label>Описание</label>' +
