@@ -1,7 +1,11 @@
 /* global $:true */
 /* global ymaps:true */
 
-var init = require('../../ymap/ymap');
+$('.map-group').each((idx, el) => {
+    var id = $(el).find('.ymap').attr('id');
+    var coords = $(el).find('.location').val();
+    ymaps.ready(init.bind(this, id.slice(3, id.length), [coords.split(',')[0], coords.split(',')[1]]));
+});
 
 $('main').on('click', '.add-quest__button', function () {
     $('.add-quest__tabs').find('.tabs__link.active').removeClass('active');
@@ -69,4 +73,73 @@ function createTabContent(id) {
         '<button type="button" class="btn btn_primary float_right add-quest_delete">Удалить</button>' +
         '</div>';
 }
-// '<input name="location" type="text" class="input-group__input input_dark location" required>' +
+
+function init(id, position) {
+    var yekatCoords = [56.837527, 60.605943];
+    var map = new ymaps.Map('map' + id, {
+        center: yekatCoords,
+        zoom: 12
+    });
+    var placemark = new ymaps.Placemark(yekatCoords);
+    getAddress(yekatCoords, placemark, id);
+    map.controls.remove('geolocationControl');
+    map.geoObjects.add(placemark);
+
+    var searchControl = map.controls.get('searchControl');
+    searchControl.events.add('resultselect', function (e) {
+        var index = e.get('index');
+        var target = e.get('target');
+        target.getResult(index)
+            .then(function (result) {
+                var coords = result.geometry.getCoordinates();
+                updatePlacemark(placemark, coords, id);
+            });
+        target.hideResult();
+    });
+
+    // Обработк кликов
+    map.events.add('click', function (e) {
+        var coords = e.get('coords');
+        updatePlacemark(placemark, coords, id);
+    });
+
+    var geolocationControl = addGeolocation(placemark, id);
+    map.controls.add(geolocationControl);
+
+    if (position) {
+        updatePlacemark(placemark, position, id);
+    }
+}
+
+function getAddress(coords, placemark, id) {
+    placemark.properties.set('iconCaption', 'поиск...');
+    ymaps.geocode(coords).then(function (res) {
+        var firstGeoObject = res.geoObjects.get(0);
+        placemark.properties
+            .set({
+                iconCaption: [
+                    firstGeoObject.getLocalities().length ? firstGeoObject.getLocalities() : firstGeoObject.getAdministrativeAreas(),
+                    firstGeoObject.getThoroughfare() || firstGeoObject.getPremise()
+                ].filter(Boolean).join(', '),
+                balloonContent: firstGeoObject.getAddressLine()
+            });
+        document.getElementById('coords' + id).value = coords;
+    });
+}
+
+function addGeolocation(placemark, id) {
+    var geolocationControl = new ymaps.control.GeolocationControl({
+        options: {noPlacemark: true}
+    });
+    geolocationControl.events.add('locationchange', function (event) {
+        var position = event.get('position');
+        updatePlacemark(placemark, position, id);
+    });
+
+    return geolocationControl;
+}
+
+function updatePlacemark(placemark, coords, id) {
+    placemark.geometry.setCoordinates(coords);
+    getAddress(coords, placemark, id);
+}

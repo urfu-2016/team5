@@ -4,6 +4,7 @@ require('../../styles/container/container.css');
 require('../../styles/input-autocomplete/input-autocomplete');
 require('../../styles/add-quest/add-quest');
 require('../../styles/tags/tags');
+require('../../styles/ymap/ymap');
 
 $('#title, #city, #description, [name="image"], [name="title"], .location').on('blur', function () {
     if ($(this).val() === '') {
