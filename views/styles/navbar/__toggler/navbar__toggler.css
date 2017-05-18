@@ -30,3 +30,11 @@
         display: block;
     }
 }
+
+@media (min-width: 991px)
+{
+    .collapse.show
+    {
+        display: flex !important;
+    }
+}
