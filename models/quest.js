@@ -236,10 +236,9 @@ questSchema.methods.getStageByShortId = async function (id) {
     }
 };
 
-questSchema.statics.addPlayingUser = async function (slug) {
-    let quest = await this.findOne({slug});
-    quest.userCount++;
-    await quest.save();
+questSchema.methods.addPlayingUser = async function () {
+    this.userCount++;
+    await this.save();
 };
 
 questSchema.methods.getAuthor = async function () {

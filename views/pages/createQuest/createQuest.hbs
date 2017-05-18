@@ -41,6 +41,7 @@
             {{#equal quest.userCount 0}}
                 <button class="btn btn_primary add-quest__button">+</button>
             {{else}}
+                <p>Редактирование запрещено. Ктото из пользователей уже начал прохождение квеста</p>
                 <button class="btn btn_primary btn_disabled">+</button>
             {{/equal}}
             <ul class="tabs add-quest__tabs" role="tablist">
@@ -64,15 +65,22 @@
                                         </div>
                                     </div>
                                 <div class="add-quest__image">
-                                    <span class="add-quest__action action_delete"></span>
+                                    {{#equal userCount 0}}
+                                        <span class="add-quest__action action_delete"></span>
+                                    {{/equal}}
                                     <img class="rotate0deg" src="{{src}}" alt="">
                                     </div>
                                 </div>
                             <div class="col-8">
                                 <div class="input-group">
                                     <label>Название</label>
+                                    {{#equal userCount 0}}
                                     <input name="title" type="text" class="input-group__input input_dark title" maxlength="30" required
-                                        value="{{title}}">
+                                        value="{{title}}" >
+                                    {{else}}
+                                        <input name="title" type="text" class="input-group__input input_dark title" maxlength="30" required
+                                               value="{{title}}" disabled>
+                                    {{/equal}}
                                     </div>
                                 <div class="input-group map-group">
                                     <label>Месторасположение</label>
@@ -81,7 +89,11 @@
                                     </div>
                                 <div class="input-group">
                                     <label>Описание</label>
-                                    <textarea name="description" class="input-group__textarea description">{{description}}</textarea>
+                                    {{#equal userCount 0}}
+                                        <textarea name="description" class="input-group__textarea description">{{description}}</textarea>
+                                    {{else}}
+                                        <textarea disabled name="description" class="input-group__textarea description">{{description}}</textarea>
+                                    {{/equal}}
                                     </div>
                                 </div>
                             </div>

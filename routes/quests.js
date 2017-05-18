@@ -58,8 +58,11 @@ router.route('/:slug/edit').get(async function (req, res) {
 
     if (questData) {
         const isCreator = questData.isMyQuest(req.user);
-        const stages = await questData.getStages();
-
+        let stages = await questData.getStages();
+        stages = stages.map(stage => {
+            stage.userCount = questData.userCount;
+            return stage;
+        });
         const renderData = {
             title: questData.title,
             quest: questData,
