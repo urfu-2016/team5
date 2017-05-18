@@ -18,7 +18,9 @@
         <!-- <p class="card__text">{{description}}</p> -->
         <ul class="card__tags">
             {{#each tags}}
-                <a href="/quests?type=tag&tag={{this}}">{{this}}</a>
+                <li>
+                    <a href="/quests?type=tag&tag={{this}}">{{this}}</a>
+                </li>
             {{/each}}
         </ul>
     </div>

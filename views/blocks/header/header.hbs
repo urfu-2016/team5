@@ -7,7 +7,7 @@
             <a class="navbar__brand" href="/">
                 PHOTOQUEST
             </a>
-            <div class="navbar__navigation-list collapse" id="navigation-list" aria-expanded="false">
+            <div role="collapse" class="navbar__navigation-list collapse" id="navigation-list" aria-expanded="false">
                 <ul class="navbar__categories left">
                     <li class="navbar__item
                      {{#equal activePage '/quests'}}
@@ -80,7 +80,7 @@
                                 <div class="input-group">
                                     <i class="fa fa-envelope"></i>
                                     <input
-                                            name="login" type="text" id="form1"
+                                            name="login" type="text" id="form1_l"
                                             class="input-group__input" placeholder="Имя пользователя или email" required
                                     >
                                 </div>
@@ -148,7 +148,7 @@
                                 <div class="input-group">
                                     <i class="fa fa-envelope"></i>
                                     <input
-                                            name="email" type="email" id="form1"
+                                            name="email" type="email" id="form1_e"
                                             class="input-group__input" placeholder="Email"
                                             required
                                     >

@@ -20,6 +20,7 @@ module.exports = {
     },
 
     quest: {
+        title: 'PhotoQuest',
         questNotFoundErrorMessage: 'Такого квеста не существует'
     },
 

@@ -39,7 +39,7 @@ function createTab(id) {
 }
 
 function createTabContent(id) {
-    return '<div class="tab-content__panel active" id="' + id + '" role="tabpanel">' +
+    return '<div class="tab-content__panel active" id="' + $.parseHTML(id) + '" role="tabpanel">' +
         '<div class="row">' +
         '<div class="col-4 add-quest">' +
         '<div class="add-quest__preview">' +
@@ -61,8 +61,8 @@ function createTabContent(id) {
     '</div>' +
     '<div class="input-group map-group">' +
         '<label>Месторасположение</label>' +
-        '<input type="text" class="location" id="coords' + id + '" hidden required>' +
-        '<div class="ymap" id="map' + id + '"></div>' +
+        '<input type="text" class="location" id="coords' + $.parseHTML(id) + '" hidden required>' +
+        '<div class="ymap" id="map' + $.parseHTML(id) + '"></div>' +
     '</div>' +
     '<div class="input-group">' +
         '<label>Описание</label>' +
