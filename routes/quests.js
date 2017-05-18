@@ -23,7 +23,7 @@ router.get('/create', function (req, res) {
             role: 'createQuest'
         },
         quest: {
-            userCount: 0 // Костыль
+            userCount: 0
         },
         isAuth: req.user ? 1 : 0
     };
