@@ -169,6 +169,7 @@ module.exports = {
             throw new NotFoundError(constants.quest.questNotFoundErrorMessage);
         }
         if (await req.user.startQuest(quest)) {
+            await quest.addPlayingUser();
             res.status(httpStatus.OK).send();
         } else {
             res.status(httpStatus.BAD_REQUEST).send();
