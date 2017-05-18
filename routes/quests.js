@@ -58,25 +58,30 @@ router.route('/:slug/edit').get(async function (req, res) {
 
     if (questData) {
         const isCreator = questData.isMyQuest(req.user);
-        let stages = await questData.getStages();
-        stages = stages.map(stage => {
-            stage.userCount = questData.userCount;
-            return stage;
-        });
-        const renderData = {
-            title: questData.title,
-            quest: questData,
-            stages: stages,
-            submitButton: {
-                text: 'Изменить',
-                role: 'editQuest'
-            },
-            action: 'Редактирование квеста',
-            isAuth: req.user ? 1 : 0,
-            isCreator: isCreator ? 1 : 0
-        };
 
-        res.render('createQuest/createQuest', renderData);
+        if (isCreator) {
+            let stages = await questData.getStages();
+            stages = stages.map(stage => {
+                stage.userCount = questData.userCount;
+                return stage;
+            });
+            const renderData = {
+                title: questData.title,
+                quest: questData,
+                stages: stages,
+                submitButton: {
+                    text: 'Изменить',
+                    role: 'editQuest'
+                },
+                action: 'Редактирование квеста',
+                isAuth: req.user ? 1 : 0,
+                isCreator: isCreator ? 1 : 0
+            };
+
+            res.render('createQuest/createQuest', renderData);
+        } else {
+            res.render('notFound/notFound');
+        }
     } else {
         res.render('notFound/notFound');
     }
