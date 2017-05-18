@@ -17,10 +17,12 @@ export default class QuestContainer extends React.Component {
             showQuestInfo: !user.started || user.finished,
             mountQuestPhotos: user.started && !user.finished,
             mountQuestInfo: !user.started || user.finished,
-            message
+            message,
+            showFinishMessage: false
         };
 
         this.handleShowQuestInfo = this.handleShowQuestInfo.bind(this);
+        this.hideFinishMessage = this.hideFinishMessage.bind(this);
         this.handleBeginPlay = this.handleBeginPlay.bind(this);
         this.handleShowError = this.handleShowError.bind(this);
         this.handleFinished = this.handleFinished.bind(this);
@@ -53,7 +55,7 @@ export default class QuestContainer extends React.Component {
             const user = Object.assign({}, prevState.user);
             user.finished = true;
 
-            return {user};
+            return {user, showFinishMessage: true};
         });
     }
 
@@ -62,6 +64,10 @@ export default class QuestContainer extends React.Component {
             showQuestInfo: false,
             mountQuestPhotos: true
         });
+    }
+
+    hideFinishMessage() {
+        this.setState({showFinishMessage: false});
     }
 
     handleShowQuestInfo() {
@@ -82,6 +88,7 @@ export default class QuestContainer extends React.Component {
                 handleShowError={this.handleShowError}
                 handlePhotos={this.handleNext}
                 handleFinished={this.handleFinished}
+                hideFinishMessage={this.hideFinishMessage}
             />
         );
     }

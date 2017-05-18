@@ -27,8 +27,10 @@ export default class Quest extends React.Component {
 
     render() {
         const {
+            hideFinishMessage,
             existGeolocation,
             mountQuestPhotos,
+            showFinishMessage,
             handleShowError,
             handleFinished,
             mountQuestInfo,
@@ -42,25 +44,38 @@ export default class Quest extends React.Component {
         } = this.props;
 
         return (
-                <div className={quest()}>
-                    {message &&
-                        <div className="message_error">
-                            {message}
+            <div className={quest()}>
+                {message &&
+                    <div className={b('message', {error: true})}>
+                        <span>{message}</span>
+                    </div>
+                }
+                {showFinishMessage &&
+                    <div className={quest('message')}>
+                        <div className={b('message', {finished: true})}>
+                            <span>Поздравляем!</span>
+                            <br></br>
+                            <span>Вы прошли квест!</span>
+                             <button className={b('message', 'button')}
+                                onClick={hideFinishMessage}>
+                                <i className="fa fa-times" aria-hidden="true"></i>
+                            </button>
                         </div>
-                    }
-                    {mountQuestInfo &&
-                        <div className={quest('quest-info')}>
-                            <QuestInfoContainer
-                                user={user}
-                                existGeolocation={existGeolocation}
-                                showQuestInfo={showQuestInfo}
-                                handleBeginPlay={onAction}
-                                handlePhotos={handlePhotos}
-                                beginPlayRequest={sending}
-                            />
-                            <Comments isAuth={user.isAuth} showComments={showQuestInfo}/>
-                        </div>
-                    }
+                    </div>
+                }
+                {mountQuestInfo &&
+                    <div className={quest('quest-info')}>
+                        <QuestInfoContainer
+                            user={user}
+                            existGeolocation={existGeolocation}
+                            showQuestInfo={showQuestInfo}
+                            handleBeginPlay={onAction}
+                            handlePhotos={handlePhotos}
+                            beginPlayRequest={sending}
+                        />
+                        <Comments isAuth={user.isAuth} showComments={showQuestInfo}/>
+                    </div>
+                }
                 {mountQuestPhotos &&
                     <div className={quest('quest-photos')}>
                         <QuestPhotosContainer
