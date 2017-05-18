@@ -4,12 +4,13 @@ import './../Input.css';
 import b from 'b_';
 import {ImagesCountControlStrings} from './../../constants/strings';
 
-function item(title, value, name) {
+function Item(props) {
     return (
         <div className={b('images-count-control', 'item')}>
-            <span>{title}</span>
-            <input className={`input ${b('images-count-control', 'input')}`} type="number"
-                value={value} name={name}>
+            <span>{props.title}</span>
+            <input value={props.value} name={props.name} type="number"
+                min={props.min} max={props.max} required
+                className={`input ${b('images-count-control', 'input')}`}>
             </input>
         </div>);
 }
@@ -20,8 +21,20 @@ export default class ImagesCountControl extends React.Component {
 
         return (
             <div className={b('images-count-control')}>
-                {item(ImagesCountControlStrings.from, value.from, name.from)}
-                {item(ImagesCountControlStrings.to, value.to, name.to)}
+                <Item
+                    title={ImagesCountControlStrings.from}
+                    value={value.from}
+                    name={name.from}
+                    min={value.min}
+                    max={value.max}
+                />
+                <Item
+                    title={ImagesCountControlStrings.to}
+                    value={value.to}
+                    name={name.to}
+                    min={value.from}
+                    max={value.max}
+                />
             </div>);
     }
 }
