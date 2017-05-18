@@ -6,4 +6,4 @@
 2. `npm start`
 3. Можно идти на `localhost:8080`
 
-(production)[https://team5quests.herokuapp.com]
+[production](https://team5quests.herokuapp.com)
