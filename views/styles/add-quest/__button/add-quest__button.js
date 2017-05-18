@@ -74,8 +74,8 @@ function createTabContent(id) {
         '</div>';
 }
 
-function init(id, coords) {
-    var yekatCoords = coords || [56.837527, 60.605943];
+function init(id, position) {
+    var yekatCoords = [56.837527, 60.605943];
     var map = new ymaps.Map('map' + id, {
         center: yekatCoords,
         zoom: 12
@@ -105,6 +105,10 @@ function init(id, coords) {
 
     var geolocationControl = addGeolocation(placemark, id);
     map.controls.add(geolocationControl);
+
+    if (position) {
+        updatePlacemark(placemark, position, id);
+    }
 }
 
 function getAddress(coords, placemark, id) {
